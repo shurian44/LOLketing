@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.e("github", "추가 테스트 진행")
+
 //        icon_griffin_layout.setOnClickListener {
 //            startActivity(Intent(this, JsonActivity::class.java))
 //        }
