@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1007308432394",
+    "firebase_url": "https://lolketing.firebaseio.com",
+    "project_id": "lolketing",
+    "storage_bucket": "lolketing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007308432394:android:fab7a7d413c244df0bebf3",
+        "android_client_info": {
+          "package_name": "com.ezen.lolketing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007308432394-tln4pn0c99qcia8pfcapbtc10d7q9dmu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezen.lolketing",
+            "certificate_hash": "281953b9a1fbd20b35eb62d57efe9c76104ef865"
+          }
+        },
+        {
+          "client_id": "1007308432394-mh3burrmtpga8gn091rmt2lhakeih7jc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGcjMvjELKqkR-mi_w_yiA7kq0t4cp1ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007308432394-mh3burrmtpga8gn091rmt2lhakeih7jc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

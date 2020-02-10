@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/main_tab">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/main_logo"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/logo_small"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <TextView
+                android:id="@+id/btn_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="로그아웃"
+                android:onClick="logout"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                app:layout_constraintTop_toTopOf="@id/main_logo"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/main_logo"/>
+
+            <ImageView
+                android:id="@+id/img_ad"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/img_test"
+                android:scaleType="fitXY"
+                app:layout_constraintTop_toBottomOf="@id/main_logo"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/layout_reserve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/img_ad"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/layout_info">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_reserve"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="예매"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="@id/layout_reserve"
+                app:layout_constraintLeft_toRightOf="@id/layout_reserve"
+                app:layout_constraintBottom_toBottomOf="@id/layout_reserve"
+                app:layout_constraintRight_toLeftOf="@id/layout_news">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_info"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="리그정보"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="@id/layout_reserve"
+                app:layout_constraintBottom_toBottomOf="@id/layout_reserve"
+                app:layout_constraintLeft_toRightOf="@id/layout_info"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_news"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="뉴스"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_shop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/layout_reserve"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/layout_notice">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_shop"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="샵"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="@id/layout_shop"
+                app:layout_constraintLeft_toRightOf="@id/layout_shop"
+                app:layout_constraintBottom_toBottomOf="@id/layout_shop"
+                app:layout_constraintRight_toLeftOf="@id/layout_event">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_notice"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="공지사항"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="@id/layout_shop"
+                app:layout_constraintBottom_toBottomOf="@id/layout_shop"
+                app:layout_constraintLeft_toRightOf="@id/layout_notice"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/icon_reserve"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="이벤트"
+                    android:textColor="#000"
+                    android:textSize="16sp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_t1_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@id/layout_shop"
+                app:layout_constraintLeft_toLeftOf="@id/layout_shop">
+
+                <ImageView
+                    android:id="@+id/icon_t1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/logo_t1"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_griffin_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                app:layout_constraintTop_toTopOf="@id/icon_t1_layout"
+                app:layout_constraintLeft_toLeftOf="@id/layout_notice">
+
+                <ImageView
+                    android:id="@+id/icon_griffin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_griffin"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_damwon_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                app:layout_constraintTop_toTopOf="@id/icon_t1_layout"
+                app:layout_constraintLeft_toLeftOf="@id/layout_event">
+
+                <ImageView
+                    android:id="@+id/icon_damwon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_damwon"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_sendbox_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintTop_toBottomOf="@id/icon_t1_layout"
+                app:layout_constraintLeft_toLeftOf="@id/icon_t1_layout">
+
+                <ImageView
+                    android:id="@+id/icon_sendbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_sandbox"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_freecs_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                app:layout_constraintTop_toTopOf="@id/icon_sendbox_layout"
+                app:layout_constraintLeft_toLeftOf="@id/icon_griffin_layout">
+
+                <ImageView
+                    android:id="@+id/icon_freecs"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_afreeca"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_geng_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                app:layout_constraintTop_toTopOf="@id/icon_sendbox_layout"
+                app:layout_constraintLeft_toLeftOf="@id/icon_damwon_layout">
+
+                <ImageView
+                    android:id="@+id/icon_geng"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_geng"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_dragonx_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                app:layout_constraintTop_toBottomOf="@id/icon_sendbox_layout"
+                app:layout_constraintLeft_toLeftOf="@id/icon_sendbox_layout">
+
+                <ImageView
+                    android:id="@+id/icon_dragonx"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_dragonx"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_rolster_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                app:layout_constraintTop_toTopOf="@id/icon_dragonx_layout"
+                app:layout_constraintLeft_toLeftOf="@id/icon_freecs_layout">
+
+                <ImageView
+                    android:id="@+id/icon_rolster"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_rolster"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_prince_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onClick="moveTeamActivity"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                app:layout_constraintTop_toTopOf="@id/icon_dragonx_layout"
+                app:layout_constraintLeft_toLeftOf="@id/icon_geng_layout">
+
+                <ImageView
+                    android:id="@+id/icon_prince"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_apk_prince"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+            <com.github.florent37.shapeofview.shapes.CircleView
+                android:id="@+id/icon_hanwha_layout"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:onClick="moveTeamActivity"
+                android:layout_marginBottom="20dp"
+                app:shape_circle_borderColor="@color/colorPrimaryDark"
+                app:shape_circle_borderWidth="2dp"
+                app:layout_constraintTop_toBottomOf="@id/icon_dragonx_layout"
+                app:layout_constraintLeft_toLeftOf="@id/icon_rolster_layout"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/icon_hanhwa"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_hanwha"/>
+
+            </com.github.florent37.shapeofview.shapes.CircleView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/main_tab"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:theme="@style/TapTheme"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="홈" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메뉴" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="즐겨찾기" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="마이페이지" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
