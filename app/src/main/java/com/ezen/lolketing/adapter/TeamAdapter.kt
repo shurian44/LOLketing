@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ezen.lolketing.R
 import com.ezen.lolketing.model.TeamDTO
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -25,6 +26,9 @@ class TeamAdapter(options : FirestoreRecyclerOptions<TeamDTO.PlayerDTO>) :
     override fun onBindViewHolder(holder: TeamHolder, position: Int, model: TeamDTO.PlayerDTO) {
         val item = holder.itemView
 
+        if(model.img != ""){
+            Glide.with(item.context).load(model.img).into(item.player_img)
+        }
         var text = "${model.nickname}\n${model.name}\n${model.position}"
         item.player_name.text = text
         item.player_name.maxLines = 1

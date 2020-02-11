@@ -31,6 +31,8 @@ class JoinActivity : AppCompatActivity() {
                     if(it.isSuccessful){
                         var user = Users()
                         user.id = email
+                        user.grade = "아이언"
+                        user.uid = auth.currentUser?.uid
                         firestore.collection("Users").document(email).set(user)
                         startActivity(Intent(this, LoginActivity::class.java))
                         auth.signOut()

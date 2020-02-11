@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        if( auth != null) moveMain()
+        if( auth.currentUser != null) moveMain()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -84,17 +84,21 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    var email = auth.currentUser?.email
-                    var user = Users()
-                    user.id = email
 
-                    firestore.collection("Users").document(email!!).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                    firestore.collection("Users").document(auth.currentUser?.email!!).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
                         if(documentSnapshot?.data == null){
+                            var email = auth.currentUser?.email!!
+                            var user = Users()
+                            user.id = email
+                            user.grade = "아이언"
+                            user.uid = auth.currentUser?.uid
                             firestore.collection("Users").document(email).set(user)
+                        }
+                        else{
+                            moveMain()
                         }
                     }
 
-                    moveMain()
                 } else {
                     Toast.makeText(this, "구글 로그인을 실패하였습니다.", Toast.LENGTH_SHORT).show()
                 }

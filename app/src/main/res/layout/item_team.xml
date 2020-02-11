@@ -22,9 +22,10 @@
             android:background="@color/colorPrimaryDark">
 
             <ImageView
+                android:id="@+id/player_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/captain"/>
+                android:src="@drawable/captain" />
 
             <TextView
                 android:id="@+id/player_name"
