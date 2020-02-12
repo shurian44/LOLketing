@@ -20,7 +20,7 @@ class JsonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_json)
 
-        var url = "https://api.myjson.com/bins/9t3gw"
+        var url = "https://api.myjson.com/bins/16qcj0"
         var request = object : JsonObjectRequest(Request.Method.GET, url, null,
             Response.Listener {
                 var teams = it.getJSONArray("Team")
@@ -52,7 +52,8 @@ class JsonActivity : AppCompatActivity() {
                         var playerDTO = TeamDTO.PlayerDTO()
                         playerDTO.name = rosterObject.getString("name")
                         playerDTO.nickname = rosterObject.getString("nickname")
-                        playerDTO.position = rosterObject.getString("position")
+                        playerDTO.position = rosterObject.getString("position") ?: ""
+                        playerDTO.img = rosterObject.getString("img")
                         firestore.collection("Team").document(team.get("team_name").toString())
                             .collection("Player").document(rosterObject.getString("name")).set(playerDTO)
                     }
