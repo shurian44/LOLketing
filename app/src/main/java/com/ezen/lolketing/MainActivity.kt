@@ -31,9 +31,15 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun moveTeamActivity(view: View) {
+    fun moveActivity(view: View) {
         var intent = Intent(this, TeamActivity::class.java)
         when(view.id){
+            R.id.layout_reserve-> intent = Intent(this, MainActivity::class.java)
+            R.id.layout_info-> intent = Intent(this, MainActivity::class.java)
+            R.id.layout_news-> intent = Intent(this, MainActivity::class.java)
+            R.id.layout_shop-> intent = Intent(this, MainActivity::class.java)
+            R.id.layout_notice-> intent = Intent(this, MainActivity::class.java)
+            R.id.layout_event-> intent = Intent(this, MainActivity::class.java)
             R.id.icon_t1 -> intent.putExtra("team", "T1")
             R.id.icon_griffin -> intent.putExtra("team", "GRIFFIN")
             R.id.icon_damwon -> intent.putExtra("team", "DAMWON Gamming")
