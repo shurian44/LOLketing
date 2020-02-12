@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         when(view.id){
             R.id.layout_reserve-> intent = Intent(this, MainActivity::class.java)
             R.id.layout_info-> intent = Intent(this, MainActivity::class.java)
-            R.id.layout_news-> intent = Intent(this, MainActivity::class.java)
+            R.id.layout_news-> intent = Intent(this, NewsActivity::class.java)
             R.id.layout_shop-> intent = Intent(this, MainActivity::class.java)
             R.id.layout_notice-> intent = Intent(this, MainActivity::class.java)
             R.id.layout_event-> intent = Intent(this, MainActivity::class.java)
