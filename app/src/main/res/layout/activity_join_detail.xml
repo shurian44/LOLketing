@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/join_detail_layout"
+    tools:context=".JoinDetailActivity"
+    android:paddingHorizontal="20dp"
+    android:layout_marginVertical="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_register"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/join_detail_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:src="@drawable/logo_main"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/join_detail_nickname_layout"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/join_detail_nickname_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="닉네임"
+            app:boxStrokeColor="#3B3838"
+            app:helperText="닉네임를 입력해주세요."
+            app:counterMaxLength="10"
+            app:counterEnabled="true"
+            app:errorEnabled="true"
+            app:layout_constraintTop_toBottomOf="@id/join_detail_logo"
+            app:layout_constraintBottom_toTopOf="@id/join_detail_phone_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/join_detail_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_id"
+                android:drawablePadding="10dp"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/join_detail_phone_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="전화번호"
+            app:boxStrokeColor="#3B3838"
+            app:errorEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="11"
+            app:helperText="-를 제회하고 전화번호를 입력해주세요."
+            app:layout_constraintTop_toBottomOf="@id/join_detail_nickname_layout"
+            app:layout_constraintBottom_toTopOf="@id/join_detail_address_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/join_detail_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_id"
+                android:drawablePadding="10dp"
+                android:inputType="phone" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/join_detail_address_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="주소"
+            app:boxStrokeColor="#3B3838"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/btn_address"
+            app:layout_constraintTop_toBottomOf="@id/join_detail_phone_layout"
+            app:layout_constraintBottom_toTopOf="@id/join_detail_address2_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/join_detail_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:drawableLeft="@drawable/icon_id"
+                android:drawablePadding="10dp"
+                android:enabled="false"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_address"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="10dp"
+            android:text="검색"
+            app:layout_constraintTop_toTopOf="@id/join_detail_address_layout"
+            app:layout_constraintBottom_toBottomOf="@id/join_detail_address_layout"
+            app:layout_constraintLeft_toRightOf="@id/join_detail_address_layout"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/join_detail_address2_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:hint="상세주소"
+            app:boxStrokeColor="#3B3838"
+            app:helperText="상세 주소를 입력해주세요"
+            app:layout_constraintTop_toBottomOf="@id/join_detail_address_layout"
+            app:layout_constraintBottom_toTopOf="@id/btn_register">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/join_detail_address2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_id"
+                android:drawablePadding="10dp"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_round_fill"
+            android:text="등록하기"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/join_detail_address2_layout"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_check"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/join_detail_logo2"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:src="@drawable/logo_main"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/scrollView"/>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/solid"
+            android:padding="10dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@id/join_detail_logo2"
+            app:layout_constraintBottom_toTopOf="@id/join_detail_check"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/terms"/>
+
+        </ScrollView>
+
+        <CheckBox
+            android:id="@+id/join_detail_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이용약관 동의하기"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
