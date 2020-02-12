@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ezen.lolketing">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TeamActivity"></activity>
+        <activity android:name=".NewsWebViewActivity"></activity>
+        <activity android:name=".NewsActivity" />
+        <activity android:name=".TeamActivity" />
         <activity android:name=".JsonActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
@@ -21,8 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".JoinActivity" />
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
