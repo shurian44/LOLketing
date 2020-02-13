@@ -3,7 +3,6 @@ package com.ezen.lolketing
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.ezen.lolketing.model.Users
 import com.google.firebase.auth.FirebaseAuth
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     fun moveActivity(view: View) {
         var intent = Intent(this, TeamActivity::class.java)
         when(view.id){
-            R.id.layout_reserve-> intent = Intent(this, MainActivity::class.java)
+            R.id.layout_reserve-> intent = Intent(this, ReserveListActivity::class.java)
             R.id.layout_info-> intent = Intent(this, MainActivity::class.java)
             R.id.layout_news-> intent = Intent(this, NewsActivity::class.java)
             R.id.layout_shop-> intent = Intent(this, MainActivity::class.java)
