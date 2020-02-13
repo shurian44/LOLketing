@@ -1,6 +1,7 @@
 package com.ezen.lolketing.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.ezen.lolketing.NewsWebViewActivity;
 import com.ezen.lolketing.R;
 import com.ezen.lolketing.model.NewsData;
 
@@ -20,12 +22,11 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private List<NewsData> mDataset;
-    private static View.OnClickListener onClickListener;
+    setActivityMove listener;
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder{
         public ImageView imageView_title;
         public TextView textView_title, textView_date, textView_author;
-        public View rootView;
 
         public NewsViewHolder(@NonNull View v) {
             super(v);
@@ -33,16 +34,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             textView_title = v.findViewById(R.id.textView_title);
             textView_date = v.findViewById(R.id.textView_date);
             textView_author = v.findViewById(R.id.textView_author);
-            rootView = v;
-            v.setClickable(true);
-            v.setEnabled(true);
-            v.setOnClickListener(onClickListener);
         }
     }
 
-    public NewsAdapter(List<NewsData> myDataset, Context context, View.OnClickListener onClick) {
-        mDataset = myDataset;
-        onClickListener = onClick;
+    public NewsAdapter(List<NewsData> myDataset, setActivityMove listener){
+        this.mDataset = myDataset;
+        this.listener = listener;
     }
     @Override
     public NewsAdapter.NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,7 +49,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final NewsViewHolder holder, final int position) {
         NewsData news = mDataset.get(position);
 
         String author = news.getAuthor();
@@ -78,8 +75,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         Glide.with(holder.itemView.getContext()).load(news.getUrlToImage()).into(holder.imageView_title);
 
-        // tag - label
-        holder.rootView.setTag(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), NewsWebViewActivity.class);
+                intent.putExtra("url", mDataset.get(position).getUrl());
+                listener.activityMove(intent);
+            }
+        });
 
     }
 
@@ -88,7 +91,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         return mDataset == null ? 0 : mDataset.size();
     }
 
-    public NewsData getNews(int position) {
-        return mDataset != null ? mDataset.get(position) : null;
+    public interface setActivityMove{
+        void activityMove(Intent intent);
     }
 }

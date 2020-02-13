@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsActivity extends AppCompatActivity {
+public class NewsActivity extends AppCompatActivity implements NewsAdapter.setActivityMove {
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     private RecyclerView recyclerView;
@@ -53,63 +53,10 @@ public class NewsActivity extends AppCompatActivity {
 //        queue.add(stringRequest);
     }
 
-    public void getNews() {
-        String url = "https://newsapi.org/v2/top-headlines?country=kr&apiKey=159395d777d845aeb527f35abb7abcb3";
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            JSONArray arrayArticles = jsonObj.getJSONArray("articles");
-
-                            // response -> NewsData Class로 분류.
-                            List<NewsData> news = new ArrayList<>();
-
-                            for(int i = 0, j = arrayArticles.length(); i < j; i++) {
-                                JSONObject obj = arrayArticles.getJSONObject(i);
-                                NewsData newsData = new NewsData();
-                                newsData.setAuthor(obj.getString("author"));
-                                newsData.setTitle( obj.getString("title"));
-                                newsData.setUrl(obj.getString("url"));
-                                newsData.setUrlToImage(obj.getString("urlToImage"));
-                                newsData.setPublishedAt(obj.getString("publishedAt"));
-                                news.add(newsData);
-
-                            }
-
-                            // specify an adapter (see also next example)
-                            mAdapter = new NewsAdapter(news, NewsActivity.this, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Object obj = v.getTag();
-                                    if(obj != null) {
-                                        int position = (int)obj;
-                                        Intent intent = new Intent();
-                                        startActivity(intent);
-                                    }
-                                }
-                            });
-
-                            recyclerView.setAdapter(mAdapter);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+    private void getNews() {
+        //List<>() news = new ArrayList<>();
     }
+
 
     public void logout(View view) {
         auth.signOut();
@@ -122,4 +69,8 @@ public class NewsActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void activityMove(Intent intent) {
+        startActivity(intent);
+    }
 }

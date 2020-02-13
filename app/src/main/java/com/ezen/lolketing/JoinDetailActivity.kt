@@ -47,7 +47,7 @@ class JoinDetailActivity : AppCompatActivity() {
             user.address = address
             user.nickname = join_detail_nickname?.text.toString()
             user.phone = join_detail_phone?.text.toString()
-//            firestore.collection("Users").document(email).set(user)
+            firestore.collection("Users").document(email).set(user)
             finish()
         }
     }
