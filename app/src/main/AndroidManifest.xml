@@ -10,8 +10,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ReserveActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".SeatGuideActivity"></activity>
+        <activity android:name=".GameScheduleActivity" />
+        <activity android:name=".LeagueInfoActivity" />
+        <activity android:name=".ReserveActivity" />
         <activity android:name=".ReserveListActivity" />
         <activity android:name=".DaumWebViewActivity" />
         <activity android:name=".JoinDetailActivity" />
