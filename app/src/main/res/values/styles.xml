@@ -15,5 +15,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="MyCheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:colorControlNormal">#ffd600</item>
+        <item name="android:colorControlActivated">#0091ea</item>
+        <item name="android:colorControlHighlight">#c51162</item>
+    </style>
 
 </resources>

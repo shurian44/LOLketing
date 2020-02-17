@@ -1,5 +1,6 @@
 package com.ezen.lolketing.adapter
 
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,13 +9,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
+import com.ezen.lolketing.ReserveActivity
 import com.ezen.lolketing.model.GameDTO
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import kotlinx.android.synthetic.main.item_reserve_ticket.view.*
 
-class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>)
+class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : reserveOnClick)
     : FirestoreRecyclerAdapter<GameDTO, ReserveAdapter.ReserveHolder>(options){
+
+    var listener = listener
 
     class ReserveHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReserveHolder {
@@ -41,8 +45,19 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>)
                 item.reserve_view.setBackgroundColor(Color.parseColor("#555555"))
                 item.reserve_status.text = "종료"
             }
+            "오픈예정"->{
+                item.reserve_view.setBackgroundColor(Color.parseColor("#555555"))
+                item.reserve_status.text = "오픈\n예정"
+            }
         }
         item.reserve_text.text = "${model.date}\n${model.time}"
+
+        item.setOnClickListener {
+            var intent = Intent(item.context, ReserveActivity::class.java)
+            intent.putExtra("time", "${model.date} ${model.time}")
+            intent.putExtra("team", model.team)
+            listener.reserveClick(intent)
+        }
     }
 
     fun setImage(image : ImageView, team : String? = ""){
@@ -58,6 +73,10 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>)
             "APK Prince"-> image.setImageResource(R.drawable.icon_apk_prince)
             "Hanwha Life Esports"-> image.setImageResource(R.drawable.icon_hanwha)
         }
+    }
+
+    interface reserveOnClick{
+        fun reserveClick(intent : Intent)
     }
 
 }

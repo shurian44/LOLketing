@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         var intent = Intent(this, TeamActivity::class.java)
         when(view.id){
             R.id.layout_reserve-> intent = Intent(this, ReserveListActivity::class.java)
-            R.id.layout_info-> intent = Intent(this, MainActivity::class.java)
+            R.id.layout_info-> intent = Intent(this, LeagueInfoActivity::class.java)
             R.id.layout_news-> intent = Intent(this, NewsActivity::class.java)
             R.id.layout_shop-> intent = Intent(this, MainActivity::class.java)
             R.id.layout_notice-> intent = Intent(this, MainActivity::class.java)
