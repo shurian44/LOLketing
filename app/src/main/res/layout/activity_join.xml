@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/join_logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:src="@drawable/logo_main"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
