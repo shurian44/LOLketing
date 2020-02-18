@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ShopActivity"></activity>
+        <activity android:name=".PurchaseActivity"></activity>
+        <activity android:name=".ShopDetailActivity" />
+        <activity android:name=".ShopActivity" />
         <activity android:name=".TicketingActivity" />
         <activity android:name=".ReserveDetailActivity" />
         <activity android:name=".SeatGuideActivity" />
