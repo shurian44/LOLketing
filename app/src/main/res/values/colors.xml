@@ -3,4 +3,14 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3B3838</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorT1">#e21e2f</color>
+    <color name="colorAPK">#d74646</color>
+    <color name="colorAfreeca">#0545b1</color>
+    <color name="colorDamwon">#55969c</color>
+    <color name="colorDragon">#5a8dff</color>
+    <color name="colorGriffin">#ed1b24</color>
+    <color name="colorGeng">#a58721</color>
+    <color name="colorHanwha">#FF6B01</color>
+    <color name="colorSandbox">#ad1c31</color>
+    <color name="colorRolster">#221e1f</color>
 </resources>

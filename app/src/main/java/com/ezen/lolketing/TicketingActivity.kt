@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -48,4 +49,6 @@ class TicketingActivity : AppCompatActivity() {
 
         return bmp
     }
+
+    fun logout(view: View) {}
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,12 +20,23 @@ class JoinDetailActivity : AppCompatActivity() {
     private val SEARCH_ADDRESS_ACTIVITY = 10000
     private var firestore = FirebaseFirestore.getInstance()
     private var auth = FirebaseAuth.getInstance()
+    private var classify: String ?= null
+    private var user = Users()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_detail)
 
         textChanged()
+        classify = intent.getStringExtra("modify") ?: null
+
+        if(classify == "modify"){
+            setModify()
+            firestore.collection("Users").document(auth.currentUser?.email!!).get().addOnCompleteListener {
+                var mine = it.result?.toObject(Users::class.java)!!
+                user.grade = mine.grade
+            }
+        }
 
         join_detail_check.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
@@ -39,7 +51,7 @@ class JoinDetailActivity : AppCompatActivity() {
         }
 
         btn_register.setOnClickListener {
-            var user = Users()
+
             var email = auth.currentUser?.email!!
             var address = "${join_detail_address?.text.toString()}, ${join_detail_address2?.text.toString()}"
             user.id = email
@@ -47,6 +59,9 @@ class JoinDetailActivity : AppCompatActivity() {
             user.address = address
             user.nickname = join_detail_nickname?.text.toString()
             user.phone = join_detail_phone?.text.toString()
+            if(classify != "modify")
+                user.grade = "브론즈"
+
             firestore.collection("Users").document(email).set(user)
             finish()
         }
@@ -81,6 +96,23 @@ class JoinDetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun setModify(){
+        layout_check.visibility = View.GONE
+        layout_register.visibility = View.VISIBLE
+
+        firestore.collection("Users").document(auth.currentUser?.email!!).get().addOnCompleteListener {
+            var user = it.result?.toObject(Users::class.java)!!
+            var address = user.address!!.split(",")
+            join_detail_nickname.setText(user.nickname)
+            join_detail_phone.setText(user.phone)
+            if(address.size > 1)
+                join_detail_address.setText("${address[0]},${address[1]}")
+            if(address.size > 2)
+                join_detail_address2.setText("${address[2]}")
+            btn_register.text = "수정하기"
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
 
@@ -94,7 +126,7 @@ class JoinDetailActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if(event?.action == KeyEvent.ACTION_DOWN){
-            if(keyCode == KeyEvent.KEYCODE_BACK ){
+            if(keyCode == KeyEvent.KEYCODE_BACK && classify != "modify"){
                 var intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
