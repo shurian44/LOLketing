@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="message">
+        <item>배송메세지를 선택해주세요.</item>
+        <item>배송 전 연락바랍니다.</item>
+        <item>경비실에 맡겨주세요.</item>
+        <item>집앞에 놔주세요.</item>
+        <item>택배함에 놔주세요.</item>
+        <item>부재시 경비실에 맡겨주세요.</item>
+        <item>부재시 집 앞에 놔주세요.</item>
+    </string-array>
+</resources>
