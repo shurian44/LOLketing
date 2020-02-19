@@ -56,6 +56,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    override fun onResume() {
+        super.onResume()
+        main_tab.setScrollPosition(0, 0f, true)
+    }
+
     fun setTabListener(){
         main_tab.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(tab: TabLayout.Tab?) {

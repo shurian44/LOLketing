@@ -6,9 +6,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.ezen.lolketing.model.Users
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_my_page.*
+import kotlinx.android.synthetic.main.activity_my_page.main_tab
 
 class MyPageActivity : AppCompatActivity() {
     private var firestore = FirebaseFirestore.getInstance()
@@ -19,6 +22,7 @@ class MyPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_page)
 
+        main_tab.setScrollPosition(3, 0f, true)
         id = auth.currentUser?.email!!
 
         firestore.collection("Coupon").whereEqualTo("id", id).get().addOnCompleteListener {
@@ -79,6 +83,21 @@ class MyPageActivity : AppCompatActivity() {
             }
             progress_grade.progress = user.point!!
         }
+    }
+
+    fun setTabListener(){
+        main_tab.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+            }
+
+        })
     }
 
     fun logout(view: View?) {}
