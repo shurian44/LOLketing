@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PurchaseActivity">
+    tools:context=".PurchaseResultActivity">
 
     <ScrollView
         android:id="@+id/scrollView3"
@@ -14,6 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/purchaseView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -65,8 +66,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Spinner
-                    android:id="@+id/spinner"
+                <TextView
+                    android:id="@+id/spinnerMessage"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
@@ -74,9 +75,13 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/stroke_outline2"
-                    android:entries="@array/message"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
+                    android:text="배송메세지"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView"
@@ -101,7 +106,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="주문상품"
+                    android:text="구매 내역"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -173,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:text="선택된 수량:"
+                    android:text="구매한 수량:"
                     app:layout_constraintStart_toEndOf="@+id/img_goods"
                     app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
@@ -215,44 +220,34 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <EditText
                     android:id="@+id/editTextName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:hint="구매자 아이디"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:hint="구매자 이름"
                     android:inputType="text"
-                    android:textSize="16sp"
+                    android:textColor="#CC3B3838"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView32" />
 
-                <TextView
+                <EditText
                     android:id="@+id/editTextAddress"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:enabled="false"
                     android:hint="배송받을 주소"
                     android:inputType="text"
-                    app:layout_constraintEnd_toStartOf="@+id/btnChange"
+                    android:textColor="#CC3B3838"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/editTextName" />
-
-                <Button
-                    android:id="@+id/btnChange"
-                    android:layout_width="45dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/btn_round_fill"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:text="변경"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
-                    android:textSize="13sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextAddress"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/editTextAddress" />
 
                 <TextView
                     android:id="@+id/textView1212"
@@ -261,6 +256,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
+                    android:paddingLeft="2dp"
                     android:text="핸드폰 번호:"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -280,100 +276,23 @@
                     app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/container_purchaseInfo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
+            <Button
+                android:id="@+id/go_to_main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimary"
+                android:onClick="onClickBtn"
+                android:text="확인"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/container_spinner">
-
-                <TextView
-                    android:id="@+id/textView39"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/common_google_signin_btn_text_dark_default"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="결제방법 선택"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btnMoney"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/button_selector"
-                    android:text="가상머니"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView39" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/container_purchase"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/common_google_signin_btn_text_dark_default"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/container_purchaseInfo">
-
-                <CheckBox
-                    android:id="@+id/checkBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="약관 전체 동의하기"
-                    android:textColor="@color/colorPrimaryDark"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView26"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="46dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="16dp"
-                    android:lineSpacingMultiplier="1.1"
-                    android:text="개인정보 제 3자 제공 동의, 결제대행 서비스 이용약관 등 모든 약관에 동의합니다."
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/checkBox" />
-
-                <Button
-                    android:id="@+id/btnPay"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/colorPrimary"
-                    android:text="결제하기"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView26" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+                app:layout_constraintTop_toBottomOf="@+id/container_spinner" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
