@@ -27,13 +27,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 public class ShopDetailActivity extends AppCompatActivity {
-    TextView product_name;
-    TextView textViewCount;
-    TextView textViewPrice;
+    TextView product_name, textViewCount, textViewPrice;
     ImageView product_img1, product_img2, product_img3;
-    Button btn_plus;
-    Button btn_minus;
-    Button btn_purchase;
+    Button btn_plus, btn_minus, btn_purchase;
 
     private int count = 0;
     private String amount;
@@ -48,18 +44,16 @@ public class ShopDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shop_detail);
 
         // intent로 전달한 데이터 받기
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-        price = intent.getIntExtra("price", 0);
-
-        ArrayList<String> images = intent.getStringArrayListExtra("image");
+        final Intent intent = getIntent();
+        final String name = intent.getStringExtra("name"); // 상품명 받아오기
+        final String category = intent.getStringExtra("category"); // 상품 그룹 받아오기
+        final ArrayList<String> images = intent.getStringArrayListExtra("image"); // 이미지
+        price = intent.getIntExtra("price", 0); // 가격
 
 //        DB로 접근할 때 방법
 //        firestore.collection("Shop").whereEqualTo("name", name).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 //            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//
-//            }
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) { }
 //        });
 
         product_name = findViewById(R.id.product_name);
@@ -80,11 +74,22 @@ public class ShopDetailActivity extends AppCompatActivity {
         btn_purchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentPurchase = new Intent(getApplicationContext(), PurchaseActivity.class);
-                intentPurchase.putExtra("amount", amount);
-                intentPurchase.putExtra("payment", payment);
-                intentPurchase.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intentPurchase);
+                if (count == 0) {
+                    Toast.makeText(getApplicationContext(),
+                            "구매할 수량을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (count != 0) {
+                    // 데이터 전달
+                    Intent intentPurchase = new Intent(getApplicationContext(), PurchaseActivity.class);
+                    intentPurchase.putExtra("category", category);
+                    intentPurchase.putExtra("name", name);
+                    intentPurchase.putExtra("amount", amount);
+                    intentPurchase.putExtra("payment", payment);
+                    intentPurchase.putExtra("image", images.get(0));
+                    intentPurchase.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intentPurchase);
+                }
             }
         });
     }
@@ -97,9 +102,10 @@ public class ShopDetailActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             return;
         }
+
         amount = Integer.toString(count);
         textViewCount.setText(amount);
-        payment = price * Integer.parseInt(amount);
+        payment = price * Integer.parseInt(amount); // string to int convert
         textViewPrice.setText(Integer.toString(payment) + "원");
     }
 
@@ -111,9 +117,10 @@ public class ShopDetailActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             return;
         }
+
         amount = Integer.toString(count);
         textViewCount.setText(amount);
-        payment = price * Integer.parseInt(amount);
+        payment = price * Integer.parseInt(amount); // 총 금액
         textViewPrice.setText(Integer.toString(payment) + "원");
     }
 

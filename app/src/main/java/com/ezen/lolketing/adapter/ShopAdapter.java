@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.ezen.lolketing.PurchaseActivity;
 import com.ezen.lolketing.R;
 import com.ezen.lolketing.ShopDetailActivity;
 import com.ezen.lolketing.model.ShopDTO;
@@ -53,6 +54,7 @@ public class ShopAdapter extends FirestoreRecyclerAdapter<ShopDTO, ShopAdapter.S
             public void onClick(View v) {
                 Intent intent = new Intent(shopHolder.itemView.getContext(), ShopDetailActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("category", shopDTO.getGroup());
                 intent.putExtra("name", shopDTO.getName());
                 intent.putExtra("image", shopDTO.getImages());
                 intent.putExtra("price", shopDTO.getPrice());
