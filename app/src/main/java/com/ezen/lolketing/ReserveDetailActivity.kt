@@ -19,8 +19,10 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
     private var auth = FirebaseAuth.getInstance()
     private var myCache = 0
     lateinit var time : String
+    lateinit var team : String
     var price = 0
     var format = DecimalFormat("###,###,###,###")
+    var pay = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,7 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
         reserve_price.text = format.format(price)
 
         time = intent.getStringExtra("time")
+        team = intent.getStringExtra("team")
         radio1.isChecked = true
 
         radio1.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -60,7 +63,7 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
                 return@setOnClickListener
             }
 
-            var pay = if(radio1.isChecked) price
+            pay = if(radio1.isChecked) price
                            else price * 2
             if(myCache < pay){
                 toast("잔액이 부족합니다.\n캐시를 충전해주세요")
@@ -83,9 +86,16 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
                 firestore.collection("Game").document(time).collection("Seat").document("seat").set(seatDTO).addOnCompleteListener {task->
                     if(task.isComplete){
                         firestore.collection("Users").document(auth.currentUser?.email!!).update("cache", FieldValue.increment(-pay.toDouble()))
+                        var ticket = if(radio1.isChecked) 1
+                                         else 2
                         var intent = Intent(this, TicketingActivity::class.java)
                         //2020.02.15_T1:DAMWON_A1a
-                        intent.putExtra("code", "${time}_${intent.getStringExtra("team")}_${reserve_select.text}")
+                        intent.putExtra("time", time)
+                        intent.putExtra("team", team)
+                        intent.putExtra("seat", reserve_select.text.toString())
+                        intent.putExtra("ticketCount", ticket)
+                        intent.putExtra("pay", pay)
+
                         startActivity(intent)
                         finish()
                     }

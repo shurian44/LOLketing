@@ -8,6 +8,11 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.ezen.lolketing.model.PurchaseDTO
+import com.ezen.lolketing.model.SeatDTO
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.zxing.BarcodeFormat
@@ -19,18 +24,87 @@ import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.android.synthetic.main.activity_ticketing.*
 import org.jetbrains.anko.toast
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TicketingActivity : AppCompatActivity() {
 
-    lateinit var code : String
     private var storage = FirebaseStorage.getInstance()
     private var firestore = FirebaseFirestore.getInstance()
+    private var auth = FirebaseAuth.getInstance()
+    lateinit var time : String
+    lateinit var team : String
+    lateinit var seat : String
+    var image : String ?= null
+    var ticketCount = 0
+    var pay = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ticketing)
-        code = intent.getStringExtra("code")
-        generateQRCode(code)
+
+        time = intent.getStringExtra("time")
+        team = intent.getStringExtra("team")
+        seat = intent.getStringExtra("seat")
+        ticketCount = intent.getIntExtra("ticketCount", 0)
+        pay = intent.getIntExtra("pay", 0)
+        image = intent.getStringExtra("image")
+
+        ticketing_match.text = time
+        ticketing_seat.text = seat
+        match.text = team
+
+        if(image == null)
+            generateQRCode("${auth.currentUser?.email}_${time}_${team}_${seat.replace("/", ",")}")
+        else
+            Glide.with(this).load(image).into(iv_generated_qrcode)
+
+        var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
+        var date = dateFormat.parse(time)
+        date.hours = date.hours - 4
+        var mDate = date
+
+        var refundPay = 0
+
+        when {
+            mDate > date -> {
+                // 환불 불가
+                btn_refund.isEnabled = false
+                btn_refund.setBackgroundColor(Color.parseColor("#777777"))
+                btn_refund.text = "환불 불가능"
+            }
+            mDate == date -> {
+                // 수수료 면제
+                refundPay = pay
+            }
+            else -> {
+                // 수수료 10%
+                refundPay = pay - (pay / 10)
+            }
+        }
+        // 환불처리
+        btn_refund.setOnClickListener {
+            // 캐시 돌리기
+            // 좌석 돌리기
+            // Purchase 지우기
+            // 환불 완료 페이지 만들기
+            // qr 코드 지우기
+
+            // 1. 경기 날짜 구하기
+            // 2. 환불 규정 당일 4시간 전 까지 가능
+            //     당일 취소 수수료 x
+            //     그 이후 취소 수수료 10%
+
+            var seats = seat.split("/")
+            firestore.collection("Users").document(auth.currentUser?.email!!).update("cache", FieldValue.increment(refundPay.toDouble()))
+            for(i in seats.indices){
+                firestore.collection("Game").document(time).collection("Seat").document("seat").update("seats.${seats[i]}", false)
+            }
+            firestore.collection("Purchase").document("${time},${seat.replace("/", ",")}").delete()
+
+            toast("환불 완료")
+            storage.reference.child("ticket/${auth.currentUser?.email}_${time}_${team}_${seat.replace("/", ",")}.jpg").delete()
+        }
     }
 
     private fun generateQRCode(content: String) {
@@ -39,25 +113,28 @@ class TicketingActivity : AppCompatActivity() {
             var bitmap = toBitmap(qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, 200, 200))
             iv_generated_qrcode.setImageBitmap(bitmap)
 
-            var pathReference = storage.reference.child("ticket/${code}.jpg")
+            var pathReference = storage.reference.child("ticket/${content}.jpg")
             var baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             var data = baos.toByteArray()
             pathReference.putBytes(data).addOnSuccessListener {
                 pathReference.downloadUrl.addOnCompleteListener {
-                    //com.google.android.gms.tasks.zzu@5ab1910
-                    Log.e("test", "${it.result.toString()}")
-//                    var map = mapOf<String, String>("test" to it.toString())
-//                    firestore.collection("Ticket").document().set(map)
+                    var purchaseDTO = PurchaseDTO()
+                    purchaseDTO.amount = ticketCount
+                    purchaseDTO.group = "티켓"
+                    purchaseDTO.id = auth.currentUser?.email
+                    purchaseDTO.image = it.result.toString()
+                    purchaseDTO.name = team
+                    purchaseDTO.price = pay
+                    purchaseDTO.status = "usable"
+                    purchaseDTO.timestamp = System.currentTimeMillis()
+                    purchaseDTO.information = "${time},${seat.replace("/", ",")}"
+
+                    firestore.collection("Purchase").document("${time},${seat.replace("/", ",")}").set(purchaseDTO)
+
+
                 }
             }
-//            var uploadTask = pathReference.putBytes(data)
-//            uploadTask.addOnCompleteListener{
-//                if(it.isSuccessful){
-//                    val downloadUri = it.result
-//                    Log.e("다운로드 uri", "$downloadUri")
-//                }
-//            }
 
         }catch (e : WriterException){
             e.printStackTrace()
