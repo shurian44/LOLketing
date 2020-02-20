@@ -1,13 +1,11 @@
 package com.ezen.lolketing;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class NewsWebViewActivity extends AppCompatActivity {
     private WebView webView;
@@ -21,7 +19,6 @@ public class NewsWebViewActivity extends AppCompatActivity {
         webView = findViewById(R.id.news_webView);
 
         url = getIntent().getStringExtra("url");
-        Log.e("Test", "url : " + url);
 
         webView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
         webSettings = webView.getSettings(); //세부 세팅 등록
@@ -37,7 +34,6 @@ public class NewsWebViewActivity extends AppCompatActivity {
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
         webSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
 
-//        url = "http://m.inven.co.kr//webzine/wznews.php?site=lol&idx=234058";
         webView.loadUrl(url);
 
     }

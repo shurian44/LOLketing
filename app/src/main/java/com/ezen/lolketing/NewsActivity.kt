@@ -2,7 +2,6 @@ package com.ezen.lolketing
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,13 +46,9 @@ class NewsActivity : AppCompatActivity(), setActivityMove {
                 newsData.forEachIndexed { index, element ->
                     //실제 네이버 영화 페이지의 html 문서의 소스를 보고 어떤 데이터가 어떤 태그를 사용하고 있는지 분석해야 한다.
                     val newsTitle = element.select("span[class=title]").text()
-                    Log.e("test", "title $newsTitle")
                     val thumbnail = element.select("span[class=thumb] img").attr("src")
-                    Log.e("test", "thumbnail $thumbnail ")
                     val info = element.select("span[class=info]").text()
-                    Log.e("test", "info $info")
                     val url = "http://m.inven.co.kr${element.select("a[class=subject]").attr("href")}"
-                    Log.e("test", "$url")
                     data.add(NewsDTO(newsTitle, thumbnail, info, url))
 
                     runOnUiThread {
@@ -72,8 +67,8 @@ class NewsActivity : AppCompatActivity(), setActivityMove {
         auth.signOut()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or
-                Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
         startActivity(intent)
     }
 

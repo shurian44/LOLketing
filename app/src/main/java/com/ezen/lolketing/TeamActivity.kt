@@ -1,5 +1,6 @@
 package com.ezen.lolketing
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,9 +20,16 @@ class TeamActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team)
+        
 
         team = intent.getStringExtra("team")
         getTeam()
+
+        top_view.setOnClickListener {
+            var intent = Intent(this, BoardListActivity::class.java)
+            intent.putExtra("team", team)
+            startActivity(intent)
+        }
 
         var query = firestore.collection("Team").document(team).collection("Player")
         var options = FirestoreRecyclerOptions.Builder<TeamDTO.PlayerDTO>()

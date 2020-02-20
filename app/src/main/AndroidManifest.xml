@@ -12,7 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TicketingActivity"></activity>
+        <activity
+            android:name=".BoardWriteActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity android:name=".BoardListActivity" />
+        <activity android:name=".TicketingActivity" />
         <activity android:name=".ReserveDetailActivity" />
         <activity android:name=".SeatGuideActivity" />
         <activity android:name=".GameScheduleActivity" />

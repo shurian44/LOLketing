@@ -1,7 +1,6 @@
 package com.ezen.lolketing.adapter;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.ezen.lolketing.NewsWebViewActivity;
 import com.ezen.lolketing.R;
 import com.ezen.lolketing.model.NewsDTO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
@@ -70,7 +68,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), NewsWebViewActivity.class);
                 intent.putExtra("url", mDataset.get(position).getUrl());
-                Log.e("url", "뭐냐 : " + mDataset.get(position).getUrl());
                 listener.activityMove(intent);
             }
         });
