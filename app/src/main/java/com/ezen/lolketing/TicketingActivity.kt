@@ -62,7 +62,7 @@ class TicketingActivity : AppCompatActivity() {
         var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
         var date = dateFormat.parse(time)
         date.hours = date.hours - 4
-        var mDate = date
+        var mDate = Date()
 
         var refundPay = 0
 
