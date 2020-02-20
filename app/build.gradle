@@ -20,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    allprojects {
+        repositories {
+            maven { url "https://jitpack.io" }
+        }
+    }
 }
 
 dependencies {
@@ -59,6 +64,8 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
     // pageindicatorview
     implementation 'com.romandanylyk:pageindicatorview:1.0.0@aar'
+// Custom Spinner
+    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
 }
 repositories {
     mavenCentral()
