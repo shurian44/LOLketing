@@ -81,7 +81,16 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
                     }
                     map[seat] = true
                 }
-                toast("좌석 선택 성공")
+                var count = 0
+                for((key, value) in map){
+                    if(value){
+                        count++
+                    }
+                }
+                if(count >= 10){
+                    firestore.collection("Game").document(time).update("status", "매진")
+                }
+
                 seatDTO.seats = map
                 firestore.collection("Game").document(time).collection("Seat").document("seat").set(seatDTO).addOnCompleteListener {task->
                     if(task.isComplete){
@@ -95,7 +104,7 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
                         intent.putExtra("seat", reserve_select.text.toString())
                         intent.putExtra("ticketCount", ticket)
                         intent.putExtra("pay", pay)
-
+                        toast("좌석 선택 성공")
                         startActivity(intent)
                         finish()
                     }
