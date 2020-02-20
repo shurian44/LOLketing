@@ -62,7 +62,9 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.12.2'
     // QR 코드
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
-    // Custom Spinner
+    // pageindicatorview
+    implementation 'com.romandanylyk:pageindicatorview:1.0.0@aar'
+// Custom Spinner
     implementation 'com.github.arcadefire:nice-spinner:1.4.4'
 }
 repositories {

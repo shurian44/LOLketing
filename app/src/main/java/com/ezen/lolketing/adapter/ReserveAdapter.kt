@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
 import com.ezen.lolketing.ReserveActivity
@@ -53,6 +54,20 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : re
         item.reserve_text.text = "${model.date}\n${model.time}"
 
         item.setOnClickListener {
+            when(item.reserve_status.text){
+                "매진"->{
+                    Toast.makeText(item.context, "매진되었습니다.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                "종료"->{
+                    Toast.makeText(item.context, "종료되었습니다.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                "오픈예정"->{
+                    Toast.makeText(item.context, "오픈 예정입니다.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+            }
             var intent = Intent(item.context, ReserveActivity::class.java)
             intent.putExtra("time", "${model.date} ${model.time}")
             intent.putExtra("team", model.team)

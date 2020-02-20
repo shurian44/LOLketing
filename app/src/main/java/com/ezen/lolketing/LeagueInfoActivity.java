@@ -86,4 +86,6 @@ public class LeagueInfoActivity extends AppCompatActivity {
     } // onCreate()
 
 
+    public void logout(View view) {
+    }
 } // class

@@ -23,7 +23,7 @@
                 android:id="@+id/textView16"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/stroke_bottom"
+                android:background="@drawable/stroke_outline2"
                 android:backgroundTint="@color/common_google_signin_btn_text_dark_default"
                 android:paddingLeft="16dp"
                 android:paddingTop="10dp"
