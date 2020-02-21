@@ -3,6 +3,7 @@
     package="com.ezen.lolketing">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -14,9 +15,14 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".PurchaseHistoryActivity"></activity>
         <activity android:name=".PurchaseResultActivity" />
+        <activity android:name=".ChattingActivity"></activity>
+        <activity android:name=".RouletteActivity" />
+        <activity android:name=".ChattingListActivity" />
+        <activity android:name=".PurchaseResultActivity"></activity>
         <activity
             android:name=".BoardWriteActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".BoardDetailActivity"></activity>
         <activity android:name=".BoardListActivity" />
         <activity android:name=".PurchaseActivity" />
         <activity android:name=".ShopDetailActivity" />

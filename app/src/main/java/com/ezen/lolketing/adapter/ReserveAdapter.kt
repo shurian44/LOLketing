@@ -41,9 +41,9 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : re
         date.hours = date.hours - 4
         var mDate = Date()
 
-        if(mDate > date){
-            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
-        }
+//        if(mDate > date){
+//            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
+//        }
 
         when(model.status){
             "예약"->{

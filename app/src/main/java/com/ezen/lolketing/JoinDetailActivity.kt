@@ -46,8 +46,8 @@ class JoinDetailActivity : AppCompatActivity() {
         }
 
         btn_address.setOnClickListener {
-            val i = Intent(this, DaumWebViewActivity::class.java)
-            startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY)
+            val intent = Intent(this, DaumWebViewActivity::class.java)
+            startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
         }
 
         btn_register.setOnClickListener {

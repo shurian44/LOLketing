@@ -48,7 +48,6 @@
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:scaleType="fitXY"
-        android:src="@drawable/img_test"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -110,8 +109,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="6dp"
                 android:background="@null"
-                android:hint="글을 입력 하세요."
-                />
+                android:hint="글을 입력 하세요." />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

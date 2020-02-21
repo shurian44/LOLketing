@@ -64,6 +64,8 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         board_recyclerView.setAdapter(adapter);
 
+
+
         main_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +73,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
                 intent.setFlags(intent.FLAG_ACTIVITY_SINGLE_TOP |
                                 intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                intent.putExtra("team", "T1");
                 startActivity(intent);
             }
         });
@@ -113,6 +116,8 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             }
         });
 
+
+
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +129,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
+                intent.putExtra("team", "T1");
                 intent.setFlags(intent.FLAG_ACTIVITY_SINGLE_TOP |
                                 intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);

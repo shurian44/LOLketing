@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".ChattingListActivity">
+
+    <ImageView
+        android:id="@+id/main_logo"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/logo_small"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:text="로그아웃"
+        android:onClick="logout"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toTopOf="@id/main_logo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/main_logo"/>
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="0dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/img_reserve"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toBottomOf="@id/main_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:text="오늘 : 20.02.20"
+        app:layout_constraintTop_toBottomOf="@id/img1"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_gameDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="8dp"
+        android:text="경기 : 20.02.20"
+        app:layout_constraintTop_toBottomOf="@id/img1"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_time1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="17:00"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/txt_today"
+        app:layout_constraintLeft_toLeftOf="@id/txt_today"/>
+
+    <ImageView
+        android:id="@+id/img_team1"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/logo_t1"
+        android:onClick="enterChatting"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/txt_vs1"
+        app:layout_constraintTop_toBottomOf="@id/txt_time1"/>
+
+    <TextView
+        android:id="@+id/txt_vs1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="vs"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#f00"
+        app:layout_constraintTop_toTopOf="@id/img_team1"
+        app:layout_constraintBottom_toBottomOf="@id/img_team1"
+        app:layout_constraintLeft_toRightOf="@id/img_team1"
+        app:layout_constraintRight_toLeftOf="@id/img_team2"/>
+
+    <ImageView
+        android:id="@+id/img_team2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/logo_afreeca"
+        android:onClick="enterChatting"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/txt_vs1"
+        app:layout_constraintTop_toTopOf="@id/img_team1"/>
+
+
+
+    <TextView
+        android:id="@+id/txt_time2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="20:00"
+        android:textColor="#000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/img_team1"
+        app:layout_constraintLeft_toLeftOf="@id/txt_today"/>
+
+    <ImageView
+        android:id="@+id/img_team3"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/logo_t1"
+        android:onClick="enterChatting"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/txt_vs2"
+        app:layout_constraintTop_toBottomOf="@id/txt_time2"/>
+
+    <TextView
+        android:id="@+id/txt_vs2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="vs"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="#f00"
+        app:layout_constraintTop_toTopOf="@id/img_team3"
+        app:layout_constraintBottom_toBottomOf="@id/img_team3"
+        app:layout_constraintLeft_toRightOf="@id/img_team3"
+        app:layout_constraintRight_toLeftOf="@id/img_team4"/>
+
+    <ImageView
+        android:id="@+id/img_team4"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/logo_afreeca"
+        android:onClick="enterChatting"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/txt_vs1"
+        app:layout_constraintTop_toTopOf="@id/img_team3"/>
+
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="8dp"
+        android:background="@color/colorPrimary"
+        android:padding="8dp"
+        android:text="채팅 응원 이용 안내"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/txt3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="15dp"
+        android:text="원하는 팀의 이미지를 터치하여 팀을 응원해주세요\n채팅 오픈은 경기 시작 30분 전에 오픈됩니다.\n욕설 및 비방등 부적절한 채팅을 입력 시에 재재 당할 수 있습니다."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/title1"
+        app:layout_constraintRight_toRightOf="@id/title1"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

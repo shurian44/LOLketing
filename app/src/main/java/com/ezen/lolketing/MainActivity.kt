@@ -3,15 +3,11 @@ package com.ezen.lolketing
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.ezen.lolketing.model.Users
-import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,16 +33,16 @@ class MainActivity : AppCompatActivity() {
     fun moveActivity(view: View) {
         var intent = Intent(this, TeamActivity::class.java)
         when(view.id){
-            R.id.btn_notice-> intent = Intent(this, MainActivity::class.java)
-            R.id.btn_event-> intent = Intent(this, MainActivity::class.java)
+            R.id.btn_notice-> intent = Intent(this, BoardListActivity::class.java)
+            R.id.btn_event-> intent = Intent(this, RouletteActivity::class.java)
             R.id.btn_myPage-> intent = Intent(this, MyPageActivity::class.java)
             R.id.btn_info-> intent = Intent(this, LeagueInfoActivity::class.java)
             R.id.btn_reserve-> intent = Intent(this, ReserveListActivity::class.java)
             R.id.btn_shop-> intent = Intent(this, ShopActivity::class.java)
             R.id.btn_guid-> intent = Intent(this, MainActivity::class.java)
             R.id.btn_news-> intent = Intent(this, NewsActivity::class.java)
-            R.id.btn_chatting-> intent = Intent(this, MainActivity::class.java)
-            R.id.icon_t1 -> intent = Intent(this, MainActivity::class.java)
+            R.id.btn_chatting-> intent = Intent(this, ChattingListActivity::class.java)
+            R.id.icon_t1 -> intent = Intent(this, BoardListActivity::class.java)
             R.id.icon_griffin -> intent.putExtra("team", "GRIFFIN")
             R.id.icon_damwon -> intent.putExtra("team", "DAMWON Gamming")
             R.id.icon_sendbox -> intent.putExtra("team", "SANDBOX Gamming")
