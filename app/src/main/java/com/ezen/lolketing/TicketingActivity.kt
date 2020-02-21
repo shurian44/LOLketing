@@ -84,17 +84,6 @@ class TicketingActivity : AppCompatActivity() {
         }
         // 환불처리
         btn_refund.setOnClickListener {
-            // 캐시 돌리기
-            // 좌석 돌리기
-            // Purchase 지우기
-            // 환불 완료 페이지 만들기
-            // qr 코드 지우기
-
-            // 1. 경기 날짜 구하기
-            // 2. 환불 규정 당일 4시간 전 까지 가능
-            //     당일 취소 수수료 x
-            //     그 이후 취소 수수료 10%
-
             var seats = seat.split("/")
             firestore.collection("Users").document(auth.currentUser?.email!!).update("cache", FieldValue.increment(refundPay.toDouble()))
             for(i in seats.indices){
@@ -102,8 +91,9 @@ class TicketingActivity : AppCompatActivity() {
             }
             firestore.collection("Purchase").document("${time},${seat.replace("/", ",")}").delete()
 
-            toast("환불 완료")
             storage.reference.child("ticket/${auth.currentUser?.email}_${time}_${team}_${seat.replace("/", ",")}.jpg").delete()
+            toast("환불 완료")
+            finish()
         }
     }
 

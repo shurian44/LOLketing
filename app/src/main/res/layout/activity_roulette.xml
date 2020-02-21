@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RouletteActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0" >
+
+        <ImageView
+            android:id="@+id/roulette"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/roulette"
+            android:adjustViewBounds="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+
+        <Button
+            android:id="@+id/button_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="돌리기"
+            android:textSize="24dp"
+            android:onClick="rotate">
+        </Button>
+
+        <ImageView
+            android:id="@+id/rouletteSelected"
+            android:layout_width="127dp"
+            android:layout_height="123dp"
+            android:layout_above="@+id/roulette"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="500dp"
+            android:layout_marginBottom="-59dp"
+            android:src="@drawable/down_arrow">
+
+        </ImageView>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
