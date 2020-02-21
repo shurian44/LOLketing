@@ -18,7 +18,6 @@
         <activity android:name=".ChattingActivity"></activity>
         <activity android:name=".RouletteActivity" />
         <activity android:name=".ChattingListActivity" />
-        <activity android:name=".PurchaseResultActivity"></activity>
         <activity
             android:name=".BoardWriteActivity"
             android:windowSoftInputMode="adjustPan"></activity>
