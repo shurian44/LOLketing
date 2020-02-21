@@ -1,7 +1,6 @@
 package com.ezen.lolketing.adapter;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,10 +57,9 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
                 intent.putExtra("timestamp", board.getTimestamp());
                 intent.putExtra("views", board.getViews());
                 intent.putExtra("image", board.getImage());
-                Log.e("어뎁터", "? " + board.getContent());
                 intent.putExtra("content", board.getContent());
                 intent.putExtra("commentCounts", board.getCommentCounts());
-                //                intent.putExtra("like", board.getLike<String, Boolean>());
+                // intent.putExtra("like", board.getLike<String, Boolean>());
                 intent.putExtra("likeCounts", board.getLikeCounts());
 
                 listener.activityMove(intent);

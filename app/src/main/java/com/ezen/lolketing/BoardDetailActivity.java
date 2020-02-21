@@ -119,11 +119,14 @@ public class BoardDetailActivity extends AppCompatActivity {
         int get_views = intent.getIntExtra("views", 0);
         String get_image = intent.getStringExtra("image");
         String get_content = intent.getStringExtra("content");
-        Log.e("액티비티", "? " + get_content);
+        String get_commentCounts = intent.getStringExtra("commentCounts");
 
         content_title.setText(get_content_title);
         userId.setText(get_userId);
         board_content.setText(get_content);
+//        timestamp.setText(get_timestamp);
+//        views.setText(get_views);
+        Log.e("test", "get_views : " + get_views);
 
         if(get_image == null || get_image.length() < 1){
             board_img.setVisibility(View.GONE);
