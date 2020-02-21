@@ -3,21 +3,15 @@ package com.ezen.lolketing;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,19 +25,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 
 public class PurchaseActivity extends AppCompatActivity {
     TextView textViewCategory, textViewName, textViewCount, textViewPrice, textViewHP,
-            editTextName, editTextAddress;
-    ImageView img_goods;
-    ConstraintLayout container_purchase, container_purchaseInfo;
+            textViewId, textViewAddress;
+    ImageView product_image;
     Button btnChange, btnMoney, btnPay;
     Spinner spinner;
     CheckBox checkBox;
+//    ConstraintLayout container_purchase, container_purchaseInfo;
 
     // 파이어 베이스 인증
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -54,6 +44,8 @@ public class PurchaseActivity extends AppCompatActivity {
 
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
     int cache = 0;
+    String phone;
+    String nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +57,14 @@ public class PurchaseActivity extends AppCompatActivity {
         textViewCount = findViewById(R.id.textViewCount);
         textViewPrice = findViewById(R.id.textViewPrice);
         textViewHP = findViewById(R.id.textViewHP);
-        editTextName = findViewById(R.id.editTextName);
-        editTextAddress = findViewById(R.id.editTextAddress);
-        img_goods = findViewById(R.id.img_goods);
+        textViewId = findViewById(R.id.textViewId);
+        textViewAddress = findViewById(R.id.textViewAddress);
+        product_image = findViewById(R.id.product_image);
         spinner = findViewById(R.id.spinner);
         checkBox = findViewById(R.id.checkBox);
 
-        container_purchase = findViewById(R.id.container_purchase);
-        container_purchaseInfo = findViewById(R.id.container_purchaseInfo);
+//        container_purchase = findViewById(R.id.container_purchase);
+//        container_purchaseInfo = findViewById(R.id.container_purchaseInfo);
 
         // intent로 전달한 데이터 받기
         final Intent intent = getIntent();
@@ -81,13 +73,15 @@ public class PurchaseActivity extends AppCompatActivity {
         final String amount = intent.getStringExtra("amount"); // 수량 받아오기
         final String images = intent.getStringExtra("image");
         final int payment = intent.getIntExtra("payment", 0); // 합계금액 받아오기
-        boolean isRecyler = intent.getBooleanExtra("recycler", false);
 
-        if(isRecyler){
-            container_purchaseInfo.setVisibility(View.GONE);
-            container_purchase.setVisibility(View.GONE);
-
-        }
+//        // 액티비티 재사용을 위한 조건
+//        boolean isRecyler = intent.getBooleanExtra("recycler", false);
+//
+//        // 액티비티 재사용
+//        if(isRecyler){
+//            container_purchaseInfo.setVisibility(View.GONE);
+//            container_purchase.setVisibility(View.GONE);
+//        }
 
         Log.e("PurchaseActivity", "구매상품 종류: " + category);
         Log.e("PurchaseActivity", "이미지: " + images);
@@ -96,7 +90,7 @@ public class PurchaseActivity extends AppCompatActivity {
         Log.e("PurchaseActivity", "결제금액: " + payment);
 
         // 받아온 데이터 셋팅
-        Glide.with(this).load(images).into(img_goods);
+        Glide.with(this).load(images).into(product_image);
         textViewCategory.setText(category);
         textViewName.setText(name);
         textViewCount.setText(amount);
@@ -110,10 +104,12 @@ public class PurchaseActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         users = documentSnapshot.toObject(Users.class);
                         cache = users.getCache();
+                        phone = users.getPhone();
+                        nickname = users.getNickname();
 
-                        editTextName.setText(users.getNickname());
-                        editTextAddress.setText(users.getAddress());
-                        textViewHP.setText(users.getPhone());
+                        textViewId.setText(nickname);
+                        textViewAddress.setText(users.getAddress());
+                        textViewHP.setText(phone);
                     }
                 });
 
@@ -153,12 +149,10 @@ public class PurchaseActivity extends AppCompatActivity {
                 } else {
                     // 약관 동의함
                     Log.e("checkbox", "true");
-
                     if (cache >= payment) {
                         // 캐쉬가 결제금액 이상일 때
-
-                        String address = editTextAddress.getText().toString();
-                        String message = spinner.getSelectedItem().toString();
+                        final String address = textViewAddress.getText().toString();
+                        final String message = spinner.getSelectedItem().toString();
 
                         purchaseDTO.setId(id);
                         purchaseDTO.setImage(images);
@@ -171,7 +165,10 @@ public class PurchaseActivity extends AppCompatActivity {
                         purchaseDTO.setTimestamp(System.currentTimeMillis());
 
                         // DB Users
-                        firestore.collection("Users").document(auth.getCurrentUser().getEmail()).update("cache", FieldValue.increment(-payment));
+                        // update() : 수정
+                        firestore.collection("Users").document(auth.getCurrentUser().getEmail())
+                                .update("cache", FieldValue.increment(-payment)); // increment(paymnet)면 증가한다는 의미임.
+                        Log.e("PurchaseActivity", "현재 가상머니 금액:" + cache);
 
                         // DB Purchase
                         firestore.collection("Purchase").document().set(purchaseDTO)
@@ -181,15 +178,18 @@ public class PurchaseActivity extends AppCompatActivity {
                                 if (task.isComplete()) {
                                     // 결제 성공
                                     Log.e("PurchaseActivity", "결제성공");
-                                    Intent intent = new Intent(getApplicationContext(), PurchaseActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), PurchaseResultActivity.class);
+                                    // 데이터 전달
                                     intent.putExtra("category", category);
                                     intent.putExtra("name", name);
                                     intent.putExtra("image", images);
                                     intent.putExtra("amount", amount);
                                     intent.putExtra("payment", payment);
-                                    intent.putExtra("recycler", true);
-
-                                    startActivity(intent);
+                                    intent.putExtra("message", message);
+                                    intent.putExtra("nickname", nickname);
+                                    intent.putExtra("address", address);
+                                    intent.putExtra("phone", phone);
+                                    startActivity(intent); // 액티비티 이동
                                 } else {
                                     // 결제 실패
                                     Log.e("PurchaseActivity", "결제에 실패했습니다.");
@@ -218,15 +218,15 @@ public class PurchaseActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-
         switch (requestCode) {
             case SEARCH_ADDRESS_ACTIVITY:
                 if (resultCode == RESULT_OK) {
                     String data = intent.getExtras().getString("data");
                     if (data != null) {
-                        editTextAddress.setText(data);
+                        textViewAddress.setText(data);
                     }
                 }
         }
     } // onActivityResult
-}
+
+} // end class
