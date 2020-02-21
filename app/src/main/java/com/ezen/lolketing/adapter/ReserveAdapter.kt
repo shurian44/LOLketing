@@ -14,7 +14,10 @@ import com.ezen.lolketing.ReserveActivity
 import com.ezen.lolketing.model.GameDTO
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.item_reserve_ticket.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : reserveOnClick)
     : FirestoreRecyclerAdapter<GameDTO, ReserveAdapter.ReserveHolder>(options){
@@ -30,9 +33,18 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : re
     override fun onBindViewHolder(holder: ReserveHolder, position: Int, model: GameDTO) {
         val item = holder.itemView
         var teams = model.team?.split(":")
-        Log.e("test", "결과 : $teams")
         setImage(item.left_team, teams!![0])
         setImage(item.right_team, teams!![1])
+
+        var dateFormat = SimpleDateFormat("yyyy.MM.dd")
+        var date = dateFormat.parse(model.date)
+        date.hours = date.hours - 4
+        var mDate = Date()
+
+        if(mDate > date){
+            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
+        }
+
         when(model.status){
             "예약"->{
                 item.reserve_view.setBackgroundColor(Color.parseColor("#11CC88"))
