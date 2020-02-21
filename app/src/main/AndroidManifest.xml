@@ -12,10 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PurchaseResultActivity"></activity>
+        <activity android:name=".PurchaseHistoryActivity"></activity>
+        <activity android:name=".PurchaseResultActivity" />
         <activity
             android:name=".BoardWriteActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".BoardListActivity" />
         <activity android:name=".PurchaseActivity" />
         <activity android:name=".ShopDetailActivity" />

@@ -41,7 +41,8 @@ class MyPageActivity : AppCompatActivity() {
         }
 
         btn_history.setOnClickListener {
-
+            var intent = Intent(this, PurchaseHistoryActivity::class.java)
+            startActivity(intent)
         }
     }
 
