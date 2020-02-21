@@ -64,8 +64,6 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         board_recyclerView.setAdapter(adapter);
 
-
-
         main_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +71,6 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
                 intent.setFlags(intent.FLAG_ACTIVITY_SINGLE_TOP |
                                 intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                intent.putExtra("team", "T1");
                 startActivity(intent);
             }
         });

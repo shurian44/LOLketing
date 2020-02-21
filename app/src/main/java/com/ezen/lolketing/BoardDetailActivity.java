@@ -17,12 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BoardDetailActivity extends AppCompatActivity {
 
-    ImageView main_logo, img_rank, board_img, img_like, img_report;
-    TextView btn_logout, board_title, content_title, userId, views, timestamp, board_content, txt_likeCount;
+    ImageView main_logo, img_rank, board_img, img_like, img_comment, img_report;
+    TextView btn_logout, board_title, content_title, userId, views, timestamp, board_content, txt_likeCount, txt_commentCount;
     RecyclerView recyclerView_comment;
     EditText input_comment;
     Button btn_submit;
@@ -34,6 +40,8 @@ public class BoardDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board_detail);
+
+        firestore.collection("Board").document(getIntent().getStringExtra("documentID")).update("views", FieldValue.increment(1));
 
         setViews();
 
@@ -110,23 +118,41 @@ public class BoardDetailActivity extends AppCompatActivity {
         recyclerView_comment = findViewById(R.id.recyclerView_comment);
         input_comment = findViewById(R.id.input_comment);
         btn_submit = findViewById(R.id.btn_submit);
+        img_comment = findViewById(R.id.img_comment);
+        txt_commentCount = findViewById(R.id.txt_commentCount);
 
         Intent intent = getIntent();
         String get_subject = intent.getStringExtra("subject");
         String get_content_title = intent.getStringExtra("title");
         String get_userId = intent.getStringExtra("userId");
-//        String get_timestamp = intent.getStringExtra("timestamp");
-        int get_views = intent.getIntExtra("views", 0);
         String get_image = intent.getStringExtra("image");
         String get_content = intent.getStringExtra("content");
-        String get_commentCounts = intent.getStringExtra("commentCounts");
+        Long get_timestamp = intent.getLongExtra("timestamp", 0);
+        int get_views = intent.getIntExtra("views", 0);
+        int get_likeCounts = intent.getIntExtra("likeCounts", 0);
+        int get_commentCounts = intent.getIntExtra("commentCounts", 0);
+        Map<String, Boolean> like = (HashMap<String, Boolean>) intent.getSerializableExtra("like");
+        Log.e("test", "나옴? " + like);
 
         content_title.setText(get_content_title);
         userId.setText(get_userId);
         board_content.setText(get_content);
-//        timestamp.setText(get_timestamp);
-//        views.setText(get_views);
-        Log.e("test", "get_views : " + get_views);
+
+        // Long타입 timestamp String타입으로 변경하기
+        Date date = new Date(get_timestamp);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        String timestampToString = format.format(date);
+        timestamp.setText(timestampToString);
+        views.setText("조회수 " + get_views);
+        txt_likeCount.setText(get_likeCounts + "");
+        txt_commentCount.setText(get_commentCounts + "");
+
+
+
+
+
+
+
 
         if(get_image == null || get_image.length() < 1){
             board_img.setVisibility(View.GONE);
