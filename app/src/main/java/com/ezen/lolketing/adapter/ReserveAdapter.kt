@@ -41,9 +41,9 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : re
         date.hours = date.hours - 4
         var mDate = Date()
 
-//        if(mDate > date){
-//            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
-//        }
+        if(mDate > date){
+            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
+        }
 
         when(model.status){
             "예약"->{
@@ -86,18 +86,17 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : re
             listener.reserveClick(intent)
         }
     }
-
     fun setImage(image : ImageView, team : String? = ""){
         when(team){
             "T1"-> image.setImageResource(R.drawable.logo_t1)
-            "GRIFFIN"-> image.setImageResource(R.drawable.icon_griffin)
-            "DAMWON Gamming"-> image.setImageResource(R.drawable.icon_damwon)
-            "SANDBOX Gamming"-> image.setImageResource(R.drawable.icon_sandbox)
+            "Griffin"-> image.setImageResource(R.drawable.logo_damwon)
+            "DAMWON Gaming"-> image.setImageResource(R.drawable.icon_damwon)
+            "SANDBOX Gaming"-> image.setImageResource(R.drawable.icon_sandbox)
             "Afreeca Freecs"-> image.setImageResource(R.drawable.icon_afreeca)
             "Gen.G Esports"-> image.setImageResource(R.drawable.icon_geng)
             "DragonX"-> image.setImageResource(R.drawable.icon_dragonx)
-            "kt Rolster"-> image.setImageResource(R.drawable.icon_rolster)
-            "APK Prince"-> image.setImageResource(R.drawable.icon_apk_prince)
+            "KT Rolster"-> image.setImageResource(R.drawable.icon_rolster)
+            "APK PRINCE"-> image.setImageResource(R.drawable.icon_apk_prince)
             "Hanwha Life Esports"-> image.setImageResource(R.drawable.icon_hanwha)
         }
     }

@@ -1,5 +1,6 @@
 package com.ezen.lolketing
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -56,7 +57,6 @@ class CacheChargingActivity : AppCompatActivity() {
         }
     }
 
-    fun logout(view: View?) {}
     fun plusCache(view: View) {
         when(view.id){
             R.id.btn_cache1 -> cache += 100
@@ -68,5 +68,18 @@ class CacheChargingActivity : AppCompatActivity() {
             cache = 2000000000
         }
         txt_Cache.text = "${format.format(cache)} 원"
+    }
+
+    fun logout(view: View) {
+        auth.signOut()
+        var intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    fun moveHome(view: View) {
+        var intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
     }
 }

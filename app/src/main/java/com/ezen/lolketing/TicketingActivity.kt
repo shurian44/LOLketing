@@ -146,7 +146,12 @@ class TicketingActivity : AppCompatActivity() {
         return bmp
     }
 
-    fun logout(view: View) {}
+    fun logout(view: View) {
+        auth.signOut()
+        var intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if(event?.action == KeyEvent.ACTION_DOWN){
@@ -159,5 +164,11 @@ class TicketingActivity : AppCompatActivity() {
             }
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    fun moveHome(view: View) {
+        var intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
     }
 }

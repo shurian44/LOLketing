@@ -1,5 +1,6 @@
 package com.ezen.lolketing
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -103,7 +104,12 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
 
     }
 
-    fun logout(view: View) {}
+    fun logout(view: View) {
+        auth.signOut()
+        var intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -119,5 +125,11 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
 
     override fun moveScroll() {
         chatting_recycler.scrollToPosition(adapter.itemCount-1)
+    }
+
+    fun moveHome(view: View) {
+        var intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
     }
 }

@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 class ChattingAdapter(options : FirebaseRecyclerOptions<ChattingDTO.Comment>, listener : moveScrollListener) :
         FirebaseRecyclerAdapter<ChattingDTO.Comment, ChattingAdapter.ChattingHolder>(options){
 
-    var format = SimpleDateFormat("HH:mm")
+//    var format = SimpleDateFormat("HH:mm")
     var listener = listener
 
     class ChattingHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +45,7 @@ public class PurchaseActivity extends AppCompatActivity {
     Users users = new Users();
 
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
+    private String id;
     int cache = 0;
     String phone;
     String nickname;
@@ -97,21 +100,7 @@ public class PurchaseActivity extends AppCompatActivity {
         textViewPrice.setText(payment + "원");
 
         // DB에서 데이터 가져오기
-        final String id = auth.getCurrentUser().getEmail();
-        firestore.collection("Users").document(id).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        users = documentSnapshot.toObject(Users.class);
-                        cache = users.getCache();
-                        phone = users.getPhone();
-                        nickname = users.getNickname();
-
-                        textViewId.setText(nickname);
-                        textViewAddress.setText(users.getAddress());
-                        textViewHP.setText(phone);
-                    }
-                });
+        id = auth.getCurrentUser().getEmail();
 
         // 버튼 이벤트 처리
         // 주소 변경
@@ -200,19 +189,53 @@ public class PurchaseActivity extends AppCompatActivity {
                             }
                         });
                     } else if (cache < payment) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PurchaseActivity.this);
+                        builder.setTitle("잔액이 부족합니다.");
+                        builder.setMessage("캐시를 충전하시겠습니까?");
+                        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(getApplication(), CacheChargingActivity.class));
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builder.show();
                         // 캐쉬가 결제금액보다 적을 때
                         Toast.makeText(PurchaseActivity.this,
                                 "잔액이 부족합니다.", Toast.LENGTH_SHORT).show();
                         Log.e("PurchaseActivity", "잔액부족으로 결제할 수 없다.");
-                        return;
                     }
                 }
             }
         });
     } // onCreate()
 
-    public void logout(View view) {
-    } // logout()
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firestore.collection("Users").document(id).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        users = documentSnapshot.toObject(Users.class);
+                        cache = users.getCache();
+                        phone = users.getPhone();
+                        nickname = users.getNickname();
+
+                        textViewId.setText(nickname);
+                        textViewAddress.setText(users.getAddress());
+                        textViewHP.setText(phone);
+                    }
+                });
+    }
 
     // DaumWebView 관련 자동완성되는 코드
     @Override
@@ -229,4 +252,13 @@ public class PurchaseActivity extends AppCompatActivity {
         }
     } // onActivityResult
 
+    public void logout(View view) {
+        auth.signOut();
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 } // end class

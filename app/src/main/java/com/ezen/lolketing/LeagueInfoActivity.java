@@ -15,6 +15,7 @@ import com.ezen.lolketing.fragment.OutlineFragment;
 import com.ezen.lolketing.fragment.PrizeFragment;
 import com.ezen.lolketing.fragment.ProgressFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LeagueInfoActivity extends AppCompatActivity {
 
@@ -23,6 +24,7 @@ public class LeagueInfoActivity extends AppCompatActivity {
     private TabLayout tabs;
     private ViewPager viewPager;
     private LeagueInfoAdapter leagueInfoAdapter;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     OutlineFragment outlineFragment;
     ProgressFragment progressFragment;
@@ -87,5 +89,12 @@ public class LeagueInfoActivity extends AppCompatActivity {
 
 
     public void logout(View view) {
+        auth.signOut();
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 } // class

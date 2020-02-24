@@ -53,7 +53,6 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_searchButton = findViewById(R.id.board_searchButton);
         board_searchBar = findViewById(R.id.board_searchBar);
         board_recyclerView = findViewById(R.id.board_recyclerView);
-        main_tab = findViewById(R.id.main_tab);
 
         query = firestore.collection("Board").orderBy("timestamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<BoardDTO> options = new FirestoreRecyclerOptions.Builder<BoardDTO>()
@@ -113,15 +112,6 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             }
         });
 
-
-
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
-
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,14 +124,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             }
         });
     }
-    private void logout() {
-        auth.signOut();
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(intent.FLAG_ACTIVITY_SINGLE_TOP |
-                        intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        startActivity(intent);
-    } // logout
+
 
     @Override
     public void activityMove(Intent intent) {
@@ -158,5 +141,15 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
     protected void onStop(){
         super.onStop();
         adapter.stopListening();
+    }
+
+    public void logout(View view) {
+        auth.signOut();
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 } // class

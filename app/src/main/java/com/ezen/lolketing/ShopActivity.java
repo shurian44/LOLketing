@@ -19,6 +19,7 @@ import com.ezen.lolketing.fragment.ShopFragment2;
 import com.ezen.lolketing.fragment.ShopFragment3;
 import com.ezen.lolketing.model.ShopDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.rd.PageIndicatorView;
@@ -30,7 +31,7 @@ public class ShopActivity extends AppCompatActivity implements ShopAdapter.MoveA
     private ShopAdapter adapter;
     private RecyclerView shop_recyclerView;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private ViewPager shop_pager;
     private PageIndicatorView pageIndicatorView;
 
@@ -89,8 +90,6 @@ public class ShopActivity extends AppCompatActivity implements ShopAdapter.MoveA
         shop_recyclerView.setAdapter(adapter);
     }
 
-    public void logout(View view) {
-    }
 
     @Override
     protected void onStart() {
@@ -110,6 +109,16 @@ public class ShopActivity extends AppCompatActivity implements ShopAdapter.MoveA
 
     @Override
     public void MoveActivity(Intent intent) {
+        startActivity(intent);
+    }
+
+    public void logout(View view) {
+        auth.signOut();
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 

@@ -19,6 +19,7 @@ import com.ezen.lolketing.model.GameDTO;
 import com.ezen.lolketing.model.ShopDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -35,6 +36,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private String amount;
     private int price;
     private int payment;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
 //    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
@@ -125,5 +127,12 @@ public class ShopDetailActivity extends AppCompatActivity {
     }
 
     public void logout(View view) {
+        auth.signOut();
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

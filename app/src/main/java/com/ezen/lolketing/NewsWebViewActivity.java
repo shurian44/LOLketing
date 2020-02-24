@@ -1,15 +1,20 @@
 package com.ezen.lolketing;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class NewsWebViewActivity extends AppCompatActivity {
     private WebView webView;
     private WebSettings webSettings;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,5 +41,15 @@ public class NewsWebViewActivity extends AppCompatActivity {
 
         webView.loadUrl(url);
 
+    }
+
+    public void logout(View view) {
+        auth.signOut();
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

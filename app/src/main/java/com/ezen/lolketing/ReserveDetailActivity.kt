@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_reserve_detail.*
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.toast
 import java.text.DecimalFormat
 
@@ -52,11 +53,6 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
             seatDialog.createDialog()
         }
 
-        firestore.collection("Users").document(auth.currentUser?.email!!).get().addOnCompleteListener {
-            var user = it.result?.toObject(Users::class.java)!!
-            myCache = user.cache!!
-        }
-
         reserve_button.setOnClickListener {
             if(reserve_select.text == "좌석을 선택해주세요") {
                 toast("좌석을 선택해주세요")
@@ -64,9 +60,16 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
             }
 
             pay = if(radio1.isChecked) price
-                           else price * 2
+            else price * 2
             if(myCache < pay){
-                toast("잔액이 부족합니다.\n캐시를 충전해주세요")
+                alert(title = "잔액이 부족합니다.", message = "캐시를 충전하시겠습니까?"){
+                    positiveButton("확인"){
+                        startActivity(Intent(applicationContext, CacheChargingActivity::class.java))
+                    }
+                    negativeButton("취소"){
+
+                    }
+                }.show()
                 return@setOnClickListener
             }
 
@@ -96,7 +99,7 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
                     if(task.isComplete){
                         firestore.collection("Users").document(auth.currentUser?.email!!).update("cache", FieldValue.increment(-pay.toDouble()))
                         var ticket = if(radio1.isChecked) 1
-                                         else 2
+                        else 2
                         var intent = Intent(this, TicketingActivity::class.java)
                         //2020.02.15_T1:DAMWON_A1a
                         intent.putExtra("time", time)
@@ -110,11 +113,32 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
                     }
                 }
             }
+
         }
     }
 
-    fun logout(view: View?) {}
+    override fun onStart() {
+        super.onStart()
+        firestore.collection("Users").document(auth.currentUser?.email!!).get().addOnCompleteListener {
+            var user = it.result?.toObject(Users::class.java)!!
+            myCache = user.cache!!
+        }
+    }
+
     override fun selectSeat(seat: String) {
         reserve_select.text = seat
+    }
+
+    fun logout(view: View) {
+        auth.signOut()
+        var intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    fun moveHome(view: View) {
+        var intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
     }
 }

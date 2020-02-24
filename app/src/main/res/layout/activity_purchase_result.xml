@@ -11,7 +11,7 @@
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/main_tab"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,6 +52,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="6dp"
                 android:src="@drawable/logo_small"
+                android:onClick="moveHome"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -306,38 +307,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/main_tab"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:theme="@style/TapTheme"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="홈" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="메뉴" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="즐겨찾기" />
-
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_myPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="마이페이지" />
-
-    </com.google.android.material.tabs.TabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
