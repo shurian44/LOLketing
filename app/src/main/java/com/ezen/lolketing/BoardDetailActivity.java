@@ -12,13 +12,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.ezen.lolketing.adapter.CommentAdapter;
+import com.ezen.lolketing.model.BoardDTO;
+import com.ezen.lolketing.model.Users;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -113,9 +124,9 @@ public class BoardDetailActivity extends AppCompatActivity {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(input_comment.length() < 1 || input_comment == null) {
+                if (input_comment.length() < 1 || input_comment == null) {
                     Toast.makeText(BoardDetailActivity.this, "댓글 내용이 없습니다.", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     setFirestore();
                     // 댓글 남길 때 댓글 수 증가
                     firestore.collection("Board").document(getIntent().getStringExtra("documentID")).update("commentCounts", FieldValue.increment(1));
@@ -137,7 +148,7 @@ public class BoardDetailActivity extends AppCompatActivity {
                 firestore.collection("Board").document(documentID).collection("Comment").document().set(commentDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isComplete()){
+                        if (task.isComplete()) {
                             Toast.makeText(getApplicationContext(), "댓글이 작성 되었습니다.", Toast.LENGTH_SHORT).show();
                             input_comment.setText(null);
                         }
@@ -147,7 +158,7 @@ public class BoardDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void setViews(){
+    public void setViews() {
         main_logo = findViewById(R.id.main_logo);
         img_rank = findViewById(R.id.img_rank);
         board_img = findViewById(R.id.board_img);
@@ -197,10 +208,10 @@ public class BoardDetailActivity extends AppCompatActivity {
         txt_likeCount.setText(get_likeCounts + "");
         txt_commentCount.setText(get_commentCounts + "");
 
-        if(get_image == null || get_image.length() < 1){
+        if (get_image == null || get_image.length() < 1) {
             board_img.setVisibility(View.GONE);
             view2.setVisibility(View.GONE);
-        }else{
+        } else {
             Glide.with(this).load(get_image).into(board_img);
         }
     }
@@ -213,6 +224,8 @@ public class BoardDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -224,3 +237,5 @@ public class BoardDetailActivity extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
     }
+}
+

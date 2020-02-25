@@ -52,7 +52,6 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_searchButton = findViewById(R.id.board_searchButton);
         board_searchBar = findViewById(R.id.board_searchBar);
         board_recyclerView = findViewById(R.id.board_recyclerView);
-        main_tab = findViewById(R.id.main_tab);
         board_searchBy = findViewById(R.id.board_searchBy);
 
         query = firestore.collection("Board").orderBy("timestamp", Query.Direction.DESCENDING);
@@ -157,16 +156,6 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         });
         popup.show();
     }
-
-    // 로그아웃
-    public void logout(View view) {
-        auth.signOut();
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(intent.FLAG_ACTIVITY_SINGLE_TOP |
-                        intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        startActivity(intent);
-    } // logout
 
     @Override
     public void activityMove(Intent intent) {
