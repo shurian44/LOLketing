@@ -34,7 +34,10 @@ class MainActivity : AppCompatActivity() {
         var intent = Intent(this, BoardListActivity::class.java)
         when(view.id){
             R.id.btn_notice-> intent.putExtra("team", "notice")
-            R.id.btn_event-> intent = Intent(this, RouletteActivity::class.java)
+            R.id.btn_event-> {
+                intent = Intent(this, EventDetailActivity::class.java)
+                intent.putExtra("status", 0)
+            }
             R.id.btn_myPage-> intent = Intent(this, MyPageActivity::class.java)
             R.id.btn_info-> intent = Intent(this, LeagueInfoActivity::class.java)
             R.id.btn_reserve-> intent = Intent(this, ReserveListActivity::class.java)
@@ -54,10 +57,6 @@ class MainActivity : AppCompatActivity() {
             R.id.icon_hanhwa-> intent.putExtra("team", "Hanwha Life Esports")
         }
         startActivity(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun checkDetailJoin(){

@@ -65,7 +65,7 @@ class JoinActivity : AppCompatActivity() {
                 val id = join_id.text.toString()
                 Log.e("test", "값 : ${android.util.Patterns.EMAIL_ADDRESS.matcher(id).matches()}")
                 if (!android.util.Patterns.EMAIL_ADDRESS.matcher(id).matches()){
-                    join_id.error = "아이디 조건이 일치하지 않습니다."
+                    join_id.error = "이메일 형식의 아이디를 입력해주세요."
                     checkId = false
                 }
                 else checkId = true
@@ -78,7 +78,7 @@ class JoinActivity : AppCompatActivity() {
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 val pattern = "\\w+"
                 val pw: String = join_pw.text.toString()
-                if (Pattern.matches(pattern, pw)) join_pw.error = "비밀번호 조건이 일치하지 않습니다.\n영문 또는 숫자와 특수문자 필수\n"
+                if (Pattern.matches(pattern, pw)) join_pw.error = "영문 또는 숫자와 특수문자 필수\n"
                 if(pw.length !in 6..20) join_pw.error = "비밀번호는 6~20로 생성해주세요"
             }
             override fun afterTextChanged(editable: Editable) {}

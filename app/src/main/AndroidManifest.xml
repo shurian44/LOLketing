@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoLGuideDetailActivity"></activity>
+        <activity android:name=".EventDetailActivity"></activity>
+        <activity android:name=".LoLGuideDetailActivity" />
         <activity android:name=".LoLGuideActivity" />
         <activity
             android:name=".ChattingActivity"
