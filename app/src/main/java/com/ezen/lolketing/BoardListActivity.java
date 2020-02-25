@@ -3,12 +3,14 @@ package com.ezen.lolketing;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,14 +24,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import org.angmarch.views.NiceSpinner;
-
 public class BoardListActivity extends AppCompatActivity implements BoardAdapter.setActivityMove{
 
     ImageView main_logo, board_image;
-    TextView btn_logout, board_title;
+    TextView btn_logout, board_title, board_searchBy;
     Button btn_write, board_searchButton;
-    NiceSpinner board_spinner;
     EditText board_searchBar;
     RecyclerView board_recyclerView;
     TabLayout main_tab;
@@ -53,15 +52,10 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_searchButton = findViewById(R.id.board_searchButton);
         board_searchBar = findViewById(R.id.board_searchBar);
         board_recyclerView = findViewById(R.id.board_recyclerView);
+        board_searchBy = findViewById(R.id.board_searchBy);
 
         query = firestore.collection("Board").orderBy("timestamp", Query.Direction.DESCENDING);
-        FirestoreRecyclerOptions<BoardDTO> options = new FirestoreRecyclerOptions.Builder<BoardDTO>()
-                .setQuery(query, BoardDTO.class)
-                .build();
-
-        adapter = new BoardAdapter(options, this);
-        board_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-        board_recyclerView.setAdapter(adapter);
+        setRecycler(query);
 
         main_logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,41 +71,8 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_title.setText("팀 게시판 - " + getIntent().getStringExtra("team"));
 
 //        String[] search_conditions = getResources().getStringArray(R.array.search_conditions);
-//
-        board_spinner = findViewById(R.id.board_spinner);
-//
-//        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(
-//                this,
-//                R.layout.activity_board_list,
-//                search_conditions);
-//
-//        board_spinner.setAdapter(spinnerAdapter);
 
-        board_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch(position){
-                    case 0:
-                        Log.e("test", "0번이 선택 됨.");
-                        break;
-                    case 1:
-                        Log.e("test", "1번이 선택 됨.");
-                        break;
-                    case 2:
-                        Log.e("test", "2번이 선택 됨.");
-                        break;
-                    default:
-                        Log.e("test", "잘못 누름.");
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        // 글쓰기 버튼 클릭
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,8 +84,78 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
                 startActivity(intent);
             }
         });
+
+        // 검색 조건 클릭
+        board_searchBy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchBy();
+            }
+        });
+
+        // 검색 버튼 클릭
+        board_searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String search = board_searchBar.getText().toString();
+                if(board_searchBy.getText().toString().equals("제목")){
+                    Log.e("test", "제목");
+                    query = firestore.collection("Board").orderBy("title").startAt(search).endAt(search+"\uf8ff");
+                }
+                else if(board_searchBy.getText().toString().equals("작성자")){
+                    Log.e("test", "작성자");
+
+                    query = firestore.collection("Board").orderBy("userId").startAt(search).endAt(search+"\uf8ff");
+                }
+                else if(board_searchBy.getText().toString().equals("내용")){
+                    Log.e("test", "내용");
+                    query = firestore.collection("Board").orderBy("content").startAt(search).endAt(search+"\uf8ff");
+                }
+                adapter.stopListening();
+                setRecycler(query);
+                adapter.startListening();
+            }
+        });
     }
 
+    // 리사이클러뷰 세팅
+    private void setRecycler(Query query) {
+        FirestoreRecyclerOptions<BoardDTO> options = new FirestoreRecyclerOptions.Builder<BoardDTO>()
+                .setQuery(query, BoardDTO.class)
+                .build();
+
+        adapter = new BoardAdapter(options, this);
+        board_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        board_recyclerView.setAdapter(adapter);
+    }
+
+    // 검색조건 드랍다운 메뉴
+    public void searchBy() {
+        //Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(getApplicationContext(), board_searchBy);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.menu_search, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.searchByTitle:
+                        Toast.makeText(getApplicationContext(), "제목으로 검색", Toast.LENGTH_SHORT).show();
+                        board_searchBy.setText("제목");
+                        return true;
+                    case R.id.searchByWriter:
+                        Toast.makeText(getApplicationContext(), "작성자로 검색", Toast.LENGTH_SHORT).show();
+                        board_searchBy.setText("작성자");
+                        return true;
+                    case R.id.searchByContent:
+                        Toast.makeText(getApplicationContext(), "내용으로 검색", Toast.LENGTH_SHORT).show();
+                        board_searchBy.setText("내용");
+                        return true;
+                }
+                return false;
+            }
+        });
+        popup.show();
+    }
 
     @Override
     public void activityMove(Intent intent) {

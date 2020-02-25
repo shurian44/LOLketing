@@ -12,13 +12,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.ezen.lolketing.adapter.CommentAdapter;
+import com.ezen.lolketing.model.BoardDTO;
+import com.ezen.lolketing.model.Users;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,30 +43,40 @@ public class BoardDetailActivity extends AppCompatActivity {
     RecyclerView recyclerView_comment;
     EditText input_comment;
     Button btn_submit;
+    View view1, view2, view3;
+    private String documentID;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+    Query query;
+    CommentAdapter adapter;
+
+    private BoardDTO.commentDTO commentDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board_detail);
 
-        firestore.collection("Board").document(getIntent().getStringExtra("documentID")).update("views", FieldValue.increment(1));
-
         setViews();
+
+        recyclerView_comment = findViewById(R.id.recyclerView_comment);
+
+        query = firestore.collection("Board").document(documentID).collection("Comment").orderBy("timestamp", Query.Direction.DESCENDING);
+        FirestoreRecyclerOptions<BoardDTO.commentDTO> options = new FirestoreRecyclerOptions.Builder<BoardDTO.commentDTO>()
+                .setQuery(query, BoardDTO.commentDTO.class)
+                .build();
+
+        adapter = new CommentAdapter(options, documentID);
+        recyclerView_comment.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView_comment.setAdapter(adapter);
+
+        // 조회수 증가
+        firestore.collection("Board").document(getIntent().getStringExtra("documentID")).update("views", FieldValue.increment(1));
 
         // 라디오버튼 목록
         final String[] title = {"부적절한 홍보게시물", "음란성 또는 청소년에게 부적합한 내용", "명예훼손/사생활 침해 및 저작권침해 등"};
-
-        // 댓글달기 버튼
-        btn_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(BoardDetailActivity.this, "댓글 등록 완료", Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
         // 신고하기 버튼
         img_report.setOnClickListener(new View.OnClickListener() {
@@ -96,12 +117,48 @@ public class BoardDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+            }
+        });
 
+        // 댓글 등록 버튼
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (input_comment.length() < 1 || input_comment == null) {
+                    Toast.makeText(BoardDetailActivity.this, "댓글 내용이 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    setFirestore();
+                    // 댓글 남길 때 댓글 수 증가
+                    firestore.collection("Board").document(getIntent().getStringExtra("documentID")).update("commentCounts", FieldValue.increment(1));
+                }
             }
         });
     }
 
-    public void setViews(){
+    private void setFirestore() {
+        firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Users user = documentSnapshot.toObject(Users.class);
+                commentDTO = new BoardDTO.commentDTO();
+                commentDTO.setUserId(user.getNickname());
+                commentDTO.setTimestamp(System.currentTimeMillis());
+                commentDTO.setComment(input_comment.getText().toString());
+
+                firestore.collection("Board").document(documentID).collection("Comment").document().set(commentDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isComplete()) {
+                            Toast.makeText(getApplicationContext(), "댓글이 작성 되었습니다.", Toast.LENGTH_SHORT).show();
+                            input_comment.setText(null);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void setViews() {
         main_logo = findViewById(R.id.main_logo);
         img_rank = findViewById(R.id.img_rank);
         board_img = findViewById(R.id.board_img);
@@ -120,6 +177,9 @@ public class BoardDetailActivity extends AppCompatActivity {
         btn_submit = findViewById(R.id.btn_submit);
         img_comment = findViewById(R.id.img_comment);
         txt_commentCount = findViewById(R.id.txt_commentCount);
+        view1 = findViewById(R.id.view1);
+        view2 = findViewById(R.id.view2);
+        view3 = findViewById(R.id.view3);
 
         Intent intent = getIntent();
         String get_subject = intent.getStringExtra("subject");
@@ -127,6 +187,7 @@ public class BoardDetailActivity extends AppCompatActivity {
         String get_userId = intent.getStringExtra("userId");
         String get_image = intent.getStringExtra("image");
         String get_content = intent.getStringExtra("content");
+        documentID = intent.getStringExtra("documentID");
         Long get_timestamp = intent.getLongExtra("timestamp", 0);
         int get_views = intent.getIntExtra("views", 0);
         int get_likeCounts = intent.getIntExtra("likeCounts", 0);
@@ -147,16 +208,10 @@ public class BoardDetailActivity extends AppCompatActivity {
         txt_likeCount.setText(get_likeCounts + "");
         txt_commentCount.setText(get_commentCounts + "");
 
-
-
-
-
-
-
-
-        if(get_image == null || get_image.length() < 1){
+        if (get_image == null || get_image.length() < 1) {
             board_img.setVisibility(View.GONE);
-        }else{
+            view2.setVisibility(View.GONE);
+        } else {
             Glide.with(this).load(get_image).into(board_img);
         }
     }
@@ -170,4 +225,17 @@ public class BoardDetailActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        adapter.stopListening();
+    }
 }
+

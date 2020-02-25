@@ -45,7 +45,7 @@ class NewsActivity : AppCompatActivity(), setActivityMove {
                 val newsData = doc.select("ul[class=list]").select("li")
 
                 newsData.forEachIndexed { index, element ->
-                    //실제 네이버 영화 페이지의 html 문서의 소스를 보고 어떤 데이터가 어떤 태그를 사용하고 있는지 분석해야 한다.
+                    //실제 페이지의 html 문서의 소스를 보고 어떤 데이터가 어떤 태그를 사용하고 있는지 분석해야 한다.
                     val newsTitle = element.select("span[class=title]").text()
                     val thumbnail = element.select("span[class=thumb] img").attr("src")
                     val info = element.select("span[class=info]").text()

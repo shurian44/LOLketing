@@ -275,7 +275,6 @@ public class BoardWriteActivity extends AppCompatActivity {
                     finish();
                     return ;
                 }
-
                 for (int i=0; i<grantResults.length; i++) {
                     if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "Permission is denied : " + permissions[i], Toast.LENGTH_SHORT).show();
@@ -283,7 +282,6 @@ public class BoardWriteActivity extends AppCompatActivity {
                         return ;
                     }
                 }
-
                 Toast.makeText(this, "Permission is granted", Toast.LENGTH_SHORT).show();
                 // Initialize 코드
             }

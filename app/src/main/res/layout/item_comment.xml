@@ -1,41 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/img_grade"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-
     <TextView
-        android:id="@+id/text_name"
+        android:id="@+id/textView_userId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        style="@style/TextAppearance.AppCompat.Headline"
         android:text="name"
+        android:textSize="16sp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/img_grade"/>
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
     <TextView
-
-        android:id="@+id/text_write"
-        android:layout_marginLeft="15dp"
+        android:id="@+id/textView_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.AppCompat.Headline"
-        android:text="write"
-        app:layout_constraintLeft_toRightOf="@id/text_name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_marginLeft="15dp"
+        app:layout_constraintTop_toTopOf="@id/textView_userId"
+        app:layout_constraintLeft_toRightOf="@id/textView_userId"
+        app:layout_constraintBottom_toBottomOf="@id/textView_userId"
+        android:text="작성 시간"
+        />
+
+    <ImageView
+        android:id="@+id/imageView_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_more_horiz_black_24dp"
+        app:layout_constraintTop_toTopOf="@id/textView_userId"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/textView_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="댓글입니다."
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="@id/textView_userId"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_userId"
+        android:layout_marginBottom="8dp"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -120,7 +120,7 @@ public class BoardDTO {
         this.views = views;
     }
 
-    class commentDTO {
+    public static class commentDTO {
         private String userId;
         private Long timestamp;
         private String comment;
