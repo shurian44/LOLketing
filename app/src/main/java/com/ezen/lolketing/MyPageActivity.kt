@@ -11,18 +11,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_my_page.*
-import kotlinx.android.synthetic.main.activity_my_page.main_tab
 
 class MyPageActivity : AppCompatActivity() {
     private var firestore = FirebaseFirestore.getInstance()
     private var auth = FirebaseAuth.getInstance()
     private lateinit var id : String
     private lateinit var grade : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_page)
 
-        main_tab.setScrollPosition(3, 0f, true)
         id = auth.currentUser?.email!!
 
         firestore.collection("Coupon").whereEqualTo("id", id).get().addOnCompleteListener {
@@ -86,20 +85,16 @@ class MyPageActivity : AppCompatActivity() {
         }
     }
 
-    fun setTabListener(){
-        main_tab.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-
-            }
-
-        })
+    fun logout(view: View) {
+        auth.signOut()
+        var intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
     }
 
-    fun logout(view: View?) {}
+    fun moveHome(view: View) {
+        var intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
 }

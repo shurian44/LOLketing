@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.toast
 
 class LoginActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 1000
@@ -40,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
     private fun moveMain(){
         var intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     // 유저 회원가입
@@ -50,6 +52,10 @@ class LoginActivity : AppCompatActivity() {
 
     // 이메일 로그인
     fun emailLogin(view: View) {
+        if(login_id.text.toString().isEmpty() || login_pw.text.toString().isEmpty()){
+           toast("아이디 또는 패스워드를 입력해주세요")
+            return
+        }
         auth.signInWithEmailAndPassword(login_id.text.toString(), login_pw.text.toString()).addOnCompleteListener {
             if(it.isSuccessful){
                 moveMain()

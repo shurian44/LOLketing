@@ -12,24 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.ezen.lolketing.adapter.CommentAdapter;
-import com.ezen.lolketing.model.BoardDTO;
-import com.ezen.lolketing.model.Users;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,19 +81,23 @@ public class BoardDetailActivity extends AppCompatActivity {
 
                     }
                 });
+
                 pc.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
+
                 pc.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+
                     }
                 });
                 pc.show();
+
             }
         });
 
@@ -214,18 +207,12 @@ public class BoardDetailActivity extends AppCompatActivity {
 
     public void logout(View view) {
         auth.signOut();
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(intent.FLAG_ACTIVITY_SINGLE_TOP |
-                intent.FLAG_ACTIVITY_CLEAR_TOP |
-                intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-    } // logout
-
-//    @Override
-//    public void activityMove(Intent intent) {
-//        startActivity(intent);
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -237,5 +224,3 @@ public class BoardDetailActivity extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
     }
-
-} // class BoardDetailActivity

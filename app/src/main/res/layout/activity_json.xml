@@ -7,12 +7,40 @@
 
     tools:context=".JsonActivity">
 
+    <Button
+        android:id="@+id/btn_addTeam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="팀 정보 수정"
+        android:onClick="addTeam"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_addGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="경기 정보 수정"
+        android:onClick="addGame"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_addTeam"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="상품추가"
+        android:onClick="addShop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_addGame"/>
+
     <TextView
         android:id="@+id/textViewAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="text"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>

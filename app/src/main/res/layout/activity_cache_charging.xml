@@ -14,6 +14,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="6dp"
         android:src="@drawable/logo_small"
+        android:onClick="moveHome"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -108,6 +109,7 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:textSize="35sp"
+        android:text="0 원"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_cache1"
@@ -145,7 +147,7 @@
         android:id="@+id/btn_addCache"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
         android:text="충전하기"
         android:textColor="#fff"
         android:textStyle="bold"
@@ -153,36 +155,6 @@
         android:background="@color/colorPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/main_tab"/>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/main_tab"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:theme="@style/TapTheme"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="홈" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="메뉴" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="즐겨찾기" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="마이페이지" />
-
-    </com.google.android.material.tabs.TabLayout>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

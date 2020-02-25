@@ -12,9 +12,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class PurchaseResultActivity extends AppCompatActivity {
 
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     TextView spinnerMessage, textViewHP, textViewId, textViewAddress, textViewPrice,
             textViewCount, textViewName, textViewCategory;
     ImageView product_image;
@@ -82,5 +84,12 @@ public class PurchaseResultActivity extends AppCompatActivity {
     } // onCreate()
 
     public void logout(View view) {
+        auth.signOut();
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 } // end class

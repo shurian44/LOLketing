@@ -184,4 +184,14 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         super.onStop();
         adapter.stopListening();
     }
+
+    public void logout(View view) {
+        auth.signOut();
+    }
+
+    public void moveHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 } // class

@@ -2,6 +2,7 @@ package com.ezen.lolketing
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,7 @@ import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 
 class NewsActivity : AppCompatActivity(), setActivityMove {
-    var auth = FirebaseAuth.getInstance()
+    private var auth = FirebaseAuth.getInstance()
     var adapter = NewsAdapter(this)
     var queue: RequestQueue? = null
 
@@ -34,7 +35,7 @@ class NewsActivity : AppCompatActivity(), setActivityMove {
     }
 
     private fun getNews() {
-         var data : MutableList<NewsDTO> = mutableListOf()
+        var data : MutableList<NewsDTO> = mutableListOf()
         doAsync {
             val url = "http://m.inven.co.kr/webzine/wznews.php?site=lol"
             try {
@@ -73,6 +74,12 @@ class NewsActivity : AppCompatActivity(), setActivityMove {
     }
 
     override fun activityMove(intent: Intent) {
+        startActivity(intent)
+    }
+
+    fun moveHome(view: View) {
+        var intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
 }

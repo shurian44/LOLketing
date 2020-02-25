@@ -31,18 +31,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun moveActivity(view: View) {
-        var intent = Intent(this, TeamActivity::class.java)
+        var intent = Intent(this, BoardListActivity::class.java)
         when(view.id){
-            R.id.btn_notice-> intent = Intent(this, BoardListActivity::class.java)
+            R.id.btn_notice-> intent.putExtra("team", "notice")
             R.id.btn_event-> intent = Intent(this, RouletteActivity::class.java)
             R.id.btn_myPage-> intent = Intent(this, MyPageActivity::class.java)
             R.id.btn_info-> intent = Intent(this, LeagueInfoActivity::class.java)
             R.id.btn_reserve-> intent = Intent(this, ReserveListActivity::class.java)
             R.id.btn_shop-> intent = Intent(this, ShopActivity::class.java)
-            R.id.btn_guid-> intent = Intent(this, MainActivity::class.java)
+            R.id.btn_guid-> intent = Intent(this, LoLGuideActivity::class.java)
             R.id.btn_news-> intent = Intent(this, NewsActivity::class.java)
             R.id.btn_chatting-> intent = Intent(this, ChattingListActivity::class.java)
-            R.id.icon_t1 -> intent = Intent(this, BoardListActivity::class.java)
+            R.id.icon_t1 -> intent.putExtra("team", "T1")
             R.id.icon_griffin -> intent.putExtra("team", "GRIFFIN")
             R.id.icon_damwon -> intent.putExtra("team", "DAMWON Gamming")
             R.id.icon_sendbox -> intent.putExtra("team", "SANDBOX Gamming")
