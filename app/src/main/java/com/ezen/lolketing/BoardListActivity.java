@@ -19,19 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ezen.lolketing.adapter.BoardAdapter;
 import com.ezen.lolketing.model.BoardDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class BoardListActivity extends AppCompatActivity implements BoardAdapter.setActivityMove{
 
-    ImageView main_logo, board_image;
+    ImageView main_logo, board_image, btn_write;
     TextView btn_logout, board_title, board_searchBy;
-    Button btn_write, board_searchButton;
+    Button btn_teamInfo, board_searchButton;
     EditText board_searchBar;
     RecyclerView board_recyclerView;
-    TabLayout main_tab;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -47,8 +45,9 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         main_logo = findViewById(R.id.main_logo);
         board_image = findViewById(R.id.board_image);
         btn_logout = findViewById(R.id.btn_logout);
-        board_title = findViewById(R.id.board_title);
+        btn_teamInfo = findViewById(R.id.btn_teamInfo);
         btn_write = findViewById(R.id.btn_write);
+        board_title = findViewById(R.id.board_title);
         board_searchButton = findViewById(R.id.board_searchButton);
         board_searchBar = findViewById(R.id.board_searchBar);
         board_recyclerView = findViewById(R.id.board_recyclerView);
@@ -71,6 +70,14 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_title.setText("팀 게시판 - " + getIntent().getStringExtra("team"));
 
 //        String[] search_conditions = getResources().getStringArray(R.array.search_conditions);
+
+        // 팀 정보 게시판 버튼 클릭
+        btn_teamInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(BoardListActivity.this, "구단 정보로 이동", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // 글쓰기 버튼 클릭
         btn_write.setOnClickListener(new View.OnClickListener() {
@@ -98,18 +105,22 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             @Override
             public void onClick(View v) {
                 String search = board_searchBar.getText().toString();
+                if(board_searchBy.getText().toString().equals("검색조건")){
+                    Toast.makeText(BoardListActivity.this, "검색조건을 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(board_searchBy.getText().toString().equals("제목")){
                     Log.e("test", "제목");
-                    query = firestore.collection("Board").orderBy("title").startAt(search).endAt(search+"\uf8ff");
+                    query = firestore.collection("Board").orderBy("title").startAt(search).endAt(search + "\uf8ff");
                 }
                 else if(board_searchBy.getText().toString().equals("작성자")){
                     Log.e("test", "작성자");
 
-                    query = firestore.collection("Board").orderBy("userId").startAt(search).endAt(search+"\uf8ff");
+                    query = firestore.collection("Board").orderBy("userId").startAt(search).endAt(search + "\uf8ff");
                 }
                 else if(board_searchBy.getText().toString().equals("내용")){
                     Log.e("test", "내용");
-                    query = firestore.collection("Board").orderBy("content").startAt(search).endAt(search+"\uf8ff");
+                    query = firestore.collection("Board").orderBy("content").startAt(search).endAt(search + "\uf8ff");
                 }
                 adapter.stopListening();
                 setRecycler(query);
@@ -176,6 +187,9 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
 
     public void logout(View view) {
         auth.signOut();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     public void moveHome(View view) {

@@ -81,10 +81,10 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.modify:
-                                Toast.makeText(holder.itemView.getContext(),"댓글 수정", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(holder.itemView.getContext(),"글 수정", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.delete:
-                                Toast.makeText(holder.itemView.getContext(),"댓글 삭제", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(holder.itemView.getContext(),"글 삭제", Toast.LENGTH_SHORT).show();
                                 CommentDelete(holder.itemView.getContext(), holder.getAdapterPosition());
                                 return true;
                         }
