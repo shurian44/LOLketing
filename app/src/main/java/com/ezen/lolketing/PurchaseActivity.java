@@ -79,9 +79,8 @@ public class PurchaseActivity extends AppCompatActivity {
 
 //        // 액티비티 재사용을 위한 조건
 //        boolean isRecyler = intent.getBooleanExtra("recycler", false);
-//
 //        // 액티비티 재사용
-//        if(isRecyler){
+//        if(isRecyler) {
 //            container_purchaseInfo.setVisibility(View.GONE);
 //            container_purchase.setVisibility(View.GONE);
 //        }
@@ -111,6 +110,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 Log.e("PurchaseActivity", "주소 변경 버튼 클릭됨");
                 Intent i = new Intent(getApplicationContext(), DaumWebViewActivity.class);
                 startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
+                // 주소를 못받아온다. 뭐지?
             }
         });
 
@@ -142,7 +142,7 @@ public class PurchaseActivity extends AppCompatActivity {
                         // 캐쉬가 결제금액 이상일 때
                         final String address = textViewAddress.getText().toString();
                         final String message = spinner.getSelectedItem().toString();
-
+                        // 셋팅
                         purchaseDTO.setId(id);
                         purchaseDTO.setImage(images);
                         purchaseDTO.setGroup(category);
@@ -152,13 +152,11 @@ public class PurchaseActivity extends AppCompatActivity {
                         purchaseDTO.setAddress(address);
                         purchaseDTO.setMessage(message);
                         purchaseDTO.setTimestamp(System.currentTimeMillis());
-
                         // DB Users
                         // update() : 수정
                         firestore.collection("Users").document(auth.getCurrentUser().getEmail())
                                 .update("cache", FieldValue.increment(-payment)); // increment(paymnet)면 증가한다는 의미임.
                         Log.e("PurchaseActivity", "현재 가상머니 금액:" + cache);
-
                         // DB Purchase
                         firestore.collection("Purchase").document().set(purchaseDTO)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -189,7 +187,6 @@ public class PurchaseActivity extends AppCompatActivity {
                             }
                         });
                     } else if (cache < payment) {
-
                         AlertDialog.Builder builder = new AlertDialog.Builder(PurchaseActivity.this);
                         builder.setTitle("잔액이 부족합니다.");
                         builder.setMessage("캐시를 충전하시겠습니까?");
@@ -216,11 +213,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 }
             }
         });
-    } // onCreate()
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         firestore.collection("Users").document(id).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -229,12 +222,18 @@ public class PurchaseActivity extends AppCompatActivity {
                         cache = users.getCache();
                         phone = users.getPhone();
                         nickname = users.getNickname();
-
                         textViewId.setText(nickname);
                         textViewAddress.setText(users.getAddress());
                         textViewHP.setText(phone);
                     }
                 });
+    } // onCreate()
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // onCreate() 보다 속도가 빠르고 액티비티로 돌아오거나 새로 올 때마다 다시 시작하기때문에
+        // 덮어쓸 경우가 있다.
     }
 
     // DaumWebView 관련 자동완성되는 코드
