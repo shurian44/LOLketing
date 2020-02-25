@@ -10,7 +10,7 @@ import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
 import kotlinx.android.synthetic.main.activity_lol_guide_detail.*
 
-class LoLGuideDetailActivity : AppCompatActivity() {
+class LoLGuideDetailActivity : AppCompatActivity(), SliderAdapter.MoveActivityListener {
 
     private var auth = FirebaseAuth.getInstance()
     lateinit var status : String
@@ -76,7 +76,7 @@ class LoLGuideDetailActivity : AppCompatActivity() {
                 var images = listOf<Int>(R.drawable.img_terms01, R.drawable.img_terms02, R.drawable.img_terms03, R.drawable.img_terms04,
                         R.drawable.img_terms05, R.drawable.img_terms06, R.drawable.img_terms07, R.drawable.img_terms08, R.drawable.img_terms09,
                         R.drawable.img_terms10, R.drawable.img_terms11, R.drawable.img_terms12, R.drawable.img_terms13, R.drawable.img_terms14)
-                imageSlider.setSliderAdapter(SliderAdapter(this, images))
+                imageSlider.setSliderAdapter(SliderAdapter(this, this, images, null))
 //                imageSlider.startAutoCycle()
                 imageSlider.setIndicatorAnimation(IndicatorAnimations.WORM)
                 imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
@@ -96,4 +96,6 @@ class LoLGuideDetailActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
+
+    override fun moveActivity(intent: Intent) {}
 }
