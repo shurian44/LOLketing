@@ -1,10 +1,16 @@
 package com.ezen.lolketing.adapter;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,13 +23,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapter.BoardHolder> {
-    private List<BoardDTO> mDataset;
 
     setActivityMove listener;
-
 
     public BoardAdapter(@NonNull FirestoreRecyclerOptions<BoardDTO> options, setActivityMove listener) {
         super(options);
@@ -65,7 +68,58 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
             }
         });
 
+        // 게시글 길게 클릭 -> 수정, 삭제 선택 드랍메뉴
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(holder.itemView.getContext(), board.getTitle() + " 글을 길게 누르셨군요~", Toast.LENGTH_SHORT).show();
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(holder.itemView.getContext(), holder.itemView);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.menu_board, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.modify:
+                                Toast.makeText(holder.itemView.getContext(),"댓글 수정", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.delete:
+                                Toast.makeText(holder.itemView.getContext(),"댓글 삭제", Toast.LENGTH_SHORT).show();
+                                CommentDelete(holder.itemView.getContext(), holder.getAdapterPosition());
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+                return true;
+            }
+        });
     } // onBindViewHolder
+
+    public void CommentDelete(final Context context, final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle("글 삭제").setMessage("정말 삭제하시겠습니까?");
+        builder.setPositiveButton("네", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                getSnapshots().getSnapshot(position).getReference().delete();
+                Toast.makeText(context, "글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+//                notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                Toast.makeText(context, "삭제 취소.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
     @NonNull
     @Override
