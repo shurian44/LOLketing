@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="T1"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/team1_logo"
             app:layout_constraintStart_toEndOf="@+id/team1_logo"
             app:layout_constraintTop_toTopOf="@+id/team1_logo" />
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="DAMWON Gaming"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/team2_logo"
             app:layout_constraintStart_toEndOf="@+id/team2_logo"
             app:layout_constraintTop_toTopOf="@+id/team2_logo" />
@@ -86,7 +86,7 @@
             android:gravity="center"
             android:padding="20dp"
             android:text="05:00\n(오후)"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
