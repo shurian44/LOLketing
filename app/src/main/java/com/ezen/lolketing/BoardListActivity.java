@@ -75,7 +75,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         btn_teamInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(BoardListActivity.this, "팀 정보 게시판으로 이동", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BoardListActivity.this, "구단 정보로 이동", Toast.LENGTH_SHORT).show();
             }
         });
 
