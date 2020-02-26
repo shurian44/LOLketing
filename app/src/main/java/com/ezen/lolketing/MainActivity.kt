@@ -4,10 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import com.ezen.lolketing.model.Users
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.progressDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +25,57 @@ class MainActivity : AppCompatActivity() {
         main_logo.setOnClickListener {
             startActivity(Intent(this, JsonActivity::class.java))
         }
+
+        btn_board.setOnClickListener {
+
+            var builder = AlertDialog.Builder(this)
+            var view = layoutInflater.inflate(R.layout.dialog_team, null)
+            builder.setView(view)
+            val dialog = builder.show()
+            var intent = Intent(this, BoardListActivity::class.java)
+            view.findViewById<ImageView>(R.id.icon_t1).setOnClickListener {
+                intent.putExtra("team", "T1")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_griffin).setOnClickListener {
+                intent.putExtra("team", "Griffin")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_geng).setOnClickListener {
+                intent.putExtra("team", "Gen.G")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_dragonx).setOnClickListener {
+                intent.putExtra("team", "DragonX")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_freecs).setOnClickListener {
+                intent.putExtra("team", "Afreeca Freecs")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_sandbox).setOnClickListener {
+                intent.putExtra("team", "SANDBOX Gaming")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_damwon).setOnClickListener {
+                intent.putExtra("team", "DAMWON")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_apk).setOnClickListener {
+                intent.putExtra("team", "APK PRINCE")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_rolster).setOnClickListener {
+                intent.putExtra("team", "KT Rolster")
+                startActivity(intent)
+            }
+            view.findViewById<ImageView>(R.id.icon_hanhwa).setOnClickListener {
+                intent.putExtra("team", "Hanwha Life Exports")
+                startActivity(intent)
+            }
+        }
+
+        //progressDialog(title = "제목", message = "잠시만 기다려주세요")
     }
 
     fun logout(view: View) {
@@ -33,11 +88,7 @@ class MainActivity : AppCompatActivity() {
     fun moveActivity(view: View) {
         var intent = Intent(this, BoardListActivity::class.java)
         when(view.id){
-            R.id.btn_notice-> intent.putExtra("team", "notice")
-            R.id.btn_event-> {
-                intent = Intent(this, EventDetailActivity::class.java)
-                intent.putExtra("status", 0)
-            }
+            R.id.btn_event-> intent = Intent(this, EventListActivity::class.java)
             R.id.btn_myPage-> intent = Intent(this, MyPageActivity::class.java)
             R.id.btn_info-> intent = Intent(this, LeagueInfoActivity::class.java)
             R.id.btn_reserve-> intent = Intent(this, ReserveListActivity::class.java)
@@ -45,16 +96,16 @@ class MainActivity : AppCompatActivity() {
             R.id.btn_guid-> intent = Intent(this, LoLGuideActivity::class.java)
             R.id.btn_news-> intent = Intent(this, NewsActivity::class.java)
             R.id.btn_chatting-> intent = Intent(this, ChattingListActivity::class.java)
-            R.id.icon_t1 -> intent.putExtra("team", "T1")
-            R.id.icon_griffin -> intent.putExtra("team", "GRIFFIN")
-            R.id.icon_damwon -> intent.putExtra("team", "DAMWON Gamming")
-            R.id.icon_sendbox -> intent.putExtra("team", "SANDBOX Gamming")
-            R.id.icon_freecs -> intent.putExtra("team", "Afreeca Freecs")
-            R.id.icon_geng -> intent.putExtra("team", "Gen.G Esports")
-            R.id.icon_dragonx -> intent.putExtra("team", "DragonX")
-            R.id.icon_rolster -> intent.putExtra("team", "kt Rolster")
-            R.id.icon_prince -> intent.putExtra("team", "APK Prince")
-            R.id.icon_hanhwa-> intent.putExtra("team", "Hanwha Life Esports")
+//            R.id.icon_t1 -> intent.putExtra("team", "T1")
+//            R.id.icon_griffin -> intent.putExtra("team", "GRIFFIN")
+//            R.id.icon_damwon -> intent.putExtra("team", "DAMWON Gamming")
+//            R.id.icon_sandbox -> intent.putExtra("team", "SANDBOX Gamming")
+//            R.id.icon_freecs -> intent.putExtra("team", "Afreeca Freecs")
+//            R.id.icon_geng -> intent.putExtra("team", "Gen.G Esports")
+//            R.id.icon_dragonx -> intent.putExtra("team", "DragonX")
+//            R.id.icon_rolster -> intent.putExtra("team", "kt Rolster")
+//            R.id.icon_prince -> intent.putExtra("team", "APK Prince")
+//            R.id.icon_hanhwa-> intent.putExtra("team", "Hanwha Life Esports")
         }
         startActivity(intent)
     }
