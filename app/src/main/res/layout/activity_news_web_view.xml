@@ -12,7 +12,8 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="6dp"
-        android:src="@drawable/logo_small"
+        android:scaleType="fitXY"
+        android:src="@drawable/lolketing_logo"
         android:onClick="moveHome"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
@@ -34,6 +35,7 @@
         android:id="@+id/news_webView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

@@ -25,8 +25,9 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="6dp"
-                android:src="@drawable/logo_small"
+                android:src="@drawable/lolketing_logo"
                 android:onClick="moveHome"
+                android:scaleType="fitXY"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -49,7 +50,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@color/colorPrimaryDark"
-                android:padding="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="10dp"
                 android:text="뉴스 게시판"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 android:textSize="18sp"

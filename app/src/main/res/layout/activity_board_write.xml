@@ -13,8 +13,9 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="6dp"
-        android:src="@drawable/logo_small"
+        android:src="@drawable/lolketing_logo"
         android:onClick="moveHome"
+        android:scaleType="fitXY"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -37,13 +38,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryDark"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:text="팀 게시판 - T1"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/main_logo"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_logo" />
 
     <ImageView
         android:id="@+id/board_image"

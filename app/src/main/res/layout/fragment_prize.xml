@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/stroke_outline2"
                 android:backgroundTint="@color/common_google_signin_btn_text_dark_default"
-                android:paddingLeft="16dp"
+                android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="LCK 상금 안내"

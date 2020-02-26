@@ -13,8 +13,9 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="6dp"
-        android:src="@drawable/logo_small"
+        android:src="@drawable/lolketing_logo"
         android:onClick="moveHome"
+        android:scaleType="fitXY"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -35,7 +36,7 @@
         android:id="@+id/img1"
         android:layout_width="0dp"
         android:layout_height="130dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/img_reserve"
         android:scaleType="fitXY"
         app:layout_constraintTop_toBottomOf="@id/main_logo"
