@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.ezen.lolketing.model.CouponDTO
 import com.ezen.lolketing.model.Users
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -62,8 +62,15 @@ class JoinDetailActivity : AppCompatActivity() {
             if(classify != "modify")
                 user.grade = "브론즈"
 
-            firestore.collection("Users").document(email).set(user)
-            finish()
+            firestore.collection("Users").document(email).set(user).addOnCompleteListener {
+                var newUserCoupon = CouponDTO()
+                newUserCoupon.id = email
+                newUserCoupon.title = "신규 가입 쿠폰"
+                newUserCoupon.limit = "2222.01.01"
+                firestore.collection("Coupon").document().set(newUserCoupon).addOnCompleteListener {
+                    finish()
+                }
+            }
         }
     }
 
@@ -78,13 +85,21 @@ class JoinDetailActivity : AppCompatActivity() {
             null
         })
 
+        join_detail_nickname.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
+            for (i in start until end) {
+                if (!Character.isLetterOrDigit(source[i])) {
+                    return@InputFilter ""
+                }
+            }
+            null
+        })
+
         join_detail_nickname.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if(join_detail_nickname.length() !in 2..10) join_detail_nickname.error = "닉네임은 2~10만 가능합니다."
             }
-
         })
 
         join_detail_phone.addTextChangedListener(object : TextWatcher{

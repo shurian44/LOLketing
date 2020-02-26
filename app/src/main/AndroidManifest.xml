@@ -16,7 +16,6 @@
         <activity android:name=".EventListActivity"></activity>
         <activity android:name=".EventDetailActivity" />
         <activity android:name=".ShopEventActivity"></activity>
-        <activity android:name=".EventDetailActivity" />
         <activity android:name=".LoLGuideDetailActivity" />
         <activity android:name=".LoLGuideActivity" />
         <activity

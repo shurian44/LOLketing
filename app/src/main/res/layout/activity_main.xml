@@ -311,7 +311,7 @@
             android:id="@+id/btn_chatting"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/icon_shop"
+            android:src="@drawable/icon_chatting"
             android:onClick="moveActivity"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
@@ -320,7 +320,7 @@
             android:id="@+id/txt_chatting"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:text="샵"
+            android:text="채팅"
             android:textColor="#000"
             android:textAlignment="center"
             android:layout_marginTop="6dp"
