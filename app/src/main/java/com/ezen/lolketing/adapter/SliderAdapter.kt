@@ -11,7 +11,7 @@ import com.ezen.lolketing.model.ShopDTO
 import com.smarteist.autoimageslider.SliderViewAdapter
 import kotlinx.android.synthetic.main.item_slider.view.*
 
-class SliderAdapter(context: Context, listener : SliderAdapter.MoveActivityListener, images : List<Int>, shops : List<ShopDTO>?) : SliderViewAdapter<SliderAdapter.SliderViewHolder>() {
+class SliderAdapter(context: Context, listener : SliderAdapter.MoveActivityListener?, images : List<Int>, shops : List<ShopDTO>?) : SliderViewAdapter<SliderAdapter.SliderViewHolder>() {
     private var listener = listener
     var images = images
     var shops = shops ?: null
@@ -38,7 +38,7 @@ class SliderAdapter(context: Context, listener : SliderAdapter.MoveActivityListe
                 intent.putExtra("name", shops?.get(position)?.name)
                 intent.putExtra("image", shops?.get(position)?.images)
                 intent.putExtra("price", shops?.get(position)?.price)
-                listener.moveActivity(intent)
+                listener!!.moveActivity(intent)
             }
         }
     }
