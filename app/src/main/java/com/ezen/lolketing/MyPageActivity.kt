@@ -26,7 +26,7 @@ class MyPageActivity : AppCompatActivity() {
 
         firestore.collection("Coupon").whereEqualTo("id", id).get().addOnCompleteListener {
             var couponCount = it.result?.size() ?: 0
-            txt_coupon.text = couponCount.toString()
+            txt_coupon.text = "$couponCount 장"
         }
 
         txt_Cache.setOnClickListener {

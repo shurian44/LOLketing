@@ -24,12 +24,13 @@ import java.util.*
 
 class ChattingListActivity : AppCompatActivity() {
 
-    private var database = FirebaseDatabase.getInstance()
     private var firestore = FirebaseFirestore.getInstance()
     private var auth = FirebaseAuth.getInstance()
     private var nickName = ""
     var games = mutableListOf<GameDTO>()
     var dateFormat = SimpleDateFormat("yyyy.MM.dd")
+    lateinit var teamA : String
+    lateinit var teamB : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,24 +76,29 @@ class ChattingListActivity : AppCompatActivity() {
     fun enterChatting(view: View) {
         var time = txt_today.text.toString()
         var selectTeam = ""
+        var intent = Intent(this, ChattingActivity::class.java)
 
         time = time.replace(".", "")
         when(view.id){
             R.id.img_team1->{
                 time += " 17:00"
                 selectTeam = "L"
+                intent.putExtra("team", teamA)
             }
             R.id.img_team2->{
                 time += " 17:00"
                 selectTeam = "R"
+                intent.putExtra("team", teamA)
             }
             R.id.img_team3->{
                 time += " 20:00"
                 selectTeam = "L"
+                intent.putExtra("team", teamB)
             }
             R.id.img_team4->{
                 time += " 20:00"
                 selectTeam = "R"
+                intent.putExtra("team", teamB)
             }
         }
 
@@ -105,10 +111,10 @@ class ChattingListActivity : AppCompatActivity() {
             return
         }
 
-        var intent = Intent(this, ChattingActivity::class.java)
+        Log.e("Test", "A : ${teamA}, B : ${teamB}!")
+        intent.putExtra("selectTeam", selectTeam)
         intent.putExtra("time", time)
         intent.putExtra("nickName", nickName)
-        intent.putExtra("selectTeam", selectTeam)
         startActivity(intent)
     }
 
@@ -120,6 +126,8 @@ class ChattingListActivity : AppCompatActivity() {
             txt_noGame.visibility = View.GONE
 
             if(isCreate && mDate <= date){
+                teamA = games[i].team!!
+                teamB = games[i+1].team!!
                 txt_today.text = dateFormat.format(date)
                 var team_17 = games[i].team!!.split(":")
                 var team_20 = games[i+1].team!!.split(":")
@@ -129,6 +137,8 @@ class ChattingListActivity : AppCompatActivity() {
                 setImage(img_team4, team_20[1])
                 return
             }else if(date == mDate){
+                teamA = games[i].team!!
+                teamB = games[i+1].team!!
                 var team_17 = games[i].team!!.split(":")
                 var team_20 = games[i+1].team!!.split(":")
                 setImage(img_team1, team_17[0])
@@ -147,7 +157,7 @@ class ChattingListActivity : AppCompatActivity() {
     fun setImage(image : ImageView, team : String? = ""){
         when(team){
             "T1"-> image.setImageResource(R.drawable.logo_t1)
-            "Griffin"-> image.setImageResource(R.drawable.logo_damwon)
+            "Griffin"-> image.setImageResource(R.drawable.logo_griffin)
             "DAMWON Gaming"-> image.setImageResource(R.drawable.icon_damwon)
             "SANDBOX Gaming"-> image.setImageResource(R.drawable.icon_sandbox)
             "Afreeca Freecs"-> image.setImageResource(R.drawable.icon_afreeca)

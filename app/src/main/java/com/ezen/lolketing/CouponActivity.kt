@@ -5,27 +5,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_event_list.*
+import kotlinx.android.synthetic.main.activity_coupon.*
+import kotlinx.android.synthetic.main.activity_coupon.view.*
 
-class EventListActivity : AppCompatActivity() {
+class CouponActivity : AppCompatActivity() {
+
     private var auth = FirebaseAuth.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event_list)
+        setContentView(R.layout.activity_coupon)
 
-        event_card1.setOnClickListener {
-            var intent = Intent(this, EventDetailActivity::class.java)
-            intent.putExtra("page", "1")
-            startActivity(intent)
-        }
-        event_card2.setOnClickListener{
-            var intent = Intent(this, EventDetailActivity::class.java)
-            intent.putExtra("page", "2")
-            startActivity(intent)
-        }
-        event_card3.setOnClickListener{
-            startActivity(Intent(this, RouletteActivity::class.java))
-        }
+        myCoupon_viewPage.
+        tabLayout.setupWithViewPager(myCoupon_viewPage)
+
     }
 
     fun logout(view: View) {
