@@ -30,6 +30,9 @@ class JsonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_json)
 
+        addShopEvent.setOnClickListener {
+            startActivity(Intent(this, ShopEventActivity::class.java))
+        }
     }
 
     fun addTeam(view: View) {

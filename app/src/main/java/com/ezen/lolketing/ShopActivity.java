@@ -1,26 +1,46 @@
 package com.ezen.lolketing;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import com.ezen.lolketing.adapter.ShopAdapter;
+import com.ezen.lolketing.adapter.SliderAdapter;
 import com.ezen.lolketing.model.ShopDTO;
+import com.ezen.lolketing.model.ShopEventDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
-public class ShopActivity extends AppCompatActivity implements ShopAdapter.MoveActivityListener{
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+
+public class ShopActivity extends AppCompatActivity
+        implements ShopAdapter.MoveActivityListener, SliderAdapter.MoveActivityListener {
 
     private ShopAdapter adapter;
     private RecyclerView shop_recyclerView;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    ArrayList<ShopDTO> shopDTOS = new ArrayList<>();
+    ArrayList<String> images = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,32 +57,70 @@ public class ShopActivity extends AppCompatActivity implements ShopAdapter.MoveA
 
         shop_recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         shop_recyclerView.setAdapter(adapter);
-    }
+
+        final ShopDTO shopDTO = new ShopDTO();
+
+        String group = shopDTO.getGroup();
+        String name = shopDTO.getName();
+        int price = shopDTO.getPrice();
+
+        firestore.collection("ShopEvent").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                            ShopEventDTO shopEventDTO = snapshot.toObject(ShopEventDTO.class);
+
+                            shopDTOS.add(shopEventDTO.getShopDTO());
+                            images.add(shopEventDTO.getImage());
+                        }
+
+                        // auto slide -> shop event banner
+                        SliderView sliderView = findViewById(R.id.imageSlider);
+                        SliderAdapter sliderAdapter = new SliderAdapter(getApplicationContext(), ShopActivity.this, images, shopDTOS);
+                        sliderView.setSliderAdapter(sliderAdapter);
+                        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); // set indicator animation : SliderLayout.IndicatorAnimations.~
+                        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
+                        sliderView.setIndicatorSelectedColor(Color.WHITE);
+                        sliderView.setIndicatorUnselectedColor(Color.GRAY);
+                        sliderView.setScrollTimeInSec(4); // set scroll delay in seconds
+                        sliderView.startAutoCycle();
+                    }
+                });
+
+
+    } // onCreate()
 
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
-    }
+    } // onStart()
 
     @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
-    }
+    } // onStop()
 
+    // ShopAdapter listener
     @Override
     public void MoveActivity(Intent intent) {
         startActivity(intent);
     }
 
+    // SliderAdapter listener
+    @Override
+    public void moveActivity(@NotNull Intent intent) { startActivity(intent); }
+
     public void logout(View view) {
         auth.signOut();
-    }
+    } // 로그아웃
 
     public void moveHome(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-    }
-}
+    } // 메인액티비티로 이동
+} // end class
