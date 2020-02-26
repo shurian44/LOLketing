@@ -37,6 +37,8 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
     Query query;
     BoardAdapter adapter;
 
+    String team = getIntent().getStringExtra("team");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +69,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             }
         });
 
-        board_title.setText("팀 게시판 - " + getIntent().getStringExtra("team"));
+        board_title.setText("팀 게시판 - " + team);
 
 //        String[] search_conditions = getResources().getStringArray(R.array.search_conditions);
 
@@ -76,6 +78,9 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             @Override
             public void onClick(View v) {
                 Toast.makeText(BoardListActivity.this, "구단 정보로 이동", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
+                intent.putExtra("team", team);
+                startActivity(intent);
             }
         });
 
@@ -84,7 +89,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
-                intent.putExtra("team", "T1");
+                intent.putExtra("team", team);
                 intent.setFlags(intent.FLAG_ACTIVITY_SINGLE_TOP |
                                 intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
