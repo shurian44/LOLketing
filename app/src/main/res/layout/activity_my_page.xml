@@ -24,7 +24,8 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="6dp"
-                android:src="@drawable/logo_small"
+                android:scaleType="fitXY"
+                android:src="@drawable/lolketing_logo"
                 android:onClick="moveHome"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
@@ -48,8 +49,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@color/colorPrimaryDark"
-                android:padding="8dp"
-                android:text="마이페이지"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="10dp"
+                android:text="내 정보"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/main_logo"
@@ -58,8 +61,8 @@
 
             <ImageView
                 android:id="@+id/img_grade"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:layout_marginTop="15dp"
                 android:src="@drawable/icon_master"
                 app:layout_constraintTop_toBottomOf="@id/my_page"
@@ -244,6 +247,9 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:text="다음 승급까지..."
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -261,7 +267,7 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 app:layout_constraintTop_toBottomOf="@id/txt6"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/txt_grade_gauge"/>
+               app:layout_constraintRight_toRightOf="parent"/>
 
             <TextView
                 android:id="@+id/txt_grade_gauge"
@@ -271,9 +277,19 @@
                 android:text="100"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
-                app:layout_constraintTop_toTopOf="@id/progress_grade"
-                app:layout_constraintBottom_toBottomOf="@id/progress_grade"
-                app:layout_constraintRight_toRightOf="@id/my_page"/>
+                app:layout_constraintTop_toBottomOf="@id/progress_grade"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/txt_accPoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="100"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/progress_grade"
+                app:layout_constraintLeft_toLeftOf="parent"/>
 
             <Button
                 android:id="@+id/btn_modify"
@@ -281,14 +297,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="내 정보 수정"
-                android:textColor="#fff"
+                android:textColor="#000"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:background="@color/colorAccent"
+                android:background="#ddd"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/btn_history"
-                app:layout_constraintTop_toBottomOf="@id/progress_grade"/>
+                app:layout_constraintTop_toBottomOf="@id/txt_grade_gauge"/>
 
             <Button
                 android:id="@+id/btn_history"
@@ -302,9 +318,31 @@
                 android:textSize="18dp"
                 android:background="@color/colorPrimary"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintRight_toRightOf="@id/txt_grade_gauge"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/btn_modify"
-                app:layout_constraintTop_toBottomOf="@id/progress_grade"/>
+                app:layout_constraintTop_toBottomOf="@id/txt_grade_gauge"/>
+
+            <TextView
+                android:id="@+id/modifyPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 수정"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_modify"/>
+
+            <TextView
+                android:id="@+id/withdrawal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원 탈퇴"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="10dp"
+                android:textSize="18sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_modify"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

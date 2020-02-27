@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezen.lolketing.adapter.ChattingAdapter
@@ -16,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_chatting.*
+import org.jetbrains.anko.toast
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +30,7 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
     lateinit var time : String
     lateinit var nickname : String
     lateinit var selectTeam : String
+    lateinit var team : String
     var isChattingRoom = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,14 +40,22 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
         time = intent.getStringExtra("time")
         nickname = intent.getStringExtra("nickName")
         selectTeam = intent.getStringExtra("selectTeam")
+        team = intent.getStringExtra("team")
+        chatting_title.text = team.replace(":", "vs")
 
+        var teams = team.split(":")
+        setImage(img_team1, teams[0])
+        setImage(img_team2, teams[1])
 
         var dateFormat = SimpleDateFormat("yyyyMMdd HH:mm")
         var date = dateFormat.parse(time)
         var mDate = Date()
 
         btn_chatting.setOnClickListener {
-            if(mDate != date) Log.e("채팅 액티비티", "당일이 아니어유!")
+            if(mDate != date){
+                toast("당일에만 작성 가능합니다.")
+                return@setOnClickListener
+            }
             var comment = ChattingDTO.Comment()
             comment.id = nickname
             comment.message = edit_chatting.text.toString()
@@ -102,6 +113,21 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
         chatting_recycler.layoutManager = LinearLayoutManager(this)
 //        Handler().postDelayed(Runnable { chatting_recycler.scrollToPosition(adapter.itemCount-1) }, 400)
 
+    }
+
+    fun setImage(image : ImageView, team : String? = ""){
+        when(team){
+            "T1"-> image.setImageResource(R.drawable.logo_t1)
+            "Griffin"-> image.setImageResource(R.drawable.logo_griffin)
+            "DAMWON Gaming"-> image.setImageResource(R.drawable.icon_damwon)
+            "SANDBOX Gaming"-> image.setImageResource(R.drawable.icon_sandbox)
+            "Afreeca Freecs"-> image.setImageResource(R.drawable.icon_afreeca)
+            "Gen.G Esports"-> image.setImageResource(R.drawable.icon_geng)
+            "DragonX"-> image.setImageResource(R.drawable.icon_dragonx)
+            "KT Rolster"-> image.setImageResource(R.drawable.icon_rolster)
+            "APK PRINCE"-> image.setImageResource(R.drawable.icon_apk_prince)
+            "Hanwha Life Esports"-> image.setImageResource(R.drawable.icon_hanwha)
+        }
     }
 
     fun logout(view: View) {

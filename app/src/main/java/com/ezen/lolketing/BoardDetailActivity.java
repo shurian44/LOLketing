@@ -8,11 +8,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +47,7 @@ public class BoardDetailActivity extends AppCompatActivity {
     RecyclerView recyclerView_comment;
     EditText input_comment;
     Button btn_submit;
+    ToggleButton img_like;
     View view1, view2, view3;
     private String documentID;
 
@@ -57,6 +60,7 @@ public class BoardDetailActivity extends AppCompatActivity {
     String get_image;
 
     private BoardDTO.commentDTO commentDTO;
+    private Users user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +124,14 @@ public class BoardDetailActivity extends AppCompatActivity {
         img_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int likeCount = Integer.parseInt((txt_likeCount.getText().toString()));
+                if(img_like.isChecked()){
+                    firestore.collection("Board").document(documentID).update("like."+user.getNickname(), true, "likeCounts", FieldValue.increment(1));
+                    txt_likeCount.setText((likeCount + 1) + "");
+                }else{
+                    firestore.collection("Board").document(documentID).update("like."+user.getNickname(), false, "likeCounts", FieldValue.increment(-1));
+                    txt_likeCount.setText((likeCount - 1) + "");
+                }
             }
         });
 
@@ -128,12 +139,14 @@ public class BoardDetailActivity extends AppCompatActivity {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int commentCount = Integer.parseInt(txt_commentCount.getText().toString());
                 if (input_comment.length() < 1 || input_comment == null) {
                     Toast.makeText(BoardDetailActivity.this, "댓글 내용이 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     setFirestore();
                     // 댓글 남길 때 댓글 수 증가
                     firestore.collection("Board").document(getIntent().getStringExtra("documentID")).update("commentCounts", FieldValue.increment(1));
+                    txt_commentCount.setText((commentCount + 1) + "");
                 }
             }
         });
@@ -174,16 +187,18 @@ public class BoardDetailActivity extends AppCompatActivity {
                 commentDTO.setTimestamp(System.currentTimeMillis());
                 commentDTO.setComment(input_comment.getText().toString());
                 commentDTO.setEmail(auth.getCurrentUser().getEmail());
+        commentDTO = new BoardDTO.commentDTO();
+        commentDTO.setUserId(user.getNickname());
+        commentDTO.setTimestamp(System.currentTimeMillis());
+        commentDTO.setComment(input_comment.getText().toString());
 
-                firestore.collection("Board").document(documentID).collection("Comment").document().set(commentDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isComplete()) {
-                            Toast.makeText(getApplicationContext(), "댓글이 작성 되었습니다.", Toast.LENGTH_SHORT).show();
-                            input_comment.setText(null);
-                        }
-                    }
-                });
+        firestore.collection("Board").document(documentID).collection("Comment").document().set(commentDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isComplete()) {
+                    Toast.makeText(getApplicationContext(), "댓글이 작성 되었습니다.", Toast.LENGTH_SHORT).show();
+                    input_comment.setText(null);
+                }
             }
         });
     }
@@ -223,8 +238,20 @@ public class BoardDetailActivity extends AppCompatActivity {
         int get_views = intent.getIntExtra("views", 0);
         int get_likeCounts = intent.getIntExtra("likeCounts", 0);
         int get_commentCounts = intent.getIntExtra("commentCounts", 0);
-        Map<String, Boolean> like = (HashMap<String, Boolean>) intent.getSerializableExtra("like");
-        Log.e("test", "나옴? " + like);
+        final Map<String, Boolean> like = (HashMap<String, Boolean>) intent.getSerializableExtra("like");
+
+        firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(Users.class);
+
+                if(like != null && like.containsKey(user.getNickname()) && like.get(user.getNickname())){
+                    img_like.setChecked(true);
+                }else{
+                    img_like.setChecked(false);
+                }
+            }
+        });
 
         content_title.setText(get_content_title);
         userId.setText(get_userId);

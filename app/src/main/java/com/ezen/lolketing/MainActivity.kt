@@ -20,9 +20,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkDetailJoin()
-        main_logo.setOnClickListener {
-            startActivity(Intent(this, JsonActivity::class.java))
-        }
 
         btn_board.setOnClickListener {
 
@@ -83,6 +80,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun managerPage(view: View) {
+        startActivity(Intent(this, JsonActivity::class.java))
+    }
+
     fun moveActivity(view: View) {
         var intent = Intent(this, BoardListActivity::class.java)
         when(view.id){
@@ -94,16 +95,6 @@ class MainActivity : AppCompatActivity() {
             R.id.btn_guid-> intent = Intent(this, LoLGuideActivity::class.java)
             R.id.btn_news-> intent = Intent(this, NewsActivity::class.java)
             R.id.btn_chatting-> intent = Intent(this, ChattingListActivity::class.java)
-//            R.id.icon_t1 -> intent.putExtra("team", "T1")
-//            R.id.icon_griffin -> intent.putExtra("team", "GRIFFIN")
-//            R.id.icon_damwon -> intent.putExtra("team", "DAMWON Gamming")
-//            R.id.icon_sandbox -> intent.putExtra("team", "SANDBOX Gamming")
-//            R.id.icon_freecs -> intent.putExtra("team", "Afreeca Freecs")
-//            R.id.icon_geng -> intent.putExtra("team", "Gen.G Esports")
-//            R.id.icon_dragonx -> intent.putExtra("team", "DragonX")
-//            R.id.icon_rolster -> intent.putExtra("team", "kt Rolster")
-//            R.id.icon_prince -> intent.putExtra("team", "APK Prince")
-//            R.id.icon_hanhwa-> intent.putExtra("team", "Hanwha Life Esports")
         }
         startActivity(intent)
     }
@@ -113,6 +104,9 @@ class MainActivity : AppCompatActivity() {
             var user = documentSnapshot?.toObject(Users::class.java) ?: return@addSnapshotListener
             if(user.nickname == null){
                 startActivity(Intent(this, JoinDetailActivity::class.java))
+            }
+            if(user.grade == "마스터"){
+                btn_manager.visibility = View.VISIBLE
             }
         }
     }

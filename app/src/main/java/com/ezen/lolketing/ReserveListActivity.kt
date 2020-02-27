@@ -14,6 +14,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_reserve_list.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveOnClick {
 
@@ -26,7 +28,11 @@ class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveOnClick {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve_list)
 
-        var query = firestore.collection("Game").orderBy("date")
+        var date = Date()
+        var format = SimpleDateFormat("yyyy.MM.dd")
+        date.date = date.date - 1
+
+        var query = firestore.collection("Game").orderBy("date").whereGreaterThan("date", format.format(date))
         var options = FirestoreRecyclerOptions.Builder<GameDTO>()
                 .setQuery(query, GameDTO::class.java).build()
         adapter = ReserveAdapter(options, this)

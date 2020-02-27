@@ -53,11 +53,14 @@
                 android:background="@color/colorPrimaryDark"
                 android:padding="8dp"
                 android:text="팀 게시판 - "
+                android:paddingLeft="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/main_logo"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_logo" />
 
             <TextView
                 android:id="@+id/content_title"

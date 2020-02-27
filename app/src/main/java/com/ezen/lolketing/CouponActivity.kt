@@ -4,28 +4,30 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
+import com.ezen.lolketing.adapter.CouponViewPagerAdapter
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_event_list.*
+import kotlinx.android.synthetic.main.activity_coupon.*
+import kotlinx.android.synthetic.main.activity_coupon.view.*
 
-class EventListActivity : AppCompatActivity() {
+class CouponActivity : AppCompatActivity() {
+
     private var auth = FirebaseAuth.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event_list)
+        setContentView(R.layout.activity_coupon)
 
-        event_card1.setOnClickListener {
-            var intent = Intent(this, EventDetailActivity::class.java)
-            intent.putExtra("page", 1)
-            startActivity(intent)
-        }
-        event_card2.setOnClickListener{
-            var intent = Intent(this, EventDetailActivity::class.java)
-            intent.putExtra("page", 2)
-            startActivity(intent)
-        }
-        event_card3.setOnClickListener{
-            startActivity(Intent(this, RouletteActivity::class.java))
-        }
+        var list = ArrayList<Fragment>()
+        list.add(CouponFragment("사용 안함"))
+        list.add(CouponFragment("사용함"))
+        var adapter = CouponViewPagerAdapter(supportFragmentManager, list)
+        myCoupon_viewPage.adapter = adapter
+        tabLayout.setupWithViewPager(myCoupon_viewPage)
+
+        tabLayout.getTabAt(0)?.text = "사용 안함"
+        tabLayout.getTabAt(1)?.text = "사용 함"
+
     }
 
     fun logout(view: View) {

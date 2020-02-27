@@ -36,13 +36,18 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : re
         setImage(item.left_team, teams!![0])
         setImage(item.right_team, teams!![1])
 
-        var dateFormat = SimpleDateFormat("yyyy.MM.dd")
-        var date = dateFormat.parse(model.date)
+        var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
+        var date = dateFormat.parse("${model.date} ${model.time}")
         date.hours = date.hours - 4
         var mDate = Date()
 
         if(mDate > date){
             FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
+        }
+        date.date = date.date - 5
+        date.hours = 2
+        if(date.after(mDate)){
+            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "오픈예정")
         }
 
         when(model.status){

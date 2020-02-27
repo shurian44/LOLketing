@@ -109,7 +109,7 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
                         intent.putExtra("pay", pay)
                         toast("좌석 선택 성공")
                         startActivity(intent)
-                        finish()
+//                        finish()
                     }
                 }
             }

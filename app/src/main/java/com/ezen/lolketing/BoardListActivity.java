@@ -36,12 +36,10 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
     String userEmail = user.getEmail();
+    String team;
 
     Query query;
     BoardAdapter adapter;
-    String team;
-    String search;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +63,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
 
         // 게시글 목록 소환
         query = firestore.collection("Board").whereEqualTo("team", team).orderBy("timestamp", Query.Direction.DESCENDING);
+
         setRecycler(query);
 
         main_logo.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +136,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String search = board_searchBar.getText().toString();
                 if(board_searchBy.getText().toString().equals("검색조건")){
                     Toast.makeText(BoardListActivity.this, "검색조건을 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
                     return;
