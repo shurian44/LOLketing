@@ -33,12 +33,10 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    String team;
 
     Query query;
     BoardAdapter adapter;
-
-    String team = getIntent().getStringExtra("team");
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +52,8 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_searchBar = findViewById(R.id.board_searchBar);
         board_recyclerView = findViewById(R.id.board_recyclerView);
         board_searchBy = findViewById(R.id.board_searchBy);
+
+        team = getIntent().getStringExtra("team");
 
         query = firestore.collection("Board").orderBy("timestamp", Query.Direction.DESCENDING);
         setRecycler(query);

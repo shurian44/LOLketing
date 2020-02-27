@@ -127,11 +127,18 @@ public class RouletteActivity extends AppCompatActivity {
 
     }
 
-    private Map setCouponNumber(){
-        Map<String, String> couponNumber = new HashMap<>();
+    private String setCouponNumber(){
+        String couponNumber = "";
+        String[] chooseNum = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R"
+                , "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        Random random = new Random();
 
-        couponNumber.put("", result);
-
+        for(int i = 0; i < 16; i++) {
+            couponNumber += chooseNum[random.nextInt(36)];
+            if(i % 4 == 3 && i != 15) {
+                couponNumber += "-";
+            }
+        }
         return couponNumber;
     }
 

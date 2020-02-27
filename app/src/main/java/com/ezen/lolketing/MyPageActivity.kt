@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.ezen.lolketing.model.CouponDTO
 import com.ezen.lolketing.model.Users
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -25,7 +26,13 @@ class MyPageActivity : AppCompatActivity() {
         id = auth.currentUser?.email!!
 
         firestore.collection("Coupon").whereEqualTo("id", id).get().addOnCompleteListener {
-            var couponCount = it.result?.size() ?: 0
+            var coupon = it.result!!.toObjects(CouponDTO::class.java)
+            var couponCount = 0
+            for(i in coupon.indices){
+                if(coupon[i].use == "사용 안함"){
+                    couponCount++
+                }
+            }
             txt_coupon.text = "$couponCount 장"
         }
 
@@ -43,6 +50,15 @@ class MyPageActivity : AppCompatActivity() {
             var intent = Intent(this, PurchaseHistoryActivity::class.java)
             startActivity(intent)
         }
+
+        withdrawal.setOnClickListener {
+            var intent = Intent(this, WithdrawalActivity::class.java)
+            startActivity(intent)
+        }
+
+        txt_coupon.setOnClickListener {
+            startActivity(Intent(this, CouponActivity::class.java))
+        }
     }
 
     override fun onResume() {
@@ -52,9 +68,10 @@ class MyPageActivity : AppCompatActivity() {
             var user = it.result?.toObject(Users::class.java)!!
             grade = user.grade!!
             txt_grade.text = grade
-            txt_Point.text = user.point.toString()
+            txt_Point.text = "${user.point}"
+            txt_accPoint.text = "${user.accPoint}"
+            txt_Cache.text = "${user.cache}"
             txt_name.text = user.nickname
-            txt_Cache.text = user.cache.toString()
 
             when(grade){
                 "브론즈"->{
@@ -81,7 +98,7 @@ class MyPageActivity : AppCompatActivity() {
                     txt_grade_gauge.text = "max"
                 }
             }
-            progress_grade.progress = user.point!!
+            progress_grade.progress = user.accPoint!!
         }
     }
 

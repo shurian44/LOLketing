@@ -23,28 +23,35 @@ class EventDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event_detail)
 
-        id = auth.currentUser?.email!!
-        firestore.collection("Users").document(id).get().addOnCompleteListener {
-            var user = it.result?.toObject(Users::class.java)!!
-            event_txt1.text = Html.fromHtml("<span>소환사 ${user.nickname}님<br><font color=\"#6200EE\">롤케팅</font>에 오신것을 환영합니다.<br>1회 한정 <font color=\"#6200EE\">500포인트</font>를 발급해드립니다.</span>")
-        }
+        var page = intent.getIntExtra("page", 1)
+        if(page == 1) {
+            img_main.setImageResource(R.drawable.banner1)
+            id = auth.currentUser?.email!!
+            firestore.collection("Users").document(id).get().addOnCompleteListener {
+                var user = it.result?.toObject(Users::class.java)!!
+                event_txt1.text = Html.fromHtml("<span>소환사 ${user.nickname}님<br><font color=\"#6200EE\">롤케팅</font>에 오신것을 환영합니다.<br>1회 한정 <font color=\"#6200EE\">500포인트</font>를 발급해드립니다.</span>")
+            }
 
 
-        btn_coupon.setOnClickListener {
-            firestore.collection("Coupon").whereEqualTo("title", "신규 가입 쿠폰").whereEqualTo("id", id).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                for(snapshot in querySnapshot!!){
-                    var coupon = snapshot.toObject(CouponDTO::class.java)
-                    Log.e("test", coupon.use)
-                    if(coupon.use == "사용 안함"){
-                        firestore.collection("Coupon").document(snapshot.id).update("use", "사용함")
-                        firestore.collection("Users").document(id).update("point", FieldValue.increment(500))
-                        toast("${snapshot.id} 포인트 지급")
-                    }
-                    else{
-                        toast("이미 사용하셨습니다.")
+            btn_coupon.setOnClickListener {
+                firestore.collection("Coupon").whereEqualTo("title", "신규 가입 쿠폰").whereEqualTo("id", id).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    for (snapshot in querySnapshot!!) {
+                        var coupon = snapshot.toObject(CouponDTO::class.java)
+                        Log.e("test", coupon.use)
+                        if (coupon.use == "사용 안함") {
+                            firestore.collection("Coupon").document(snapshot.id).update("use", "사용함")
+                            firestore.collection("Users").document(id).update("point", FieldValue.increment(500))
+                            toast("${snapshot.id} 포인트 지급")
+                        } else {
+                            toast("이미 사용하셨습니다.")
+                        }
                     }
                 }
             }
+        }
+        else{
+            img_main.setImageResource(R.drawable.banner2)
+            btn_coupon.visibility = View.GONE
         }
     }
 

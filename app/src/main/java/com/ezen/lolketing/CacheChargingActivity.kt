@@ -30,20 +30,26 @@ class CacheChargingActivity : AppCompatActivity() {
                 var myCache = user.cache!!
                 var point = user.point!!
                 var grade = user.grade
+                var accPoint = user.accPoint!!
 
                 if(myCache + cache > 2000000000){
                     point += (2000000000 - myCache) / 10
+                    accPoint += (2000000000 - myCache) / 10
                     myCache = 2000000000
                 }else{
                     point += cache / 10
+                    accPoint += cache / 10
                     myCache += cache
                 }
                 if(point > 200000000){
                     point = 200000000
                 }
+                if(accPoint > 200000000){
+                    accPoint = 200000000
+                }
 
                 if(grade != "마스터"){
-                    grade = when(point){
+                    grade = when(accPoint){
                         in 0..2900-> "브론즈"
                         in 3000..29999 -> "실버"
                         in 30000..299999 -> "골드"
@@ -51,7 +57,7 @@ class CacheChargingActivity : AppCompatActivity() {
                     }
                 }
 
-                firestore.collection("Users").document(email).update("cache", myCache, "point", point, "grade", grade)
+                firestore.collection("Users").document(email).update("cache", myCache, "point", point, "grade", grade, "accPoint", accPoint)
                 finish()
             }
         }

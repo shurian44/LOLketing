@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
+import com.ezen.lolketing.adapter.CouponViewPagerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_coupon.*
 import kotlinx.android.synthetic.main.activity_coupon.view.*
@@ -16,8 +18,15 @@ class CouponActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coupon)
 
-        myCoupon_viewPage.
+        var list = ArrayList<Fragment>()
+        list.add(CouponFragment("사용 안함"))
+        list.add(CouponFragment("사용함"))
+        var adapter = CouponViewPagerAdapter(supportFragmentManager, list)
+        myCoupon_viewPage.adapter = adapter
         tabLayout.setupWithViewPager(myCoupon_viewPage)
+
+        tabLayout.getTabAt(0)?.text = "사용 안함"
+        tabLayout.getTabAt(1)?.text = "사용 함"
 
     }
 

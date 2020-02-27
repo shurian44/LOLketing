@@ -77,7 +77,7 @@ public class ShopActivity extends AppCompatActivity
 
                         // auto slide -> shop event banner
                         SliderView sliderView = findViewById(R.id.imageSlider);
-                        SliderAdapter sliderAdapter = new SliderAdapter(getApplicationContext(), ShopActivity.this, images, shopDTOS);
+                        SliderAdapter sliderAdapter = new SliderAdapter(ShopActivity.this, images, shopDTOS);
                         sliderView.setSliderAdapter(sliderAdapter);
                         sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); // set indicator animation : SliderLayout.IndicatorAnimations.~
                         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);

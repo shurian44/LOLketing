@@ -15,12 +15,12 @@ class EventListActivity : AppCompatActivity() {
 
         event_card1.setOnClickListener {
             var intent = Intent(this, EventDetailActivity::class.java)
-            intent.putExtra("page", "1")
+            intent.putExtra("page", 1)
             startActivity(intent)
         }
         event_card2.setOnClickListener{
             var intent = Intent(this, EventDetailActivity::class.java)
-            intent.putExtra("page", "2")
+            intent.putExtra("page", 2)
             startActivity(intent)
         }
         event_card3.setOnClickListener{
