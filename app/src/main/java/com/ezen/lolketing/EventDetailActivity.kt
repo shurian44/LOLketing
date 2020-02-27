@@ -1,11 +1,11 @@
 package com.ezen.lolketing
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.ezen.lolketing.model.CouponDTO
 import com.ezen.lolketing.model.Users
 import com.google.firebase.auth.FirebaseAuth
@@ -29,7 +29,7 @@ class EventDetailActivity : AppCompatActivity() {
             id = auth.currentUser?.email!!
             firestore.collection("Users").document(id).get().addOnCompleteListener {
                 var user = it.result?.toObject(Users::class.java)!!
-                event_txt1.text = Html.fromHtml("<span>소환사 ${user.nickname}님<br><font color=\"#6200EE\">롤케팅</font>에 오신것을 환영합니다.<br>1회 한정 <font color=\"#6200EE\">500포인트</font>를 발급해드립니다.</span>")
+                event_txt1.text = Html.fromHtml("<span>소환사 <font color=\"#6200EE\">${user.nickname}</font>님<br><font color=\"#6200EE\">롤케팅</font>에 오신것을 환영합니다.<br><br><br>환영의 의미로 <font color=\"#6200EE\">500포인트</font>를 발급해드립니다.</span>")
             }
 
 
@@ -51,6 +51,7 @@ class EventDetailActivity : AppCompatActivity() {
         }
         else{
             img_main.setImageResource(R.drawable.banner2)
+            event_txt1.text = Html.fromHtml("티켓 구매하시고 <big><font color=\"#6200EE\">RP</big></font> 받아가세요~!<br><br><br>- 구매 티켓 1장 당 룰렛 1회 이용 가능<br>- 해당 이벤트는 <font color=\"#6200EE\">횟 수 제한 없이</font> 참여 가능합니다.")
             btn_coupon.visibility = View.GONE
         }
     }

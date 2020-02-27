@@ -2,7 +2,6 @@ package com.ezen.lolketing
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.ezen.lolketing.model.SeatDTO
@@ -97,7 +96,7 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
                 seatDTO.seats = map
                 firestore.collection("Game").document(time).collection("Seat").document("seat").set(seatDTO).addOnCompleteListener {task->
                     if(task.isComplete){
-                        firestore.collection("Users").document(auth.currentUser?.email!!).update("cache", FieldValue.increment(-pay.toDouble()))
+                        firestore.collection("Users").document(auth.currentUser?.email!!).update("cache", FieldValue.increment(-pay.toDouble()), "rouletteCount", FieldValue.increment(1))
                         var ticket = if(radio1.isChecked) 1
                         else 2
                         var intent = Intent(this, TicketingActivity::class.java)
