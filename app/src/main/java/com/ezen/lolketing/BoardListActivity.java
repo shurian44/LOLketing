@@ -97,10 +97,9 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         txt_listBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("test", txt_listBy.getText().toString() +"");
                 if(txt_listBy.getText().toString().equals("내가 쓴 글")) {
                     txt_listBy.setText("<  전체 글");
-                    query = firestore.collection("Board").whereEqualTo("email", auth.getCurrentUser().getEmail());
+                    query = firestore.collection("Board").whereEqualTo("email", auth.getCurrentUser().getEmail()).whereEqualTo("team", team);
 
                 }else if(txt_listBy.getText().toString().equals("<  전체 글")) {
                     txt_listBy.setText("내가 쓴 글");
@@ -143,15 +142,12 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
                     return;
                 }
                 else if(board_searchBy.getText().toString().equals("제목")){
-                    Log.e("test", "제목으로 검색");
                     query = firestore.collection("Board").whereEqualTo("team", team).orderBy("title").startAt(search).endAt(search + "\uf8ff");
                 }
                 else if(board_searchBy.getText().toString().equals("작성자")){
-                    Log.e("test", "작성자로 검색");
                     query = firestore.collection("Board").whereEqualTo("team", team).orderBy("userId").startAt(search).endAt(search + "\uf8ff");
                 }
                 else if(board_searchBy.getText().toString().equals("내용")){
-                    Log.e("test", "내용으로 검색");
                     query = firestore.collection("Board").whereEqualTo("team", team).orderBy("content").startAt(search).endAt(search + "\uf8ff");
                 }
 
@@ -210,7 +206,6 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
     @Override
     public void returnItemSize(int size) {
         if(size < 1){
-            Log.e("test", "결과가 없네용");
             txt_noResult.setVisibility(View.VISIBLE);
         }else{
             txt_noResult.setVisibility(View.GONE);
