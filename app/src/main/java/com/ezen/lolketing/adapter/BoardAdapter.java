@@ -68,6 +68,7 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
                 intent.putExtra("content", board.getContent());
                 intent.putExtra("commentCounts", board.getCommentCounts());
                 intent.putExtra("like", (Serializable) board.getLike());
+                intent.putExtra("team", board.getTeam());
                 intent.putExtra("likeCounts", board.getLikeCounts());
                 intent.putExtra("documentID", getSnapshots().getSnapshot(position).getId());
 

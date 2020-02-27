@@ -4,11 +4,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -42,22 +40,21 @@ import java.util.Map;
 
 public class BoardDetailActivity extends AppCompatActivity {
 
-    ImageView main_logo, img_rank, board_img, img_like, img_comment, img_report, btn_more;
+    ImageView main_logo, img_rank, board_img, img_comment, img_report, btn_more;
     TextView btn_logout, board_title, content_title, userId, views, timestamp, board_content, txt_likeCount, txt_commentCount;
+    ToggleButton img_like;
     RecyclerView recyclerView_comment;
     EditText input_comment;
     Button btn_submit;
-    ToggleButton img_like;
     View view1, view2, view3;
     private String documentID;
+    String get_image, get_content, team;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     Query query;
     CommentAdapter adapter;
-
-    String get_image;
 
     private BoardDTO.commentDTO commentDTO;
     private Users user;
@@ -163,10 +160,18 @@ public class BoardDetailActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.modify:
                                 Toast.makeText(getApplicationContext(),"글 수정", Toast.LENGTH_SHORT).show();
-                                modifyContent();
+                                Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
+                                intent.putExtra("title", content_title.getText().toString());
+                                intent.putExtra("image", get_image);
+                                intent.putExtra("content", board_content.getText().toString());
+                                intent.putExtra("team", team);
+                                intent.putExtra("documentId", documentID);
+                                intent.putExtra("statement", "modify");
+                                startActivity(intent);
                                 return true;
                             case R.id.delete:
-                                Toast.makeText(getApplicationContext(),"글 삭제", Toast.LENGTH_SHORT).show();
+                                firestore.collection("Board").document(documentID).delete();
+                                finish();
                                 return true;
                         }
                         return false;
@@ -184,21 +189,19 @@ public class BoardDetailActivity extends AppCompatActivity {
                 Users user = documentSnapshot.toObject(Users.class);
                 commentDTO = new BoardDTO.commentDTO();
                 commentDTO.setUserId(user.getNickname());
+                commentDTO.setEmail(user.getId());
                 commentDTO.setTimestamp(System.currentTimeMillis());
                 commentDTO.setComment(input_comment.getText().toString());
-                commentDTO.setEmail(auth.getCurrentUser().getEmail());
-        commentDTO = new BoardDTO.commentDTO();
-        commentDTO.setUserId(user.getNickname());
-        commentDTO.setTimestamp(System.currentTimeMillis());
-        commentDTO.setComment(input_comment.getText().toString());
 
-        firestore.collection("Board").document(documentID).collection("Comment").document().set(commentDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isComplete()) {
-                    Toast.makeText(getApplicationContext(), "댓글이 작성 되었습니다.", Toast.LENGTH_SHORT).show();
-                    input_comment.setText(null);
-                }
+                firestore.collection("Board").document(documentID).collection("Comment").document().set(commentDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isComplete()) {
+                            Toast.makeText(getApplicationContext(), "댓글이 작성 되었습니다.", Toast.LENGTH_SHORT).show();
+                            input_comment.setText(null);
+                        }
+                    }
+                });
             }
         });
     }
@@ -213,7 +216,6 @@ public class BoardDetailActivity extends AppCompatActivity {
         board_title = findViewById(R.id.board_title);
         content_title = findViewById(R.id.content_title);
         userId = findViewById(R.id.userId);
-        btn_more = findViewById(R.id.btn_more);
         views = findViewById(R.id.views);
         timestamp = findViewById(R.id.timestamp);
         board_content = findViewById(R.id.board_content);
@@ -226,25 +228,28 @@ public class BoardDetailActivity extends AppCompatActivity {
         view1 = findViewById(R.id.view1);
         view2 = findViewById(R.id.view2);
         view3 = findViewById(R.id.view3);
+        btn_more = findViewById(R.id.btn_more);
 
         Intent intent = getIntent();
         String get_subject = intent.getStringExtra("subject");
         String get_content_title = intent.getStringExtra("title");
         String get_userId = intent.getStringExtra("userId");
         get_image = intent.getStringExtra("image");
-        String get_content = intent.getStringExtra("content");
+        get_content = intent.getStringExtra("content");
         documentID = intent.getStringExtra("documentID");
+        team = intent.getStringExtra("team");
         Long get_timestamp = intent.getLongExtra("timestamp", 0);
         int get_views = intent.getIntExtra("views", 0);
         int get_likeCounts = intent.getIntExtra("likeCounts", 0);
         int get_commentCounts = intent.getIntExtra("commentCounts", 0);
         final Map<String, Boolean> like = (HashMap<String, Boolean>) intent.getSerializableExtra("like");
 
+        board_title.append(team);
+
         firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 user = documentSnapshot.toObject(Users.class);
-
                 if(like != null && like.containsKey(user.getNickname()) && like.get(user.getNickname())){
                     img_like.setChecked(true);
                 }else{
@@ -272,16 +277,6 @@ public class BoardDetailActivity extends AppCompatActivity {
         } else {
             Glide.with(this).load(get_image).into(board_img);
         }
-    }
-
-    public void modifyContent() {
-        Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
-        intent.putExtra("title", content_title.getText().toString());
-        intent.putExtra("image", get_image);
-        intent.putExtra("content", board_content.getText().toString());
-        intent.putExtra("documentId", documentID);
-        intent.putExtra("statement", "modify");
-        startActivity(intent);
     }
 
     public void logout(View view) {

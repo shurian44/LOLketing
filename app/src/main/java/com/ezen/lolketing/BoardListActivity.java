@@ -37,6 +37,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
     FirebaseUser user = auth.getCurrentUser();
     String userEmail = user.getEmail();
     String team;
+    String search;
 
     Query query;
     BoardAdapter adapter;
