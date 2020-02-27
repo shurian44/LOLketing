@@ -1,17 +1,15 @@
 package com.ezen.lolketing
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.ezen.lolketing.model.Users
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.progressDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,11 +36,11 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             view.findViewById<ImageView>(R.id.icon_griffin).setOnClickListener {
-                intent.putExtra("team", "Griffin")
+                intent.putExtra("team", "GRIFFIN")
                 startActivity(intent)
             }
             view.findViewById<ImageView>(R.id.icon_geng).setOnClickListener {
-                intent.putExtra("team", "Gen.G")
+                intent.putExtra("team", "Gen.G Esports")
                 startActivity(intent)
             }
             view.findViewById<ImageView>(R.id.icon_dragonx).setOnClickListener {
@@ -54,23 +52,23 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             view.findViewById<ImageView>(R.id.icon_sandbox).setOnClickListener {
-                intent.putExtra("team", "SANDBOX Gaming")
+                intent.putExtra("team", "SANDBOX Gamming")
                 startActivity(intent)
             }
             view.findViewById<ImageView>(R.id.icon_damwon).setOnClickListener {
-                intent.putExtra("team", "DAMWON")
+                intent.putExtra("team", "DAMWON Gamming")
                 startActivity(intent)
             }
             view.findViewById<ImageView>(R.id.icon_apk).setOnClickListener {
-                intent.putExtra("team", "APK PRINCE")
+                intent.putExtra("team", "APK Prince")
                 startActivity(intent)
             }
             view.findViewById<ImageView>(R.id.icon_rolster).setOnClickListener {
-                intent.putExtra("team", "KT Rolster")
+                intent.putExtra("team", "kt Rolster")
                 startActivity(intent)
             }
             view.findViewById<ImageView>(R.id.icon_hanhwa).setOnClickListener {
-                intent.putExtra("team", "Hanwha Life Exports")
+                intent.putExtra("team", "Hanwha Life Esports")
                 startActivity(intent)
             }
         }

@@ -29,11 +29,12 @@
         />
 
     <ImageView
-        android:id="@+id/imageView_more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_more_horiz_black_24dp"
+        android:id="@+id/imageView_delete"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/icon_delete"
         app:layout_constraintTop_toTopOf="@id/textView_userId"
+        app:layout_constraintBottom_toBottomOf="@id/textView_userId"
         app:layout_constraintRight_toRightOf="parent"
         />
 

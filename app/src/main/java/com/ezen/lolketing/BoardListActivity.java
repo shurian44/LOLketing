@@ -20,24 +20,27 @@ import com.ezen.lolketing.adapter.BoardAdapter;
 import com.ezen.lolketing.model.BoardDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class BoardListActivity extends AppCompatActivity implements BoardAdapter.setActivityMove{
 
     ImageView main_logo, board_image, btn_write;
-    TextView btn_logout, board_title, board_searchBy;
+    TextView btn_logout, board_title, board_searchBy, txt_listBy, txt_noResult;
     Button btn_teamInfo, board_searchButton;
     EditText board_searchBar;
     RecyclerView board_recyclerView;
 
-    FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    String userEmail = user.getEmail();
 
     Query query;
     BoardAdapter adapter;
-
-    String team = getIntent().getStringExtra("team");
+    String team;
+    String search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +57,14 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_searchBar = findViewById(R.id.board_searchBar);
         board_recyclerView = findViewById(R.id.board_recyclerView);
         board_searchBy = findViewById(R.id.board_searchBy);
+        txt_listBy = findViewById(R.id.txt_listBy);
+        txt_noResult = findViewById(R.id.txt_noResult);
 
-        query = firestore.collection("Board").orderBy("timestamp", Query.Direction.DESCENDING);
+        team = getIntent().getStringExtra("team");
+        search = board_searchBar.getText().toString();
+
+        // 게시글 목록 소환
+        query = firestore.collection("Board").whereEqualTo("team", team).orderBy("timestamp", Query.Direction.DESCENDING);
         setRecycler(query);
 
         main_logo.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +93,25 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             }
         });
 
+        // 내가 쓴 글 검색 및 모든 글 보기
+        txt_listBy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("test", txt_listBy.getText().toString() +"");
+                if(txt_listBy.getText().toString().equals("내가 쓴 글")) {
+                    txt_listBy.setText("<  전체 글");
+                    query = firestore.collection("Board").whereEqualTo("email", auth.getCurrentUser().getEmail());
+
+                }else if(txt_listBy.getText().toString().equals("<  전체 글")) {
+                    txt_listBy.setText("내가 쓴 글");
+                    query = firestore.collection("Board").whereEqualTo("team", team).orderBy("timestamp", Query.Direction.DESCENDING);
+                }
+                adapter.stopListening();
+                setRecycler(query);
+                adapter.startListening();
+            }
+        });
+
         // 글쓰기 버튼 클릭
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,24 +137,23 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         board_searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String search = board_searchBar.getText().toString();
                 if(board_searchBy.getText().toString().equals("검색조건")){
                     Toast.makeText(BoardListActivity.this, "검색조건을 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(board_searchBy.getText().toString().equals("제목")){
-                    Log.e("test", "제목");
-                    query = firestore.collection("Board").orderBy("title").startAt(search).endAt(search + "\uf8ff");
+                else if(board_searchBy.getText().toString().equals("제목")){
+                    Log.e("test", "제목으로 검색");
+                    query = firestore.collection("Board").whereEqualTo("team", team).orderBy("title").startAt(search).endAt(search + "\uf8ff");
                 }
                 else if(board_searchBy.getText().toString().equals("작성자")){
-                    Log.e("test", "작성자");
-
-                    query = firestore.collection("Board").orderBy("userId").startAt(search).endAt(search + "\uf8ff");
+                    Log.e("test", "작성자로 검색");
+                    query = firestore.collection("Board").whereEqualTo("team", team).orderBy("userId").startAt(search).endAt(search + "\uf8ff");
                 }
                 else if(board_searchBy.getText().toString().equals("내용")){
-                    Log.e("test", "내용");
-                    query = firestore.collection("Board").orderBy("content").startAt(search).endAt(search + "\uf8ff");
+                    Log.e("test", "내용으로 검색");
+                    query = firestore.collection("Board").whereEqualTo("team", team).orderBy("content").startAt(search).endAt(search + "\uf8ff");
                 }
+
                 adapter.stopListening();
                 setRecycler(query);
                 adapter.startListening();
@@ -136,6 +163,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
 
     // 리사이클러뷰 세팅
     private void setRecycler(Query query) {
+
         FirestoreRecyclerOptions<BoardDTO> options = new FirestoreRecyclerOptions.Builder<BoardDTO>()
                 .setQuery(query, BoardDTO.class)
                 .build();
@@ -176,6 +204,16 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
     @Override
     public void activityMove(Intent intent) {
         startActivity(intent);
+    }
+
+    @Override
+    public void returnItemSize(int size) {
+        if(size < 1){
+            Log.e("test", "결과가 없네용");
+            txt_noResult.setVisibility(View.VISIBLE);
+        }else{
+            txt_noResult.setVisibility(View.GONE);
+        }
     }
 
     @Override

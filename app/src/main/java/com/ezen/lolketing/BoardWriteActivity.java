@@ -1,11 +1,11 @@
 package com.ezen.lolketing;
 
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.ezen.lolketing.model.BoardDTO;
 import com.ezen.lolketing.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,11 +46,10 @@ import java.util.HashMap;
 
 public class BoardWriteActivity extends AppCompatActivity {
 
-    ImageView main_logo, board_image, icon_photo;
-    TextView btn_logout, board_title;
+    ImageView board_image, icon_photo;
+    TextView board_title;
     EditText input_title, input_content;
     ScrollView scrollView;
-    View view1, view2;
     Button btn_cancel, btn_submit;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -64,7 +64,9 @@ public class BoardWriteActivity extends AppCompatActivity {
     private Uri filePath = null;
 
     final static int PERMISSION_REQUEST_CODE = 1000;
-    private static final String tag = "BoardWriteActivity";
+
+    String statement = "";
+    String documentId = "";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -72,29 +74,7 @@ public class BoardWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_board_write);
 
         permissionCheck();
-
-        main_logo = findViewById(R.id.main_logo);
-        board_image = findViewById(R.id.board_image);
-        icon_photo = findViewById(R.id.icon_photo);
-        btn_logout = findViewById(R.id.btn_logout);
-        board_title = findViewById(R.id.board_title);
-        input_title = findViewById(R.id.input_title);
-        input_content = findViewById(R.id.input_content);
-        scrollView = findViewById(R.id.scrollView);
-        view1 = findViewById(R.id.view1);
-        view2 = findViewById(R.id.view2);
-        btn_cancel = findViewById(R.id.btn_cancel);
-        btn_submit = findViewById(R.id.btn_submit);
-        team = getIntent().getStringExtra("team");
-
-        // 퍼미션 권한 허용 코드
-        // 만약 권한 허용 안했으면 글 못쓰게
-        // 스토리지에서 사진을 불러와서 이미지 뷰에 띄우기
-
-        // FirebaseStorage에 이미지 올리기
-        // FirebaseStorage의 이미지 Download URL 가져오기
-
-        // DB에 URL 올리기 -> btn_submit onclick에
+        setView();
 
         board_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,23 +83,7 @@ public class BoardWriteActivity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(
-                        Intent.createChooser(intent, "이미지를 선택하세요."), 0);
-            }
-        });
-
-        firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Users users = documentSnapshot.toObject(Users.class);
-                nickname = users.getNickname();
-            }
-        });
-
-        scrollView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input_content.setFocusable(true);
-                input_content.requestFocus();
+                Intent.createChooser(intent, "이미지를 선택하세요."), 0);
             }
         });
 
@@ -140,18 +104,72 @@ public class BoardWriteActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     } // onCreate
 
-    ///////////////////////////////////////////////////////////////////////////////////
-    // 사진 각도 틀어진 것 처리
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-                matrix, true);
-    }
-    ///////////////////////////////////////////////////////////////////////////////////
+    private void setView(){
+        board_image = findViewById(R.id.board_image);
+        icon_photo = findViewById(R.id.icon_photo);
+        board_title = findViewById(R.id.board_title);
+        input_title = findViewById(R.id.input_title);
+        input_content = findViewById(R.id.input_content);
+        scrollView = findViewById(R.id.scrollView);
+        btn_cancel = findViewById(R.id.btn_cancel);
+        btn_submit = findViewById(R.id.btn_submit);
 
+        team = getIntent().getStringExtra("team");
+        String title = getIntent().getStringExtra("title");
+        String image = getIntent().getStringExtra("image");
+        String content = getIntent().getStringExtra("content");
+        documentId = getIntent().getStringExtra("documentId");
+        statement = getIntent().getStringExtra("statement");
+
+        if(statement != null && statement.equals("modify")){
+            if (image != null && image.length() > 4){
+                Glide.with(this).load(image).into(board_image);
+                icon_photo.setVisibility(View.GONE);
+            }
+            input_title.setText(title);
+            input_content.setText(content);
+        }
+
+        scrollView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                input_content.setFocusable(true);
+                input_content.requestFocus();
+            }
+        });
+
+        firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Users users = documentSnapshot.toObject(Users.class);
+                nickname = users.getNickname();
+            }
+        });
+
+    }
+
+    private void permissionCheck() {
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            ArrayList<String> arrayPermission = new ArrayList<String>();
+
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                arrayPermission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+
+            if (arrayPermission.size() > 0) {
+                String strArray[] = new String[arrayPermission.size()];
+                strArray = arrayPermission.toArray(strArray);
+                ActivityCompat.requestPermissions(this, strArray, PERMISSION_REQUEST_CODE);
+            } else {
+                // Initialize 코드
+            }
+        }
+    } // permissionCheck
 
     // 이미지 업로드 결과 처리
     @Override
@@ -172,6 +190,32 @@ public class BoardWriteActivity extends AppCompatActivity {
             }
         }
     } // onActivityResult
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode) {
+            case PERMISSION_REQUEST_CODE: {
+                if (grantResults.length < 1) {
+                    Toast.makeText(this, "Failed get permission", Toast.LENGTH_SHORT).show();
+                    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    finish();
+                    return ;
+                }
+                for (int i=0; i<grantResults.length; i++) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "Permission is denied : " + permissions[i], Toast.LENGTH_SHORT).show();
+                        finish();
+                        return ;
+                    }
+                }
+                Toast.makeText(this, "Permission is granted", Toast.LENGTH_SHORT).show();
+                // Initialize 코드
+            }
+            break;
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
     // 파일 업로드
     private void uploadFile() {
@@ -226,6 +270,7 @@ public class BoardWriteActivity extends AppCompatActivity {
 
     private void setFirestore(String downloadUrl) {
         boardDTO = new BoardDTO();
+        boardDTO.setEmail(auth.getCurrentUser().getEmail());
         boardDTO.setTitle(input_title.getText().toString());
         boardDTO.setContent(input_content.getText().toString());
         boardDTO.setUserId(nickname);
@@ -235,60 +280,28 @@ public class BoardWriteActivity extends AppCompatActivity {
         boardDTO.setSubject("[게시판]");
         boardDTO.setTeam(team);
 
-        firestore.collection("Board").document().set(boardDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isComplete()){
-                    Toast.makeText(getApplicationContext(), "글이 작성 되었습니다.", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-        });
-    }
-
-    private void permissionCheck() {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-            ArrayList<String> arrayPermission = new ArrayList<String>();
-
-            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                arrayPermission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-            }
-
-            if (arrayPermission.size() > 0) {
-                String strArray[] = new String[arrayPermission.size()];
-                strArray = arrayPermission.toArray(strArray);
-                ActivityCompat.requestPermissions(this, strArray, PERMISSION_REQUEST_CODE);
-            } else {
-                // Initialize 코드
-            }
-        }
-    } // permissionCheck
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode) {
-            case PERMISSION_REQUEST_CODE: {
-                if (grantResults.length < 1) {
-                    Toast.makeText(this, "Failed get permission", Toast.LENGTH_SHORT).show();
-                    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-                    finish();
-                    return ;
-                }
-                for (int i=0; i<grantResults.length; i++) {
-                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(this, "Permission is denied : " + permissions[i], Toast.LENGTH_SHORT).show();
+        if(statement != null && statement.equals("modify")){
+            firestore.collection("Board").document(documentId).set(boardDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isComplete()){
+                        Toast.makeText(getApplicationContext(), "글이 수정 되었습니다.", Toast.LENGTH_SHORT).show();
                         finish();
-                        return ;
                     }
                 }
-                Toast.makeText(this, "Permission is granted", Toast.LENGTH_SHORT).show();
-                // Initialize 코드
-            }
-            break;
+            });
         }
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        else{
+            firestore.collection("Board").document().set(boardDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isComplete()){
+                        Toast.makeText(getApplicationContext(), "글이 작성 되었습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }
+            });
+        }
     }
 
     public void logout(View view) {

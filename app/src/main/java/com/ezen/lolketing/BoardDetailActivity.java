@@ -5,10 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +40,7 @@ import java.util.Map;
 
 public class BoardDetailActivity extends AppCompatActivity {
 
-    ImageView main_logo, img_rank, board_img, img_like, img_comment, img_report;
+    ImageView main_logo, img_rank, board_img, img_like, img_comment, img_report, btn_more;
     TextView btn_logout, board_title, content_title, userId, views, timestamp, board_content, txt_likeCount, txt_commentCount;
     RecyclerView recyclerView_comment;
     EditText input_comment;
@@ -51,6 +53,8 @@ public class BoardDetailActivity extends AppCompatActivity {
 
     Query query;
     CommentAdapter adapter;
+
+    String get_image;
 
     private BoardDTO.commentDTO commentDTO;
 
@@ -133,6 +137,31 @@ public class BoardDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btn_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(getApplicationContext(), btn_more);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.menu_board, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.modify:
+                                Toast.makeText(getApplicationContext(),"글 수정", Toast.LENGTH_SHORT).show();
+                                modifyContent();
+                                return true;
+                            case R.id.delete:
+                                Toast.makeText(getApplicationContext(),"글 삭제", Toast.LENGTH_SHORT).show();
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
     private void setFirestore() {
@@ -144,6 +173,7 @@ public class BoardDetailActivity extends AppCompatActivity {
                 commentDTO.setUserId(user.getNickname());
                 commentDTO.setTimestamp(System.currentTimeMillis());
                 commentDTO.setComment(input_comment.getText().toString());
+                commentDTO.setEmail(auth.getCurrentUser().getEmail());
 
                 firestore.collection("Board").document(documentID).collection("Comment").document().set(commentDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -168,6 +198,7 @@ public class BoardDetailActivity extends AppCompatActivity {
         board_title = findViewById(R.id.board_title);
         content_title = findViewById(R.id.content_title);
         userId = findViewById(R.id.userId);
+        btn_more = findViewById(R.id.btn_more);
         views = findViewById(R.id.views);
         timestamp = findViewById(R.id.timestamp);
         board_content = findViewById(R.id.board_content);
@@ -185,7 +216,7 @@ public class BoardDetailActivity extends AppCompatActivity {
         String get_subject = intent.getStringExtra("subject");
         String get_content_title = intent.getStringExtra("title");
         String get_userId = intent.getStringExtra("userId");
-        String get_image = intent.getStringExtra("image");
+        get_image = intent.getStringExtra("image");
         String get_content = intent.getStringExtra("content");
         documentID = intent.getStringExtra("documentID");
         Long get_timestamp = intent.getLongExtra("timestamp", 0);
@@ -214,6 +245,16 @@ public class BoardDetailActivity extends AppCompatActivity {
         } else {
             Glide.with(this).load(get_image).into(board_img);
         }
+    }
+
+    public void modifyContent() {
+        Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
+        intent.putExtra("title", content_title.getText().toString());
+        intent.putExtra("image", get_image);
+        intent.putExtra("content", board_content.getText().toString());
+        intent.putExtra("documentId", documentID);
+        intent.putExtra("statement", "modify");
+        startActivity(intent);
     }
 
     public void logout(View view) {

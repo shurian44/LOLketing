@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ezen.lolketing.BoardDetailActivity;
+import com.ezen.lolketing.BoardWriteActivity;
 import com.ezen.lolketing.R;
 import com.ezen.lolketing.model.BoardDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -27,6 +28,12 @@ import java.text.SimpleDateFormat;
 public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapter.BoardHolder> {
 
     setActivityMove listener;
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        listener.returnItemSize(getItemCount());
+    }
 
     public BoardAdapter(@NonNull FirestoreRecyclerOptions<BoardDTO> options, setActivityMove listener) {
         super(options);
@@ -72,7 +79,6 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(holder.itemView.getContext(), board.getTitle() + " 글을 길게 누르셨군요~", Toast.LENGTH_SHORT).show();
                 //Creating the instance of PopupMenu
                 PopupMenu popup = new PopupMenu(holder.itemView.getContext(), holder.itemView);
                 //Inflating the Popup using xml file
@@ -82,6 +88,14 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
                         switch (item.getItemId()) {
                             case R.id.modify:
                                 Toast.makeText(holder.itemView.getContext(),"글 수정", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(holder.itemView.getContext(), BoardWriteActivity.class);
+                                intent.putExtra("title", board.getTitle());
+                                intent.putExtra("image", board.getImage());
+                                intent.putExtra("content", board.getContent());
+                                intent.putExtra("team", board.getTeam());
+                                intent.putExtra("documentId", getSnapshots().getSnapshot(position).getId());
+                                intent.putExtra("statement", "modify");
+                                listener.activityMove(intent);
                                 return true;
                             case R.id.delete:
                                 Toast.makeText(holder.itemView.getContext(),"글 삭제", Toast.LENGTH_SHORT).show();
@@ -97,6 +111,7 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
         });
     } // onBindViewHolder
 
+    // 글 삭제 메소드
     public void CommentDelete(final Context context, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -107,14 +122,14 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
             {
                 getSnapshots().getSnapshot(position).getReference().delete();
                 Toast.makeText(context, "글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
-//                notifyDataSetChanged();
+                notifyDataSetChanged();
             }
         });
         builder.setNegativeButton("아니오", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int id)
             {
-                Toast.makeText(context, "삭제 취소.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "삭제가 취소되었습니다.", Toast.LENGTH_SHORT).show();
             }
         });
         AlertDialog alertDialog = builder.create();
@@ -147,6 +162,7 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
 
     public interface setActivityMove{
         void activityMove(Intent intent);
+        void returnItemSize(int size);
     }
 
 

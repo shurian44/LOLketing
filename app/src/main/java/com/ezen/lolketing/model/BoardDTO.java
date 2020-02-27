@@ -3,6 +3,7 @@ package com.ezen.lolketing.model;
 import java.util.Map;
 
 public class BoardDTO {
+    private String email;
     private String team;
     private Long timestamp;
     private String userId;
@@ -18,7 +19,8 @@ public class BoardDTO {
     public BoardDTO() {
     }
 
-    public BoardDTO(String team, Long timestamp, String userId, String subject, String title, String content, String image, int commentCounts, Map<String, Boolean> like, int likeCounts, int views) {
+    public BoardDTO(String email, String team, Long timestamp, String userId, String subject, String title, String content, String image, int commentCounts, Map<String, Boolean> like, int likeCounts, int views) {
+        this.email = email;
         this.team = team;
         this.timestamp = timestamp;
         this.userId = userId;
@@ -30,6 +32,14 @@ public class BoardDTO {
         this.like = like;
         this.likeCounts = likeCounts;
         this.views = views;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getTeam() {
@@ -121,6 +131,7 @@ public class BoardDTO {
     }
 
     public static class commentDTO {
+        private String email;
         private String userId;
         private Long timestamp;
         private String comment;
@@ -128,11 +139,21 @@ public class BoardDTO {
         public commentDTO() {
         }
 
-        public commentDTO(String userId, Long timestamp, String comment) {
+        public commentDTO(String email, String userId, Long timestamp, String comment) {
+            this.email = email;
             this.userId = userId;
             this.timestamp = timestamp;
             this.comment = comment;
         }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
 
         public String getUserId() {
             return userId;
