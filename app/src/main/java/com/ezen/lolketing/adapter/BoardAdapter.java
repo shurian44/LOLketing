@@ -94,6 +94,7 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
                                 intent.putExtra("image", board.getImage());
                                 intent.putExtra("content", board.getContent());
                                 intent.putExtra("team", board.getTeam());
+                                intent.putExtra("timestamp", board.getTimestamp());
                                 intent.putExtra("documentId", getSnapshots().getSnapshot(position).getId());
                                 intent.putExtra("statement", "modify");
                                 listener.activityMove(intent);
