@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
 import com.ezen.lolketing.model.ChattingDTO
 import com.ezen.lolketing.model.Users
+import com.firebase.ui.common.ChangeEventType
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.item_chat.view.*
 import java.text.SimpleDateFormat

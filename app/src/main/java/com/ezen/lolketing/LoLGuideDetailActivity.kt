@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.ezen.lolketing.adapter.GuidSliderAdapter
+import com.ezen.lolketing.adapter.EventSliderAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
@@ -82,7 +82,7 @@ class LoLGuideDetailActivity : AppCompatActivity() {
                 var images = listOf<Int>(R.drawable.img_terms01, R.drawable.img_terms02, R.drawable.img_terms03, R.drawable.img_terms04,
                         R.drawable.img_terms05, R.drawable.img_terms06, R.drawable.img_terms07, R.drawable.img_terms08, R.drawable.img_terms09,
                         R.drawable.img_terms10, R.drawable.img_terms11, R.drawable.img_terms12, R.drawable.img_terms13, R.drawable.img_terms14)
-                imageSlider.setSliderAdapter(GuidSliderAdapter(images))
+                imageSlider.setSliderAdapter(EventSliderAdapter(images))
                 imageSlider.startAutoCycle()
                 imageSlider.setIndicatorAnimation(IndicatorAnimations.WORM)
                 imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)

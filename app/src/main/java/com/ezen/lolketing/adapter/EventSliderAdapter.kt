@@ -7,7 +7,7 @@ import com.ezen.lolketing.R
 import com.smarteist.autoimageslider.SliderViewAdapter
 import kotlinx.android.synthetic.main.item_slider.view.*
 
-class GuidSliderAdapter (images : List<Int>) : SliderViewAdapter<GuidSliderAdapter.GuidViewHolder>() {
+class EventSliderAdapter (images : List<Int>) : SliderViewAdapter<EventSliderAdapter.GuidViewHolder>() {
     var images = images
 
     class GuidViewHolder(itemView: View) : SliderViewAdapter.ViewHolder(itemView)
