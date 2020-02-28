@@ -52,8 +52,8 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
         var mDate = Date()
 
         btn_chatting.setOnClickListener {
-            if(mDate != date){
-                toast("당일에만 작성 가능합니다.")
+            if(mDate.date != date.date && mDate.month != date.month){
+                toast("당일에만 작성 가능합니다.${date} / ${mDate}")
                 return@setOnClickListener
             }
             var comment = ChattingDTO.Comment()
@@ -64,7 +64,6 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
 
             reference.reference.child("ChattingRoom").child(time).child("comments").push().setValue(comment).addOnCompleteListener {
                 edit_chatting.text = null
-                Log.e("사이즈 확인", "지금 ${adapter.itemCount}")
                 chatting_recycler.scrollToPosition(adapter.itemCount-1)
             }
         }

@@ -144,7 +144,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:paddingLeft="10dp"
-        android:text="&quot;롤케팅&quot;의 캐시는 가상머니입니다.\n원하시는 가격을 입력하시고 충전하기 버튼을 눌러주세요.\n단, 최대 보유 캐시는 20억 원 까지입니다.\n그 이상 충전하면 강제로 20억 원으로 고정됩니다."
+        android:text="&quot;롤켓팅&quot;의 캐시는 가상머니입니다.\n원하시는 가격을 입력하시고 충전하기 버튼을 눌러주세요.\n단, 최대 보유 캐시는 20억 원 까지입니다.\n그 이상 충전하면 강제로 20억 원으로 고정됩니다."
         app:layout_constraintBottom_toTopOf="@id/btn_addCache"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>

@@ -1,6 +1,5 @@
 package com.ezen.lolketing.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,7 @@ import com.ezen.lolketing.model.ShopDTO
 import com.smarteist.autoimageslider.SliderViewAdapter
 import kotlinx.android.synthetic.main.item_slider.view.*
 
-class SliderAdapter(listener : SliderAdapter.MoveActivityListener, images : ArrayList<String>, shops : ArrayList<ShopDTO>?) : SliderViewAdapter<SliderAdapter.SliderViewHolder>() {
+class ShopSliderAdapter(listener : ShopSliderAdapter.MoveActivityListener, images : ArrayList<String>, shops : ArrayList<ShopDTO>?) : SliderViewAdapter<ShopSliderAdapter.SliderViewHolder>() {
     private var listener = listener
     var images = images
     var shops = shops ?: null

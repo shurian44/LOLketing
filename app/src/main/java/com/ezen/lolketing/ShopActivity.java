@@ -1,6 +1,5 @@
 package com.ezen.lolketing;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,13 +10,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.ezen.lolketing.adapter.ShopAdapter;
-import com.ezen.lolketing.adapter.SliderAdapter;
+import com.ezen.lolketing.adapter.ShopSliderAdapter;
 import com.ezen.lolketing.model.ShopDTO;
 import com.ezen.lolketing.model.ShopEventDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class ShopActivity extends AppCompatActivity
-        implements ShopAdapter.MoveActivityListener, SliderAdapter.MoveActivityListener {
+        implements ShopAdapter.MoveActivityListener, ShopSliderAdapter.MoveActivityListener {
 
     private ShopAdapter adapter;
     private RecyclerView shop_recyclerView;
@@ -77,8 +74,8 @@ public class ShopActivity extends AppCompatActivity
 
                         // auto slide -> shop event banner
                         SliderView sliderView = findViewById(R.id.imageSlider);
-                        SliderAdapter sliderAdapter = new SliderAdapter(ShopActivity.this, images, shopDTOS);
-                        sliderView.setSliderAdapter(sliderAdapter);
+                        ShopSliderAdapter shopSliderAdapter = new ShopSliderAdapter(ShopActivity.this, images, shopDTOS);
+                        sliderView.setSliderAdapter(shopSliderAdapter);
                         sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); // set indicator animation : SliderLayout.IndicatorAnimations.~
                         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
                         sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_RIGHT);
