@@ -1,14 +1,20 @@
 package com.ezen.lolketing
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.ezen.lolketing.adapter.EventSliderAdapter
 import com.ezen.lolketing.model.Users
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.smarteist.autoimageslider.IndicatorAnimations
+import com.smarteist.autoimageslider.SliderAnimations
+import com.smarteist.autoimageslider.SliderView
+import kotlinx.android.synthetic.main.activity_lol_guide_detail.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +26,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkDetailJoin()
+
+        // AUTO Slider
+        var images = listOf<Int>(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
+        img_ad.setSliderAdapter(EventSliderAdapter(images))
+        img_ad.setIndicatorAnimation(IndicatorAnimations.WORM) // set indicator animation : SliderLayout.IndicatorAnimations.~
+        img_ad.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+        img_ad.autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
+        img_ad.indicatorSelectedColor = Color.WHITE
+        img_ad.indicatorUnselectedColor = Color.GRAY
+        img_ad.scrollTimeInSec = 4 // set scroll delay in seconds
+        img_ad.startAutoCycle()
 
         btn_board.setOnClickListener {
 
