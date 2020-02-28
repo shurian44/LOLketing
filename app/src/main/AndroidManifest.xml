@@ -13,11 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WithdrawalActivity"></activity>
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".WithdrawalActivity" />
         <activity android:name=".CouponActivity" />
         <activity android:name=".EventListActivity" />
         <activity android:name=".EventDetailActivity" />
-        <activity android:name=".ShopEventActivity"></activity>
+        <activity android:name=".ShopEventActivity" />
         <activity android:name=".LoLGuideDetailActivity" />
         <activity android:name=".LoLGuideActivity" />
         <activity
@@ -50,13 +58,7 @@
         <activity android:name=".NewsActivity" />
         <activity android:name=".NewsWebViewActivity" />
         <activity android:name=".JsonActivity" />
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".LoginActivity"/>
         <activity android:name=".JoinActivity" />
         <activity android:name=".MainActivity" />
     </application>
