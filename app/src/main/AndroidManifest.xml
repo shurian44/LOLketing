@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SplashActivity"
+        <activity android:name=".MembershipActivity"></activity>
+        <activity
+            android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,7 +60,7 @@
         <activity android:name=".NewsActivity" />
         <activity android:name=".NewsWebViewActivity" />
         <activity android:name=".JsonActivity" />
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".JoinActivity" />
         <activity android:name=".MainActivity" />
     </application>

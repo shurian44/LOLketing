@@ -7,10 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.ezen.lolketing.model.CouponDTO
 import com.ezen.lolketing.model.Users
-import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_my_page.*
 
 class MyPageActivity : AppCompatActivity() {
@@ -58,6 +56,10 @@ class MyPageActivity : AppCompatActivity() {
 
         txt_coupon.setOnClickListener {
             startActivity(Intent(this, CouponActivity::class.java))
+        }
+
+        txt_grade_detail.setOnClickListener {
+            startActivity(Intent(this, MembershipActivity::class.java))
         }
     }
 

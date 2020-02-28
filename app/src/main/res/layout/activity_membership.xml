@@ -1,17 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".MembershipActivity">
+
+    <ImageView
+        android:id="@+id/main_logo"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/lolketing_logo"
+        android:onClick="moveHome"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:onClick="logout"
+        android:text="로그아웃"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/main_logo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/main_logo" />
+
+    <TextView
+        android:id="@+id/board_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryDark"
+        android:paddingLeft="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="등급 안내"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/main_logo" />
 
     <TextView
         android:id="@+id/title_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/board_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="롤켓팅 등급 혜택"
         />
 
@@ -23,7 +66,7 @@
         app:layout_constraintLeft_toLeftOf="@id/title_1"
         app:layout_constraintRight_toRightOf="@id/title_1"
         android:layout_marginTop="5dp"
-        android:text="MEMBER CLASS"
+        android:text="Membership Rank"
         android:textSize="24sp"
         />
 
@@ -58,7 +101,7 @@
         app:layout_constraintTop_toBottomOf="@id/title_3"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="10dp"
         >
 
@@ -326,11 +369,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/rank_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="20dp"
         android:text="※ 회원가입 후 누적 포인트의 기준에 따라 등급이 조정됩니다.\n※ 등급 기준은 상품 판매 금액이 아닌 실 결제 금액 기준으로 책정되어 조정됩니다.\n※ 등급 혜택 할인의 경우, 쿠폰 할인과 함께 중복 할인이 가능합니다."
-        android:textSize="10sp"
+        android:textSize="11sp"
         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
