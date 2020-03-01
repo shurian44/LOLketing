@@ -14,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
-import kotlinx.android.synthetic.main.activity_lol_guide_detail.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -98,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun managerPage(view: View) {
-        startActivity(Intent(this, JsonActivity::class.java))
+        startActivity(Intent(this, ManagerActivity::class.java))
     }
 
     fun moveActivity(view: View) {

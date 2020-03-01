@@ -59,7 +59,7 @@
         <activity android:name=".TeamActivity" />
         <activity android:name=".NewsActivity" />
         <activity android:name=".NewsWebViewActivity" />
-        <activity android:name=".JsonActivity" />
+        <activity android:name=".ManagerActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".JoinActivity" />
         <activity android:name=".MainActivity" />

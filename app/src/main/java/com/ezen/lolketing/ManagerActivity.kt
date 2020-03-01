@@ -5,30 +5,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.ezen.lolketing.model.GameDTO
-import com.ezen.lolketing.model.NewsDTO
 import com.ezen.lolketing.model.TeamDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.activity_json.*
-import kotlinx.android.synthetic.main.activity_news.*
+import kotlinx.android.synthetic.main.activity_manager.*
 import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 
-class JsonActivity : AppCompatActivity() {
+class ManagerActivity : AppCompatActivity() {
 
     var firestore = FirebaseFirestore.getInstance()
     var auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_json)
+        setContentView(R.layout.activity_manager)
 
         addShopEvent.setOnClickListener {
             startActivity(Intent(this, ShopEventActivity::class.java))
