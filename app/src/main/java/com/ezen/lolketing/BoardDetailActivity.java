@@ -158,6 +158,7 @@ public class BoardDetailActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.modify:
+                                Toast.makeText(getApplicationContext(),"글 수정", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
                                 intent.putExtra("title", content_title.getText().toString());
                                 intent.putExtra("image", get_image);
@@ -168,8 +169,7 @@ public class BoardDetailActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 return true;
                             case R.id.delete:
-                                firestore.collection("Board").document(documentID).delete();
-                                finish();
+                                CommentDelete();
                                 return true;
                         }
                         return false;
@@ -180,7 +180,30 @@ public class BoardDetailActivity extends AppCompatActivity {
         });
     }
 
+    // 글 삭제 메소드
+    public void CommentDelete() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(BoardDetailActivity.this);
 
+        builder.setTitle("글 삭제").setMessage("정말 삭제하시겠습니까?");
+        builder.setPositiveButton("네", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                firestore.collection("Board").document(documentID).delete();
+                Toast.makeText(BoardDetailActivity.this, "글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int id)
+            {
+                Toast.makeText(BoardDetailActivity.this, "삭제가 취소되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
     private void setFirestore() {
         firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -258,19 +281,19 @@ public class BoardDetailActivity extends AppCompatActivity {
                 String grade = user.getGrade();
 
                 if(grade.equals("브론즈")){
-                    Glide.with(getApplicationContext()).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/bronze.png?alt=media&token=8826d27f-be2d-423e-a4cb-37b6587d914c").into(img_rank);
+                    img_rank.setImageResource(R.drawable.icon_bronze);
                 }
                 else if(grade.equals("실버")){
-                    Glide.with(getApplicationContext()).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/silver.png?alt=media&token=083c09ba-b311-45de-ba9c-852f2b73afee").into(img_rank);
+                    img_rank.setImageResource(R.drawable.icon_silver);
                 }
                 else if(grade.equals("골드")){
-                    Glide.with(getApplicationContext()).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/gold.png?alt=media&token=42ba695d-2f81-43fa-8e6b-c44bda6c827a").into(img_rank);
+                    img_rank.setImageResource(R.drawable.icon_gold);
                 }
                 else if(grade.equals("플래티넘")){
-                    Glide.with(getApplicationContext()).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/platinum.png?alt=media&token=e87bbc24-e3dc-4d9b-8695-96dce9e4979e").into(img_rank);
+                    img_rank.setImageResource(R.drawable.icon_platinum);
                 }
                 else if(grade.equals("마스터")){
-                    Glide.with(getApplicationContext()).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/master.png?alt=media&token=72ebd38e-23b2-4462-89ab-598c85d06760").into(img_rank);
+                    img_rank.setImageResource(R.drawable.icon_master);
                 }
             }
         });
@@ -309,7 +332,6 @@ public class BoardDetailActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setViews();
         adapter.startListening();
     }
 

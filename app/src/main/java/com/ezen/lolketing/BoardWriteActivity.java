@@ -274,24 +274,23 @@ public class BoardWriteActivity extends AppCompatActivity {
         boardDTO.setTitle(input_title.getText().toString());
         boardDTO.setContent(input_content.getText().toString());
         boardDTO.setUserId(nickname);
-        boardDTO.setTimestamp(System.currentTimeMillis());
+
         boardDTO.setLike(new HashMap<String, Boolean>());
         boardDTO.setImage(downloadUrl);
         boardDTO.setSubject("[게시판]");
         boardDTO.setTeam(team);
+        if(statement != null && statement.equals("modify"))
+            boardDTO.setTimestamp(getIntent().getLongExtra("timestamp", 0));
+        else
+            boardDTO.setTimestamp(System.currentTimeMillis());
 
-        if(statement != null && statement.equals("modify")){
-            firestore.collection("Board").document(documentId).set(boardDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isComplete()){
-                        Toast.makeText(getApplicationContext(), "글이 수정 되었습니다.", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                }
-            });
-        }
-        else{
+        if(statement != null && statement.equals("modify")) {
+            firestore.collection("Board").document(documentId).update("content", input_content.getText().toString(), "title", input_title.getText().toString());
+            if(downloadUrl != null){
+                firestore.collection("Board").document(documentId).update("image", downloadUrl);
+            }
+            finish();
+        }else{
             firestore.collection("Board").document().set(boardDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
