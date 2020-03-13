@@ -55,6 +55,7 @@ public class BoardDetailActivity extends AppCompatActivity {
 
     Query query;
     CommentAdapter adapter;
+    BoardDTO board;
 
     private BoardDTO.commentDTO commentDTO;
     private Users user;
@@ -64,10 +65,12 @@ public class BoardDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board_detail);
 
+        // 뷰 세팅
         setViews();
 
         recyclerView_comment = findViewById(R.id.recyclerView_comment);
 
+        // 댓글 시간 순으로 내림차순 정렬
         query = firestore.collection("Board").document(documentID).collection("Comment").orderBy("timestamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<BoardDTO.commentDTO> options = new FirestoreRecyclerOptions.Builder<BoardDTO.commentDTO>()
                 .setQuery(query, BoardDTO.commentDTO.class)
@@ -90,7 +93,6 @@ public class BoardDetailActivity extends AppCompatActivity {
                 AlertDialog.Builder pc = new AlertDialog.Builder(BoardDetailActivity.this);
 
                 pc.setTitle("신고하기");
-//                pc.setIcon(R.drawable.policeman);
                 pc.setSingleChoiceItems(title, 3, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -109,14 +111,13 @@ public class BoardDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
                 });
                 pc.show();
             }
         });
 
-        // 좋아요 버튼
+        // 좋아요 버튼 클릭 이벤트
         img_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,29 +148,38 @@ public class BoardDetailActivity extends AppCompatActivity {
             }
         });
 
+        // 더보기 버튼 클릭 이벤트
         btn_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Creating the instance of PopupMenu
+                // 팝업메뉴 생성
                 PopupMenu popup = new PopupMenu(getApplicationContext(), btn_more);
-                //Inflating the Popup using xml file
+                // 팝업메뉴 클릭 이벤트
                 popup.getMenuInflater().inflate(R.menu.menu_board, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.modify:
-                                Toast.makeText(getApplicationContext(),"글 수정", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
-                                intent.putExtra("title", content_title.getText().toString());
-                                intent.putExtra("image", get_image);
-                                intent.putExtra("content", board_content.getText().toString());
-                                intent.putExtra("team", team);
-                                intent.putExtra("documentId", documentID);
-                                intent.putExtra("statement", "modify");
-                                startActivity(intent);
+                                if(auth.getCurrentUser().getEmail().equals(board.getEmail())) {
+                                    Toast.makeText(getApplicationContext(), "글 수정", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
+                                    intent.putExtra("title", content_title.getText().toString());
+                                    intent.putExtra("image", get_image);
+                                    intent.putExtra("content", board_content.getText().toString());
+                                    intent.putExtra("team", team);
+                                    intent.putExtra("documentId", documentID);
+                                    intent.putExtra("statement", "modify");
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "글 수정 권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                                }
                                 return true;
                             case R.id.delete:
-                                CommentDelete();
+                                if(auth.getCurrentUser().getEmail().equals(board.getEmail())) {
+                                    CommentDelete();
+                                }else {
+                                    Toast.makeText(getApplicationContext(), "글 삭제 권한이 없습니다.", Toast.LENGTH_SHORT).show();
+                                }
                                 return true;
                         }
                         return false;
@@ -178,7 +188,7 @@ public class BoardDetailActivity extends AppCompatActivity {
                 popup.show();
             }
         });
-    }
+    } // onCreate
 
     // 글 삭제 메소드
     public void CommentDelete() {
@@ -203,8 +213,9 @@ public class BoardDetailActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
+    } // CommentDelete
 
+    // 댓글 세팅
     private void setFirestore() {
         firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -227,8 +238,9 @@ public class BoardDetailActivity extends AppCompatActivity {
                 });
             }
         });
-    }
+    } // setFirestore
 
+    // 뷰 메소드 캡슐화
     public void setViews() {
         main_logo = findViewById(R.id.main_logo);
         img_rank = findViewById(R.id.img_rank);
@@ -269,6 +281,14 @@ public class BoardDetailActivity extends AppCompatActivity {
 
         board_title.append(team);
 
+        firestore.collection("Board").document(documentID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                board = documentSnapshot.toObject(BoardDTO.class);
+            }
+        });
+
+        // 아이디 옆에 등급 이미지 추가
         firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -311,34 +331,36 @@ public class BoardDetailActivity extends AppCompatActivity {
         txt_likeCount.setText(get_likeCounts + "");
         txt_commentCount.setText(get_commentCounts + "");
 
+        // 사진 미등록 시 뷰(구분 선) 숨김
         if (get_image == null || get_image.length() < 1) {
             board_img.setVisibility(View.GONE);
             view2.setVisibility(View.GONE);
         } else {
             Glide.with(this).load(get_image).into(board_img);
         }
-    }
+    } // setViews
 
+    // 로그아웃
     public void logout(View view) {
         auth.signOut();
     }
 
+    // 로고(홈)
     public void moveHome(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
+    // 리사이클러뷰 어댑터 실행 및 종료
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
     }
-
     @Override
     protected void onStop(){
         super.onStop();
         adapter.stopListening();
     }
-}
-
+} // class

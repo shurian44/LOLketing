@@ -73,9 +73,12 @@ public class BoardWriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board_write);
 
+        // 퍼미션 승인 여부 확인
         permissionCheck();
+        // 뷰 세팅
         setView();
 
+        // 이미지 업로드 클릭 이벤트
         board_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +90,7 @@ public class BoardWriteActivity extends AppCompatActivity {
             }
         });
 
+        // 취소 버튼 클릭 이벤트
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +98,7 @@ public class BoardWriteActivity extends AppCompatActivity {
             }
         });
 
+        // 등록 버튼 클릭 이벤트
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,10 +109,9 @@ public class BoardWriteActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     } // onCreate
 
+    // 뷰 세팅
     private void setView(){
         board_image = findViewById(R.id.board_image);
         icon_photo = findViewById(R.id.icon_photo);
@@ -125,6 +129,7 @@ public class BoardWriteActivity extends AppCompatActivity {
         documentId = getIntent().getStringExtra("documentId");
         statement = getIntent().getStringExtra("statement");
 
+        // 글 수정 시 이미지 여부 확인 및 등록
         if(statement != null && statement.equals("modify")){
             if (image != null && image.length() > 4){
                 Glide.with(this).load(image).into(board_image);
@@ -134,14 +139,7 @@ public class BoardWriteActivity extends AppCompatActivity {
             input_content.setText(content);
         }
 
-        scrollView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                input_content.setFocusable(true);
-                input_content.requestFocus();
-            }
-        });
-
+        // 유저 닉네임 표시
         firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -149,9 +147,9 @@ public class BoardWriteActivity extends AppCompatActivity {
                 nickname = users.getNickname();
             }
         });
+    } // setView
 
-    }
-
+    // 퍼미션 승인 여부 확인
     private void permissionCheck() {
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -191,6 +189,7 @@ public class BoardWriteActivity extends AppCompatActivity {
         }
     } // onActivityResult
 
+    // 퍼미션 등록 요청
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch(requestCode) {
@@ -213,41 +212,38 @@ public class BoardWriteActivity extends AppCompatActivity {
             }
             break;
         }
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
+    } // onRequestPermissionsResult
 
     // 파일 업로드
     private void uploadFile() {
-        //업로드 진행 Dialog 보이기
+        // 업로드 진행 Dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("업로드중...");
         progressDialog.show();
 
-        //Unique한 파일명을 만들자.
+        // 파일명 지정
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
         Date now = new Date();
         String filename = formatter.format(now) + ".png";
-        //storage 주소와 폴더 파일명을 지정해 준다.
+        //storage 주소와 폴더 파일명을 지정
         final StorageReference storageRef = storage.getReference().child("board/" + filename);
-//                    getReferenceFromUrl("gs://lolketing.appspot.com").child("board/" + filename);
-        //올라가거라...
         storageRef.putFile(filePath)
                 //진행중
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        @SuppressWarnings("VisibleForTests") //이걸 넣어 줘야 아랫줄에 에러가 사라진다. 넌 누구냐?
+                        @SuppressWarnings("VisibleForTests")
                                 double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                        //dialog에 진행률을 퍼센트로 출력해 준다
+                        // 다이얼로그에 진행률을 퍼센트로 출력
                         progressDialog.setMessage("Uploaded " + ((int) progress) + "% ...");
                     }
                 })
-                //성공시
+                //성공 시
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
+                        progressDialog.dismiss(); // 업로드 진행 Dialog 상자 닫기
                         Toast.makeText(getApplicationContext(), "업로드 완료!", Toast.LENGTH_SHORT).show();
                         storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                             @Override
@@ -257,7 +253,7 @@ public class BoardWriteActivity extends AppCompatActivity {
                         });
                     }
                 })
-                //실패시
+                //실패 시
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -265,9 +261,9 @@ public class BoardWriteActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     } // uploadFile
 
+    // 게시글 세팅
     private void setFirestore(String downloadUrl) {
         boardDTO = new BoardDTO();
         boardDTO.setEmail(auth.getCurrentUser().getEmail());
@@ -279,11 +275,8 @@ public class BoardWriteActivity extends AppCompatActivity {
         boardDTO.setImage(downloadUrl);
         boardDTO.setSubject("[게시판]");
         boardDTO.setTeam(team);
-        if(statement != null && statement.equals("modify"))
-            boardDTO.setTimestamp(getIntent().getLongExtra("timestamp", 0));
-        else
-            boardDTO.setTimestamp(System.currentTimeMillis());
 
+        // 상태가 글 수정일 시 기존 시간 불러오기
         if(statement != null && statement.equals("modify")) {
             firestore.collection("Board").document(documentId).update("content", input_content.getText().toString(), "title", input_title.getText().toString());
             if(downloadUrl != null){
@@ -291,6 +284,8 @@ public class BoardWriteActivity extends AppCompatActivity {
             }
             finish();
         }else{
+            // 수정 아닐 시 현재 시간 등록
+            boardDTO.setTimestamp(System.currentTimeMillis());
             firestore.collection("Board").document().set(boardDTO).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
