@@ -83,28 +83,28 @@ public class RouletteActivity extends AppCompatActivity {
             public void onAnimationEnd(Animator animation) {
                 if ( degree_rand >= 0 && degree_rand < 45 ) {
                     result = "2000RP";
-                    Toast.makeText(getApplicationContext(), "결과 그룹1" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "축하합니다! 2000RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }else if ( degree_rand >= 45 && degree_rand < 90 ) {
                     result = "300RP";
-                    Toast.makeText(getApplicationContext(), "결과 그룹2" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "축하합니다! 300RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }else if ( degree_rand >= 90 && degree_rand < 135 ) {
                     result = "350RP";
-                    Toast.makeText(getApplicationContext(), "결과 그룹3" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "축하합니다! 3500RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }else if ( degree_rand >= 135 && degree_rand < 180 ) {
                     result = "200RP";
-                    Toast.makeText(getApplicationContext(), "결과 그룹4" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "축하합니다! 200RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }else if ( degree_rand >= 180 && degree_rand < 225 ) {
                     result = "1000RP";
-                    Toast.makeText(getApplicationContext(), "결과 그룹5" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "축하합니다! 1000RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }else if ( degree_rand >= 225 && degree_rand < 270 ) {
                     result = "250RP";
-                    Toast.makeText(getApplicationContext(), "결과 그룹6" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "축하합니다! 250RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }else if ( degree_rand >= 270 && degree_rand < 315 ) {
                     result = "450RP";
-                    Toast.makeText(getApplicationContext(), "결과 그룹7" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "축하합니다! 450RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }else if ( degree_rand >= 315 && degree_rand < 360 ) {
-                    result = "150RP";
-                    Toast.makeText(getApplicationContext(), "결과 그룹8" , Toast.LENGTH_SHORT).show();
+                    result = "550RP";
+                    Toast.makeText(getApplicationContext(), "축하합니다! 250RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }
 
                 CouponDTO coupon = new CouponDTO();

@@ -24,7 +24,7 @@ class CouponFragment(status : String) : Fragment() {
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_coupon, container, false)
 
-        var query = firestore.collection("Coupon").whereEqualTo("id", auth.currentUser?.email!!).whereEqualTo("use", status)
+        var query = firestore.collection("Coupon").whereEqualTo("id", auth.currentUser?.email!!).whereEqualTo("use", status).orderBy("title")
         var options = FirestoreRecyclerOptions.Builder<CouponDTO>()
                 .setQuery(query, CouponDTO::class.java).build()
 
