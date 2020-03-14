@@ -68,8 +68,6 @@ public class BoardDetailActivity extends AppCompatActivity {
         // 뷰 세팅
         setViews();
 
-        recyclerView_comment = findViewById(R.id.recyclerView_comment);
-
         // 댓글 시간 순으로 내림차순 정렬
         query = firestore.collection("Board").document(documentID).collection("Comment").orderBy("timestamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<BoardDTO.commentDTO> options = new FirestoreRecyclerOptions.Builder<BoardDTO.commentDTO>()
