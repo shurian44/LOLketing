@@ -19,7 +19,6 @@ import com.ezen.lolketing.adapter.BoardAdapter;
 import com.ezen.lolketing.model.BoardDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -31,10 +30,8 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
     EditText board_searchBar;
     RecyclerView board_recyclerView;
 
-    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseUser user = auth.getCurrentUser();
-    String userEmail = user.getEmail();
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     String team;
     String search;
 
@@ -68,9 +65,7 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
 
         board_title.setText("팀 게시판 - " + team);
 
-//        String[] search_conditions = getResources().getStringArray(R.array.search_conditions);
-
-        // 팀 정보 게시판 버튼 클릭
+        // 구단 정보 버튼 클릭 이벤트
         btn_teamInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,19 +138,17 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
                 adapter.startListening();
             }
         });
-    }
+    } // onCreate
 
     // 리사이클러뷰 세팅
     private void setRecycler(Query query) {
-
         FirestoreRecyclerOptions<BoardDTO> options = new FirestoreRecyclerOptions.Builder<BoardDTO>()
                 .setQuery(query, BoardDTO.class)
                 .build();
-
         adapter = new BoardAdapter(options, this);
         board_recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         board_recyclerView.setAdapter(adapter);
-    }
+    } // setRecycler
 
     // 검색조건 드랍다운 메뉴
     public void searchBy() {
@@ -183,13 +176,14 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
             }
         });
         popup.show();
-    }
+    } // searchBy
 
     @Override
     public void activityMove(Intent intent) {
         startActivity(intent);
     }
 
+    // 게시글 없을 시 이벤트
     @Override
     public void returnItemSize(int size) {
         if(size < 1){
@@ -197,20 +191,9 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         }else{
             txt_noResult.setVisibility(View.GONE);
         }
-    }
+    } // returnItemSize
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        adapter.stopListening();
-    }
-
+    // 로그아웃
     public void logout(View view) {
         auth.signOut();
         Intent intent = new Intent(this, LoginActivity.class);
@@ -218,9 +201,22 @@ public class BoardListActivity extends AppCompatActivity implements BoardAdapter
         startActivity(intent);
     }
 
+    // 로고(홈)
     public void moveHome(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    // 리사이클러뷰 어댑터 실행 및 종료
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        adapter.stopListening();
     }
 } // class
