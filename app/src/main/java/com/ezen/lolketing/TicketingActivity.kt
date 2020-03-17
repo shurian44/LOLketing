@@ -38,6 +38,7 @@ class TicketingActivity : AppCompatActivity() {
     var image : String ?= null
     var ticketCount = 0
     var pay = 0
+    var refundPay = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,49 +55,33 @@ class TicketingActivity : AppCompatActivity() {
         ticketing_seat.text = seat
         match.text = team
 
+        // QR 코드 생성
         if(image == null)
             generateQRCode("${auth.currentUser?.email}_${time}_${team}_${seat.replace("/", ",")}")
         else
             Glide.with(this).load(image).into(iv_generated_qrcode)
 
-        var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
-        var date = dateFormat.parse(time)
-        date.hours = date.hours - 4
-        var mDate = Date()
+        setRefund()
 
-        var refundPay = 0
-
-        when {
-            mDate > date -> {
-                // 환불 불가
-                btn_refund.isEnabled = false
-                btn_refund.setBackgroundColor(Color.parseColor("#777777"))
-                btn_refund.text = "환불 불가능"
-            }
-            mDate == date -> {
-                // 수수료 면제
-                refundPay = pay
-            }
-            else -> {
-                // 수수료 10%
-                refundPay = pay - (pay / 10)
-            }
-        }
         // 환불처리
         btn_refund.setOnClickListener {
             var seats = seat.split("/")
+            // 환불 금액에 맞게 유저 캐시 증가
             firestore.collection("Users").document(auth.currentUser?.email!!).update("cache", FieldValue.increment(refundPay.toDouble()))
+            // 좌석 되돌리기
             for(i in seats.indices){
                 firestore.collection("Game").document(time).collection("Seat").document("seat").update("seats.${seats[i]}", false)
             }
+            // 구매 내역 삭제
             firestore.collection("Purchase").document("${time},${seat.replace("/", ",")}").delete()
-
+            // QR 코드 삭제
             storage.reference.child("ticket/${auth.currentUser?.email}_${time}_${team}_${seat.replace("/", ",")}.jpg").delete()
             toast("환불 완료")
             finish()
         }
-    }
+    } // onCreate()
 
+    // QR 코드 생성
     private fun generateQRCode(content: String) {
         var qrCodeWriter = QRCodeWriter()
         try{
@@ -107,6 +92,7 @@ class TicketingActivity : AppCompatActivity() {
             var baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             var data = baos.toByteArray()
+            // 구매 내역에 구매한 티켓 정보 추가
             pathReference.putBytes(data).addOnSuccessListener {
                 pathReference.downloadUrl.addOnCompleteListener {
                     var purchaseDTO = PurchaseDTO()
@@ -121,16 +107,14 @@ class TicketingActivity : AppCompatActivity() {
                     purchaseDTO.information = "${time},${seat.replace("/", ",")}"
 
                     firestore.collection("Purchase").document("${time},${seat.replace("/", ",")}").set(purchaseDTO)
-
-
                 }
             }
-
         }catch (e : WriterException){
             e.printStackTrace()
         }
-    }
+    } // generateQRCode()
 
+    // QR 코드 그리기
     private fun toBitmap(matrix: BitMatrix): Bitmap {
         var width = matrix?.width ?: 0
         var height = matrix?.height ?: 0
@@ -144,6 +128,32 @@ class TicketingActivity : AppCompatActivity() {
             }
         }
         return bmp
+    } // toBitmap()
+
+    // 환불 상태 세팅
+    private fun setRefund(){
+        var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
+        var date = dateFormat.parse(time)
+        date.hours = date.hours - 4
+        var mDate = Date()
+
+        // 환불 상태 : 수수료 면제, 수수료 10%, 환불 불가
+        // 수수료 면제 : 당일 구매의 경우 수수료 면제
+        // 수수료 10% : 구매 다음 날 부터 게임 시작 4시간 이전의 경우 취소 수수료 10% 발생
+        // 환불 불가 : 게임 시작 4시간 전 이후에는 환불 불가
+        when {
+            mDate > date -> { // 환불 불가
+                btn_refund.isEnabled = false
+                btn_refund.setBackgroundColor(Color.parseColor("#777777"))
+                btn_refund.text = "환불 불가능"
+            }
+            mDate == date -> { // 수수료 면제
+                refundPay = pay
+            }
+            else -> { // 수수료 10%
+                refundPay = pay - (pay / 10)
+            }
+        }
     }
 
     fun logout(view: View) {

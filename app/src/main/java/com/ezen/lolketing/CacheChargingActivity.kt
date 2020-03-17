@@ -25,6 +25,7 @@ class CacheChargingActivity : AppCompatActivity() {
 
         btn_addCache.setOnClickListener {
             email = auth?.currentUser?.email!!
+            // 유저 정보 받아오기
             firestore.collection("Users").document(email).get().addOnCompleteListener {
                 var user = it.result?.toObject(Users::class.java)!!
                 var myCache = user.cache!!
@@ -32,15 +33,18 @@ class CacheChargingActivity : AppCompatActivity() {
                 var grade = user.grade
                 var accPoint = user.accPoint!!
 
-                if(myCache + cache > 2000000000){
+                // 캐시가 20억이 넘을 경우 20억으로 고정 : Int 형 값 넘어가는 오류 발생 방지
+                if(myCache + cache.toLong() > 2000000000){
                     point += (2000000000 - myCache) / 10
                     accPoint += (2000000000 - myCache) / 10
                     myCache = 2000000000
-                }else{
+                }else{ // 그 외는 충전한 금액 만큼 충전
                     point += cache / 10
                     accPoint += cache / 10
                     myCache += cache
                 }
+
+                // 포인트와 누적 포인트도 2억 이상일 경우 2억으로 고정
                 if(point > 200000000){
                     point = 200000000
                 }
@@ -48,6 +52,7 @@ class CacheChargingActivity : AppCompatActivity() {
                     accPoint = 200000000
                 }
 
+                // 마스터 등급을 제외하고 누적 포인트에 따라 등급 설정
                 if(grade != "마스터"){
                     grade = when(accPoint){
                         in 0..2900-> "브론즈"
@@ -56,20 +61,23 @@ class CacheChargingActivity : AppCompatActivity() {
                         else -> "플래티넘"
                     }
                 }
-
+                // 유저 데이터베이스 갱신
                 firestore.collection("Users").document(email).update("cache", myCache, "point", point, "grade", grade, "accPoint", accPoint)
                 finish()
             }
         }
-    }
+    } // onCreate()
 
+    // 각 금액 버튼을 클릭
     fun plusCache(view: View) {
+        // 금액에 맞게 충전할 캐시 증가
         when(view.id){
             R.id.btn_cache1 -> cache += 100
             R.id.btn_cache2 -> cache += 1000
             R.id.btn_cache3 -> cache += 10000
             R.id.btn_cache4 -> cache += 100000
         }
+        // 20억이상 불가능하게 막음
         if(cache > 2000000000){
             cache = 2000000000
         }

@@ -21,7 +21,6 @@ class LoLGuideDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lol_guide_detail)
 
         status = intent.getStringExtra("status")
-//event_txt1.text = Html.fromHtml("<span>소환사 ${user.nickname}님<br><font color=\"#6200EE\">롤케팅</font>에 오신것을 환영합니다.<br>1회 한정 <font color=\"#6200EE\">500포인트</font>를 발급해드립니다.</span>")
         when(status){
             "aos"->{
                 guide_title.text = "AOS?"

@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_reserve_list.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveOnClick {
+class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveItemClickListener {
 
     private lateinit var adapter : ReserveAdapter
     private var firestore = FirebaseFirestore.getInstance()
@@ -28,46 +28,35 @@ class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveOnClick {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve_list)
 
+        // 하루 전 날 날짜 : date 이후 날짜 기준으로 조회하기 때문
         var date = Date()
         var format = SimpleDateFormat("yyyy.MM.dd")
         date.date = date.date - 1
 
+        // 게임 데이터 조회
         var query = firestore.collection("Game").orderBy("date").whereGreaterThan("date", format.format(date))
         var options = FirestoreRecyclerOptions.Builder<GameDTO>()
                 .setQuery(query, GameDTO::class.java).build()
         adapter = ReserveAdapter(options, this)
-
+        // 리사이클러뷰 설정
         reserve_recycler.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         reserve_recycler.layoutManager = layoutManager
         reserve_recycler.adapter = adapter
+    } // onCreate()
 
+    override fun reserveSelect(intent: Intent) {
+        startActivity(intent)
     }
 
     override fun onStart() {
         super.onStart()
         adapter.startListening()
-
-        val smoothScroller = object  : LinearSmoothScroller(this){
-            override fun getVerticalSnapPreference(): Int {
-                return super.getVerticalSnapPreference()
-                return LinearSmoothScroller.SNAP_TO_END
-            }
-        }
-        Handler().postDelayed(Runnable {
-            Log.e("테스트", "${adapter.itemCount} / ${adapter.itemCount - 30}")
-            smoothScroller.targetPosition = adapter.itemCount - 30
-            layoutManager.startSmoothScroll(smoothScroller)
-        }, 400)
     }
 
     override fun onStop() {
         super.onStop()
         adapter.stopListening()
-    }
-
-    override fun reserveClick(intent: Intent) {
-        startActivity(intent)
     }
 
     fun logout(view: View) {

@@ -2,6 +2,7 @@ package com.ezen.lolketing
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -21,12 +22,10 @@ class ReserveActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve)
 
-        time = intent.getStringExtra("time")
-        team = intent.getStringExtra("team")
-        // 2020.02.14 17:00
+        time = intent.getStringExtra("time")    // ex) 2020.02.14 17:00
+        team = intent.getStringExtra("team")    // ex) T1:DAMWON
         reserve_time.text = time
-        // T1:DAMWON
-        reserve_match.text = team
+        reserve_match.text = team.replace(":", " vs ")
 
         // 요일 구하기
         var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
@@ -34,11 +33,13 @@ class ReserveActivity : AppCompatActivity() {
         var calendar = Calendar.getInstance()
         calendar.time = date
         // 1 = 일, 2 = 월 ... 7 = 토
+        // 주말 11,000원, 평일 9,000원
         price = when(calendar.get(Calendar.DAY_OF_WEEK)){
             1, 7 -> 11000
             else -> 9000
         }
 
+        // 예매하기 번튼 클릭 시 상세 페이지로 이동
         reserve_button.setOnClickListener {
             var intent = Intent(this, ReserveDetailActivity::class.java)
             intent.putExtra("time", time)
@@ -46,7 +47,7 @@ class ReserveActivity : AppCompatActivity() {
             intent.putExtra("price", price)
             startActivity(intent)
         }
-    }
+    }// onCreate()
 
     fun logout(view: View) {
         auth.signOut()

@@ -19,58 +19,29 @@ import kotlinx.android.synthetic.main.item_reserve_ticket.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : reserveOnClick)
+class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : reserveItemClickListener)
     : FirestoreRecyclerAdapter<GameDTO, ReserveAdapter.ReserveHolder>(options){
 
+    // 아이템 클릭 리스너
     var listener = listener
 
     class ReserveHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReserveHolder {
         var view = LayoutInflater.from(parent.context).inflate(R.layout.item_reserve_ticket, parent, false)
         return ReserveHolder(view)
     }
 
     override fun onBindViewHolder(holder: ReserveHolder, position: Int, model: GameDTO) {
+        // item 세팅
         val item = holder.itemView
         var teams = model.team?.split(":")
         setImage(item.left_team, teams!![0])
         setImage(item.right_team, teams!![1])
-
-        var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
-        var date = dateFormat.parse("${model.date} ${model.time}")
-        date.hours = date.hours - 4
-        var mDate = Date()
-
-        if(mDate > date){
-            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
-        }
-        date.date = date.date - 5
-        date.hours = 2
-        if(date.after(mDate)){
-            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "오픈예정")
-        }
-
-        when(model.status){
-            "예약"->{
-                item.reserve_view.setBackgroundColor(Color.parseColor("#11CC88"))
-                item.reserve_status.text = "예약"
-            }
-            "매진"->{
-                item.reserve_view.setBackgroundColor(Color.parseColor("#FF0000"))
-                item.reserve_status.text = "매진"
-            }
-            "종료"->{
-                item.reserve_view.setBackgroundColor(Color.parseColor("#555555"))
-                item.reserve_status.text = "종료"
-            }
-            "오픈예정"->{
-                item.reserve_view.setBackgroundColor(Color.parseColor("#555555"))
-                item.reserve_status.text = "오픈\n예정"
-            }
-        }
         item.reserve_text.text = "${model.date}\n${model.time}"
 
         item.setOnClickListener {
+            // 매진, 종료, 오픈 예정일 때에는 토스트 메시지만 보여주기
             when(item.reserve_status.text){
                 "매진"->{
                     Toast.makeText(item.context, "매진되었습니다.", Toast.LENGTH_SHORT).show()
@@ -85,13 +56,19 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : re
                     return@setOnClickListener
                 }
             }
+            // 예약 상태이면 예약페이지로 이동
             var intent = Intent(item.context, ReserveActivity::class.java)
             intent.putExtra("time", "${model.date} ${model.time}")
             intent.putExtra("team", model.team)
-            listener.reserveClick(intent)
+            listener.reserveSelect(intent)
         }
+
+        // 아이템 생테 설정
+        setState(item, model)
     }
-    fun setImage(image : ImageView, team : String? = ""){
+
+    // 팀에 맞는 이미지 세팅
+    private fun setImage(image : ImageView, team : String? = ""){
         when(team){
             "T1"-> image.setImageResource(R.drawable.logo_t1)
             "Griffin"-> image.setImageResource(R.drawable.logo_damwon)
@@ -106,8 +83,53 @@ class ReserveAdapter (options : FirestoreRecyclerOptions<GameDTO>, listener : re
         }
     }
 
-    interface reserveOnClick{
-        fun reserveClick(intent : Intent)
+    //아이템 상태 설정
+    private fun setState(item : View, model : GameDTO){
+        // 예매 상태 : 예매, 매진, 종료, 오픈 예정
+        // 매진 : 좌석이 다 팔린 상태
+        // 종료 : 게임 시작 4시간 전 이후
+        // 오픈 예정 : 게임 6일 전
+        // 예매 : 게임 5일전 2시 ~ 게임 시작 4시간 이전
+        var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
+        var date = dateFormat.parse("${model.date} ${model.time}")
+        // 종료 상태 계산 후 데이터베이스에 저장
+        date.hours = date.hours - 4
+        var mDate = Date()
+        if(model.status == "예매" && mDate > date){
+            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
+        }
+        // 오픈 예전, 예매 계산 후 데이터베이스에 저장
+        date.date = date.date - 5
+        date.hours = 2
+        if(date.after(mDate)){
+            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "오픈예정")
+        }else if(model.status == "오픈예정" && date.before(mDate)){
+            FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "예매")
+        }
+        // 상태에 따라 UI 표시
+        when(model.status){
+            "예매"->{
+                item.reserve_view.setBackgroundColor(Color.parseColor("#11CC88"))
+                item.reserve_status.text = "예매"
+            }
+            "매진"->{
+                item.reserve_view.setBackgroundColor(Color.parseColor("#FF0000"))
+                item.reserve_status.text = "매진"
+            }
+            "종료"->{
+                item.reserve_view.setBackgroundColor(Color.parseColor("#555555"))
+                item.reserve_status.text = "종료"
+            }
+            "오픈예정"->{
+                item.reserve_view.setBackgroundColor(Color.parseColor("#555555"))
+                item.reserve_status.text = "오픈\n예정"
+            }
+        }
+    }
+
+    // 아이템 클릭 리스너
+    interface reserveItemClickListener{
+        fun reserveSelect(intent : Intent)
     }
 
 }

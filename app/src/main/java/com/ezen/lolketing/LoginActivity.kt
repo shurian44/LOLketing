@@ -3,6 +3,7 @@ package com.ezen.lolketing
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.ezen.lolketing.model.Users
@@ -19,16 +20,17 @@ import org.jetbrains.anko.toast
 
 class LoginActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 1000   // 구글 로그인 확인 코드
-    private var auth = FirebaseAuth.getInstance()   // 계정 관리 변수
-    private var firestore = FirebaseFirestore.getInstance() // Cloud Firestore 변수
-    private lateinit var googleSignInClient : GoogleSignInClient    // 구글 클라이언트
+    private var auth = FirebaseAuth.getInstance()
+    private var firestore = FirebaseFirestore.getInstance()
+    private lateinit var googleSignInClient : GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // 자동 로그인 : 로그인 상태일 시 바로 로그인 페이지로 이동
-        if( auth.currentUser != null) moveMain()
+        // 자동 로그인 : 로그인 상태일 시 바로 메인 페이지로 이동
+        if( auth.currentUser != null)
+            moveMain()
 
         // 구글 로그인 옵션
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -37,43 +39,41 @@ class LoginActivity : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-    } // onCreate
+    } // onCreate()
 
-    // 메인 페이지로 이동
-    private fun moveMain(){
-        var intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    // 유저 회원가입
+    // 회원가입 버튼 클릭 : 회원가입 페이지로 이동
     fun createUser(view: View) {
         var intent = Intent(this, JoinActivity::class.java)
         startActivity(intent)
-    }
+    } // createUser()
 
-    // 이메일 로그인
+    // 이메일 로그인 버튼 클릭
     fun emailLogin(view: View) {
+        var id = login_id.text.toString()
+        var pw = login_pw.text.toString()
+
         // 아이디 또는 비밀번호를 입력하지 않았을 시
-        if(login_id.text.toString().isEmpty() || login_pw.text.toString().isEmpty()){
+        if(id.isEmpty() || pw.isEmpty()){
             toast("아이디 또는 패스워드를 입력해주세요")
             return
         }
-        auth.signInWithEmailAndPassword(login_id.text.toString(), login_pw.text.toString()).addOnCompleteListener {
+        auth.signInWithEmailAndPassword(id, pw).addOnCompleteListener {
             if(it.isSuccessful){    // 로그인 성공
                 moveMain()
             }
             else{   // 로그인 실패
-                Toast.makeText(this, "아이디 또는 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show()
+                login_pw.text = null
+                toast("아이디 또는 비밀번호를 확인해주세요")
             }
         }
-    }
+    } // emailLogin()
 
-    // 구글 로그인
+    // 구글 로그인 버튼 클릭
     fun googleLogin(view: View) {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
+    } // googleLogin()
+
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
@@ -82,10 +82,11 @@ class LoginActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
+                Log.e("구글 로그인", "실패임 ${e.printStackTrace()}")
                 e.printStackTrace()
             }
         }
-    }
+    } // onActivityResult()
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
@@ -104,9 +105,16 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
 
-                } else {
-                    Toast.makeText(this, "구글 로그인을 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                } else { // 구글 로그인 실패
+                    toast("구글 로그인을 실패하였습니다.")
                 }
             }
-    }
+    } // firebaseAuthWithGoogle()
+
+    // 메인 페이지로 이동
+    private fun moveMain(){
+        var intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    } // moveMain()
 }

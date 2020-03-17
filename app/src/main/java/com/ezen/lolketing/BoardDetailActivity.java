@@ -158,7 +158,6 @@ public class BoardDetailActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.modify:
-                                Toast.makeText(getApplicationContext(),"글 수정", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
                                 intent.putExtra("title", content_title.getText().toString());
                                 intent.putExtra("image", get_image);

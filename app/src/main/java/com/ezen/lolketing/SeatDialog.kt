@@ -14,12 +14,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SeatDialog(context : Context, listener : onSelectSeatListener, documentID : String, count : Int) : Dialog(context), CompoundButton.OnCheckedChangeListener {
-    lateinit var dialogView : View
     private var listener = listener
     private var firestore = FirebaseFirestore.getInstance()
     private var documentID = documentID
-    var count = count
-    var true_count = 0
+    lateinit var dialogView : View
+    var count = count   // 인원 수
+    var selectCount = 0     // 선택한 체크박스 수
     var checkBoxes = ArrayList<CheckBox>()
     var ck_id = ArrayList<Int>()
     var ck_map = mapOf<Int, String>(R.id.checkA_1a to "A_1a", R.id.checkA_1b to "A_1b", R.id.checkA_1c to "A_1c", R.id.checkA_1d to "A_1d",
@@ -41,65 +41,80 @@ class SeatDialog(context : Context, listener : onSelectSeatListener, documentID 
     var selectSeat = ""
 
     fun createDialog(){
+        // 커스텀 다이얼로그 생성
         val dialogBuilder = AlertDialog.Builder(context)
         dialogView = layoutInflater.inflate(R.layout.dialog_seat, null)
         dialogBuilder.setView(dialogView)
         val dialog = dialogBuilder.show()
+
+        // 체크박스 불러오기
         loadCheckBox()
+
         dialogView.findViewById<Button>(R.id.reserve_complete).setOnClickListener {
-            if(true_count == count){
+            // 인원수와 체크박스 선택의 수가 동일한 경우
+            if(selectCount == count){
+                // 마지막 '/'제거
                 selectSeat = selectSeat.substring(0, selectSeat.length-1)
+                // 선택한 좌석을 액티비티로 전달
                 listener.selectSeat(selectSeat)
                 dialog.dismiss()
-            }else{
+            }else{ // 인원수와 체크박스 선택의 수가 동일하지 않은 경우
                 Toast.makeText(context, "좌석을 선택해주세요", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
+        } // setOnClickListener
+    } // createDialog()
 
+    // 체크박스 불러오기
     private fun loadCheckBox(){
+        // map 의 키들을 리스트에 저장
         ck_map.keys.forEach {
             ck_id.add(it)
         }
-
+        // 체크박스 찾기
         for(i in ck_id.indices){
             checkBoxes.add(dialogView.findViewById(ck_id[i]))
-            checkBoxes[i].setOnCheckedChangeListener(this)
+            checkBoxes[i].setOnCheckedChangeListener(this)  // 각 체크박스에 리스너 등록
         }
-
+        // 데이터베이스에서 이미 선택된 좌석 불러오기
         setCheckBox()
-    }
+    } // loadCheckBox()
 
+    // 데이터베이스에서 이미 선택된 좌석 불러오기
     private fun setCheckBox(){
         firestore.collection("Game").document(documentID).collection("Seat").document("seat").get().addOnCompleteListener {
             var seats = it.result?.toObject(SeatDTO::class.java)
-            println("결과 ${seats?.seats}")
+            // 이미 선택한 좌석의 경우 enabled 처리
             for(i in ck_id.indices){
                 if(seats?.seats?.get(ck_map[ck_id[i]]) == true){
                     checkBoxes[i].isEnabled = false
                 }
             }
         }
-    }
+    } // setCheckBox()
 
-    interface onSelectSeatListener{
-        fun selectSeat(seat : String)
-    }
-
+    // 체크 박스 상태 변화 리스너
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        // 체크박스를 체크했을 경우
         if(isChecked){
-            true_count++
-            if(true_count > count){
-                true_count--
+            selectCount++
+            // 선택한 좌석이 인원 수 보다 많을 경우
+            if(selectCount > count){
+                selectCount--
                 buttonView?.isChecked = false
                 Toast.makeText(context, "선택할 수 있는 좌석수를 초과하였습니다.", Toast.LENGTH_SHORT).show()
                 return
             }
+            // 선택한 내용을 String 에 추가
             selectSeat += "${ck_map.getValue(buttonView!!.id)}/"
-        }else{
-            true_count--
+        }else{ // 체크박스를 체크 해제했을 경우
+            selectCount--
+            // 취소한 내용을 String 에서 제거
             selectSeat = selectSeat.replace("${ck_map.getValue(buttonView!!.id)}/", "")
         }
-        println("좌석 선택 $selectSeat")
+    } // onCheckedChanged()
+
+    // 선택한 좌석을 액티비티로 전달
+    interface onSelectSeatListener{
+        fun selectSeat(seat : String)
     }
 }

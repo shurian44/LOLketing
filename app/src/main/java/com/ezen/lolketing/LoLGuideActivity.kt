@@ -14,19 +14,7 @@ class LoLGuideActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lol_guide)
     }
 
-    fun logout(view: View) {
-        auth.signOut()
-        var intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-    }
-
-    fun moveHome(view: View) {
-        var intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-    }
-
+    // 선택에 맞게 인탠트로 값을 넘겨 상세 페이지로 이동
     fun moveGuide(view: View) {
         var intent = Intent(this, LoLGuideDetailActivity::class.java)
         when(view.id){
@@ -37,6 +25,19 @@ class LoLGuideActivity : AppCompatActivity() {
             R.id.card5-> intent.putExtra("status", "score")
             R.id.card6-> intent.putExtra("status", "terms")
         }
+        startActivity(intent)
+    }
+
+    fun logout(view: View) {
+        auth.signOut()
+        var intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    fun moveHome(view: View) {
+        var intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
 }
