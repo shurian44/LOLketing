@@ -13,24 +13,45 @@
 구조 이미지가 들어갈 영역
 # 화면 및 기능 설명
 > <h3>로그인 및 회원가입</h3>
+![1](https://user-images.githubusercontent.com/60861383/77169193-737b8880-6afc-11ea-9018-30d023473f2b.png)
 로그인 설명
-> <h3>메인화면</h3>
+
+> <h3>메인화면 및 관리자 페이지</h3>
+![2](https://user-images.githubusercontent.com/60861383/77169584-10d6bc80-6afd-11ea-851b-5d5d92dc6d97.png)
 메인화면 설명
+
 > <h3>게시판</h3>
+![13](https://user-images.githubusercontent.com/60861383/77169696-4bd8f000-6afd-11ea-8dbd-124ba1cc1518.png)
 게시판 설명
+
 > <h3>이벤트</h3>
+![7](https://user-images.githubusercontent.com/60861383/77169747-5e532980-6afd-11ea-8bf4-33a28aad8ba3.png)
 이벤트 설명
+
 > <h3>내 정보</h3>
+![12](https://user-images.githubusercontent.com/60861383/77169851-893d7d80-6afd-11ea-8a81-e1268ab10fee.png)
 내 정보 설명
+
 > <h3>리그 정보</h3>
+![9](https://user-images.githubusercontent.com/60861383/77169879-93f81280-6afd-11ea-9336-12ed6c91c35c.png)
 리그 정보 설명
+
 > <h3>티켓 예매</h3>
+![3](https://user-images.githubusercontent.com/60861383/77169984-bd18a300-6afd-11ea-994c-23c4e413d58f.png)
 티켓 예매 설명
+
 > <h3>샵</h3>
+![10](https://user-images.githubusercontent.com/60861383/77170022-cace2880-6afd-11ea-9791-e73095a1285b.png)
 샵 설명
+
 > <h3>롤알못</h3>
+![6](https://user-images.githubusercontent.com/60861383/77170059-d588bd80-6afd-11ea-9b95-95d6db90adcc.png)
 롤알못 설명
+
 > <h3>뉴스</h3>
+![5](https://user-images.githubusercontent.com/60861383/77170287-28fb0b80-6afe-11ea-9890-2d101645b1e7.png)
 뉴스 설명
+
 > <h3>채팅</h3>
+![11](https://user-images.githubusercontent.com/60861383/77170315-357f6400-6afe-11ea-9ace-d1d1bcc5a441.png)
 채팅 설명
