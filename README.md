@@ -13,9 +13,22 @@
 구조 이미지가 들어갈 영역
 # 화면 및 기능 설명
 > <h3>로그인 및 회원가입</h3>
-![1](https://user-images.githubusercontent.com/60861383/77169193-737b8880-6afc-11ea-9018-30d023473f2b.png)
-로그인 설명
-
+![1](https://user-images.githubusercontent.com/60861383/77169193-737b8880-6afc-11ea-9018-30d023473f2b.png)<br>
+<table>
+  <tr>
+    <td><b>스플래쉬[SplashActivity]</b></td><td>앱 실행 시 최초로 보여지는 화면</td>
+  </tr>
+  <tr>
+    <td><b>로그인[LoginActivity]</b></td><td>로그인 방식은 <b>Firebase</b>를 활용한 e-mail과 Google 로그인 두가지 방식을 지원합니다.</td>
+  </tr>
+  <tr>
+    <td><b>회원가입[JoinActivity]</b></td><td>회원가입 시에는 이메일과 비밀번호 정보만 등록합니다.</td>
+  </tr>
+  <tr>
+    <td><b>회원가입 상세[JoinDetailActivity]</b></td><td>닉네임, 전화번호, 주소의 정보를 추가로 등록합니다.</td>
+  </tr>
+</table>
+ 
 > <h3>메인화면 및 관리자 페이지</h3>
 ![2](https://user-images.githubusercontent.com/60861383/77169584-10d6bc80-6afd-11ea-851b-5d5d92dc6d97.png)
 메인화면 설명
