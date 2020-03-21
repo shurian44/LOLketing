@@ -52,7 +52,18 @@
 
 > <h3>이벤트</h3>
 ![7](https://user-images.githubusercontent.com/60861383/77169747-5e532980-6afd-11ea-8bf4-33a28aad8ba3.png)
-이벤트 설명
+<table>
+  <tr>
+    <td><b>이벤트 리스트[EventListActivity]</b></td><td>이벤트 리스트를 보여주는 페이지입니다.</td>
+  </tr>
+  <tr>
+    <td><b>이벤트상세[EventDetailActivity]</b></td><td>신규회원 쿠폰 발급 및 이벤트 안내 페이지입니다.</td>
+  </tr>
+  <tr>
+    <td><b>룰렛[RouletteActivity]</b></td><td>유저가 가지고 있는 횟수 만큼 룰렛을 돌려 쿠폰을 지급받습니다.</td>
+  </tr>
+</table>
+<br>
 
 > <h3>내 정보</h3>
 ![12](https://user-images.githubusercontent.com/60861383/77169851-893d7d80-6afd-11ea-8a81-e1268ab10fee.png)
@@ -64,7 +75,22 @@
 
 > <h3>티켓 예매</h3>
 ![3](https://user-images.githubusercontent.com/60861383/77169984-bd18a300-6afd-11ea-994c-23c4e413d58f.png)
-티켓 예매 설명
+<table>
+  <tr>
+    <td><b>티켓리스트[Activity]</b></td><td>오늘부터 남은 경기만큼 불러와 표시합니다.<br>표의 상태에는 [예매, 매진, 종료, 오픈 예정] 4가지가 존재합니다.<br><b>예약</b>경기일 5일전 2시 이후부터 게임시작 전이며 매진이 아닐 때<br><b>매진</b>모든 좌석이 예약이 완료된 상태<br><b>종료</b>게임 시작 된 이후<br><b>오픈 예정</b>경기일 5일 전 2시 이전</td>
+  </tr>
+  <tr>
+    <td><b>예매 안내[Activity]</b></td><td>티켓 정보, 예매 안내, 유의사항 등 티켓 구매에 대한 정보를 안내하는 페이지입니다.</td>
+  </tr>
+  <tr>
+    <td><b>예매[Activity]</b></td><td>인원을 선택하고 좌석을 선택하면 좌석에 대한 다이얼로그가 표시됩니다.<br>다이얼로그에서 원하는 좌석을 선택한 뒤 결제하기를 선택하면 티켓 페이지로 이동합니다.</td>
+  </tr>
+  <tr>
+    <td><b>티켓[Activity]</b></td><td>구매한 티켓에 해당하는 QR코드 생성 및 환불을 하는 페이지입니다.</td>
+  </tr>
+</table>
+<br>
+이미지의 경우 예약으로 나와있지만 예매로 수정하였습니다.
 
 > <h3>샵</h3>
 ![10](https://user-images.githubusercontent.com/60861383/77170022-cace2880-6afd-11ea-9791-e73095a1285b.png)
@@ -72,7 +98,12 @@
 
 > <h3>롤알못</h3>
 ![6](https://user-images.githubusercontent.com/60861383/77170059-d588bd80-6afd-11ea-9b95-95d6db90adcc.png)
-롤알못 설명
+<table>
+  <tr>
+    <td><b>롤알못[LoLGuideActivity]</b></td><td>롤을 알지 못하는 사람들을 위해 롤에 대해 이해하기 좋은 글을 가져와서 보여줍니다.</td>
+  </tr>
+</table>
+<br>ㅋ
 
 > <h3>뉴스</h3>
 ![5](https://user-images.githubusercontent.com/60861383/77170287-28fb0b80-6afe-11ea-9890-2d101645b1e7.png)
@@ -80,4 +111,12 @@
 
 > <h3>채팅</h3>
 ![11](https://user-images.githubusercontent.com/60861383/77170315-357f6400-6afe-11ea-9ace-d1d1bcc5a441.png)
-채팅 설명
+<table>
+  <tr>
+    <td><b>채팅 리스트[ChattingListActivity]</b></td><td>날짜를 선택하여 해당 일의 경기를 표시합니다.<br>팀 아이콘을 선택하면 채팅 액티비티로 넘어가게 됩니다.</td>
+  </tr>
+  <tr>
+    <td><b>채팅[ChattingActivity]</b></td><td>선택한 팀을 응원하는 채팅 페이지입니다.<br>이전 날짜의 채팅은 입장은 가능하나 채팅 입력은 불가능 합니다.<br>게임 시작 전 30분에 채팅방이 오픈 되며 그 이후 게임의 경우 채팅방 입장이 불가능합니다.</td>
+  </tr>
+</table>
+<br>
