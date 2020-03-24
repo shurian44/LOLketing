@@ -87,7 +87,7 @@
     <td><b>내 정보 수정[Activity]</b></td><td>회원 가입 상세 페이지와 같은 액티비티를 수정해서 사용합니다. 가입 해둔 정보를 미리 세팅하고 유저가 변경 한 값으로 데이터베이스를 수정합니다.</td>
   </tr>
   <tr>
-    <td><b>해언 탈퇴[Activity]</b></td><td>회원 탈퇴 페이지입니다.</td>
+    <td><b>회원 탈퇴[Activity]</b></td><td>회원 탈퇴 페이지입니다.</td>
   </tr>
 </table>
 <br>
@@ -96,7 +96,7 @@
 ![9](https://user-images.githubusercontent.com/60861383/77169879-93f81280-6afd-11ea-9336-12ed6c91c35c.png)
 <table>
   <tr>
-    <td><b>리그 정보[Activity]</b></td><td>개요, 진행방식, 대회 상금, 좌석 안내, 경기 일정을 볼 수 있는 페이지입니다.</td>
+    <td><b>리그 정보[Activity]</b></td><td>개요, 진행 방식, 대회 상금, 좌석 안내, 경기 일정을 볼 수 있는 페이지입니다.</td>
   </tr>  
 </table>
 
