@@ -57,10 +57,10 @@
     <td><b>이벤트 리스트[EventListActivity]</b></td><td>이벤트 리스트를 보여주는 페이지입니다.</td>
   </tr>
   <tr>
-    <td><b>이벤트상세[EventDetailActivity]</b></td><td>신규회원 쿠폰 발급 및 이벤트 안내 페이지입니다.</td>
+    <td><b>이벤트 상세[EventDetailActivity]</b></td><td>신규회원 쿠폰 발급 및 이벤트 안내 페이지입니다.</td>
   </tr>
   <tr>
-    <td><b>룰렛[RouletteActivity]</b></td><td>유저가 가지고 있는 횟수 만큼 룰렛을 돌려 쿠폰을 지급받습니다.</td>
+    <td><b>룰렛[RouletteActivity]</b></td><td>유저가 가지고 있는 횟수 만큼 룰렛을 돌려 쿠폰을 지급 받습니다.</td>
   </tr>
 </table>
 <br>
