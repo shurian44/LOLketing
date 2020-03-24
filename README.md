@@ -67,11 +67,38 @@
 
 > <h3>내 정보</h3>
 ![12](https://user-images.githubusercontent.com/60861383/77169851-893d7d80-6afd-11ea-8a81-e1268ab10fee.png)
-내 정보 설명
+<table>
+  <tr>
+    <td><b>내 정보[Activity]</b></td><td>등급, 쿠폰, 캐시, 포인트, 구매내역 등의 확인과 정보 수정 및 회원 탈퇴를 위한 페이지입니다.</td>
+  </tr>
+  <tr>
+    <td><b>등급 안내[Activity]</b></td><td>각 등급 별 혜택을 알려줍니다. 혜택은 추후 업데이트 예정입니다.</td>
+  </tr>
+  <tr>
+    <td><b>쿠폰[Activity]</b></td><td>사용한 쿠폰과 사용지 않은 쿠폰을 따로 볼수 있으며, 해당 쿠폰의 번호를 보여줍니다. 신규 가입 쿠폰의 경우 앱 내 사용 쿠폰이어서 쿠폰 번호가 없습니다.</td>
+  </tr>
+  <tr>
+    <td><b>캐시 충전[Activity]</b></td><td>가상 머니를 충전하는 페이지입니다. 최대 한도는 20억입니다.</td>
+  </tr>
+  <tr>
+    <td><b>구매 내역[Activity]</b></td><td>유저가 구매한 내역을 보여줍니다.</td>
+  </tr>
+  <tr>
+    <td><b>내 정보 수정[Activity]</b></td><td>회원 가입 상세 페이지와 같은 액티비티를 수정해서 사용합니다. 가입 해둔 정보를 미리 세팅하고 유저가 변경 한 값으로 데이터베이스를 수정합니다.</td>
+  </tr>
+  <tr>
+    <td><b>해언 탈퇴[Activity]</b></td><td>회원 탈퇴 페이지입니다.</td>
+  </tr>
+</table>
+<br>
 
 > <h3>리그 정보</h3>
 ![9](https://user-images.githubusercontent.com/60861383/77169879-93f81280-6afd-11ea-9336-12ed6c91c35c.png)
-리그 정보 설명
+<table>
+  <tr>
+    <td><b>리그 정보[Activity]</b></td><td>개요, 진행방식, 대회 상금, 좌석 안내, 경기 일정을 볼 수 있는 페이지입니다.</td>
+  </tr>  
+</table>
 
 > <h3>티켓 예매</h3>
 ![3](https://user-images.githubusercontent.com/60861383/77169984-bd18a300-6afd-11ea-994c-23c4e413d58f.png)
@@ -103,7 +130,7 @@
     <td><b>롤알못[LoLGuideActivity]</b></td><td>롤을 알지 못하는 사람들을 위해 롤에 대해 이해하기 좋은 글을 가져와서 보여줍니다.</td>
   </tr>
 </table>
-<br>ㅋ
+<br>
 
 > <h3>뉴스</h3>
 ![5](https://user-images.githubusercontent.com/60861383/77170287-28fb0b80-6afe-11ea-9890-2d101645b1e7.png)
@@ -119,4 +146,5 @@
     <td><b>채팅[ChattingActivity]</b></td><td>선택한 팀을 응원하는 채팅 페이지입니다.<br>이전 날짜의 채팅은 입장은 가능하나 채팅 입력은 불가능 합니다.<br>게임 시작 전 30분에 채팅방이 오픈 되며 그 이후 게임의 경우 채팅방 입장이 불가능합니다.</td>
   </tr>
 </table>
-<br>
+<br><br><br><br>
+# 참고 자료
