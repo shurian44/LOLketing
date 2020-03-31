@@ -53,14 +53,17 @@
     <td><b>다이얼로그</b></td><td>메인화면에서 게시판 아이콘 클릭 시 구단 게시판들을 다이얼로그로 나타냅니다.</td>
   </tr>
   <tr>
-    <td><b>게시판 목록[BoardListActivity]</b></td><td>Firebase에 있는 게시글 정보를 불러와 리사이클러뷰로 표시합니다.<br>
+    <td><b>게시판 목록[BoardListActivity]</b></td><td>Firebase에 있는 게시글 정보를 불러와 리사이클러뷰로 표시합니다.<br><br>
     <b>구단 정보</b> : 해당 구단의 선수들 소개 Activity[TeamActivity]로 이동합니다.<br>
     <b>검색</b> : 검색조건 드랍다운(제목, 작성자, 내용) 중 선택하여 검색 가능합니다.<br>
     <b>내가 쓴 글</b> : Firebase에 있는 게시글 중 내(로그인한 아이디)가 작성한 글만 표시합니다. 클릭 시 ‘전체 글’로 바뀌며 다시 클릭 시 전체 글을 표시합니다.<br>
     <b>글 쓰기</b> : 글 쓰기 Activity[BoardWriteActivity]로 이동합니다.</td>
   </tr>
   <tr>
-    <td><b>로그인[LoginActivity]</b></td><td>로그인 방식은 Firebase를 활용한 e-mail과 Google 로그인 두가지 방식을 지원합니다.</td>
+    <td><b>게시판 글쓰기[BoardWriteActivity]</b></td><td>첫 진입 시 저장장치 불러오기 권한 인증여부를 확인하며 거절 시 입장 불가합니다.<br><br>
+    <b>사진기 아이콘</b> : 클릭 시 디바이스의 사진첩을 열람하고 불러옵니다.<br>
+    <b>취소</b> : 입력된 모든 것을 취소하고 게시판 목록으로 이동합니다.<br>
+    <b>등록</b> : 입력된 사진과 내용을 포함하여 작성시간, 유저정보 등을 Firebase에 저장하고 게시판 목록으로 이동합니다.</td>
   </tr>
   <tr>
     <td><b>회원가입[JoinActivity]</b></td><td>회원가입 시에는 이메일과 비밀번호 정보만 등록합니다.</td>
