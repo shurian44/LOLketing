@@ -48,7 +48,27 @@
 
 > <h3>게시판</h3>
 ![13](https://user-images.githubusercontent.com/60861383/77169696-4bd8f000-6afd-11ea-8dbd-124ba1cc1518.png)
-게시판 설명
+<table>
+  <tr>
+    <td><b>다이얼로그</b></td><td>메인화면에서 게시판 아이콘 클릭 시 구단 게시판들을 다이얼로그로 나타냅니다.</td>
+  </tr>
+  <tr>
+    <td><b>게시판 목록[BoardListActivity]</b></td><td><b>Firebase</b>에 있는 게시글 정보를 불러와 리사이클러뷰로 표시합니다.</td><br>
+    <b>구단 정보</b> : 해당 구단의 선수들 소개 Activity[TeamActivity]로 이동합니다.<br>
+    <b>검색</b> : 검색조건 드랍다운(제목, 작성자, 내용) 중 선택하여 검색 가능합니다.<br>
+    <b>내가 쓴 글</b> : <b>Firebase</b>에 있는 게시글 중 내(로그인한 아이디)가 작성한 글만 표시. 클릭 시 ‘전체 글’로 바뀌며 다시 클릭 시 전체 글 표시합니다.<br>
+    <b>글 쓰기</b> : 글 쓰기 Activity[BoardWriteActivity]로 이동합니다.</td>
+  </tr>
+  <tr>
+    <td><b>로그인[LoginActivity]</b></td><td>로그인 방식은 <b>Firebase</b>를 활용한 e-mail과 Google 로그인 두가지 방식을 지원합니다.</td>
+  </tr>
+  <tr>
+    <td><b>회원가입[JoinActivity]</b></td><td>회원가입 시에는 이메일과 비밀번호 정보만 등록합니다.</td>
+  </tr>
+  <tr>
+    <td><b>회원가입 상세[JoinDetailActivity]</b></td><td>닉네임, 전화번호, 주소의 정보를 추가로 등록합니다.</td>
+  </tr>
+</table>
 
 > <h3>이벤트</h3>
 ![7](https://user-images.githubusercontent.com/60861383/77169747-5e532980-6afd-11ea-8bf4-33a28aad8ba3.png)
