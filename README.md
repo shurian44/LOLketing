@@ -162,12 +162,12 @@
 ![5](https://user-images.githubusercontent.com/60861383/77170287-28fb0b80-6afe-11ea-9890-2d101645b1e7.png)
 <table>
   <tr>
-    <td><b>뉴스[NewsActivity]</b></td><td>롤인벤 뉴스(http://www.inven.co.kr/webzine/news/?site=lol)를 크롤링 해와서 표시합니다.<br>
+    <td><b>뉴스[NewsActivity]</b></td><td>롤인벤 뉴스(http://www.inven.co.kr/webzine/news/?site=lol) 를 크롤링 해와서 표시합니다.<br>
 뉴스 클릭 시 뉴스 상세 Activity[NewsWebViewActivity]로 이동합니다.
 </td>
   </tr>
   <tr>
-    <td>뉴스 상세</td><td>웹뷰를 통해 뉴스 내용을 표시합니다.</td>
+    <td><b>뉴스 상세</b></td><td>웹뷰를 통해 뉴스 내용을 표시합니다.</td>
   </tr>
 </table>
 
