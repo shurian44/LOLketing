@@ -31,11 +31,8 @@ class MainActivity : AppCompatActivity() {
         eventSlide()    // 이벤트 베너 등록
 
         btn_board.setOnClickListener {
-            // 게시판 선택 다이얼로그 생성
-            createDialog()
+            createDialog() // 게시판 선택 다이얼로그 생성
         }
-
-        //progressDialog(title = "제목", message = "잠시만 기다려주세요")
     }
 
     // 상세 회원가입 여부 조회
@@ -48,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, JoinDetailActivity::class.java))
             }
 
-            // 마스터 등급이면 관리자 페이지로 이동
+            // 마스터 등급이면 관리자 페이지 버튼 보여주기
             if(user.grade == "마스터"){
                 btn_manager.visibility = View.VISIBLE
             }
@@ -60,12 +57,12 @@ class MainActivity : AppCompatActivity() {
         // AUTO Slider
         var images = listOf<Int>(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
         img_ad.setSliderAdapter(EventSliderAdapter(images))
-        img_ad.setIndicatorAnimation(IndicatorAnimations.WORM) // set indicator animation : SliderLayout.IndicatorAnimations.~
+        img_ad.setIndicatorAnimation(IndicatorAnimations.WORM)
         img_ad.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
         img_ad.autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
         img_ad.indicatorSelectedColor = Color.WHITE
         img_ad.indicatorUnselectedColor = Color.GRAY
-        img_ad.scrollTimeInSec = 4 // set scroll delay in seconds
+        img_ad.scrollTimeInSec = 4
         img_ad.startAutoCycle()
     }
 
@@ -77,47 +74,19 @@ class MainActivity : AppCompatActivity() {
         val dialog = builder.show()
         var intent = Intent(this, BoardListActivity::class.java)
 
-        // 게시판 버튼 클릭 리스너
-        view.findViewById<ImageView>(R.id.icon_t1).setOnClickListener {
-            intent.putExtra("team", "T1")
-            startActivity(intent)
+        var teamButton = listOf<Int>(R.id.icon_t1, R.id.icon_griffin, R.id.icon_geng, R.id.icon_dragonx,
+                R.id.icon_freecs, R.id.icon_sandbox, R.id.icon_damwon, R.id.icon_apk, R.id.icon_rolster, R.id.icon_hanhwa)
+        var teamName = listOf<String>("T1", "GRIFFIN", "Gen.G Esports", "DragonX", "Afreeca Freecs",
+                "SANDBOX Gamming", "DAMWON Gamming", "APK Prince", "kt Rolster", "Hanwha Life Esports")
+
+        // 게시판 버튼 클릭 리스너 등록
+        for(i in teamButton.indices){
+            view.findViewById<ImageView>(teamButton[i]).setOnClickListener {
+                intent.putExtra("team", teamName[i])
+                startActivity(intent)
+            }
         }
-        view.findViewById<ImageView>(R.id.icon_griffin).setOnClickListener {
-            intent.putExtra("team", "GRIFFIN")
-            startActivity(intent)
-        }
-        view.findViewById<ImageView>(R.id.icon_geng).setOnClickListener {
-            intent.putExtra("team", "Gen.G Esports")
-            startActivity(intent)
-        }
-        view.findViewById<ImageView>(R.id.icon_dragonx).setOnClickListener {
-            intent.putExtra("team", "DragonX")
-            startActivity(intent)
-        }
-        view.findViewById<ImageView>(R.id.icon_freecs).setOnClickListener {
-            intent.putExtra("team", "Afreeca Freecs")
-            startActivity(intent)
-        }
-        view.findViewById<ImageView>(R.id.icon_sandbox).setOnClickListener {
-            intent.putExtra("team", "SANDBOX Gamming")
-            startActivity(intent)
-        }
-        view.findViewById<ImageView>(R.id.icon_damwon).setOnClickListener {
-            intent.putExtra("team", "DAMWON Gamming")
-            startActivity(intent)
-        }
-        view.findViewById<ImageView>(R.id.icon_apk).setOnClickListener {
-            intent.putExtra("team", "APK Prince")
-            startActivity(intent)
-        }
-        view.findViewById<ImageView>(R.id.icon_rolster).setOnClickListener {
-            intent.putExtra("team", "kt Rolster")
-            startActivity(intent)
-        }
-        view.findViewById<ImageView>(R.id.icon_hanhwa).setOnClickListener {
-            intent.putExtra("team", "Hanwha Life Esports")
-            startActivity(intent)
-        }
+
     }
 
     // 각 버튼별 페이지 이동

@@ -18,16 +18,15 @@ class CouponActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coupon)
 
-        var list = ArrayList<Fragment>()
+        var list = ArrayList<Fragment>()    // ViewPager 에 들어갈 리스트
         list.add(CouponFragment("사용 안함"))
         list.add(CouponFragment("사용함"))
-        var adapter = CouponViewPagerAdapter(supportFragmentManager, list)
+        var adapter = CouponViewPagerAdapter(supportFragmentManager, list)  // Viewpager 의 adapter
         myCoupon_viewPage.adapter = adapter
-        tabLayout.setupWithViewPager(myCoupon_viewPage)
+        tabLayout.setupWithViewPager(myCoupon_viewPage) //ViewPager 와 TabLayout 을 연결
 
         tabLayout.getTabAt(0)?.text = "사용 안함"
         tabLayout.getTabAt(1)?.text = "사용 함"
-
     }
 
     fun logout(view: View) {

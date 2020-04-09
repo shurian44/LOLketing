@@ -33,41 +33,15 @@ class MyPageActivity : AppCompatActivity() {
             }
             txt_coupon.text = "$couponCount 장"
         }
-
-        txt_Cache.setOnClickListener {
-            startActivity(Intent(this, CacheChargingActivity::class.java))
-        }
-
-        btn_modify.setOnClickListener {
-            var intent = Intent(this, JoinDetailActivity::class.java)
-            intent.putExtra("modify", "modify")
-            startActivity(intent)
-        }
-
-        btn_history.setOnClickListener {
-            var intent = Intent(this, PurchaseHistoryActivity::class.java)
-            startActivity(intent)
-        }
-
-        withdrawal.setOnClickListener {
-            var intent = Intent(this, WithdrawalActivity::class.java)
-            startActivity(intent)
-        }
-
-        txt_coupon.setOnClickListener {
-            startActivity(Intent(this, CouponActivity::class.java))
-        }
-
-        txt_grade_detail.setOnClickListener {
-            startActivity(Intent(this, MembershipActivity::class.java))
-        }
     }
 
     override fun onResume() {
         super.onResume()
 
+        // 유저 정보 불러오기
         firestore.collection("Users").document(id).get().addOnCompleteListener {
             var user = it.result?.toObject(Users::class.java)!!
+            // 마이페이지 UI에 회원 정보 보여주기
             grade = user.grade!!
             txt_grade.text = grade
             txt_Point.text = "${user.point}"
@@ -75,28 +49,31 @@ class MyPageActivity : AppCompatActivity() {
             txt_Cache.text = "${user.cache}"
             txt_name.text = user.nickname
 
+            // 등급에 따라 아이콘과 프로그래스 바를 설정
             when(grade){
                 "브론즈"->{
-                    Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/bronze.png?alt=media&token=8826d27f-be2d-423e-a4cb-37b6587d914c").into(img_grade)
+                    img_grade.setImageResource(R.drawable.icon_bronze)
                     progress_grade.max = 3000
                     txt_grade_gauge.text = "3천 P"
                 }
                 "실버"-> {
-                    Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/silver.png?alt=media&token=083c09ba-b311-45de-ba9c-852f2b73afee").into(img_grade)
+                    img_grade.setImageResource(R.drawable.icon_silver)
                     progress_grade.max = 30000
                     txt_grade_gauge.text = "3만 P"
                 }
                 "골드"-> {
-                    Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/gold.png?alt=media&token=42ba695d-2f81-43fa-8e6b-c44bda6c827a").into(img_grade)
+                    img_grade.setImageResource(R.drawable.icon_gold)
                     progress_grade.max = 300000
                     txt_grade_gauge.text = "30만 P"
                 }
                 "플래티넘"-> {
-                    Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/platinum.png?alt=media&token=e87bbc24-e3dc-4d9b-8695-96dce9e4979e").into(img_grade)
+                    img_grade.setImageResource(R.drawable.icon_platinum)
+                    progress_grade.max = 0
                     txt_grade_gauge.text = "max"
                 }
                 "마스터"-> {
-                    Glide.with(this).load("https://firebasestorage.googleapis.com/v0/b/lolketing.appspot.com/o/master.png?alt=media&token=72ebd38e-23b2-4462-89ab-598c85d06760").into(img_grade)
+                    img_grade.setImageResource(R.drawable.icon_master)
+                    progress_grade.max = 0
                     txt_grade_gauge.text = "max"
                 }
             }
@@ -114,6 +91,23 @@ class MyPageActivity : AppCompatActivity() {
     fun moveHome(view: View) {
         var intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+    }
+
+    // 각 버튼별 페이지 이동
+    fun moveActivity(view: View) {
+        var intent = Intent()
+        when(view.id){
+            R.id.txt_Cache -> intent = Intent(this, CacheChargingActivity::class.java)
+            R.id.btn_history -> intent = Intent(this, PurchaseHistoryActivity::class.java)
+            R.id.txt_withdrawal -> intent = Intent(this, WithdrawalActivity::class.java)
+            R.id.txt_coupon -> intent = Intent(this, CouponActivity::class.java)
+            R.id.txt_grade_detail -> intent = Intent(this, MembershipActivity::class.java)
+            R.id.btn_modify ->{
+                intent = Intent(this, JoinDetailActivity::class.java)
+                intent.putExtra("modify", "modify")
+            }
+        }
         startActivity(intent)
     }
 }

@@ -1,5 +1,6 @@
 package com.ezen.lolketing
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -27,9 +28,10 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
 
     private var auth = FirebaseAuth.getInstance()
     private var reference = FirebaseDatabase.getInstance()
-    private lateinit var adapter : ChattingAdapter
+    private var comment = ChattingDTO.Comment() // 댓글을 저장할 변수
+    private lateinit var adapter : ChattingAdapter // 채팅 리사이클러의 어뎁터
+    private lateinit var nickname : String // 유저의 닉네임
     lateinit var time : String  // 채팅 방의 시간
-    lateinit var nickname : String // 유저의 닉네임
     lateinit var selectTeam : String // 선택한 팀 L or R
     lateinit var team : String  // 게임의 팀들
 
@@ -43,12 +45,15 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
         team = intent.getStringExtra("team")
         chatting_title.text = team.replace(":", "vs")   // ex) T1:DAMWONGAMMING > T1 vs DAMWONGAMMING 으로 수정하여 표시
 
-        var teams = team.split(":") // ':'을 기준으로 왼쪽 팀, 오른쪽 팀을 나눈다
+        var teams = team.split(":") // ':'을 기준으로 왼쪽 팀, 오른쪽 팀을 나누어서 저장
         setImage(img_team1, teams[0])
         setImage(img_team2, teams[1])
 
         var dateFormat = SimpleDateFormat("yyyyMMdd")
         var mDate = Date()
+
+        comment.id = nickname
+        comment.team = selectTeam
 
         btn_chatting.setOnClickListener {
             // 이전 날의 채팅방 입장은 가능하지만 당일 제외하고 채팅 입력 불가
@@ -56,10 +61,7 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
                 toast("당일에만 작성 가능합니다.")
                 return@setOnClickListener
             }
-            var comment = ChattingDTO.Comment()
-            comment.id = nickname
             comment.message = edit_chatting.text.toString()
-            comment.team = selectTeam
             comment.timestamp = System.currentTimeMillis()
             // 채팅 내용 RealtimeDatabase 에 추가
             reference.reference.child("ChattingRoom").child(time).child("comments").push().setValue(comment).addOnCompleteListener {

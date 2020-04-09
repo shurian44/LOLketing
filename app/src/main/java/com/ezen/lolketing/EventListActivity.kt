@@ -24,7 +24,7 @@ class EventListActivity : AppCompatActivity() {
             intent.putExtra("page", 2)
             startActivity(intent)
         }
-        // 루렛 이벤트 페이지
+        // 룰렛 이벤트 페이지
         event_card3.setOnClickListener{
             startActivity(Intent(this, RouletteActivity::class.java))
         }

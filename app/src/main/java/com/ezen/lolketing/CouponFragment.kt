@@ -15,7 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class CouponFragment(status : String) : Fragment() {
 
-    var status = status
+    var status = status // 쿠폰의 상태 : "사용 함" or "사용 안함"
     private var firestore = FirebaseFirestore.getInstance()
     private var auth = FirebaseAuth.getInstance()
     private lateinit var adapter : CouponAdapter
