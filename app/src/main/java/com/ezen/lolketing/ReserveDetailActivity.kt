@@ -28,10 +28,10 @@ class ReserveDetailActivity : AppCompatActivity(), SeatDialog.onSelectSeatListen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve_detail)
 
-        price = intent.getIntExtra("price", 0)  // ex) 9000
+        price = intent?.getIntExtra("price", 0) ?: 0  // ex) 9000
         reserve_price.text = format.format(price)
-        time = intent.getStringExtra("time")    // ex) 2020.02.14 17:00
-        team = intent.getStringExtra("team")    // ex) T1:DAMWON
+        time = intent?.getStringExtra("time") ?: ""    // ex) 2020.02.14 17:00
+        team = intent?.getStringExtra("team") ?: ""    // ex) T1:DAMWON
         radio1.isChecked = true // 1명을 기본으로 설정
 
         // 라디오 버튼의 상태에 따라 가격 표시

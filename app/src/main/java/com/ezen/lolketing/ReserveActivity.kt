@@ -22,8 +22,8 @@ class ReserveActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserve)
 
-        time = intent.getStringExtra("time")    // ex) 2020.02.14 17:00
-        team = intent.getStringExtra("team")    // ex) T1:DAMWON
+        time = intent?.getStringExtra("time") ?: ""    // ex) 2020.02.14 17:00
+        team = intent?.getStringExtra("team") ?: ""    // ex) T1:DAMWON
         reserve_time.text = time
         reserve_match.text = team.replace(":", " vs ")
 

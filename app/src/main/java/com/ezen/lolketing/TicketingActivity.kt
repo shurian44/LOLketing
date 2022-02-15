@@ -44,9 +44,9 @@ class TicketingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ticketing)
 
-        time = intent.getStringExtra("time")
-        team = intent.getStringExtra("team")
-        seat = intent.getStringExtra("seat")
+        time = intent?.getStringExtra("time") ?: ""
+        team = intent?.getStringExtra("team") ?: ""
+        seat = intent?.getStringExtra("seat") ?: ""
         ticketCount = intent.getIntExtra("ticketCount", 0)
         pay = intent.getIntExtra("pay", 0)
         image = intent.getStringExtra("image")

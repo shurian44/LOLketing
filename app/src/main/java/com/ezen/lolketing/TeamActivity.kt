@@ -21,7 +21,7 @@ class TeamActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team)
 
-        team = intent.getStringExtra("team")
+        team = intent?.getStringExtra("team") ?: ""
         getTeam()
 
         top_view.setOnClickListener {

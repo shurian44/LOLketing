@@ -39,10 +39,10 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatting)
 
-        time = intent.getStringExtra("time")
-        nickname = intent.getStringExtra("nickName")
-        selectTeam = intent.getStringExtra("selectTeam")
-        team = intent.getStringExtra("team")
+        time = intent?.getStringExtra("time") ?: ""
+        nickname = intent.getStringExtra("nickName") ?: ""
+        selectTeam = intent.getStringExtra("selectTeam") ?: ""
+        team = intent.getStringExtra("team") ?: ""
         chatting_title.text = team.replace(":", "vs")   // ex) T1:DAMWONGAMMING > T1 vs DAMWONGAMMING 으로 수정하여 표시
 
         var teams = team.split(":") // ':'을 기준으로 왼쪽 팀, 오른쪽 팀을 나누어서 저장

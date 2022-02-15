@@ -20,7 +20,7 @@ class LoLGuideDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lol_guide_detail)
 
-        status = intent.getStringExtra("status")
+        status = intent?.getStringExtra("status") ?: ""
         when(status){
             "aos"->{
                 guide_title.text = "AOS?"
