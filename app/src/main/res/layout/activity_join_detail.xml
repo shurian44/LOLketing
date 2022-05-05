@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/join_detail_layout"
-    tools:context=".JoinDetailActivity"
+    tools:context=".view.login.join.JoinDetailActivity"
     android:paddingHorizontal="20dp"
     android:layout_marginVertical="15dp">
 

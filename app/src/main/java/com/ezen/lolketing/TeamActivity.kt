@@ -5,9 +5,9 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ezen.lolketing.adapter.TeamAdapter
 import com.ezen.lolketing.model.TeamDTO
+import com.ezen.lolketing.view.main.board.BoardListActivity
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_team.*

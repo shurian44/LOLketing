@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ezen.lolketing.LeagueInfoActivity;
+import com.ezen.lolketing.view.main.league_info.LeagueInfoActivity;
 import com.ezen.lolketing.R;
 
 public class ProgressFragment extends Fragment {

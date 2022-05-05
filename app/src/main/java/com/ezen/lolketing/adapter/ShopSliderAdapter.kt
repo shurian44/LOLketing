@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.ezen.lolketing.R
-import com.ezen.lolketing.ShopDetailActivity
+import com.ezen.lolketing.view.main.shop.ShopDetailActivity
 import com.ezen.lolketing.model.ShopDTO
 import com.smarteist.autoimageslider.SliderViewAdapter
 import kotlinx.android.synthetic.main.item_slider.view.*

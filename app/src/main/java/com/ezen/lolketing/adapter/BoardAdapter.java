@@ -15,8 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ezen.lolketing.BoardDetailActivity;
-import com.ezen.lolketing.BoardWriteActivity;
+import com.ezen.lolketing.view.main.board.BoardDetailActivity;
+import com.ezen.lolketing.view.main.board.BoardWriteActivity;
 import com.ezen.lolketing.R;
 import com.ezen.lolketing.model.BoardDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;

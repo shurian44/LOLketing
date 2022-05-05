@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".ChattingListActivity">
+    tools:context=".view.main.chatting.ChattingListActivity">
 
     <ImageView
         android:id="@+id/main_logo"

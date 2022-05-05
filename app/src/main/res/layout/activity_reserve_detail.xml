@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/reserve_detail"
-    tools:context=".ReserveDetailActivity">
+    tools:context=".view.main.ticket.ReserveDetailActivity">
 
     <ScrollView
         android:id="@+id/reserve_scroll"

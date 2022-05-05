@@ -1,196 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:id="@+id/card_board"
+<layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/colorPrimaryDark"
-    app:contentPadding="2dp"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/card_const"
+    <data>
+        <variable
+            name="dialog"
+            type="com.ezen.lolketing.view.dialog.TeamSelectDialog" />
+
+        <variable
+            name="team"
+            type="com.ezen.lolketing.util.Team" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff">
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:contentPadding="2dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
-        <View
-            android:id="@+id/view1"
-            android:layout_width="2dp"
-            android:layout_height="0dp"
-            android:background="#333B3838"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/icon_t1"
-            app:layout_constraintRight_toLeftOf="@id/icon_griffin"/>
-
-        <TextView
-            android:id="@+id/board_title"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/card_const"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:padding="8dp"
-            android:text="구단 게시판"
-            android:gravity="center"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            android:background="#fff">
 
-        <ImageView
-            android:id="@+id/icon_t1"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:paddingVertical="12dp"
-            android:maxWidth="60dp"
-            android:src="@drawable/logo_t1"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintTop_toTopOf="@id/icon_griffin"
-            app:layout_constraintBottom_toBottomOf="@id/icon_griffin"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/icon_griffin"/>
+            <View
+                android:id="@+id/view1"
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:background="#333B3838"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/icon_t1"
+                app:layout_constraintRight_toLeftOf="@id/icon_griffin"/>
 
-        <ImageView
-            android:id="@+id/icon_griffin"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:src="@drawable/icon_griffin"
-            android:layout_marginTop="10dp"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintTop_toBottomOf="@id/board_title"
-            app:layout_constraintLeft_toRightOf="@id/icon_t1"
-            app:layout_constraintRight_toRightOf="parent"/>
+            <TextView
+                android:id="@+id/board_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:padding="8dp"
+                android:text="구단 게시판"
+                android:gravity="center"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#333B3838"
-            app:layout_constraintTop_toBottomOf="@id/icon_griffin"
-            app:layout_constraintBottom_toTopOf="@id/icon_geng"/>
+            <ImageView
+                android:id="@+id/icon_t1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:paddingVertical="12dp"
+                android:maxWidth="60dp"
+                android:src="@drawable/logo_t1"
+                android:onClick="@{()->dialog.onClick(team.T1.name)}"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintTop_toTopOf="@id/icon_griffin"
+                app:layout_constraintBottom_toBottomOf="@id/icon_griffin"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/icon_griffin"/>
 
-        <ImageView
-            android:id="@+id/icon_geng"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintHorizontal_weight="1"
-            android:src="@drawable/icon_geng"
-            app:layout_constraintTop_toBottomOf="@id/icon_griffin"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/icon_dragonx"/>
+            <ImageView
+                android:id="@+id/icon_griffin"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:src="@drawable/icon_griffin"
+                android:layout_marginTop="10dp"
+                android:onClick="@{()->dialog.onClick(team.GRIFFIN.name)}"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/board_title"
+                app:layout_constraintLeft_toRightOf="@id/icon_t1"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-        <ImageView
-            android:id="@+id/icon_dragonx"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintHorizontal_weight="1"
-            android:src="@drawable/icon_dragonx"
-            app:layout_constraintLeft_toRightOf="@id/icon_geng"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/icon_griffin"/>
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#333B3838"
+                app:layout_constraintTop_toBottomOf="@id/icon_griffin"
+                app:layout_constraintBottom_toTopOf="@id/icon_geng"/>
 
-        <View
-            android:id="@+id/vew3"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#333B3838"
-            app:layout_constraintTop_toBottomOf="@id/icon_geng"
-            app:layout_constraintBottom_toTopOf="@id/icon_freecs"/>
+            <ImageView
+                android:id="@+id/icon_geng"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/icon_geng"
+                android:onClick="@{()->dialog.onClick(team.GENG.name)}"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/icon_griffin"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/icon_dragonx"/>
 
-        <ImageView
-            android:id="@+id/icon_freecs"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintHorizontal_weight="1"
-            android:src="@drawable/icon_afreeca"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/icon_sandbox"
-            app:layout_constraintTop_toBottomOf="@id/icon_geng"/>
+            <ImageView
+                android:id="@+id/icon_dragonx"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintHorizontal_weight="1"
+                android:src="@drawable/icon_dragonx"
+                android:onClick="@{()->dialog.onClick(team.DRAGON.name)}"
+                app:layout_constraintLeft_toRightOf="@id/icon_geng"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icon_griffin"/>
 
-        <ImageView
-            android:id="@+id/icon_sandbox"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintHorizontal_weight="1"
-            android:src="@drawable/icon_sandbox"
-            app:layout_constraintLeft_toRightOf="@id/icon_freecs"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/icon_dragonx"/>
+            <View
+                android:id="@+id/vew3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#333B3838"
+                app:layout_constraintTop_toBottomOf="@id/icon_geng"
+                app:layout_constraintBottom_toTopOf="@id/icon_freecs"/>
 
-        <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#333B3838"
-            app:layout_constraintTop_toBottomOf="@id/icon_freecs"
-            app:layout_constraintBottom_toTopOf="@id/icon_apk"/>
+            <ImageView
+                android:id="@+id/icon_freecs"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintHorizontal_weight="1"
+                android:onClick="@{()->dialog.onClick(team.AF.name)}"
+                android:src="@drawable/icon_afreeca"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/icon_sandbox"
+                app:layout_constraintTop_toBottomOf="@id/icon_geng"/>
 
-        <ImageView
-            android:id="@+id/icon_damwon"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:paddingVertical="10dp"
-            app:layout_constraintHorizontal_weight="1"
-            android:src="@drawable/icon_damwon"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/icon_apk"
-            app:layout_constraintTop_toBottomOf="@id/icon_freecs"
-            app:layout_constraintBottom_toTopOf="@id/icon_rolster"/>
+            <ImageView
+                android:id="@+id/icon_sandbox"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintHorizontal_weight="1"
+                android:src="@drawable/icon_sandbox"
+                android:onClick="@{()->dialog.onClick(team.SANDBOX.name)}"
+                app:layout_constraintLeft_toRightOf="@id/icon_freecs"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icon_dragonx"/>
 
-        <ImageView
-            android:id="@+id/icon_apk"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            app:layout_constraintHorizontal_weight="1"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/logo_apk"
-            app:layout_constraintLeft_toRightOf="@id/icon_damwon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/icon_sandbox"/>
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#333B3838"
+                app:layout_constraintTop_toBottomOf="@id/icon_freecs"
+                app:layout_constraintBottom_toTopOf="@id/icon_apk"/>
 
-        <View
-            android:id="@+id/view4"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#333B3838"
-            app:layout_constraintTop_toBottomOf="@id/icon_apk"
-            app:layout_constraintBottom_toTopOf="@id/icon_rolster"/>
+            <ImageView
+                android:id="@+id/icon_damwon"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:paddingVertical="10dp"
+                app:layout_constraintHorizontal_weight="1"
+                android:src="@drawable/icon_damwon"
+                android:onClick="@{()->dialog.onClick(team.DAMWON.name)}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/icon_apk"
+                app:layout_constraintTop_toBottomOf="@id/icon_freecs"
+                app:layout_constraintBottom_toTopOf="@id/icon_rolster"/>
 
-        <ImageView
-            android:id="@+id/icon_rolster"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:paddingVertical="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/icon_rolster"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/icon_hanhwa"
-            app:layout_constraintTop_toBottomOf="@id/icon_apk"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageView
+                android:id="@+id/icon_apk"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                app:layout_constraintHorizontal_weight="1"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/logo_apk"
+                android:onClick="@{()->dialog.onClick(team.APK.name)}"
+                app:layout_constraintLeft_toRightOf="@id/icon_damwon"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icon_sandbox"/>
 
-        <ImageView
-            android:id="@+id/icon_hanhwa"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:paddingVertical="10dp"
-            android:src="@drawable/icon_hanwha"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/icon_rolster"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/icon_rolster"
-            app:layout_constraintBottom_toBottomOf="@id/icon_rolster"/>
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#333B3838"
+                app:layout_constraintTop_toBottomOf="@id/icon_apk"
+                app:layout_constraintBottom_toTopOf="@id/icon_rolster"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/icon_rolster"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:paddingVertical="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/icon_rolster"
+                android:onClick="@{()->dialog.onClick(team.KT.name)}"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/icon_hanhwa"
+                app:layout_constraintTop_toBottomOf="@id/icon_apk"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-</androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/icon_hanhwa"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:paddingVertical="10dp"
+                android:src="@drawable/icon_hanwha"
+                android:onClick="@{()->dialog.onClick(team.HANWHA.name)}"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@id/icon_rolster"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/icon_rolster"
+                app:layout_constraintBottom_toBottomOf="@id/icon_rolster"/>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

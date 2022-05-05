@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "1007308432394-5ili7fo13k14tteo75ie7vbnvsb8kiju.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezen.lolketing",
+            "certificate_hash": "f4a8aabd6e1256abcb2def010370d8feaf6b9211"
+          }
+        },
+        {
+          "client_id": "1007308432394-5k1njs9iarn6a3ca3v6k68nmiqsmumhd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezen.lolketing",
+            "certificate_hash": "c50f755530c214a5fa19e2b77986d42dadbe379b"
+          }
+        },
+        {
+          "client_id": "1007308432394-bsp0v2m0njgdn4pjs77h61bfc3r287v0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezen.lolketing",
+            "certificate_hash": "78f7daf415e754f93d314629859e6a2646e364cb"
+          }
+        },
+        {
           "client_id": "1007308432394-tln4pn0c99qcia8pfcapbtc10d7q9dmu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

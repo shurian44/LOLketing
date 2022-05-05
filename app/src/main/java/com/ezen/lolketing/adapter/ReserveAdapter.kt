@@ -2,7 +2,6 @@ package com.ezen.lolketing.adapter
 
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
-import com.ezen.lolketing.ReserveActivity
+import com.ezen.lolketing.view.main.ticket.ReserveActivity
 import com.ezen.lolketing.model.GameDTO
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions

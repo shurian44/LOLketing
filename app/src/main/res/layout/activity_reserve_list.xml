@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".ReserveListActivity">
+    tools:context=".view.main.ticket.ReserveListActivity">
 
     <ImageView
         android:id="@+id/main_logo"

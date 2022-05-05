@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
     android:paddingVertical="15dp"
-    tools:context=".JoinActivity">
+    tools:context=".view.login.join.JoinActivity">
 
     <ImageView
         android:id="@+id/join_logo"

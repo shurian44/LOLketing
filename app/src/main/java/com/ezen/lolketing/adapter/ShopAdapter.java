@@ -2,21 +2,18 @@ package com.ezen.lolketing.adapter;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.ezen.lolketing.PurchaseActivity;
 import com.ezen.lolketing.R;
-import com.ezen.lolketing.ShopDetailActivity;
+import com.ezen.lolketing.view.main.shop.ShopDetailActivity;
 import com.ezen.lolketing.model.ShopDTO;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

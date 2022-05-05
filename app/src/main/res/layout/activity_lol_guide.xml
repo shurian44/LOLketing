@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".LoLGuideActivity">
+    tools:context=".view.main.guide.LoLGuideActivity">
 
     <ImageView
         android:id="@+id/main_logo"

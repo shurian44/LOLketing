@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".CouponActivity">
+    tools:context=".view.main.my_page.CouponActivity">
 
     <ImageView
         android:id="@+id/main_logo"

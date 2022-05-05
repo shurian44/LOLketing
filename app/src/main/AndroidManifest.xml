@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ezen.lolketing">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".LOLketing"
         android:allowBackup="true"
         android:icon="@drawable/main_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".MembershipActivity"></activity>
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+        <activity android:name=".view.main.my_page.MembershipActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme"
@@ -25,45 +28,45 @@
             </intent-filter>
         </activity>
         <activity android:name=".WithdrawalActivity" />
-        <activity android:name=".CouponActivity" />
-        <activity android:name=".EventListActivity" />
-        <activity android:name=".EventDetailActivity" />
-        <activity android:name=".ShopEventActivity" />
-        <activity android:name=".LoLGuideDetailActivity" />
-        <activity android:name=".LoLGuideActivity" />
+        <activity android:name=".view.main.my_page.CouponActivity" />
+        <activity android:name=".view.main.event.EventListActivity" />
+        <activity android:name=".view.main.event.EventDetailActivity" />
+        <activity android:name=".view.main.shop.ShopEventActivity" />
+        <activity android:name=".view.main.guide.LoLGuideDetailActivity" />
+        <activity android:name=".view.main.guide.LoLGuideActivity" />
         <activity
-            android:name=".ChattingActivity"
+            android:name=".view.main.chatting.ChattingActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".PurchaseHistoryActivity" />
-        <activity android:name=".PurchaseResultActivity" />
-        <activity android:name=".RouletteActivity" />
-        <activity android:name=".ChattingListActivity" />
+        <activity android:name=".view.main.shop.PurchaseHistoryActivity" />
+        <activity android:name=".view.main.shop.PurchaseResultActivity" />
+        <activity android:name=".view.main.event.RouletteActivity" />
+        <activity android:name=".view.main.chatting.ChattingListActivity" />
         <activity
-            android:name=".BoardWriteActivity"
+            android:name=".view.main.board.BoardWriteActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".BoardDetailActivity" />
-        <activity android:name=".BoardListActivity" />
-        <activity android:name=".PurchaseActivity" />
-        <activity android:name=".ShopDetailActivity" />
-        <activity android:name=".ShopActivity" />
-        <activity android:name=".CacheChargingActivity" />
-        <activity android:name=".MyPageActivity" />
-        <activity android:name=".TicketingActivity" />
-        <activity android:name=".ReserveDetailActivity" />
-        <activity android:name=".SeatGuideActivity" />
-        <activity android:name=".GameScheduleActivity" />
-        <activity android:name=".LeagueInfoActivity" />
-        <activity android:name=".ReserveActivity" />
-        <activity android:name=".ReserveListActivity" />
-        <activity android:name=".DaumWebViewActivity" />
-        <activity android:name=".JoinDetailActivity" />
+        <activity android:name=".view.main.board.BoardDetailActivity" />
+        <activity android:name=".view.main.board.BoardListActivity" />
+        <activity android:name=".view.main.shop.PurchaseActivity" />
+        <activity android:name=".view.main.shop.ShopDetailActivity" />
+        <activity android:name=".view.main.shop.ShopActivity" />
+        <activity android:name=".view.main.my_page.CacheChargingActivity" />
+        <activity android:name=".view.main.my_page.MyPageActivity" />
+        <activity android:name=".view.main.ticket.TicketingActivity" />
+        <activity android:name=".view.main.ticket.ReserveDetailActivity" />
+        <activity android:name=".view.main.ticket.SeatGuideActivity" />
+        <activity android:name=".view.main.shop.GameScheduleActivity" />
+        <activity android:name=".view.main.league_info.LeagueInfoActivity" />
+        <activity android:name=".view.main.ticket.ReserveActivity" />
+        <activity android:name=".view.main.ticket.ReserveListActivity" />
+        <activity android:name=".view.login.DaumWebViewActivity" />
+        <activity android:name=".view.login.join.JoinDetailActivity" />
         <activity android:name=".TeamActivity" />
-        <activity android:name=".NewsActivity" />
-        <activity android:name=".NewsWebViewActivity" />
-        <activity android:name=".ManagerActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".JoinActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".view.main.news.NewsActivity" />
+        <activity android:name=".view.main.news.NewsWebViewActivity" />
+        <activity android:name=".view.main.manager.ManagerActivity" />
+        <activity android:name=".view.login.LoginActivity" />
+        <activity android:name=".view.login.join.JoinActivity" />
+        <activity android:name=".view.main.MainActivity" />
     </application>
 
 </manifest>

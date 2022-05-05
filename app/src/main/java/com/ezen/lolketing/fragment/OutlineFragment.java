@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ezen.lolketing.LeagueInfoActivity;
+import com.ezen.lolketing.view.main.league_info.LeagueInfoActivity;
 import com.ezen.lolketing.R;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;

@@ -1,13 +1,13 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TapTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="TapTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:textColorPrimary">#fff</item>
         <item name="android:textColorSecondary">#6D6A6A</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -15,13 +15,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="MyCheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+    <style name="MyCheckBox" parent="@style/Widget.Material3.CompoundButton.CheckBox">
         <item name="android:colorControlNormal">#ffd600</item>
         <item name="android:colorControlActivated">#0091ea</item>
         <item name="android:colorControlHighlight">#c51162</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     <item name="android:background">@drawable/splash</item>
 </style>
 
