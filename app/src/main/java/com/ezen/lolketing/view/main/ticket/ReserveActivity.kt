@@ -3,16 +3,16 @@ package com.ezen.lolketing.view.main.ticket
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ActivityReserveBinding
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_reserve.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ReserveActivity : AppCompatActivity() {
+class ReserveActivity : BaseActivity<ActivityReserveBinding>(R.layout.activity_reserve) {
 
     lateinit var time : String
     lateinit var team : String
@@ -21,12 +21,11 @@ class ReserveActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_reserve)
 
         time = intent?.getStringExtra("time") ?: ""    // ex) 2020.02.14 17:00
         team = intent?.getStringExtra("team") ?: ""    // ex) T1:DAMWON
-        reserve_time.text = time
-        reserve_match.text = team.replace(":", " vs ")
+        binding.reserveTime.text = time
+        binding.reserveMatch.text = team.replace(":", " vs ")
 
         // 요일 구하기
         var dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
@@ -41,7 +40,7 @@ class ReserveActivity : AppCompatActivity() {
         }
 
         // 예매하기 번튼 클릭 시 상세 페이지로 이동
-        reserve_button.setOnClickListener {
+        binding.reserveButton.setOnClickListener {
             var intent = Intent(this, ReserveDetailActivity::class.java)
             intent.putExtra("time", time)
             intent.putExtra("team", team)
@@ -50,11 +49,11 @@ class ReserveActivity : AppCompatActivity() {
         }
     }// onCreate()
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
-        var intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        startActivity(Intent(this, LoginActivity::class.java).also {
+            it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        })
     }
 
     fun moveHome(view: View) {

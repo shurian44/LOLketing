@@ -99,5 +99,8 @@
 정기적인 자체 감사 실시
 \n
 개인정보 취급 관련 안정성 확보를 위해 정기적(분기 1회)으로 자체 감사를 실시하고 있습니다.
-</string>
+    </string>
+    <string name="like_counts">좋아요 %d</string>
+    <string name="board_views">조회수 %d</string>
+    <string name="comment_counts">%d\n댓글</string>
 </resources>

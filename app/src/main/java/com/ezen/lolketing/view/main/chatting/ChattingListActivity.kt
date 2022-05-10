@@ -8,19 +8,19 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ActivityChattinglistBinding
 import com.ezen.lolketing.model.GameDTO
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_chattinglist.*
-import org.jetbrains.anko.progressDialog
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ChattingListActivity : AppCompatActivity() {
+class ChattingListActivity : BaseActivity<ActivityChattinglistBinding>(R.layout.activity_chattinglist) {
 
     private var firestore = FirebaseFirestore.getInstance()
     private var auth = FirebaseAuth.getInstance()
@@ -33,7 +33,6 @@ class ChattingListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chattinglist)
 
         // 유저의 닉네임 가져오기
         firestore.collection("Users").document(auth.currentUser?.email!!).get().addOnSuccessListener {
@@ -41,7 +40,7 @@ class ChattingListActivity : AppCompatActivity() {
             nickName = user.nickname!!
         }
         // ProgressDialog 설정
-        dialog = progressDialog(message = "잠시만 기다려 주세요...")
+//        dialog = progressDialog(message = "잠시만 기다려 주세요...")
         // 게임의 데이터 가져오기
         firestore.collection("Game").get().addOnSuccessListener {
             games = it.toObjects(GameDTO::class.java)
@@ -52,7 +51,7 @@ class ChattingListActivity : AppCompatActivity() {
         }
 
         var calendar = Calendar.getInstance() // DatePickerDialog 에 사용할 날짜
-        layout_today.setOnClickListener {
+        binding.layoutToday.setOnClickListener {
             var dialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                 var date = "$year."  // ex) 2020.02.02 양식 만들기
                 date += if(month < 10) "0${month+1}."
@@ -72,7 +71,7 @@ class ChattingListActivity : AppCompatActivity() {
 
     // 원하는 팀을 선택해서 채팅방 입장
     fun enterChatting(view: View) {
-        var time = txt_today.text.toString()
+        var time = binding.txtToday.text.toString()
         var selectTeam = "" // 선택한 팀의 위치 저장 L or R : DB에 입장한 유저 따로 저장하기 위함
         var intent = Intent(this, ChattingActivity::class.java)
         // ex) 2020.02.05 -> 20200205 수정 : realtimeDatabase 에서 .은 하위 노드로 판단하기 때문에 제거
@@ -118,7 +117,7 @@ class ChattingListActivity : AppCompatActivity() {
 
     // UI 세팅 : 초기 세팅 or 날짜 선택 시 세팅
     fun setViews(isCreate : Boolean, mDate : Date){
-        txt_today.text = dateFormat.format(mDate)  // 날짜 표시
+        binding.txtToday.text = dateFormat.format(mDate)  // 날짜 표시
         for(i in games.indices){
             // 게임 데이터의 날짜를 Date 타입으로 파싱
             var date = dateFormat.parse(games[i].date)
@@ -130,18 +129,18 @@ class ChattingListActivity : AppCompatActivity() {
                 // T1:DAMWONGAMMING > T1 DAMWONGAMMING 으로 분리하여 List 에 저장한 뒤 이미지 세팅
                 var team_17 = games[i].team!!.split(":")
                 var team_20 = games[i+1].team!!.split(":")
-                setImage(img_team1, team_17[0])
-                setImage(img_team2, team_17[1])
-                setImage(img_team3, team_20[0])
-                setImage(img_team4, team_20[1])
-                layout_game.visibility = View.VISIBLE
-                txt_noGame.visibility = View.GONE
+                setImage(binding.imgTeam1, team_17[0])
+                setImage(binding.imgTeam2, team_17[1])
+                setImage(binding.imgTeam3, team_20[0])
+                setImage(binding.imgTeam4, team_20[1])
+                binding.layoutGame.visibility = View.VISIBLE
+                binding.txtNoGame.visibility = View.GONE
                 return
             }
         } // for
         // 게임이 없는 날일 경우 UI 표시
-        layout_game.visibility = View.INVISIBLE
-        txt_noGame.visibility = View.VISIBLE
+        binding.layoutGame.visibility = View.INVISIBLE
+        binding.txtNoGame.visibility = View.VISIBLE
     } // setViews()
 
     // 팀에 맞게 이미지 세팅
@@ -166,7 +165,7 @@ class ChattingListActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
         var intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

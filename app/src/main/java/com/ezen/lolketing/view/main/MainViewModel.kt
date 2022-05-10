@@ -1,4 +1,4 @@
-package com.ezen.lolketing.view
+package com.ezen.lolketing.view.main
 
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
@@ -14,6 +14,7 @@ class MainViewModel @Inject constructor(
     private val repository: MainRepository
 ) : BaseViewModel<MainViewModel.MainEvent>() {
 
+    // 유저 정보 조회
     fun getUserInfo() = viewModelScope.launch {
         val email = repository.getCurrentUser()?.email ?: return@launch
         val userInfo = repository.getUserInfo(Constants.USERS, email)
@@ -31,6 +32,7 @@ class MainViewModel @Inject constructor(
         )
     }
 
+    // 배너 이미지 조회
     fun getEventBannerList() {
         val images = listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
 

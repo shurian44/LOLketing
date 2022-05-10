@@ -1,30 +1,28 @@
 package com.ezen.lolketing
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.ezen.lolketing.databinding.ActivityWithdrawalBinding
+import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_withdrawal.*
-import org.jetbrains.anko.toast
 
-class WithdrawalActivity : AppCompatActivity() {
+class WithdrawalActivity : BaseActivity<ActivityWithdrawalBinding>(R.layout.activity_withdrawal) {
 
     var auth = FirebaseAuth.getInstance()
     var firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_withdrawal)
 
-        word_outaccount.text = "한번 회원탈퇴가 이루어지면 절대 계정을 복구할 수 없습니다.\n아래의 사항에 동의하신다면\n회원 탈퇴 요청을진행해 주시기 바랍니다."
-        word_outaccount_2.text = "회원 탈퇴를 하시려면 아래의 창에 영문 대문자로 DELETE 라고 적어 주세요"
+        binding.wordOutaccount.text = "한번 회원탈퇴가 이루어지면 절대 계정을 복구할 수 없습니다.\n아래의 사항에 동의하신다면\n회원 탈퇴 요청을진행해 주시기 바랍니다."
+        binding.wordOutaccount2.text = "회원 탈퇴를 하시려면 아래의 창에 영문 대문자로 DELETE 라고 적어 주세요"
 
-        outaccount.setOnClickListener {
-            if(enterzone.text.toString() == "DELETE"){
+        binding.outaccount.setOnClickListener {
+            if(binding.enterzone.text.toString() == "DELETE"){
                 auth.currentUser?.delete()!!.addOnCompleteListener {
                     if(it.isComplete){
                         toast("회원 탈퇴 완료")
@@ -38,12 +36,12 @@ class WithdrawalActivity : AppCompatActivity() {
             }
         }
 
-        cancle.setOnClickListener {
+        binding.cancle.setOnClickListener {
             finish()
         }
     }
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
         var intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

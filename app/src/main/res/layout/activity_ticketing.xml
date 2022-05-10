@@ -1,281 +1,286 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    tools:context=".view.main.ticket.TicketingActivity">
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent"
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        tools:context=".view.main.ticket.TicketingActivity">
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <ImageView
-                android:id="@+id/main_logo"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="6dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/lolketing_logo"
-                android:onClick="moveHome"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/btn_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="로그아웃"
-                android:onClick="logout"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimaryDark"
-                app:layout_constraintTop_toTopOf="@id/main_logo"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/main_logo"/>
+                <ImageView
+                    android:id="@+id/main_logo"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="6dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/lolketing_logo"
+                    android:onClick="moveHome"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
 
-            <TextView
-                android:id="@+id/match"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/colorPrimaryDark"
-                android:padding="8dp"
-                android:text="DAMWON Gaming vs Hanwha Life Esports"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@id/main_logo"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                <TextView
+                    android:id="@+id/btn_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="로그아웃"
+                    android:onClick="logout"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:layout_constraintTop_toTopOf="@id/main_logo"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/main_logo"/>
 
-            <ImageView
-                android:id="@+id/iv_generated_qrcode"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@id/match"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                <TextView
+                    android:id="@+id/match"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="8dp"
+                    android:text="DAMWON Gaming vs Hanwha Life Esports"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="#fff"
+                    android:textAlignment="center"
+                    app:layout_constraintTop_toBottomOf="@id/main_logo"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-            <TextView
-                android:id="@+id/ticketing_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/colorPrimaryDark"
-                android:padding="8dp"
-                android:text="티켓 정보"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/iv_generated_qrcode"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                <ImageView
+                    android:id="@+id/iv_generated_qrcode"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/match"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-            <TextView
-                android:id="@+id/ticketing_txt1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="시간"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintTop_toBottomOf="@id/ticketing_title"
-                app:layout_constraintLeft_toLeftOf="@id/ticketing_title"
-                app:layout_constraintRight_toLeftOf="@id/ticketing_match"/>
+                <TextView
+                    android:id="@+id/ticketing_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="8dp"
+                    android:text="티켓 정보"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toBottomOf="@id/iv_generated_qrcode"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-            <TextView
-                android:id="@+id/ticketing_match"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="10dp"
-                android:text="2020.02.05 17:00"
-                app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintTop_toBottomOf="@id/ticketing_title"
-                app:layout_constraintLeft_toRightOf="@id/ticketing_txt1"
-                app:layout_constraintRight_toRightOf="@id/ticketing_title"/>
+                <TextView
+                    android:id="@+id/ticketing_txt1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="시간"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintTop_toBottomOf="@id/ticketing_title"
+                    app:layout_constraintLeft_toLeftOf="@id/ticketing_title"
+                    app:layout_constraintRight_toLeftOf="@id/ticketing_match"/>
 
-            <TextView
-                android:id="@+id/ticketing_txt2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="장소"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/ticketing_txt1"
-                app:layout_constraintLeft_toLeftOf="@id/ticketing_txt1"
-                app:layout_constraintRight_toRightOf="@id/ticketing_txt1"/>
+                <TextView
+                    android:id="@+id/ticketing_match"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingLeft="10dp"
+                    android:text="2020.02.05 17:00"
+                    app:layout_constraintHorizontal_weight="3"
+                    app:layout_constraintTop_toBottomOf="@id/ticketing_title"
+                    app:layout_constraintLeft_toRightOf="@id/ticketing_txt1"
+                    app:layout_constraintRight_toRightOf="@id/ticketing_title"/>
 
-            <TextView
-                android:id="@+id/ticketing_place"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="LoL PARK"
-                app:layout_constraintTop_toTopOf="@id/ticketing_txt2"
-                app:layout_constraintLeft_toLeftOf="@id/ticketing_match"
-                app:layout_constraintRight_toRightOf="@id/ticketing_match"/>
+                <TextView
+                    android:id="@+id/ticketing_txt2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="장소"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/ticketing_txt1"
+                    app:layout_constraintLeft_toLeftOf="@id/ticketing_txt1"
+                    app:layout_constraintRight_toRightOf="@id/ticketing_txt1"/>
 
-            <TextView
-                android:id="@+id/ticketing_txt3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="좌석"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/ticketing_txt2"
-                app:layout_constraintLeft_toLeftOf="@id/ticketing_txt1"
-                app:layout_constraintRight_toRightOf="@id/ticketing_txt1"/>
+                <TextView
+                    android:id="@+id/ticketing_place"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="LoL PARK"
+                    app:layout_constraintTop_toTopOf="@id/ticketing_txt2"
+                    app:layout_constraintLeft_toLeftOf="@id/ticketing_match"
+                    app:layout_constraintRight_toRightOf="@id/ticketing_match"/>
 
-            <TextView
-                android:id="@+id/ticketing_seat"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="좌석번호"
-                app:layout_constraintTop_toTopOf="@id/ticketing_txt3"
-                app:layout_constraintLeft_toLeftOf="@id/ticketing_match"
-                app:layout_constraintRight_toRightOf="@id/ticketing_match"/>
+                <TextView
+                    android:id="@+id/ticketing_txt3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="좌석"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/ticketing_txt2"
+                    app:layout_constraintLeft_toLeftOf="@id/ticketing_txt1"
+                    app:layout_constraintRight_toRightOf="@id/ticketing_txt1"/>
 
-            <TextView
-                android:id="@+id/ticketing_txt4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="예매 취소"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/ticketing_txt3"
-                app:layout_constraintLeft_toLeftOf="@id/ticketing_txt3"
-                app:layout_constraintRight_toRightOf="@id/ticketing_txt3"/>
+                <TextView
+                    android:id="@+id/ticketing_seat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="좌석번호"
+                    app:layout_constraintTop_toTopOf="@id/ticketing_txt3"
+                    app:layout_constraintLeft_toLeftOf="@id/ticketing_match"
+                    app:layout_constraintRight_toRightOf="@id/ticketing_match"/>
 
-            <TextView
-                android:id="@+id/reserve_cancel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="경기 당일 경기시간 4시간 전까지 가능\n(이후 최소, 환불, 변경 불가)\n예매 당일 취소 수수료 없이 취소가능\n이후 최소 시 티켓 금액의 10% 취소 수수료 부과"
-                app:layout_constraintTop_toTopOf="@id/ticketing_txt4"
-                app:layout_constraintLeft_toLeftOf="@id/ticketing_match"
-                app:layout_constraintRight_toRightOf="@id/ticketing_match"/>
+                <TextView
+                    android:id="@+id/ticketing_txt4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="예매 취소"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/ticketing_txt3"
+                    app:layout_constraintLeft_toLeftOf="@id/ticketing_txt3"
+                    app:layout_constraintRight_toRightOf="@id/ticketing_txt3"/>
 
-            <Button
-                android:id="@+id/btn_refund"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@color/colorPrimary"
-                android:text="환불하기"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/reserve_cancel"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                <TextView
+                    android:id="@+id/reserve_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="경기 당일 경기시간 4시간 전까지 가능\n(이후 최소, 환불, 변경 불가)\n예매 당일 취소 수수료 없이 취소가능\n이후 최소 시 티켓 금액의 10% 취소 수수료 부과"
+                    app:layout_constraintTop_toTopOf="@id/ticketing_txt4"
+                    app:layout_constraintLeft_toLeftOf="@id/ticketing_match"
+                    app:layout_constraintRight_toRightOf="@id/ticketing_match"/>
 
-            <TextView
-                android:id="@+id/reserve_title4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/colorPrimaryDark"
-                android:padding="8dp"
-                android:text="티켓 수령 및 입장"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/btn_refund"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                <Button
+                    android:id="@+id/btn_refund"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@color/colorPrimary"
+                    android:text="환불하기"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toBottomOf="@id/reserve_cancel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-            <TextView
-                android:id="@+id/reserve_text2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:lineSpacingMultiplier="1.2"
-                android:paddingLeft="10dp"
-                android:text="- 티켓 박스 오픈 : 당일 경기 2시간 전\n- 1경기 입장시간 : 당일 경기 1시간 전\n- 2경기 입장시간 : 1경기 종료 이후\n- 운영 시간은 현장 상황에 따라 변경될 수 있습니다.\n- 휠체어석은 휠체어 이용 시에만 입장 및 관람이 가능합니다.\n- 본인 확인이 어려울 경우, 예매 티켓 수령이 불가합니다.\n- 모바일 티켓 캡쳐 이미지는 입장이 불가합니다.\n- 티켓 수령 시 반드시 본인 확인이 가능한 실물 신분증 (주민등록증, 운전면허증, 학생증 등)을 지참해 주시기 바랍니다."
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="@id/reserve_title4"
-                app:layout_constraintRight_toRightOf="@id/reserve_title4"
-                app:layout_constraintTop_toBottomOf="@id/reserve_title4" />
+                <TextView
+                    android:id="@+id/reserve_title4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="8dp"
+                    android:text="티켓 수령 및 입장"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toBottomOf="@id/btn_refund"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-            <TextView
-                android:id="@+id/reserve_title5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/colorPrimaryDark"
-                android:padding="8dp"
-                android:text="유의사항"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/reserve_text2"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                <TextView
+                    android:id="@+id/reserve_text2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:paddingLeft="10dp"
+                    android:text="- 티켓 박스 오픈 : 당일 경기 2시간 전\n- 1경기 입장시간 : 당일 경기 1시간 전\n- 2경기 입장시간 : 1경기 종료 이후\n- 운영 시간은 현장 상황에 따라 변경될 수 있습니다.\n- 휠체어석은 휠체어 이용 시에만 입장 및 관람이 가능합니다.\n- 본인 확인이 어려울 경우, 예매 티켓 수령이 불가합니다.\n- 모바일 티켓 캡쳐 이미지는 입장이 불가합니다.\n- 티켓 수령 시 반드시 본인 확인이 가능한 실물 신분증 (주민등록증, 운전면허증, 학생증 등)을 지참해 주시기 바랍니다."
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="@id/reserve_title4"
+                    app:layout_constraintRight_toRightOf="@id/reserve_title4"
+                    app:layout_constraintTop_toBottomOf="@id/reserve_title4" />
 
-            <TextView
-                android:id="@+id/reserve_text3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="10dp"
-                android:lineSpacingMultiplier="1.2"
-                android:text="- 경기일자 및 좌석 변경을 원할 시에는 기존 예매 건을 전체 취소하고 재예매를 진행하셔야 합니다.\n- 취소 좌석에 대한 좌석선점은 보장하지 않습니다.\n- 티켓은 현장 수령만 가능하십니다.\n- 예매 티켓 발권 시 부분 출력은 불가하며, 주문 건 전체 출력만 가능합니다.\n- 주차장 이용방법은 각 경기장 별 홈페이지를 통해 확인하시고, 관람 당일에는 매우 혼잡할 수 있으니 대중교통 이용을 추천합니다.\n- 티켓 예매, 결제, 수령 및 입장과 관련하여 &quot;주최측&quot;의 귀책사유 없는 일체 문제에 대해서는 &quot;관람객&quot;본인 스스로 책임을 부담합니다."
-                app:layout_constraintLeft_toLeftOf="@id/reserve_title5"
-                app:layout_constraintRight_toRightOf="@id/reserve_title5"
-                app:layout_constraintTop_toBottomOf="@id/reserve_title5"/>
+                <TextView
+                    android:id="@+id/reserve_title5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="8dp"
+                    android:text="유의사항"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toBottomOf="@id/reserve_text2"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-            <TextView
-                android:id="@+id/reserve_title6"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/colorPrimaryDark"
-                android:padding="8dp"
-                android:text="관람 시 제한사항"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/reserve_text3"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                <TextView
+                    android:id="@+id/reserve_text3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingLeft="10dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="- 경기일자 및 좌석 변경을 원할 시에는 기존 예매 건을 전체 취소하고 재예매를 진행하셔야 합니다.\n- 취소 좌석에 대한 좌석선점은 보장하지 않습니다.\n- 티켓은 현장 수령만 가능하십니다.\n- 예매 티켓 발권 시 부분 출력은 불가하며, 주문 건 전체 출력만 가능합니다.\n- 주차장 이용방법은 각 경기장 별 홈페이지를 통해 확인하시고, 관람 당일에는 매우 혼잡할 수 있으니 대중교통 이용을 추천합니다.\n- 티켓 예매, 결제, 수령 및 입장과 관련하여 &quot;주최측&quot;의 귀책사유 없는 일체 문제에 대해서는 &quot;관람객&quot;본인 스스로 책임을 부담합니다."
+                    app:layout_constraintLeft_toLeftOf="@id/reserve_title5"
+                    app:layout_constraintRight_toRightOf="@id/reserve_title5"
+                    app:layout_constraintTop_toBottomOf="@id/reserve_title5"/>
 
-            <TextView
-                android:id="@+id/reserve_text4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="10dp"
-                android:layout_marginBottom="20dp"
-                android:lineSpacingMultiplier="1.2"
-                android:text="- 입장 및 관람시 1인 1티켓을 소지하여야 합니다. (단 만 12세 미만의 경우 보호자 동반이 필요합니다.)\n- &quot;관람객&quot;은 경기를 촬영, 녹은, 기록할 수 없으며, 각종 TV, 인터넷 등과 같은 매체로 전파하거나 상업적 목적으로 이용할 수 없고, 이를 돕는 행가 금지됩니다.\n- &quot;주최측&quot;은 경기장에서 얻은 &quot;관람객&quot;의 음성 및 초상권을 무상으로 이용할 수 있으며, &quot;관람객&quot;의 경기장 입장은 이에 대한 동의로 간주됩니다.\n- 본 티켓은 &quot;주최측&quot;의 허가없이 판매, 교환, 환전, 증여 등의 일체의 양도 행위를 할 수 없습니다. &quot;관람객&quot;이 &quot;주최측&quot;에서 허가하지 않은 양도 행위로 인해 피해를 입을 경우, &quot;관람객&quot; 스스로 책임을 부답합니다.\n- &quot;관람객&quot;으 쾌적한 관람 및 안전을 위한 목적으로 &quot;주최측&quot;이 실시하는 모든 조치에 협력해야 하며, 경기가 시작된 이후에는 입장이 제한될 수 있습니다.&quot;관람객&quot;은 경기 당일 어떠한 경우에도 &quot;주최측&quot;의 허가없이 타인을 비방, 비하할 목적 또는 정치적, 상업적 목적의 설치물 (배너, 현수막, 심볼 등 모든 종류의 표현물)을 경기장에 반입 및 게재할 수 없으며, 위반 시 &quot;주최측&quot;은 경기 종료 시까지 해당 설치물에 대한 임의 보관을 요구할 수 있고, 불응 시 즉시 퇴장을 요구할 수 있습니다. 또한 다른 &quot;관람객&quot;의 경기 관람과 경기 운영을 방해하는 경우 등에 대해 &quot;주최측&quot;은 경고 없이 즉시 퇴장 또는 민/형사상의 책임을 요구할 수 있습니다.\n- 본 티켓은 티켓 전면에 표시된 해당 일이에만 유효하며, 예매분 티켓이 매진되었을 경우 현장 판매는 실시하지 않는 것을 원칙으로 합니다.\n- &quot;관람객&quot;은 &quot;주최측&quot;의 중대한 과실이나 고의로 인한 경우를 제외하고, 경기장 내 발설할 수 있는 모든 문제에 대해 스스로 책임을 부암합니다.\n- 티켓을 분실, 훼손, 미 소지 시 어떠한 경우에도 입장이 불가하고, 환불 및 재발급이 제한됩니다.\n- 결제하신 티켓의 가액에는 &quot;기념품&quot;이 포함되지 않습니다. 현장에서 지급 받는 &quot;기념품&quot;은 주최사가 제공하는 무료 지급 서비스이며, 교환, 환불, 반품, 수리 등을 요구살 수 없고, 분실 등의 이유로 재 지급을 요구살 수 없으며, 양도 불가한 상품입니다.\n- 상기 명시된 내용에 대한 미 숙지로 인한 책임은 &quot;관람객&quot;본인에게 있으며, 이를 위반한 경우 &quot;관람객&quot;의 관람은 거부되고, 티켓은 무효로 간주되며 환불되지 않습니다. 또한 1회라 하더라도 중대한 위반을 하거나, 상습적이고 지속적인 위반행위를 하는 &quot;관람객&quot;은 재 방문이 제한될 수 있습니다."
-                app:layout_constraintLeft_toLeftOf="@id/reserve_title6"
-                app:layout_constraintRight_toRightOf="@id/reserve_title6"
-                app:layout_constraintTop_toBottomOf="@id/reserve_title6"/>
+                <TextView
+                    android:id="@+id/reserve_title6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="8dp"
+                    android:text="관람 시 제한사항"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textSize="18sp"
+                    app:layout_constraintTop_toBottomOf="@id/reserve_text3"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/reserve_text4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="- 입장 및 관람시 1인 1티켓을 소지하여야 합니다. (단 만 12세 미만의 경우 보호자 동반이 필요합니다.)\n- &quot;관람객&quot;은 경기를 촬영, 녹은, 기록할 수 없으며, 각종 TV, 인터넷 등과 같은 매체로 전파하거나 상업적 목적으로 이용할 수 없고, 이를 돕는 행가 금지됩니다.\n- &quot;주최측&quot;은 경기장에서 얻은 &quot;관람객&quot;의 음성 및 초상권을 무상으로 이용할 수 있으며, &quot;관람객&quot;의 경기장 입장은 이에 대한 동의로 간주됩니다.\n- 본 티켓은 &quot;주최측&quot;의 허가없이 판매, 교환, 환전, 증여 등의 일체의 양도 행위를 할 수 없습니다. &quot;관람객&quot;이 &quot;주최측&quot;에서 허가하지 않은 양도 행위로 인해 피해를 입을 경우, &quot;관람객&quot; 스스로 책임을 부답합니다.\n- &quot;관람객&quot;으 쾌적한 관람 및 안전을 위한 목적으로 &quot;주최측&quot;이 실시하는 모든 조치에 협력해야 하며, 경기가 시작된 이후에는 입장이 제한될 수 있습니다.&quot;관람객&quot;은 경기 당일 어떠한 경우에도 &quot;주최측&quot;의 허가없이 타인을 비방, 비하할 목적 또는 정치적, 상업적 목적의 설치물 (배너, 현수막, 심볼 등 모든 종류의 표현물)을 경기장에 반입 및 게재할 수 없으며, 위반 시 &quot;주최측&quot;은 경기 종료 시까지 해당 설치물에 대한 임의 보관을 요구할 수 있고, 불응 시 즉시 퇴장을 요구할 수 있습니다. 또한 다른 &quot;관람객&quot;의 경기 관람과 경기 운영을 방해하는 경우 등에 대해 &quot;주최측&quot;은 경고 없이 즉시 퇴장 또는 민/형사상의 책임을 요구할 수 있습니다.\n- 본 티켓은 티켓 전면에 표시된 해당 일이에만 유효하며, 예매분 티켓이 매진되었을 경우 현장 판매는 실시하지 않는 것을 원칙으로 합니다.\n- &quot;관람객&quot;은 &quot;주최측&quot;의 중대한 과실이나 고의로 인한 경우를 제외하고, 경기장 내 발설할 수 있는 모든 문제에 대해 스스로 책임을 부암합니다.\n- 티켓을 분실, 훼손, 미 소지 시 어떠한 경우에도 입장이 불가하고, 환불 및 재발급이 제한됩니다.\n- 결제하신 티켓의 가액에는 &quot;기념품&quot;이 포함되지 않습니다. 현장에서 지급 받는 &quot;기념품&quot;은 주최사가 제공하는 무료 지급 서비스이며, 교환, 환불, 반품, 수리 등을 요구살 수 없고, 분실 등의 이유로 재 지급을 요구살 수 없으며, 양도 불가한 상품입니다.\n- 상기 명시된 내용에 대한 미 숙지로 인한 책임은 &quot;관람객&quot;본인에게 있으며, 이를 위반한 경우 &quot;관람객&quot;의 관람은 거부되고, 티켓은 무효로 간주되며 환불되지 않습니다. 또한 1회라 하더라도 중대한 위반을 하거나, 상습적이고 지속적인 위반행위를 하는 &quot;관람객&quot;은 재 방문이 제한될 수 있습니다."
+                    app:layout_constraintLeft_toLeftOf="@id/reserve_title6"
+                    app:layout_constraintRight_toRightOf="@id/reserve_title6"
+                    app:layout_constraintTop_toBottomOf="@id/reserve_title6"/>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+        </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

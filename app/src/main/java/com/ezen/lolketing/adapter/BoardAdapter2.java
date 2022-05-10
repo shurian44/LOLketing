@@ -26,7 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
-public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapter.BoardHolder> {
+public class BoardAdapter2 extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapter2.BoardHolder> {
 
     setActivityMove listener;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -36,7 +36,7 @@ public class BoardAdapter extends FirestoreRecyclerAdapter<BoardDTO, BoardAdapte
         listener.returnItemSize(getItemCount());
     } // onDataChanged
 
-    public BoardAdapter(@NonNull FirestoreRecyclerOptions<BoardDTO> options, setActivityMove listener) {
+    public BoardAdapter2(@NonNull FirestoreRecyclerOptions<BoardDTO> options, setActivityMove listener) {
         super(options);
         this.listener = listener;
     } // BoardAdapter

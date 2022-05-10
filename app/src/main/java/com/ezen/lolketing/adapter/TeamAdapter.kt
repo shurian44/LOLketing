@@ -1,45 +1,41 @@
 package com.ezen.lolketing.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ItemTeamBinding
 import com.ezen.lolketing.model.TeamDTO
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import kotlinx.android.synthetic.main.item_team.view.*
 
 class TeamAdapter(options : FirestoreRecyclerOptions<TeamDTO.PlayerDTO>) :
     FirestoreRecyclerAdapter<TeamDTO.PlayerDTO, TeamAdapter.TeamHolder>(options){
 
-    class TeamHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class TeamHolder(private val binding : ItemTeamBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(model: TeamDTO.PlayerDTO) = with(binding) {
+            if(model.img != ""){
+                Glide.with(binding.root.context).load(model.img).into(binding.playerImg)
+            }
+            var text = "${model.nickname}\n${model.name}\n${model.position}"
+            binding.playerName.text = text
+            binding.playerName.maxLines = 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamHolder {
-        var view = LayoutInflater.from(parent.context).inflate(R.layout.item_team, parent, false)
-
-        return TeamHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: TeamHolder, position: Int, model: TeamDTO.PlayerDTO) {
-        val item = holder.itemView
-
-        if(model.img != ""){
-            Glide.with(item.context).load(model.img).into(item.player_img)
-        }
-        var text = "${model.nickname}\n${model.name}\n${model.position}"
-        item.player_name.text = text
-        item.player_name.maxLines = 1
-
-        item.setOnClickListener {
-            if(item.player_name.maxLines == 1){
-                item.player_name.maxLines = 3
-            }else{
-                item.player_name.maxLines = 1
+            binding.root.setOnClickListener {
+                if(binding.playerName.maxLines == 1){
+                    binding.playerName.maxLines = 3
+                }else{
+                    binding.playerName.maxLines = 1
+                }
             }
         }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamHolder =
+        TeamHolder(ItemTeamBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+
+    override fun onBindViewHolder(holder: TeamHolder, position: Int, model: TeamDTO.PlayerDTO) {
+        holder.bind(model)
     }
 
 }

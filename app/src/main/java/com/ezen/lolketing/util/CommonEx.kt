@@ -9,6 +9,14 @@ fun <T> Activity.startActivity(clazz: Class<T>) {
     startActivity(Intent(this, clazz))
 }
 
+fun <T> Activity.startActivity(clazz: Class<T>, vararg flags : Int) {
+    startActivity(Intent(this, clazz).also { intent ->
+        flags.forEach {
+            intent.flags = it
+        }
+    })
+}
+
 fun <T> View.startActivityWithButton(clazz: Class<T>, activity: Activity) {
     activity.startActivity(clazz)
 }

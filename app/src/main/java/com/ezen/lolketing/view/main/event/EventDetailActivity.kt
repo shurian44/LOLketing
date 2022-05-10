@@ -5,18 +5,19 @@ import android.os.Bundle
 import android.text.Html
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ActivityEventDetailBinding
 import com.ezen.lolketing.model.CouponDTO
 import com.ezen.lolketing.model.Users
+import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_event_detail.*
-import org.jetbrains.anko.toast
 
-class EventDetailActivity : AppCompatActivity() {
+class EventDetailActivity : BaseActivity<ActivityEventDetailBinding>(R.layout.activity_event_detail) {
     private var auth = FirebaseAuth.getInstance()
     private var firestore = FirebaseFirestore.getInstance()
     private lateinit var id : String
@@ -25,7 +26,6 @@ class EventDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event_detail)
 
         var page = intent.getIntExtra("page", 1)
         // 신규 회원가입 페이지의 경우
@@ -35,19 +35,19 @@ class EventDetailActivity : AppCompatActivity() {
 
         // 티켓 구매 이벤트 안내 페이지 일 경우
         if(page == 2){
-            img_main.setImageResource(R.drawable.banner2)
-            event_txt1.text = Html.fromHtml("티켓 구매하시고 <big><font color=\"#6200EE\">RP</big></font> 받아가세요~!<br><br><br>- 구매 티켓 1장 당 룰렛 1회 이용 가능<br>- 해당 이벤트는 <font color=\"#6200EE\">횟 수 제한 없이</font> 참여 가능합니다.")
-            btn_coupon.visibility = View.GONE
+            binding.imgMain.setImageResource(R.drawable.banner2)
+            binding.eventTxt1.text = Html.fromHtml("티켓 구매하시고 <big><font color=\"#6200EE\">RP</big></font> 받아가세요~!<br><br><br>- 구매 티켓 1장 당 룰렛 1회 이용 가능<br>- 해당 이벤트는 <font color=\"#6200EE\">횟 수 제한 없이</font> 참여 가능합니다.")
+            binding.btnCoupon.visibility = View.GONE
         }
     } // onCreate()
 
     private fun setNewUserPage(){
-        img_main.setImageResource(R.drawable.banner1)
+        binding.imgMain.setImageResource(R.drawable.banner1)
         id = auth.currentUser?.email!!
         // 사용자의 닉네임 가져오기
         firestore.collection("Users").document(id).get().addOnCompleteListener {
             var user = it.result?.toObject(Users::class.java)!!
-            event_txt1.text = Html.fromHtml("<span>소환사 <font color=\"#6200EE\">${user.nickname}</font>님<br><font color=\"#6200EE\">롤케팅</font>에 오신것을 환영합니다.<br><br><br>환영의 의미로 <font color=\"#6200EE\">500포인트</font>를 발급해드립니다.</span>")
+            binding.eventTxt1.text = Html.fromHtml("<span>소환사 <font color=\"#6200EE\">${user.nickname}</font>님<br><font color=\"#6200EE\">롤케팅</font>에 오신것을 환영합니다.<br><br><br>환영의 의미로 <font color=\"#6200EE\">500포인트</font>를 발급해드립니다.</span>")
         }
         // 사용자의 신규 회원 쿠폰 가져오기
         firestore.collection("Coupon").whereEqualTo("title", "신규 가입 쿠폰").whereEqualTo("id", id).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -57,7 +57,7 @@ class EventDetailActivity : AppCompatActivity() {
             }
         }
         // 신규 회원 쿠폰 사용 버튼 클릭
-        btn_coupon.setOnClickListener {
+        binding.btnCoupon.setOnClickListener {
             if (coupon.use == "사용 안함") { // 신규 회원 쿠폰을 사용하지 않았을 경우
                 // 신규 회원 쿠폰 업데이트
                 firestore.collection("Coupon").document(documentID).update("use", "사용함")
@@ -72,7 +72,7 @@ class EventDetailActivity : AppCompatActivity() {
         } // setOnClickListener()
     } // setNewUserPage()
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
         var intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

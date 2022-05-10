@@ -10,6 +10,7 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityLoginBinding
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.BaseActivity
+import com.ezen.lolketing.util.toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -18,8 +19,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_login.*
-import org.jetbrains.anko.toast
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private val RC_SIGN_IN = 1000   // 구글 로그인 확인 코드
@@ -54,8 +53,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     // 이메일 로그인 버튼 클릭
     fun emailLogin(view: View) {
-        var id = login_id.text.toString()
-        var pw = login_pw.text.toString()
+        var id = binding.loginId.text.toString()
+        var pw = binding.loginPw.text.toString()
 
         // 아이디 또는 비밀번호를 입력하지 않았을 시
         if(id.isEmpty() || pw.isEmpty()){
@@ -67,7 +66,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 moveMain()
             }
             else{   // 로그인 실패
-                login_pw.text = null
+                binding.loginPw.text = null
                 toast("아이디 또는 비밀번호를 확인해주세요")
             }
         }
@@ -124,4 +123,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         startActivity(intent)
         finish()
     } // moveMain()
+
+    override fun logout(view: View) {}
 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.ezen.lolketing">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -44,8 +43,8 @@
         <activity
             android:name=".view.main.board.BoardWriteActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".view.main.board.BoardListActivity"/>
         <activity android:name=".view.main.board.BoardDetailActivity" />
-        <activity android:name=".view.main.board.BoardListActivity" />
         <activity android:name=".view.main.shop.PurchaseActivity" />
         <activity android:name=".view.main.shop.ShopDetailActivity" />
         <activity android:name=".view.main.shop.ShopActivity" />

@@ -3,7 +3,6 @@ package com.ezen.lolketing.view.main
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -11,10 +10,7 @@ import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.EventSliderAdapter
 import com.ezen.lolketing.databinding.ActivityMainBinding
-import com.ezen.lolketing.util.repeatOnStarted
-import com.ezen.lolketing.util.startActivity
-import com.ezen.lolketing.util.toast
-import com.ezen.lolketing.view.MainViewModel
+import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.dialog.TeamSelectDialog
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.login.join.JoinDetailActivity
@@ -54,6 +50,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
 
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() {
         viewModel.getUserInfo()
         viewModel.getEventBannerList()
@@ -62,13 +59,14 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
             TeamSelectDialog{ team ->
                 startActivity(
                     Intent(this, BoardListActivity::class.java).also { intent ->
-                        intent.putExtra("team", team)
+                        intent.putExtra(Constants.TEAM, team)
                     }
                 )
             }.show(supportFragmentManager, "")
         }
     }
 
+    /** 이벤트 핸들러 **/
     private fun handleEvent(event : MainViewModel.MainEvent) {
         when(event) {
             is MainViewModel.MainEvent.CheckDetailJoin -> {
@@ -83,7 +81,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         }
     }
 
-    // 상세 회원가입 여부 조회
+    /** 상세 회원가입 여부 조회 **/
     private fun checkDetailJoin(event : MainViewModel.MainEvent.CheckDetailJoin){
         if (event.isNotJoinComplete){
             startActivity(JoinDetailActivity::class.java)
@@ -94,7 +92,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         }
     }
 
-    // 이벤트 베너 등록
+    /** 이벤트 베너 등록 **/
     private fun eventSlide(list : List<Int>) = with(binding.imgAd) {
         // AUTO Slider
         setSliderAdapter(EventSliderAdapter(list))
@@ -107,7 +105,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         startAutoCycle()
     }
 
-    // 각 버튼별 페이지 이동
+    /** 각 버튼별 페이지 이동 **/
     fun moveActivity(view: View) {
         when(view.id){
             R.id.btn_event -> startActivity(EventListActivity::class.java)
@@ -121,19 +119,14 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         }
     }
 
-    // 로그아웃 버튼 클릭
-    fun logout(view: View) {
+    /** 로그아웃 버튼 클릭 **/
+    override fun logout(view: View) {
         auth.signOut()
-
-        startActivity(
-            Intent(this, LoginActivity::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            }
-        )
+        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
         finish()
     }
 
-    // 관리자 페이지 버튼 클릭
+    /** 관리자 페이지 버튼 클릭 **/
     fun managerPage(view: View) {
         startActivity(ManagerActivity::class.java)
     }

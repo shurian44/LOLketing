@@ -5,19 +5,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.ReserveAdapter
+import com.ezen.lolketing.databinding.ActivityReserveListBinding
 import com.ezen.lolketing.model.GameDTO
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_reserve_list.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveItemClickListener {
+class ReserveListActivity : BaseActivity<ActivityReserveListBinding>(R.layout.activity_reserve_list), ReserveAdapter.reserveItemClickListener {
 
     private lateinit var adapter : ReserveAdapter
     private var firestore = FirebaseFirestore.getInstance()
@@ -26,7 +27,6 @@ class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveItemClick
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_reserve_list)
 
         // 하루 전 날 날짜 : date 이후 날짜 기준으로 조회하기 때문
         var date = Date()
@@ -39,10 +39,10 @@ class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveItemClick
                 .setQuery(query, GameDTO::class.java).build()
         adapter = ReserveAdapter(options, this)
         // 리사이클러뷰 설정
-        reserve_recycler.setHasFixedSize(true)
+        binding.reserveRecycler.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        reserve_recycler.layoutManager = layoutManager
-        reserve_recycler.adapter = adapter
+        binding.reserveRecycler.layoutManager = layoutManager
+        binding.reserveRecycler.adapter = adapter
     } // onCreate()
 
     override fun reserveSelect(intent: Intent) {
@@ -59,7 +59,7 @@ class ReserveListActivity : AppCompatActivity(), ReserveAdapter.reserveItemClick
         adapter.stopListening()
     }
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
         var intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

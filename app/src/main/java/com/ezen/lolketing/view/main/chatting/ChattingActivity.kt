@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.ChattingAdapter
+import com.ezen.lolketing.databinding.ActivityChattingBinding
 import com.ezen.lolketing.model.ChattingDTO
+import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.LoginActivity
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -18,13 +20,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_chatting.*
-import org.jetbrains.anko.toast
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener {
+class ChattingActivity : BaseActivity<ActivityChattingBinding>(R.layout.activity_chatting), ChattingAdapter.moveScrollListener {
 
     private var auth = FirebaseAuth.getInstance()
     private var reference = FirebaseDatabase.getInstance()
@@ -37,17 +37,16 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chatting)
 
         time = intent?.getStringExtra("time") ?: ""
         nickname = intent.getStringExtra("nickName") ?: ""
         selectTeam = intent.getStringExtra("selectTeam") ?: ""
         team = intent.getStringExtra("team") ?: ""
-        chatting_title.text = team.replace(":", "vs")   // ex) T1:DAMWONGAMMING > T1 vs DAMWONGAMMING 으로 수정하여 표시
+        binding.chattingTitle.text = team.replace(":", "vs")   // ex) T1:DAMWONGAMMING > T1 vs DAMWONGAMMING 으로 수정하여 표시
 
         var teams = team.split(":") // ':'을 기준으로 왼쪽 팀, 오른쪽 팀을 나누어서 저장
-        setImage(img_team1, teams[0])
-        setImage(img_team2, teams[1])
+        setImage(binding.imgTeam1, teams[0])
+        setImage(binding.imgTeam2, teams[1])
 
         var dateFormat = SimpleDateFormat("yyyyMMdd")
         var mDate = Date()
@@ -55,19 +54,19 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
         comment.id = nickname
         comment.team = selectTeam
 
-        btn_chatting.setOnClickListener {
+        binding.btnChatting.setOnClickListener {
             // 이전 날의 채팅방 입장은 가능하지만 당일 제외하고 채팅 입력 불가
             if(time.substring(0, 8) != dateFormat.format(mDate)){ // ex) 20200205 17:00 > 20200205로 변환하여 날짜 비교
                 toast("당일에만 작성 가능합니다.")
                 return@setOnClickListener
             }
-            comment.message = edit_chatting.text.toString()
+            comment.message = binding.editChatting.text.toString()
             comment.timestamp = System.currentTimeMillis()
             // 채팅 내용 RealtimeDatabase 에 추가
             reference.reference.child("ChattingRoom").child(time).child("comments").push().setValue(comment).addOnCompleteListener {
-                edit_chatting.text = null
+                binding.editChatting.text = null
                 // 채팅 추가 한 후 스크롤 이동
-                chatting_recycler.scrollToPosition(adapter.itemCount-1)
+                binding.chattingRecycler.scrollToPosition(adapter.itemCount-1)
             }
         } // setOnClickListener
     }   // onCreate()
@@ -111,9 +110,9 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
         var options = FirebaseRecyclerOptions.Builder<ChattingDTO.Comment>()
                 .setQuery(query, ChattingDTO.Comment::class.java).build()
         adapter = ChattingAdapter(options, this)
-        chatting_recycler.setHasFixedSize(true)
-        chatting_recycler.adapter = adapter
-        chatting_recycler.layoutManager = LinearLayoutManager(this)
+        binding.chattingRecycler.setHasFixedSize(true)
+        binding.chattingRecycler.adapter = adapter
+        binding.chattingRecycler.layoutManager = LinearLayoutManager(this)
     } // setRecycler()
 
     // 팀에 맞게 이미지 세팅
@@ -148,10 +147,10 @@ class ChattingActivity : AppCompatActivity(), ChattingAdapter.moveScrollListener
 
     // 채팅 방 입장 및 새로운 채팅이 생겼을 때 가장 아래로 이동
     override fun moveScroll() {
-        chatting_recycler.scrollToPosition(adapter.itemCount-1)
+        binding.chattingRecycler.scrollToPosition(adapter.itemCount-1)
     }
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
         var intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

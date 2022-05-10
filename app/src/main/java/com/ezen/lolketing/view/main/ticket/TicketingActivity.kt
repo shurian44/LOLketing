@@ -8,8 +8,11 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ActivityTicketingBinding
 import com.ezen.lolketing.model.PurchaseDTO
+import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -20,13 +23,11 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.android.synthetic.main.activity_ticketing.*
-import org.jetbrains.anko.toast
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TicketingActivity : AppCompatActivity() {
+class TicketingActivity : BaseActivity<ActivityTicketingBinding>(R.layout.activity_ticketing) {
 
     private var storage = FirebaseStorage.getInstance()
     private var firestore = FirebaseFirestore.getInstance()
@@ -41,7 +42,6 @@ class TicketingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ticketing)
 
         time = intent?.getStringExtra("time") ?: ""
         team = intent?.getStringExtra("team") ?: ""
@@ -50,20 +50,20 @@ class TicketingActivity : AppCompatActivity() {
         pay = intent.getIntExtra("pay", 0)
         image = intent.getStringExtra("image")
 
-        ticketing_match.text = time
-        ticketing_seat.text = seat
-        match.text = team
+        binding.ticketingMatch.text = time
+        binding.ticketingSeat.text = seat
+        binding.match.text = team
 
         // QR 코드 생성
         if(image == null)
             generateQRCode("${auth.currentUser?.email}_${time}_${team}_${seat.replace("/", ",")}")
         else
-            Glide.with(this).load(image).into(iv_generated_qrcode)
+            Glide.with(this).load(image).into(binding.ivGeneratedQrcode)
 
         setRefund()
 
         // 환불처리
-        btn_refund.setOnClickListener {
+        binding.btnRefund.setOnClickListener {
             var seats = seat.split("/")
             // 환불 금액에 맞게 유저 캐시 증가
             firestore.collection("Users").document(auth.currentUser?.email!!).update("cache", FieldValue.increment(refundPay.toDouble()))
@@ -85,7 +85,7 @@ class TicketingActivity : AppCompatActivity() {
         var qrCodeWriter = QRCodeWriter()
         try{
             var bitmap = toBitmap(qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, 200, 200))
-            iv_generated_qrcode.setImageBitmap(bitmap)
+            binding.ivGeneratedQrcode.setImageBitmap(bitmap)
 
             var pathReference = storage.reference.child("ticket/${content}.jpg")
             var baos = ByteArrayOutputStream()
@@ -142,9 +142,9 @@ class TicketingActivity : AppCompatActivity() {
         // 환불 불가 : 게임 시작 4시간 전 이후에는 환불 불가
         when {
             mDate > date -> { // 환불 불가
-                btn_refund.isEnabled = false
-                btn_refund.setBackgroundColor(Color.parseColor("#777777"))
-                btn_refund.text = "환불 불가능"
+                binding.btnRefund.isEnabled = false
+                binding.btnRefund.setBackgroundColor(Color.parseColor("#777777"))
+                binding.btnRefund.text = "환불 불가능"
             }
             mDate == date -> { // 수수료 면제
                 refundPay = pay
@@ -155,7 +155,7 @@ class TicketingActivity : AppCompatActivity() {
         }
     }
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
         var intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

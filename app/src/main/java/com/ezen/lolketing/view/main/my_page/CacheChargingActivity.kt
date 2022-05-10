@@ -3,17 +3,17 @@ package com.ezen.lolketing.view.main.my_page
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ActivityCacheChargingBinding
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_cache_charging.*
 import java.text.DecimalFormat
 
-class CacheChargingActivity : AppCompatActivity() {
+class CacheChargingActivity : BaseActivity<ActivityCacheChargingBinding>(R.layout.activity_cache_charging) {
 
     var format = DecimalFormat("###,###,###,###")
     var cache = 0
@@ -23,9 +23,8 @@ class CacheChargingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cache_charging)
 
-        btn_addCache.setOnClickListener {
+        binding.btnAddCache.setOnClickListener {
             email = auth?.currentUser?.email!!
             // 유저 정보 받아오기
             firestore.collection("Users").document(email).get().addOnCompleteListener {
@@ -83,10 +82,10 @@ class CacheChargingActivity : AppCompatActivity() {
         if(cache > 2000000000){
             cache = 2000000000
         }
-        txt_Cache.text = "${format.format(cache)} 원"
+        binding.txtCache.text = "${format.format(cache)} 원"
     }
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
         var intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

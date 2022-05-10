@@ -4,42 +4,41 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.EventSliderAdapter
+import com.ezen.lolketing.databinding.ActivityLolGuideDetailBinding
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
-import kotlinx.android.synthetic.main.activity_lol_guide_detail.*
 
-class LoLGuideDetailActivity : AppCompatActivity() {
+class LoLGuideDetailActivity : BaseActivity<ActivityLolGuideDetailBinding>(R.layout.activity_lol_guide_detail) {
 
     private var auth = FirebaseAuth.getInstance()
     lateinit var status : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lol_guide_detail)
 
         status = intent?.getStringExtra("status") ?: ""
         when(status){
             "aos"->{
-                guide_title.text = "AOS?"
-                guide_img.setImageResource(R.drawable.lol_guide_aos)
-                txt_content.text = Html.fromHtml("<span>롤의 장르는 <b><big>‘AOS(Aeon of Strife)’</big></b>에 속합니다.<br>이는 가상 세계에서 하나 이상의 캐릭터를 꾸준하게 육성해 다양한 미션을 수행하는 RPG 게임(리니지, 메이플 스토리 등)과, 특정된 전장 안에서 수많은 캐릭터를 전술적으로 운영해 적을 제압하는 RTS 게임(스타크레프트 등) 두 장르를 반씩 섞어 놓은 새로운 장르로 이해할 수 있습니다.<br><br>즉, AOS란 <b><big>‘특정한 전장에서 하나의 캐릭터를 육성해 팀원들과 함께 적을 제압하는 게임’</big></b>으로 규정할 수 있습니다. 플레이어들은 게임에 앞서 자신이 조종할 챔피언(캐릭터)을 선택합니다. 그리고 게임이 시작되면 자신이 선택한 챔피언으로 승리를 위해 적 플레이어들의 챔피언들과 맞서 싸워나갑니다.<br><br>롤은 일반적으로 <b><big>‘소환사의 협곡’이라는 맵에서 5:5 경기가 진행</big></b>되기 때문에 각 팀원 간 치열한 전략 싸움이 벌어지곤 합니다.</span>")
+                binding.guideTitle.text = "AOS?"
+                binding.guideImg.setImageResource(R.drawable.lol_guide_aos)
+                binding.txtContent.text = Html.fromHtml("<span>롤의 장르는 <b><big>‘AOS(Aeon of Strife)’</big></b>에 속합니다.<br>이는 가상 세계에서 하나 이상의 캐릭터를 꾸준하게 육성해 다양한 미션을 수행하는 RPG 게임(리니지, 메이플 스토리 등)과, 특정된 전장 안에서 수많은 캐릭터를 전술적으로 운영해 적을 제압하는 RTS 게임(스타크레프트 등) 두 장르를 반씩 섞어 놓은 새로운 장르로 이해할 수 있습니다.<br><br>즉, AOS란 <b><big>‘특정한 전장에서 하나의 캐릭터를 육성해 팀원들과 함께 적을 제압하는 게임’</big></b>으로 규정할 수 있습니다. 플레이어들은 게임에 앞서 자신이 조종할 챔피언(캐릭터)을 선택합니다. 그리고 게임이 시작되면 자신이 선택한 챔피언으로 승리를 위해 적 플레이어들의 챔피언들과 맞서 싸워나갑니다.<br><br>롤은 일반적으로 <b><big>‘소환사의 협곡’이라는 맵에서 5:5 경기가 진행</big></b>되기 때문에 각 팀원 간 치열한 전략 싸움이 벌어지곤 합니다.</span>")
             }
             "rule"->{
-                guide_title.text = "게임 규칙"
-                guide_img.setImageResource(R.drawable.lol_guide_rule)
-                txt_content.text = Html.fromHtml("<b><big>1.적 챔피언 제압</big></b><br>플레이어가 게임 내에서 조작할 수 있는 캐릭터를 칭하는 말이 바로 <b><big>‘챔피언’</big></b>입니다. 게임 방송을 보다 보면 종종 ‘이 선수는 챔프 폭이 넓다’라는 말이 나오는데요. 이는 ‘능숙하게 조작할 수 있는 챔피언의 수가 많다’는 뜻과 같습니다. 한 팀은 다섯 개의 챔피언으로 구성되며 기본적으로 각 플레이어는 자신의 챔피언을 조작해 적 챔피언을 제압하는 것을 목표로 합니다.<br><br><b><big>적 챔피언을 제압</b></big>하면 <b><big>일정량의 골드를 획득</b></big>하게 되고, 이 골드를 사용해 무기나 방어구를 구입할 수 있습니다. 또한, 그렇게 얻은 무기와 방어구를 토대로 다음 전투에서도 상대적 우위를 점할 수 있는데요. 따라서 플레이어들은 적 챔피언 처치를 일차적인 목표로 설정하고 게임을 이끌어 나갑니다."+
+                binding.guideTitle.text = "게임 규칙"
+                binding.guideImg.setImageResource(R.drawable.lol_guide_rule)
+                binding.txtContent.text = Html.fromHtml("<b><big>1.적 챔피언 제압</big></b><br>플레이어가 게임 내에서 조작할 수 있는 캐릭터를 칭하는 말이 바로 <b><big>‘챔피언’</big></b>입니다. 게임 방송을 보다 보면 종종 ‘이 선수는 챔프 폭이 넓다’라는 말이 나오는데요. 이는 ‘능숙하게 조작할 수 있는 챔피언의 수가 많다’는 뜻과 같습니다. 한 팀은 다섯 개의 챔피언으로 구성되며 기본적으로 각 플레이어는 자신의 챔피언을 조작해 적 챔피언을 제압하는 것을 목표로 합니다.<br><br><b><big>적 챔피언을 제압</b></big>하면 <b><big>일정량의 골드를 획득</b></big>하게 되고, 이 골드를 사용해 무기나 방어구를 구입할 수 있습니다. 또한, 그렇게 얻은 무기와 방어구를 토대로 다음 전투에서도 상대적 우위를 점할 수 있는데요. 따라서 플레이어들은 적 챔피언 처치를 일차적인 목표로 설정하고 게임을 이끌어 나갑니다."+
                         "<br><br><b><big>2.적 건물 파괴</big></b><br>롤은 궁극적으로 <b><big>‘넥서스’</b></big>라는 <b><big>핵심 건물을 파괴해 승리</b></big>를 거두는 게임입니다. 그리고 넥서스를 파괴하기 위해서는 <b><big>‘포탑(타워)’</b></big>과 <b><big>‘억제기’</b></big>라는 건물을 <b><big>먼저 파괴</b></big>해야 한다는 조건이 붙습니다. 플레이어들은 챔피언을 활용해 1차 포탑 → 2차 포탑 → 억제기포탑 → 억제기 → 쌍둥이 포탑 → 넥서스 순으로 건물을 파괴해야 하며, 적 챔피언이 아군의 건물을 파괴하려 하면 아군의 챔피언으로 그것을 방어해야 합니다. 물론 적군의 건물을 파괴하려 하면 적 챔피언들이 이를 방해하겠지요.<br><br>게임 시작과 동시에 아군의 넥서스에서는 끊임없이 <b><big>‘미니언’</b></big>이라는 몬스터가 생성돼 적진을 향해 달려갑니다. 그리고 이 미니언들은 포탑을 파괴하는 데에 아주 중요한 임무를 수행합니다. 포탑은 미니언 → 챔피언 순으로 공격 대상을 인식하기 때문에, 미니언이 포탑의 공격을 대신 맞아 주는 동안 챔피언을 활용해 포탑을 파괴합니다. 또한, 적의 ‘억제기’를 파괴하면 <b><big>아군 미니언의 공격력과 체력이 대폭 상승</b></big>해 게임을 이끌어 나가기가 한층 수월해집니다. 미니언들을 얼마나 효율적으로 활용하는지에 따라 승패가 갈리기도 하지요.")
             }
             "position"->{
-                guide_title.text = "라인 및 포지션"
-                guide_img.setImageResource(R.drawable.lol_guide_position)
-                txt_content.text = Html.fromHtml("가장 일반적으로 사용하는 맵(전장)이자 프로 대회 공식 맵인 <b><big>‘소환사의 협곡’</b></big>에는 총 세 개의 라인이 존재합니다. 경기 초반 각 챔피언은 하나의 라인을 담당해 포탑을 지키는 임무를 수행합니다. 그리고 해당 라인을 담당하는 적팀 챔피언과 지속해서 전투를 벌이며 적을 제압할 기회를 노리기도 합니다. <b><big>잠깐,</b></big> 롤은 5:5 경기라고 했는데 라인이 세 개밖에 없는 것이 이상하다고요? 아래 설명을 보시면 이해가 될 겁니다.<br>" +
+                binding.guideTitle.text = "라인 및 포지션"
+                binding.guideImg.setImageResource(R.drawable.lol_guide_position)
+                binding.txtContent.text = Html.fromHtml("가장 일반적으로 사용하는 맵(전장)이자 프로 대회 공식 맵인 <b><big>‘소환사의 협곡’</b></big>에는 총 세 개의 라인이 존재합니다. 경기 초반 각 챔피언은 하나의 라인을 담당해 포탑을 지키는 임무를 수행합니다. 그리고 해당 라인을 담당하는 적팀 챔피언과 지속해서 전투를 벌이며 적을 제압할 기회를 노리기도 합니다. <b><big>잠깐,</b></big> 롤은 5:5 경기라고 했는데 라인이 세 개밖에 없는 것이 이상하다고요? 아래 설명을 보시면 이해가 될 겁니다.<br>" +
                         "<br>" +
                         "<b><big>1. <font color=\"#E9686B\">탑 라인</font></big></b> : 소환사의 협곡 <b><big>11시 방향</big></b>을 따라 뻗어 있는 길을 의미합니다. 이곳을 담당하는 챔피언을 <b><big>‘탑 라이너’</big></b>라고 부릅니다. 세 라인 중 가장 적게 전투가 발생하는 지역입니다. SK텔레콤 T1 팀에서는 ‘후니’ 선수와 ‘운타라’ 선수가 활약하고 있는 라인이지요. 일반적으로 게임 초반에는 미미한 존재감을 보이지만, 게임이 후반부로 향해갈수록 전투에서 탑라이너의 영향력은 무시무시해집니다.<br>" +
                         "<br>" +
@@ -52,9 +51,9 @@ class LoLGuideDetailActivity : AppCompatActivity() {
                         "각 정글러들은 종종 기회를 노려 각 라인의 전투에 가세하기도 합니다. 이렇게 정글러가 라인 전투에 가세하는 행위를 일컬어 <b><big>‘갱킹’</big></b>이라고 부릅니다. 참고로 롤은 실력이 엇비슷한 유저들끼리 게임 매칭이 되도록 시스템화돼 있습니다. 따라서 미세한 차이로 아슬아슬하게 전투를 벌이고 있는 각 라인에 정글러가 개입하는 순간, 전투에서 승리할 확률이 대폭 상승합니다. 얼마나 적시에 기습적인 갱킹을 성공시키는가가 정글러의 역량을 가늠하는 척도로 작용합니다.")
             }
             "nature"->{
-                guide_title.text = "챔피언 특성"
-                guide_img.setImageResource(R.drawable.lol_guide_nature)
-                txt_content.text = Html.fromHtml("<b><big>롤 챔피언의 종류</big></b>는 100개가 넘는 되는 관계로 이들을 정확하게 분류하는 것은 사실상 불가능하지만, 포괄적인 역할 군에 따라 크게 네 가지 유형으로 분류하는 것이 보통입니다.<br>" +
+                binding.guideTitle.text = "챔피언 특성"
+                binding.guideImg.setImageResource(R.drawable.lol_guide_nature)
+                binding.txtContent.text = Html.fromHtml("<b><big>롤 챔피언의 종류</big></b>는 100개가 넘는 되는 관계로 이들을 정확하게 분류하는 것은 사실상 불가능하지만, 포괄적인 역할 군에 따라 크게 네 가지 유형으로 분류하는 것이 보통입니다.<br>" +
                         "<br>" +
                         "<b><big>1. 탱커</big></b> : 공격력에 비해 방어력/체력이 압도적으로 높은 챔피언들을 ‘탱커’로 분류합니다. 이들은 <b><big>든든한 지구력과 체력</big></b>을 바탕으로 아군 챔피언들을 향한 공격을 대신 감내하는 임무를 수행합니다. 이들이 전장의 앞쪽에서 적의 공격을 버텨내는 동안, 아군의 공격 담당 챔피언이 적을 제압하는 방식으로 전투가 이뤄집니다. <b><big>탑 라인</big></b>에 자주 등장합니다.<br>" +
                         "<br>" +
@@ -65,9 +64,9 @@ class LoLGuideDetailActivity : AppCompatActivity() {
                         "<b><big>4. 서포터</big></b> : 아군의 <b><big>전투를 보조</big></b>해 주는 마법을 지닌 챔피언들이 서포터로 분류됩니다. 보호막, 체력 회복, 공격력 향상, 속도 향상 등 <b><big>아군의 전투 능력을 극대화</b></big>하는 마법들을 지니고 있습니다. 또한, 적의 움직임을 둔화시키거나 짧은 시간 기절시키는 마법을 한 개 이상 지니고 있습니다.")
             }
             "score"->{
-                guide_title.text = "각종 점수 이해"
-                guide_img.setImageResource(R.drawable.lol_guide_score)
-                txt_content.text = Html.fromHtml("롤에 관한 대화나 대회 중계방송을 듣다 보면 자주 언급되는 용어가 있습니다. 그 중 가장 대표적인 것들을 꼽자면 ‘킬/어시’, ‘KDA’, ‘CS’인데요. 이 용어들은 어떤 팀이 어떤 득점을 얼마나 했는지를 가늠할 수 있게 해주는 일종의 점수를 의미합니다. 이 용어들만 알아도 현재 어느 팀이 유리한지 한눈에 파악할 수 있습니다.<br>" +
+                binding.guideTitle.text = "각종 점수 이해"
+                binding.guideImg.setImageResource(R.drawable.lol_guide_score)
+                binding.txtContent.text = Html.fromHtml("롤에 관한 대화나 대회 중계방송을 듣다 보면 자주 언급되는 용어가 있습니다. 그 중 가장 대표적인 것들을 꼽자면 ‘킬/어시’, ‘KDA’, ‘CS’인데요. 이 용어들은 어떤 팀이 어떤 득점을 얼마나 했는지를 가늠할 수 있게 해주는 일종의 점수를 의미합니다. 이 용어들만 알아도 현재 어느 팀이 유리한지 한눈에 파악할 수 있습니다.<br>" +
                         "<br>" +
                         "<b><big>1. 킬, 데스, 어시스트</big></b> : 각각 ‘적 챔피언을 제압한 횟수’, ‘적 챔피언에게 제압당한 횟수’, ‘아군이 적 챔피언을 제압할 때 관여한 횟수’를 의미합니다. 당연히 킬과 어시스트가 높은 팀일수록, 데스가 낮은 팀일수록 경기를 유리하게 이끌어 나가고 있는 것입니다.<br>" +
                         "<br>" +
@@ -78,9 +77,9 @@ class LoLGuideDetailActivity : AppCompatActivity() {
                         "이제 리그 오브 레전드라는 게임에 대해 조금은 이해가 가시나요? 위의 개념들만 숙지하셔도 외계어처럼 들렸던 롤에 관한 대화들이 귀에 쏙쏙 들어올 겁니다.")
             }
             "terms"->{
-                guide_img.setImageResource(R.drawable.lol_guide_term)
-                imageSlider.visibility = View.VISIBLE
-                txt_content.visibility = View.GONE
+                binding.guideImg.setImageResource(R.drawable.lol_guide_term)
+                binding.imageSlider.visibility = View.VISIBLE
+                binding.txtContent.visibility = View.GONE
                 var images = listOf<Int>(
                     R.drawable.img_terms01,
                     R.drawable.img_terms02,
@@ -97,15 +96,15 @@ class LoLGuideDetailActivity : AppCompatActivity() {
                     R.drawable.img_terms13,
                     R.drawable.img_terms14
                 )
-                imageSlider.setSliderAdapter(EventSliderAdapter(images))
-                imageSlider.startAutoCycle()
-                imageSlider.setIndicatorAnimation(IndicatorAnimations.WORM)
-                imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+                binding.imageSlider.setSliderAdapter(EventSliderAdapter(images))
+                binding.imageSlider.startAutoCycle()
+                binding.imageSlider.setIndicatorAnimation(IndicatorAnimations.WORM)
+                binding. imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
             }
         }
     }
 
-    fun logout(view: View) {
+    override fun logout(view: View) {
         auth.signOut()
         var intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

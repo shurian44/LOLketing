@@ -9,17 +9,17 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.login.DaumWebViewActivity
 import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ActivityJoinDetailBinding
 import com.ezen.lolketing.model.CouponDTO
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_join_detail.*
 
-
-class JoinDetailActivity : AppCompatActivity() {
+class JoinDetailActivity : BaseActivity<ActivityJoinDetailBinding>(R.layout.activity_join_detail) {
     private val SEARCH_ADDRESS_ACTIVITY = 10000
     private var firestore = FirebaseFirestore.getInstance()
     private var auth = FirebaseAuth.getInstance()
@@ -29,7 +29,6 @@ class JoinDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_join_detail)
 
         id = auth.currentUser?.email!!
         editTextConstraints() // EditText 제한조건
@@ -46,16 +45,16 @@ class JoinDetailActivity : AppCompatActivity() {
         }
 
         // 이용약관 체크박스 채크
-        join_detail_check.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.joinDetailCheck.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
                 // 이용약관 레이아웃 감추고 데이터 입력 레이아웃 보여주기
-                layout_check.visibility = View.GONE
-                layout_register.visibility = View.VISIBLE
+                binding.layoutCheck.visibility = View.GONE
+                binding.layoutRegister.visibility = View.VISIBLE
             }
         }
 
         // 주소 검색버튼 클릭
-        btn_address.setOnClickListener {
+        binding.btnAddress.setOnClickListener {
             // 다음 API가 있는 페이지로 이동
             val intent = Intent(this, DaumWebViewActivity::class.java)
             startActivityForResult(intent, SEARCH_ADDRESS_ACTIVITY)
@@ -64,13 +63,13 @@ class JoinDetailActivity : AppCompatActivity() {
 
     // 등록하기 버튼 클릭
     fun setUser(view: View) {
-        var address = "${join_address?.text.toString()}, ${join_detail_address?.text.toString()}"
+        var address = "${binding.joinAddress?.text.toString()}, ${binding.joinDetailAddress?.text.toString()}"
 
         user.id = id
         user.uid = auth.currentUser?.uid
         user.address = address
-        user.nickname = join_detail_nickname?.text.toString()
-        user.phone = join_detail_phone?.text.toString()
+        user.nickname = binding.joinDetailNickname?.text.toString()
+        user.phone = binding.joinDetailPhone?.text.toString()
 
         // 회원가입 상세의 경우
         if(classify != "modify"){
@@ -95,7 +94,7 @@ class JoinDetailActivity : AppCompatActivity() {
     // EditText 제한조건
     private fun editTextConstraints(){
         // 특수문자 제한 : 입력 시 빈 칸 리턴
-        join_detail_phone.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
+        binding.joinDetailPhone.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
             for (i in start until end) {
                 if (!Character.isLetterOrDigit(source[i])) {
                     return@InputFilter ""
@@ -104,7 +103,7 @@ class JoinDetailActivity : AppCompatActivity() {
             null
         })
 
-        join_detail_nickname.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
+        binding.joinDetailNickname.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
             for (i in start until end) {
                 if (!Character.isLetterOrDigit(source[i])) {
                     return@InputFilter ""
@@ -114,20 +113,20 @@ class JoinDetailActivity : AppCompatActivity() {
         })
 
         // 닉네임 길이 체크
-        join_detail_nickname.addTextChangedListener(object : TextWatcher{
+        binding.joinDetailNickname.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(join_detail_nickname.length() !in 2..10) join_detail_nickname.error = "닉네임은 2~10만 가능합니다."
+                if(binding.joinDetailNickname.length() !in 2..10) binding.joinDetailNickname.error = "닉네임은 2~10만 가능합니다."
             }
         })
 
         // 전화번호 길이 체크
-        join_detail_phone.addTextChangedListener(object : TextWatcher{
+        binding.joinDetailPhone.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(join_detail_phone.length() !in 10..11) join_detail_phone.error = "전화번호를 확인해 주세요"
+                if(binding.joinDetailPhone.length() !in 10..11) binding.joinDetailPhone.error = "전화번호를 확인해 주세요"
             }
         })
     }
@@ -135,22 +134,22 @@ class JoinDetailActivity : AppCompatActivity() {
     // 회원정보 수정 시 레이아웃 세팅
     private fun setModifyLayout(){
         // 이용약관 레이아웃 감추고 데이터 입력 레이아웃 보여주기
-        layout_check.visibility = View.GONE
-        layout_register.visibility = View.VISIBLE
+        binding.layoutCheck.visibility = View.GONE
+        binding.layoutRegister.visibility = View.VISIBLE
 
         firestore.collection("Users").document(auth.currentUser?.email!!).get().addOnCompleteListener {
             var user = it.result?.toObject(Users::class.java)!!
             var address = user.address!!.split(",")
 
-            join_detail_nickname.setText(user.nickname)
-            join_detail_phone.setText(user.phone)
-            btn_register.text = "수정하기"
+            binding.joinDetailNickname.setText(user.nickname)
+            binding.joinDetailPhone.setText(user.phone)
+            binding.btnRegister.text = "수정하기"
 
             // 데이터베이스에 있는 주소를 일반 주소와 상세 주소로 나누어서 EditText에 채워준다.
             if(address.size > 1)
-                join_address.setText("${address[0]},${address[1]}")
+                binding.joinAddress.setText("${address[0]},${address[1]}")
             if(address.size > 2)
-                join_detail_address.setText("${address[2]}")
+                binding.joinDetailAddress.setText("${address[2]}")
         }
     }
 
@@ -161,7 +160,7 @@ class JoinDetailActivity : AppCompatActivity() {
             // 다음 API에서 받아온 주소 정보를 join_address 에 채워준다.
             val data = intent?.extras!!.getString("data")
             if (data != null)
-                join_address.text = Editable.Factory.getInstance().newEditable(data)
+                binding.joinAddress.text = Editable.Factory.getInstance().newEditable(data)
         }
 
     }
@@ -181,5 +180,7 @@ class JoinDetailActivity : AppCompatActivity() {
         }
         return super.onKeyDown(keyCode, event)
     }
+
+    override fun logout(view: View) {}
 
 }

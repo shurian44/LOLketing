@@ -21,7 +21,6 @@ class TeamSelectDialog(private val listener : (String) -> Unit) : DialogFragment
         super.onViewCreated(view, savedInstanceState)
 
         binding.dialog = this
-        isCancelable = false
 
     }
 

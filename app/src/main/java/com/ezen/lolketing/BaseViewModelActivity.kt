@@ -1,6 +1,7 @@
 package com.ezen.lolketing
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -23,7 +24,8 @@ abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
             setVariable(BR._all, viewModel)
         }
 
-
     }
+
+    abstract fun logout(view: View)
 
 }
