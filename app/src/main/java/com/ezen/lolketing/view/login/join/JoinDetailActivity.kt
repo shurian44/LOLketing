@@ -8,12 +8,11 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.login.DaumWebViewActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityJoinDetailBinding
-import com.ezen.lolketing.model.CouponDTO
+import com.ezen.lolketing.model.Coupon
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -76,7 +75,7 @@ class JoinDetailActivity : BaseActivity<ActivityJoinDetailBinding>(R.layout.acti
             // 등급을 브론즈로 설정
             user.grade = "브론즈"
             // 신규 가입 쿠폰 지급
-            var newUserCoupon = CouponDTO()
+            var newUserCoupon = Coupon()
             newUserCoupon.id = id
             newUserCoupon.title = "신규 가입 쿠폰"
             newUserCoupon.limit = "2222.01.01"

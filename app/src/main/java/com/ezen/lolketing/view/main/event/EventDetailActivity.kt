@@ -4,12 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityEventDetailBinding
-import com.ezen.lolketing.model.CouponDTO
+import com.ezen.lolketing.model.Coupon
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.LoginActivity
@@ -21,7 +20,7 @@ class EventDetailActivity : BaseActivity<ActivityEventDetailBinding>(R.layout.ac
     private var auth = FirebaseAuth.getInstance()
     private var firestore = FirebaseFirestore.getInstance()
     private lateinit var id : String
-    private var coupon = CouponDTO()
+    private var coupon = Coupon()
     private var documentID = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +51,7 @@ class EventDetailActivity : BaseActivity<ActivityEventDetailBinding>(R.layout.ac
         // 사용자의 신규 회원 쿠폰 가져오기
         firestore.collection("Coupon").whereEqualTo("title", "신규 가입 쿠폰").whereEqualTo("id", id).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             for (snapshot in querySnapshot!!) {
-                coupon = snapshot.toObject(CouponDTO::class.java)
+                coupon = snapshot.toObject(Coupon::class.java)
                 documentID = snapshot.id
             }
         }

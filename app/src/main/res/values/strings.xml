@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">LOLketing</string>
+    <string name="like_counts">좋아요 %d</string>
+    <string name="board_views">조회수 %d</string>
+    <string name="comment_counts">%d\n댓글</string>
+    <string name="board_title">팀 게시판 - %s</string>
+    <string name="logout">로그아웃</string>
+    <string name="condition_silver"><![CDATA[누적 포인트<br><font color=\"#6200EE\"><b>3천 P</b></font> 이상]]></string>
+    <string name="condition_gold"><![CDATA[누적 포인트<br><font color=\"#6200EE\"><b>3만 P</b></font> 이상]]></string>
+    <string name="condition_platinum"><![CDATA[누적 포인트<br><font color=\"#6200EE\"><b>30만 P</b></font> 이상]]></string>
+    <string name="benefit_bronze"><![CDATA[상품 구매 시<br>결제 금액<br><font color=\"#8F705B\"><b>2% 할인</b></font>]]></string>
+    <string name="benefit_silver"><![CDATA[상품 구매 시<br>결제 금액<br><font color=\"#64726B\"><b>5% 할인</b></font>]]></string>
+    <string name="benefit_gold"><![CDATA[상품 구매 시<br>결제 금액<br><font color=\"#D4C477\"><b>8% 할인</b></font>]]></string>
+    <string name="benefit_platinum"><![CDATA[상품 구매 시<br>결제 금액<br><font color=\"#679C7A\"><b>11% 할인</b></font>]]></string>
+
+
+
     <string name="terms">
 1. 개인정보의 처리 목적
 \n \'롤켓팅\' 은(는) 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다.
@@ -100,7 +115,5 @@
 \n
 개인정보 취급 관련 안정성 확보를 위해 정기적(분기 1회)으로 자체 감사를 실시하고 있습니다.
     </string>
-    <string name="like_counts">좋아요 %d</string>
-    <string name="board_views">조회수 %d</string>
-    <string name="comment_counts">%d\n댓글</string>
+
 </resources>

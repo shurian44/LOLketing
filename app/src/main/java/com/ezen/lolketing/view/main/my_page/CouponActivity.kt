@@ -9,37 +9,46 @@ import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.CouponViewPagerAdapter
 import com.ezen.lolketing.databinding.ActivityCouponBinding
+import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CouponActivity : BaseActivity<ActivityCouponBinding>(R.layout.activity_coupon) {
 
-    private var auth = FirebaseAuth.getInstance()
+    @Inject lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var list = ArrayList<Fragment>()    // ViewPager 에 들어갈 리스트
+        initViews()
+
+    }
+
+    private fun initViews() = with(binding) {
+        activity = this@CouponActivity
+        // todo 뷰페이저 관련
+        val list = ArrayList<Fragment>()    // ViewPager 에 들어갈 리스트
         list.add(CouponFragment("사용 안함"))
         list.add(CouponFragment("사용함"))
-        var adapter = CouponViewPagerAdapter(supportFragmentManager, list)  // Viewpager 의 adapter
-        binding.myCouponViewPage.adapter = adapter
-        binding.tabLayout.setupWithViewPager(binding.myCouponViewPage) //ViewPager 와 TabLayout 을 연결
+        val adapter = CouponViewPagerAdapter(supportFragmentManager, list)  // Viewpager 의 adapter
+        myCouponViewPage.adapter = adapter
+        tabLayout.setupWithViewPager(myCouponViewPage) //ViewPager 와 TabLayout 을 연결
 
-        binding.tabLayout.getTabAt(0)?.text = "사용 안함"
-        binding.tabLayout.getTabAt(1)?.text = "사용 함"
+        tabLayout.getTabAt(0)?.text = "사용 안함"
+        tabLayout.getTabAt(1)?.text = "사용 함"
     }
 
     override fun logout(view: View) {
         auth.signOut()
-        var intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 
     fun moveHome(view: View) {
-        var intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 }

@@ -4,19 +4,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.main.my_page.CacheChargingActivity">
+        tools:context=".view.main.my_page.cache.CacheChargingActivity">
 
         <ImageView
             android:id="@+id/main_logo"
             android:layout_width="80dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"
             android:src="@drawable/lolketing_logo"
-            android:onClick="moveHome"
+            android:onClick="@{activity::moveHome}"
             android:scaleType="fitXY"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
@@ -25,9 +31,9 @@
             android:id="@+id/btn_logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:text="로그아웃"
-            android:onClick="logout"
+            android:layout_marginEnd="10dp"
+            android:text="@string/logout"
+            android:onClick="@{activity::logout}"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintTop_toTopOf="@id/main_logo"
@@ -42,7 +48,8 @@
             android:background="@color/colorPrimaryDark"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="캐시 충전"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="18sp"
@@ -58,10 +65,10 @@
             android:background="@drawable/solid"
             android:layout_marginLeft="10dp"
             android:text="+ 100 원"
-            android:onClick="plusCache"
+            android:onClick="@{activity::plusCacheClick}"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/btn_cache2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_cache2"
             app:layout_constraintTop_toBottomOf="@id/text1"
             app:layout_constraintBottom_toTopOf="@id/text2"
             app:layout_constraintVertical_bias="0.2"/>
@@ -72,12 +79,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/solid"
             android:text="+ 1,000 원"
-            android:onClick="plusCache"
+            android:onClick="@{activity::plusCacheClick}"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintTop_toTopOf="@id/btn_cache1"
             app:layout_constraintBottom_toBottomOf="@id/btn_cache1"
-            app:layout_constraintLeft_toRightOf="@id/btn_cache1"
-            app:layout_constraintRight_toLeftOf="@id/btn_cache3"/>
+            app:layout_constraintStart_toEndOf="@id/btn_cache1"
+            app:layout_constraintEnd_toStartOf="@id/btn_cache3"/>
 
         <Button
             android:id="@+id/btn_cache3"
@@ -85,10 +92,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/solid"
             android:text="+ 1만 원"
-            android:onClick="plusCache"
+            android:onClick="@{activity::plusCacheClick}"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/btn_cache2"
-            app:layout_constraintRight_toLeftOf="@id/btn_cache4"
+            app:layout_constraintStart_toEndOf="@id/btn_cache2"
+            app:layout_constraintEnd_toStartOf="@id/btn_cache4"
             app:layout_constraintTop_toTopOf="@id/btn_cache1"
             app:layout_constraintBottom_toBottomOf="@id/btn_cache1"/>
 
@@ -97,12 +104,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/solid"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:text="+ 10만 원"
-            android:onClick="plusCache"
+            android:onClick="@{activity::plusCacheClick}"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/btn_cache3"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_cache3"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btn_cache1"
             app:layout_constraintBottom_toBottomOf="@id/btn_cache1"/>
 
@@ -115,8 +122,8 @@
             android:textAlignment="center"
             android:textSize="35sp"
             android:text="0 원"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_cache1"
             app:layout_constraintBottom_toBottomOf="@id/text2"/>
 
@@ -128,14 +135,15 @@
             android:background="@color/colorAccent"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="충전 시 주의사항"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/text3"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
             android:id="@+id/text3"
@@ -145,11 +153,12 @@
             android:layout_marginBottom="20dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:text="&quot;롤켓팅&quot;의 캐시는 가상머니입니다.\n원하시는 가격을 입력하시고 충전하기 버튼을 눌러주세요.\n단, 최대 보유 캐시는 20억 원 까지입니다.\n그 이상 충전하면 강제로 20억 원으로 고정됩니다."
             app:layout_constraintBottom_toTopOf="@id/btn_addCache"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
         <Button
@@ -158,12 +167,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="충전하기"
+            android:onClick="@{activity::chargingClick}"
             android:textColor="#fff"
             android:textStyle="bold"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:background="@color/colorPrimary"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,10 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.my_page.MyPageActivity" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         tools:context=".view.main.my_page.MyPageActivity">
 
         <ScrollView
@@ -18,18 +25,18 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingBottom="30dp">
 
                 <ImageView
                     android:id="@+id/main_logo"
                     android:layout_width="80dp"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="6dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/lolketing_logo"
-                    android:onClick="moveHome"
+                    android:onClick="@{activity::moveHome}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -37,9 +44,9 @@
                     android:id="@+id/btn_logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="로그아웃"
-                    android:onClick="logout"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/logout"
+                    android:onClick="@{activity::moveHome}"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     app:layout_constraintTop_toTopOf="@id/main_logo"
@@ -153,7 +160,7 @@
                     android:text="상세보기"
                     android:textColor="@color/colorPrimary"
                     android:textAlignment="center"
-                    android:onClick="moveActivity"
+                    android:onClick="@{activity::moveActivity}"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintTop_toBottomOf="@id/txt1"
                     app:layout_constraintLeft_toRightOf="@id/txt_grade"
@@ -168,7 +175,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
                     android:textAlignment="center"
-                    android:onClick="moveActivity"
+                    android:onClick="@{activity::moveActivity}"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintTop_toTopOf="@id/txt_grade"
                     app:layout_constraintLeft_toRightOf="@id/txt_grade_detail"
@@ -217,7 +224,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
                     android:textAlignment="center"
-                    android:onClick="moveActivity"
+                    android:onClick="@{activity::moveActivity}"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintTop_toBottomOf="@id/txt4"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -308,8 +315,8 @@
                     android:textColor="#000"
                     android:textSize="18dp"
                     android:textStyle="bold"
-                    android:background="#ddd"
-                    android:onClick="moveActivity"
+                    android:backgroundTint="#ddd"
+                    android:onClick="@{activity::moveActivity}"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/btn_history"
@@ -325,8 +332,8 @@
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:textSize="18dp"
-                    android:onClick="moveActivity"
-                    android:background="@color/colorPrimary"
+                    android:onClick="@{activity::moveActivity}"
+                    android:backgroundTint="@color/colorPrimary"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/btn_modify"
@@ -351,7 +358,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="10dp"
                     android:textSize="18sp"
-                    android:onClick="moveActivity"
+                    android:onClick="@{activity::moveActivity}"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_modify"/>
 

@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/bg_check_box.xml" value="0.235" />
+        <entry key="app/src/main/res/drawable-v24/ic_check_circle_on.xml" value="0.235" />
+        <entry key="app/src/main/res/layout/activity_board_detail.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_board_list.xml" value="0.35144927536231885" />
+        <entry key="app/src/main/res/layout/activity_board_write.xml" value="0.28894927536231885" />
         <entry key="app/src/main/res/layout/activity_cache_charging.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/activity_chatting.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_chattinglist.xml" value="0.40208333333333335" />
@@ -11,6 +15,8 @@
         <entry key="app/src/main/res/layout/activity_daum_web_view.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/activity_event_detail.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_event_list.xml" value="0.20677083333333332" />
+        <entry key="app/src/main/res/layout/activity_gallery.xml" value="0.35144927536231885" />
+        <entry key="app/src/main/res/layout/activity_gallery_detail.xml" value="0.38697916666666665" />
         <entry key="app/src/main/res/layout/activity_game_schedule.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/activity_join.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_join_detail.xml" value="0.35144927536231885" />
@@ -33,7 +39,10 @@
         <entry key="app/src/main/res/layout/fragment_progress.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/item_board.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/item_chat.xml" value="0.40208333333333335" />
+        <entry key="app/src/main/res/layout/item_comment.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/item_coupon.xml" value="0.40208333333333335" />
+        <entry key="app/src/main/res/layout/item_gallery_detail_item.xml" value="0.35144927536231885" />
+        <entry key="app/src/main/res/layout/item_gallery_item.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/item_reserve_ticket.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/item_slider.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/item_team.xml" value="0.40208333333333335" />

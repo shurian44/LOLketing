@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.CouponAdapter
-import com.ezen.lolketing.model.CouponDTO
+import com.ezen.lolketing.model.Coupon
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,9 +25,10 @@ class CouponFragment(status : String) : Fragment() {
                               savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_coupon, container, false)
 
+        // todo firebase 한번에 처리
         var query = firestore.collection("Coupon").whereEqualTo("id", auth.currentUser?.email!!).whereEqualTo("use", status).orderBy("title")
-        var options = FirestoreRecyclerOptions.Builder<CouponDTO>()
-                .setQuery(query, CouponDTO::class.java).build()
+        var options = FirestoreRecyclerOptions.Builder<Coupon>()
+                .setQuery(query, Coupon::class.java).build()
 
         adapter = CouponAdapter(options)
         var coupon_recycler = view.findViewById<RecyclerView>(R.id.coupon_recycler)

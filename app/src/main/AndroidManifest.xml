@@ -41,14 +41,16 @@
         <activity android:name=".view.main.event.RouletteActivity" />
         <activity android:name=".view.main.chatting.ChattingListActivity" />
         <activity
-            android:name=".view.main.board.BoardWriteActivity"
+            android:name=".view.main.board.write.BoardWriteActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".view.gallery.GalleryActivity"/>
+        <activity android:name=".view.gallery.detail.GalleryDetailActivity"/>
         <activity android:name=".view.main.board.BoardListActivity"/>
-        <activity android:name=".view.main.board.BoardDetailActivity" />
+        <activity android:name=".view.main.board.detail.BoardDetailActivity" />
         <activity android:name=".view.main.shop.PurchaseActivity" />
         <activity android:name=".view.main.shop.ShopDetailActivity" />
         <activity android:name=".view.main.shop.ShopActivity" />
-        <activity android:name=".view.main.my_page.CacheChargingActivity" />
+        <activity android:name=".view.main.my_page.cache.CacheChargingActivity" />
         <activity android:name=".view.main.my_page.MyPageActivity" />
         <activity android:name=".view.main.ticket.TicketingActivity" />
         <activity android:name=".view.main.ticket.ReserveDetailActivity" />
