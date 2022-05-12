@@ -1,57 +1,65 @@
-package com.ezen.lolketing.view.main.news;
+package com.ezen.lolketing.view.main.news
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.view.View
+import android.webkit.WebSettings
+import android.webkit.WebViewClient
+import com.ezen.lolketing.BaseActivity
+import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ActivityNewsWebViewBinding
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.startActivity
+import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.login.LoginActivity
+import com.ezen.lolketing.view.main.MainActivity
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-import androidx.appcompat.app.AppCompatActivity;
+@AndroidEntryPoint
+class NewsWebViewActivity : BaseActivity<ActivityNewsWebViewBinding>(R.layout.activity_news_web_view) {
 
-import com.ezen.lolketing.view.main.MainActivity;
-import com.ezen.lolketing.R;
-import com.google.firebase.auth.FirebaseAuth;
+    @Inject lateinit var auth : FirebaseAuth
 
-public class NewsWebViewActivity extends AppCompatActivity {
-    private WebView webView;
-    private WebSettings webSettings;
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    String url;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_web_view);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        webView = findViewById(R.id.news_webView);
+        val url = intent.getStringExtra(Constants.URL)
 
-        url = getIntent().getStringExtra("url");
+        if (url == null){
+            toast("웹 사이트에 오류가 발생하였습니다.")
+            Handler(mainLooper).postDelayed({ finish() }, 1000)
+        }
 
-        webView.setWebViewClient(new WebViewClient()); // 클릭시 새창 안뜨게
-        webSettings = webView.getSettings(); //세부 세팅 등록
+        binding.newsWebView.apply {
+            webViewClient = WebViewClient() // 클릭시 새창 안뜨게
+            loadUrl(url!!)
+        }
 
-        webSettings.setJavaScriptEnabled(true); // 웹페이지 자바스크립트 허용 여부
-        webSettings.setSupportMultipleWindows(false); // 새창 띄우기 허용 여부
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(false); // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
-        webSettings.setLoadWithOverviewMode(true); // 메타태그 허용 여부
-        webSettings.setUseWideViewPort(true); // 화면 사이즈 맞추기 허용 여부
-        webSettings.setSupportZoom(false); // 화면 줌 허용 여부
-        webSettings.setBuiltInZoomControls(true); // 화면 확대 축소 허용 여부
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN); // 컨텐츠 사이즈 맞추기
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
-        webSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
-
-        webView.loadUrl(url);
-
+        binding.newsWebView.settings.apply {
+            javaScriptEnabled = true // 웹페이지 자바스크립트 허용 여부
+            javaScriptCanOpenWindowsAutomatically = false // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
+            loadWithOverviewMode = true // 메타태그 허용 여부
+            useWideViewPort = true // 화면 사이즈 맞추기 허용 여부
+            builtInZoomControls = true // 화면 확대 축소 허용 여부
+            layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN // 컨텐츠 사이즈 맞추기
+            cacheMode = WebSettings.LOAD_NO_CACHE // 브라우저 캐시 허용 여부
+            domStorageEnabled = true // 로컬저장소 허용 여부
+            setSupportZoom(false) // 화면 줌 허용 여부
+            setSupportMultipleWindows(false) // 새창 띄우기 허용 여부
+        }
     }
 
-    public void logout(View view) {
-        auth.signOut();
+    override fun logout(view: View) {
+        auth.signOut()
+        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 
-    public void moveHome(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+    fun moveHome(view: View) {
+        startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 }

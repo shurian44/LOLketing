@@ -4,38 +4,48 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
 import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.NewsAdapter
-import com.ezen.lolketing.adapter.NewsAdapter.setActivityMove
 import com.ezen.lolketing.databinding.ActivityNewsBinding
-import com.ezen.lolketing.model.NewsDTO
+import com.ezen.lolketing.model.NewsItem
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 import org.jsoup.Jsoup
+import javax.inject.Inject
 
-class NewsActivity : BaseActivity<ActivityNewsBinding>(R.layout.activity_news), setActivityMove {
-    private var auth = FirebaseAuth.getInstance()
-    var adapter = NewsAdapter(this)
-    var queue: RequestQueue? = null
+@AndroidEntryPoint
+class NewsActivity : BaseActivity<ActivityNewsBinding>(R.layout.activity_news) {
+
+    @Inject lateinit var auth : FirebaseAuth
+    private lateinit var adapter : NewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding.newsContents.setHasFixedSize(true)
         binding.newsContents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        queue = Volley.newRequestQueue(this)
-
-        //        queue.add(stringRequest);
 
         getNews()
     }
 
+    private fun setRecyclerView(data: MutableList<NewsItem>) = with(binding) {
+        adapter = NewsAdapter(data) {
+            startActivity(createIntent(NewsWebViewActivity::class.java).also {
+                it.putExtra(Constants.URL, it)
+            })
+        }
+        newsContents.adapter = adapter
+    }
+
     private fun getNews() {
-        var data : MutableList<NewsDTO> = mutableListOf()
+        // todo 검색 api 수정 예정 : https://developers.naver.com/docs/search/news/
+        val data : MutableList<NewsItem> = mutableListOf()
         val url = "http://m.inven.co.kr/webzine/wznews.php?site=lol"
         try {
             //여기서 스크래핑 한다.
@@ -48,13 +58,11 @@ class NewsActivity : BaseActivity<ActivityNewsBinding>(R.layout.activity_news), 
                 val newsTitle = element.select("span[class=title]").text()
                 val thumbnail = element.select("span[class=thumb] img").attr("src")
                 val info = element.select("span[class=info]").text()
-                val url = "http://m.inven.co.kr${element.select("a[class=subject]").attr("href")}"
-                data.add(NewsDTO(newsTitle, thumbnail, info, url))
+                val newUrl = "http://m.inven.co.kr${element.select("a[class=subject]").attr("href")}"
+                data.add(NewsItem(newsTitle, thumbnail, info, newUrl))
 
                 runOnUiThread {
-                    // recyclerView.adapter = MyAdapter(movies)
-                    adapter.addData(data)
-                    binding.newsContents.adapter = adapter
+                    setRecyclerView(data)
                 }
             }
         } catch (e: Exception) {
@@ -62,22 +70,14 @@ class NewsActivity : BaseActivity<ActivityNewsBinding>(R.layout.activity_news), 
         }
     }
 
-    override fun activityMove(intent: Intent) {
-        startActivity(intent)
+    override fun logout(view: View) {
+        auth.signOut()
+        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 
     fun moveHome(view: View) {
-        var intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-    }
-
-    override fun logout(view: View) {
-        auth.signOut()
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP or
-                Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP)
-        startActivity(intent)
+        startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 }
