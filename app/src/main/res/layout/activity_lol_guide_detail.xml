@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.guide.LoLGuideDetailActivity" />
+
+        <variable
+            name="title"
+            type="String" />
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,48 +26,49 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/main_logo"
                     android:layout_width="80dp"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="6dp"
-                    android:onClick="moveHome"
+                    android:onClick="@{activity::moveHome}"
                     android:scaleType="fitXY"
                     android:src="@drawable/lolketing_logo"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/btn_logout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:text="로그아웃"
-                    android:onClick="logout"
-                    android:textStyle="bold"
+                    android:layout_marginEnd="10dp"
+                    android:onClick="@{activity::logout}"
+                    android:text="@string/logout"
                     android:textColor="@color/colorPrimaryDark"
-                    app:layout_constraintTop_toTopOf="@id/main_logo"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/main_logo"/>
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/main_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/main_logo" />
 
                 <TextView
                     android:id="@+id/guide_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:background="@color/colorPrimaryDark"
+                    android:paddingHorizontal="10dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:paddingLeft="10dp"
-                    android:layout_marginTop="8dp"
-                    android:text="제목"
                     android:textColor="@color/common_google_signin_btn_text_dark_default"
                     android:textSize="18sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/main_logo"/>
+                    android:text="@{title}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/main_logo"
+                    tools:text="제목" />
 
                 <ImageView
                     android:id="@+id/guide_img"
@@ -64,8 +76,8 @@
                     android:layout_height="200dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/lol_guide_title"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/guide_title" />
 
                 <TextView
@@ -75,13 +87,13 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="30dp"
-                    android:text="내용이 들어옵니다."
                     android:textColor="#000"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/guide_img" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/guide_img"
+                    tools:text="내용이 들어옵니다." />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -91,8 +103,12 @@
             android:id="@+id/imageSlider"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
             android:layout_marginTop="280dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:sliderAutoCycleDirection="back_and_forth"
             app:sliderIndicatorGravity="center_horizontal|bottom"
             app:sliderIndicatorMargin="15dp"
@@ -100,11 +116,7 @@
             app:sliderIndicatorPadding="3dp"
             app:sliderIndicatorRadius="2dp"
             app:sliderIndicatorSelectedColor="#5A5A5A"
-            app:sliderIndicatorUnselectedColor="#FFF"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:sliderIndicatorUnselectedColor="#FFF" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
