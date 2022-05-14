@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import java.util.*
+import kotlin.collections.ArrayList
 
 fun <T> Activity.startActivity(clazz: Class<T>) {
     startActivity(Intent(this, clazz))
@@ -64,3 +66,7 @@ fun String.htmlFormat() : Spanned =
     } else {
         Html.fromHtml(this)
     }
+
+fun getCurrentDateTime(): Date {
+    return Calendar.getInstance().time
+}

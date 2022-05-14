@@ -12,6 +12,9 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.ChattingAdapter
 import com.ezen.lolketing.databinding.ActivityChattingBinding
 import com.ezen.lolketing.model.ChattingDTO
+import com.ezen.lolketing.util.Team
+import com.ezen.lolketing.util.setTeamLogoImageView
+import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.LoginActivity
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -38,15 +41,15 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(R.layout.activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        time = intent?.getStringExtra("time") ?: ""
-        nickname = intent.getStringExtra("nickName") ?: ""
-        selectTeam = intent.getStringExtra("selectTeam") ?: ""
-        team = intent.getStringExtra("team") ?: ""
+        time = intent?.getStringExtra(TIME) ?: ""
+        nickname = intent.getStringExtra(NICKNAME) ?: ""
+        selectTeam = intent.getStringExtra(SELECT_TEAM) ?: ""
+        team = intent.getStringExtra(TEAM) ?: ""
         binding.chattingTitle.text = team.replace(":", "vs")   // ex) T1:DAMWONGAMMING > T1 vs DAMWONGAMMING 으로 수정하여 표시
 
         var teams = team.split(":") // ':'을 기준으로 왼쪽 팀, 오른쪽 팀을 나누어서 저장
-        setImage(binding.imgTeam1, teams[0])
-        setImage(binding.imgTeam2, teams[1])
+        setTeamLogoImageView(binding.imgTeam1, teams[0])
+        setTeamLogoImageView(binding.imgTeam2, teams[1])
 
         var dateFormat = SimpleDateFormat("yyyyMMdd")
         var mDate = Date()
@@ -115,22 +118,6 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(R.layout.activity
         binding.chattingRecycler.layoutManager = LinearLayoutManager(this)
     } // setRecycler()
 
-    // 팀에 맞게 이미지 세팅
-    fun setImage(image : ImageView, team : String? = ""){
-        when(team){
-            "T1"-> image.setImageResource(R.drawable.logo_t1)
-            "Griffin"-> image.setImageResource(R.drawable.logo_griffin)
-            "DAMWON Gaming"-> image.setImageResource(R.drawable.icon_damwon)
-            "SANDBOX Gaming"-> image.setImageResource(R.drawable.icon_sandbox)
-            "Afreeca Freecs"-> image.setImageResource(R.drawable.icon_afreeca)
-            "Gen.G Esports"-> image.setImageResource(R.drawable.icon_geng)
-            "DragonX"-> image.setImageResource(R.drawable.icon_dragonx)
-            "KT Rolster"-> image.setImageResource(R.drawable.icon_rolster)
-            "APK PRINCE"-> image.setImageResource(R.drawable.icon_apk_prince)
-            "Hanwha Life Esports"-> image.setImageResource(R.drawable.icon_hanwha)
-        }
-    } // setImage()
-
     override fun onStart() {
         super.onStart()
         // 채팅방이 생성 여부 검사
@@ -152,14 +139,19 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(R.layout.activity
 
     override fun logout(view: View) {
         auth.signOut()
-        var intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 
     fun moveHome(view: View) {
-        var intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
+    }
+
+    companion object {
+        const val SELECT_TEAM = "selectTeam"
+        const val NICKNAME = "nickName"
+        const val TIME = "time"
+        const val TEAM = "team"
     }
 }

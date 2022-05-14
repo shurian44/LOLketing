@@ -22,12 +22,14 @@
         <entry key="app/src/main/res/layout/activity_join_detail.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_league_info.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.20677083333333332" />
+        <entry key="app/src/main/res/layout/activity_lol_guide.xml" value="0.38697916666666665" />
         <entry key="app/src/main/res/layout/activity_lol_guide_detail.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_manager.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_membership.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_my_page.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_news.xml" value="0.40208333333333335" />
+        <entry key="app/src/main/res/layout/activity_news_web_view.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_purchase.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_reserve.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_reserve_detail.xml" value="0.35144927536231885" />
@@ -43,6 +45,7 @@
         <entry key="app/src/main/res/layout/item_coupon.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/item_gallery_detail_item.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/item_gallery_item.xml" value="0.35144927536231885" />
+        <entry key="app/src/main/res/layout/item_news.xml" value="0.28894927536231885" />
         <entry key="app/src/main/res/layout/item_reserve_ticket.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/item_slider.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/item_team.xml" value="0.40208333333333335" />

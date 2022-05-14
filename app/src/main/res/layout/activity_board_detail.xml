@@ -1,286 +1,293 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.main.board.BoardDetailActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+    <data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="30dp">
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.board.detail.BoardDetailActivity" />
+    </data>
 
-            <ImageView
-                android:id="@+id/main_logo"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="6dp"
-                android:src="@drawable/main_logo_small"
-                android:scaleType="fitXY"
-                android:onClick="moveHome"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.main.board.detail.BoardDetailActivity">
 
-            <TextView
-                android:id="@+id/btn_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="로그아웃"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/main_logo"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/main_logo" />
-
-            <TextView
-                android:id="@+id/board_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/colorPrimaryDark"
-                android:padding="8dp"
-                android:text="팀 게시판 - "
-                android:paddingLeft="10dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:textColor="@color/common_google_signin_btn_text_dark_default"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/main_logo" />
-
-            <TextView
-                android:id="@+id/content_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="8dp"
-                android:text="게시글 제목입니다"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="24sp"
-                android:maxLines="3"
-                android:ellipsize="end"
-                app:layout_constraintTop_toBottomOf="@id/board_title"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <ImageView
-                android:id="@+id/img_rank"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="8dp"
-                android:src="@color/colorPrimaryDark"
-                app:layout_constraintTop_toBottomOf="@id/content_title"
-                app:layout_constraintLeft_toLeftOf="@id/content_title"/>
-
-            <TextView
-                android:id="@+id/userId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="userId"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintLeft_toRightOf="@id/img_rank"
-                app:layout_constraintTop_toTopOf="@id/img_rank"/>
-
-            <ImageView
-                android:id="@+id/btn_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/userId"
-                app:layout_constraintBottom_toBottomOf="@id/timestamp"
-                app:layout_constraintRight_toRightOf="parent"
-                android:src="@drawable/ic_more_vert_black_24dp"
-                android:padding="5dp"
-                android:layout_marginRight="10dp"
-                />
-
-            <TextView
-                android:id="@+id/timestamp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/userId"
-                app:layout_constraintLeft_toLeftOf="@id/userId"
-                android:text="2020.02.20 12:12"
-                />
-
-            <TextView
-                android:id="@+id/views"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/timestamp"
-                app:layout_constraintLeft_toRightOf="@id/timestamp"
-                android:text="조회수 26"
-                android:layout_marginLeft="6dp"
-                />
-
-            <View
-                android:id="@+id/view1"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginHorizontal="10dp"
-                android:background="@color/colorPrimaryDark"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/views"/>
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/boardConst"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="200dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view1">
+                android:paddingBottom="30dp">
 
                 <ImageView
-                    android:id="@+id/board_img"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/haed_coach"
-                    android:layout_marginTop="15dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:background="@color/colorPrimaryDark"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/board_img"/>
+                    android:id="@+id/main_logo"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="6dp"
+                    android:onClick="@{activity::moveHome}"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/main_logo_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/board_content"
+                    android:id="@+id/btn_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="로그아웃"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/main_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/main_logo" />
+
+                <TextView
+                    android:id="@+id/board_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:padding="8dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="100dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/main_logo"
+                    tools:text="팀 게시판 - " />
+
+                <TextView
+                    android:id="@+id/content_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="8dp"
-                    android:text="힘내자 하나 둘 셋 화이팅."
-                    android:textSize="16sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/board_title"
+                    tools:text="게시글 제목입니다" />
+
+                <ImageView
+                    android:id="@+id/img_rank"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@color/colorPrimaryDark"
+                    app:layout_constraintStart_toStartOf="@id/content_title"
+                    app:layout_constraintTop_toBottomOf="@id/content_title" />
+
+                <TextView
+                    android:id="@+id/userId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintStart_toEndOf="@id/img_rank"
+                    app:layout_constraintTop_toTopOf="@id/img_rank"
+                    tools:text="userId" />
+
+                <ImageView
+                    android:id="@+id/btn_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_more_vert_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@id/timestamp"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view2" />
+                    app:layout_constraintTop_toTopOf="@id/userId" />
+
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/userId"
+                    app:layout_constraintTop_toBottomOf="@id/userId"
+                    tools:text="2020.02.20 12:12" />
+
+                <TextView
+                    android:id="@+id/views"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    app:layout_constraintStart_toEndOf="@id/timestamp"
+                    app:layout_constraintTop_toTopOf="@id/timestamp"
+                    tools:text="조회수 26" />
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/colorPrimaryDark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/views" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/boardConst"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view1">
+
+                    <ImageView
+                        android:id="@+id/board_img"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:src="@drawable/haed_coach"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/colorPrimaryDark"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/board_img" />
+
+                    <TextView
+                        android:id="@+id/board_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="8dp"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/view2"
+                        tools:text="힘내자 하나 둘 셋 화이팅." />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <ToggleButton
+                    android:id="@+id/img_like"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/heart_toggle"
+                    android:textOff=""
+                    android:textOn=""
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/boardConst" />
+
+                <TextView
+                    android:id="@+id/txt_likeCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/img_like"
+                    app:layout_constraintStart_toEndOf="@id/img_like"
+                    app:layout_constraintTop_toTopOf="@id/img_like"
+                    tools:text="3" />
+
+                <ImageView
+                    android:id="@+id/img_comment"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/icon_comment"
+                    app:layout_constraintStart_toEndOf="@id/txt_likeCount"
+                    app:layout_constraintTop_toTopOf="@id/img_like" />
+
+                <TextView
+                    android:id="@+id/txt_commentCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="1"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@id/img_comment"
+                    app:layout_constraintStart_toEndOf="@id/img_comment"
+                    app:layout_constraintTop_toTopOf="@id/img_comment" />
+
+                <ImageView
+                    android:id="@+id/img_report"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/icon_report"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/img_like" />
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/colorPrimaryDark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_like" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="8dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view3" />
+
+                <EditText
+                    android:id="@+id/input_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="댓글을 남겨보세요."
+                    android:inputType="textMultiLine"
+                    app:layout_constraintEnd_toStartOf="@id/btn_submit"
+                    app:layout_constraintStart_toStartOf="@id/recyclerView_comment"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerView_comment" />
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="글등록"
+                    app:layout_constraintBottom_toBottomOf="@id/input_comment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/input_comment" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </ScrollView>
 
-            <ToggleButton
-                android:id="@+id/img_like"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/heart_toggle"
-                android:textOn=""
-                android:textOff=""
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/boardConst"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="10dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/txt_likeCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="3"
-                android:textSize="16sp"
-                app:layout_constraintLeft_toRightOf="@id/img_like"
-                app:layout_constraintTop_toTopOf="@id/img_like"
-                app:layout_constraintBottom_toBottomOf="@id/img_like"/>
-
-            <ImageView
-                android:id="@+id/img_comment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="8dp"
-                app:layout_constraintTop_toTopOf="@id/img_like"
-                app:layout_constraintLeft_toRightOf="@id/txt_likeCount"
-                android:src="@drawable/icon_comment"
-                />
-
-            <TextView
-                android:id="@+id/txt_commentCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="1"
-                android:textSize="16sp"
-                app:layout_constraintTop_toTopOf="@id/img_comment"
-                app:layout_constraintLeft_toRightOf="@id/img_comment"
-                app:layout_constraintBottom_toBottomOf="@id/img_comment"
-                />
-
-            <ImageView
-                android:id="@+id/img_report"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/img_like"
-                android:src="@drawable/icon_report"
-                android:layout_marginRight="10dp"/>
-
-            <View
-                android:id="@+id/view3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginHorizontal="10dp"
-                android:background="@color/colorPrimaryDark"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/img_like"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_comment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view3"
-                android:layout_marginHorizontal="10dp"/>
-
-            <EditText
-                android:id="@+id/input_comment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:inputType="textMultiLine"
-                android:hint="댓글을 남겨보세요."
-                app:layout_constraintLeft_toLeftOf="@id/recyclerView_comment"
-                app:layout_constraintRight_toLeftOf="@id/btn_submit"
-                app:layout_constraintTop_toBottomOf="@id/recyclerView_comment" />
-
-            <Button
-                android:id="@+id/btn_submit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="글등록"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/input_comment"
-                app:layout_constraintTop_toTopOf="@id/input_comment"
-                android:layout_marginRight="5dp"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

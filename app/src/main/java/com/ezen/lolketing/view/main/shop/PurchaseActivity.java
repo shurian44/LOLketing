@@ -23,7 +23,7 @@ import com.ezen.lolketing.view.main.MainActivity;
 import com.ezen.lolketing.R;
 import com.ezen.lolketing.model.PurchaseDTO;
 import com.ezen.lolketing.model.Users;
-import com.ezen.lolketing.view.main.my_page.CacheChargingActivity;
+import com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ezen.lolketing.R;
-import com.ezen.lolketing.model.CouponDTO;
+import com.ezen.lolketing.model.Coupon;
 import com.ezen.lolketing.model.Users;
 import com.ezen.lolketing.view.main.MainActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -106,7 +106,7 @@ public class RouletteActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "축하합니다! 250RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
                 }
 
-                CouponDTO coupon = new CouponDTO();
+                Coupon coupon = new Coupon();
                 coupon.setId(auth.getCurrentUser().getEmail());
                 coupon.setLimit("2222.01.01");
                 coupon.setTitle("룰렛 쿠폰");

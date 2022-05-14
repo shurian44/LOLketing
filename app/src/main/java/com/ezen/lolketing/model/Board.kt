@@ -1,6 +1,9 @@
 package com.ezen.lolketing.model
 
-//@Parcelize
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Board(
     val email : String?= null,
     val team : String?= null,
@@ -13,10 +16,14 @@ data class Board(
     val commentCounts : Int?= null,
     val like : Map<String, Boolean>?= null,
     val likeCounts : Int?= null,
-    val views : Int?= null
-)
-
-
-
-// Parcelable
-// todo kotlin-android-extensions 제거 후 진행 예정
+    val views : Int?= null,
+    var documentId : String?= null
+) : Parcelable {
+    @Parcelize
+    data class Comment(
+        val email : String?= null,
+        val userId : String?= null,
+        val timestamp : Long?= null,
+        val comment : String?= null
+    ) : Parcelable
+}
