@@ -5,6 +5,7 @@ object Constants {
     const val TEAM = "team"
     const val BOARD = "Board"
     const val GAME = "Game"
+    const val COUPON = "Coupon"
     const val DOCUMENT_ID = "documentId"
     const val SELECT_IMAGE_LIST = "select_image_list"
     const val POSITION = "position"

@@ -169,10 +169,10 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
             return
         }
 
-        if ((currentTime / DATE) != (gameStartTime / DATE)){
-            toast("당일만 입장 가능합니다.")
-            return
-        }
+//        if ((currentTime / DATE) != (gameStartTime / DATE)){
+//            toast("당일만 입장 가능합니다.")
+//            return
+//        }
 
         val standardTime = gameStartTime - (30 * MINUTE)
 
@@ -203,7 +203,6 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
 
     companion object {
         const val MINUTE = 1000 * 60
-        const val DATE = 1000 * 60 * 60 * 24
     }
 
 }

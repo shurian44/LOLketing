@@ -69,6 +69,8 @@
             이제 리그 오브 레전드라는 게임에 대해 조금은 이해가 가시나요? 위의 개념들만 숙지하셔도 외계어처럼 들렸던 롤에 관한 대화들이 귀에 쏙쏙 들어올 겁니다.
         ]]>
     </string>
+    <string name="event_ticket_purchase"><![CDATA[티켓 구매하시고 <big><font color="#6200EE">RP</big></font> 받아가세요~!<br><br><br>- 구매 티켓 1장 당 룰렛 1회 이용 가능<br>- 해당 이벤트는 <font color="#6200EE">횟 수 제한 없이</font> 참여 가능합니다.]]></string>
+    <string name="event_new_user"><![CDATA[<span>소환사 <font color="#6200EE">%s</font>님<br><font color="#6200EE">롤케팅</font>에 오신것을 환영합니다.<br><br><br>환영의 의미로 <font color="#6200EE">500포인트</font>를 발급해드립니다.</span>]]></string>
 
 
 

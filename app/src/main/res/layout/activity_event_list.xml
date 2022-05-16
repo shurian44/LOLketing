@@ -4,10 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.event.EventListActivity" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         tools:context=".view.main.event.EventListActivity">
 
         <ScrollView
@@ -25,7 +32,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="6dp"
                     android:src="@drawable/lolketing_logo"
-                    android:onClick="moveHome"
+                    android:onClick="@{activity::moveHome}"
                     android:scaleType="fitXY"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"/>
@@ -35,8 +42,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:onClick="logout"
-                    android:text="로그아웃"
+                    android:onClick="@{activity::moveHome}"
+                    android:text="@string/logout"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/main_logo"

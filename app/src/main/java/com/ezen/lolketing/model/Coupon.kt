@@ -5,7 +5,8 @@ data class Coupon(
     var id : String ?= null,
     var use : String ?= "사용 안함",
     var couponNumber : String?= null,
-    var limit : String ?= null
+    var limit : String ?= null,
+    var documentId : String?= null
 ) {
     companion object {
         const val noneUsed = "사용 안함"

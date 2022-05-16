@@ -8,41 +8,54 @@ import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityEventListBinding
+import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class EventListActivity : BaseActivity<ActivityEventListBinding>(R.layout.activity_event_list) {
-    private var auth = FirebaseAuth.getInstance()
+
+    @Inject lateinit var auth : FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initViews()
+
+    }
+
+    private fun initViews() = with(binding) {
+        activity = this@EventListActivity
+
         // 신규 회원 이벤트 페이지
         binding.eventCard1.setOnClickListener {
-            var intent = Intent(this, EventDetailActivity::class.java)
-            intent.putExtra("page", 1)
-            startActivity(intent)
+            startActivity(createIntent(EventDetailActivity::class.java).also {
+                it.putExtra(EventDetailActivity.PAGE, 1)
+            })
         }
         // 티켓 구입 이벤트 안내 페이지
         binding.eventCard2.setOnClickListener{
-            var intent = Intent(this, EventDetailActivity::class.java)
-            intent.putExtra("page", 2)
-            startActivity(intent)
+            startActivity(createIntent(EventDetailActivity::class.java).also {
+                it.putExtra(EventDetailActivity.PAGE, 2)
+            })
         }
         // 룰렛 이벤트 페이지
         binding.eventCard3.setOnClickListener{
-            startActivity(Intent(this, RouletteActivity::class.java))
+            startActivity(RouletteActivity::class.java)
         }
     }
 
     override fun logout(view: View) {
         auth.signOut()
-        var intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 
     fun moveHome(view: View) {
-        var intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        finish()
     }
 }
