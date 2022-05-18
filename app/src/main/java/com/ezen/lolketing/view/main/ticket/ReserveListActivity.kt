@@ -66,7 +66,7 @@ class ReserveListActivity : BaseActivity<ActivityReserveListBinding>(R.layout.ac
         startActivity(intent)
     }
 
-    fun moveHome(view: View) {
+    override fun moveHome(view: View) {
         var intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)

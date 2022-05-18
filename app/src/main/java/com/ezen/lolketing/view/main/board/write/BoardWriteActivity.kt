@@ -168,7 +168,7 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         auth.signOut()
     }
 
-    fun moveHome(view: View?) {
+    override fun moveHome(view: View) {
         startActivity(createIntent(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 

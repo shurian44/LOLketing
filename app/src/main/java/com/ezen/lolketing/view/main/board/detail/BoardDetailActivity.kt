@@ -258,7 +258,7 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
     }
 
     // 로고(홈)
-    fun moveHome(view: View?) {
+    override fun moveHome(view: View) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)

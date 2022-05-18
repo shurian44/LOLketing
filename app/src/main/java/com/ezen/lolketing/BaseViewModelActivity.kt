@@ -26,6 +26,8 @@ abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
 
     }
 
-    abstract fun logout(view: View)
+    open fun logout(view: View){}
+
+    open fun moveHome(view: View){}
 
 }

@@ -58,7 +58,7 @@ class NewsWebViewActivity : BaseActivity<ActivityNewsWebViewBinding>(R.layout.ac
         finish()
     }
 
-    fun moveHome(view: View) {
+    override fun moveHome(view: View) {
         startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
         finish()
     }

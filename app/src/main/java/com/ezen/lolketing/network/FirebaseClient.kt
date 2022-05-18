@@ -19,6 +19,71 @@ class FirebaseClient @Inject constructor(
 
     fun getCurrentUser() = auth.currentUser
 
+    suspend fun joinUser(
+        email: String,
+        pw: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+        try {
+            auth
+                .createUserWithEmailAndPassword(email, pw)
+                .addOnSuccessListener {
+                    successListener()
+                }
+                .addOnFailureListener {
+                    failureListener()
+                }
+                .await()
+        } catch (e: Exception) {
+            failureListener()
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun registerUser(
+        email: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+        try {
+            val user = Users().apply {
+                id = email
+            }
+
+            firestore
+                .collection(Constants.USERS)
+                .document(email)
+                .set(user)
+                .addOnSuccessListener {
+                    successListener()
+                }
+                .addOnFailureListener {
+                    failureListener()
+                }
+                .await()
+        } catch (e: Exception) {
+            failureListener()
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun deleteUser(
+        successListener: () -> Unit,
+        failureListener: (() -> Unit)?= null
+    ) {
+        try {
+            getCurrentUser()
+                ?.delete()
+                ?.addOnSuccessListener { successListener() }
+                ?.addOnFailureListener { failureListener?.invoke() }
+                ?.await()
+                ?: failureListener?.invoke()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     suspend fun getUserInfo(
         collectionPath : String,
         documentPath: String,
@@ -32,6 +97,28 @@ class FirebaseClient @Inject constructor(
     suspend fun getUserNickName() : String? = try {
         val email = getCurrentUser()?.email ?: throw Exception("회원 정보를 찾지 못했습니다.")
         firestore.collection(Constants.USERS).document(email).get().await().toObject(Users::class.java)?.nickname
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    suspend fun getBasicSnapshot(
+        collection: String,
+        document: String,
+        successListener : (DocumentSnapshot) -> Unit,
+        failureListener : () -> Unit
+    ) = try {
+        firestore
+            .collection(collection)
+            .document(document)
+            .get()
+            .addOnSuccessListener {
+                successListener(it)
+            }
+            .addOnFailureListener {
+                failureListener()
+            }
+            .await()
     } catch (e: Exception) {
         e.printStackTrace()
         null

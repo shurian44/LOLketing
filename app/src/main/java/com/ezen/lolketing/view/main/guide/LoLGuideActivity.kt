@@ -49,7 +49,7 @@ class LoLGuideActivity : BaseActivity<ActivityLolGuideBinding>(R.layout.activity
     }
 
     /** 관리자 페이지 버튼 클릭 **/
-    fun moveHome(view: View) {
+    override fun moveHome(view: View) {
         startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
         finish()
     }

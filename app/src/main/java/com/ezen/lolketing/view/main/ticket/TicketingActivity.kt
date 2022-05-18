@@ -175,7 +175,7 @@ class TicketingActivity : BaseActivity<ActivityTicketingBinding>(R.layout.activi
         return super.onKeyDown(keyCode, event)
     }
 
-    fun moveHome(view: View) {
+    override fun moveHome(view: View) {
         var intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)

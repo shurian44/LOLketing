@@ -24,6 +24,8 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
     }
 
-    abstract fun logout(view: View)
+    open fun logout(view: View) {}
+
+    open fun moveHome(view: View){}
 
 }

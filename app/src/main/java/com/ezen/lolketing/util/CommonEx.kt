@@ -1,6 +1,7 @@
 package com.ezen.lolketing.util
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -12,6 +13,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 fun <T> Activity.startActivity(clazz: Class<T>) {
     startActivity(Intent(this, clazz))
@@ -69,4 +71,9 @@ fun String.htmlFormat() : Spanned =
 
 fun getCurrentDateTime(): Date {
     return Calendar.getInstance().time
+}
+
+fun densityDp(context: Context, size: Int) : Int {
+    val dm = context.resources.displayMetrics
+    return (size * dm.density).roundToInt()
 }

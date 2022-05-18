@@ -113,6 +113,8 @@ dependencies {
 
     // PhotoView : https://github.com/Baseflow/PhotoView
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
 }
 repositories {
     mavenCentral()

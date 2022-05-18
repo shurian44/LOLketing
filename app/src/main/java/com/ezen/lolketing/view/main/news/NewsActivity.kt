@@ -76,7 +76,7 @@ class NewsActivity : BaseActivity<ActivityNewsBinding>(R.layout.activity_news) {
         finish()
     }
 
-    fun moveHome(view: View) {
+    override fun moveHome(view: View) {
         startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
         finish()
     }

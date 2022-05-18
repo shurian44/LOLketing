@@ -14,5 +14,12 @@
     <color name="colorSandbox">#ad1c31</color>
     <color name="colorRolster">#221e1f</color>
     <color name="mainColor">#030608</color>
+
+    <color name="black">#17181D</color>
     <color name="white">#fff</color>
+    <color name="main_color">#6200EE</color>
+    <color name="sub_color">#03DAC5</color>
+    <color name="red">#e21e2f</color>
+    <color name="light_gray">#CCCCCC</color>
+    <color name="gray">#777777</color>
 </resources>

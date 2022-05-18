@@ -1,115 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.login.join.JoinActivity" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="15dp"
+        android:background="@color/black"
+        android:paddingHorizontal="30dp"
         tools:context=".view.login.join.JoinActivity">
 
         <ImageView
-            android:id="@+id/join_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:id="@+id/joinLogo"
+            android:layout_width="168dp"
+            android:layout_height="98dp"
             android:src="@drawable/lolketing_logo"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/join_id_layout"/>
+            app:layout_constraintBottom_toTopOf="@id/editJoinId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/join_id_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:hint="아이디"
-            app:boxStrokeColor="#3B3838"
-            app:helperText="아이디를 입력해주세요."
-            app:errorEnabled="true"
-            app:layout_constraintBottom_toTopOf="@id/join_pw_layout"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/join_logo"
-            app:layout_constraintVertical_bias="0.00999999">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/join_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/icon_id"
-                android:drawablePadding="10dp"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/join_pw_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="비밀번호"
-            app:boxStrokeColor="#3B3838"
-            app:helperText="비밀번호를 입력해주세요."
-            app:counterMaxLength="20"
-            app:counterEnabled="true"
-            app:errorEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintTop_toBottomOf="@id/join_id_layout"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/join_pw_ck_layout"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/join_pw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/icon_pw"
-                android:drawablePadding="10dp"
-                android:inputType="textPassword"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/join_pw_ck_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="비밀번호 확인"
-            app:boxStrokeColor="#3B3838"
-            app:helperText="비밀번호를 입력해주세요."
-            app:errorEnabled="true"
-            app:counterEnabled="true"
-            app:counterMaxLength="20"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintTop_toBottomOf="@id/join_pw_layout"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btn_join"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/join_pw_ck"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/icon_pw"
-                android:drawablePadding="10dp"
-                android:inputType="textPassword"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/btn_join"
+        <TextView
+            android:id="@+id/txtTip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_round_fill"
-            android:text="회원가입"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:textColor="@color/sub_color"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/editJoinId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="안내문구 나올 예정" />
+
+        <com.ezen.lolketing.view.custom.CustomEditTextView
+            android:id="@+id/editJoinId"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/ic_user"
+            android:drawablePadding="10dp"
+            android:hint="@string/hint_id"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@id/editJoinPw"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.ezen.lolketing.view.custom.CustomEditTextView
+            android:id="@+id/editJoinPw"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/ic_pw"
+            android:drawablePadding="10dp"
+            android:hint="@string/hint_pw"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@id/editJoinPwCheck"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.ezen.lolketing.view.custom.CustomEditTextView
+            android:id="@+id/editJoinPwCheck"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="81dp"
+            android:drawableStart="@drawable/ic_pw"
+            android:drawablePadding="10dp"
+            android:hint="@string/hint_pw_check"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toTopOf="@id/btnJoin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnJoin"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="90dp"
+            android:backgroundTint="@color/main_color"
+            android:onClick="@{activity::emailJoin}"
+            android:text="@string/join"
             android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:onClick="emailJoin"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:cornerRadius="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/join_pw_ck_layout"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
