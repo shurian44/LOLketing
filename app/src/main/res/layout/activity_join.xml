@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
-        android:paddingHorizontal="30dp"
+        android:paddingHorizontal="20dp"
         tools:context=".view.login.join.JoinActivity">
 
         <ImageView
@@ -43,7 +43,7 @@
         <com.ezen.lolketing.view.custom.CustomEditTextView
             android:id="@+id/editJoinId"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_user"
             android:drawablePadding="10dp"
@@ -56,7 +56,7 @@
         <com.ezen.lolketing.view.custom.CustomEditTextView
             android:id="@+id/editJoinPw"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_pw"
             android:drawablePadding="10dp"
@@ -69,8 +69,8 @@
         <com.ezen.lolketing.view.custom.CustomEditTextView
             android:id="@+id/editJoinPwCheck"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginBottom="81dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="151dp"
             android:drawableStart="@drawable/ic_pw"
             android:drawablePadding="10dp"
             android:hint="@string/hint_pw_check"
@@ -83,7 +83,7 @@
             android:id="@+id/btnJoin"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            android:layout_marginBottom="90dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/main_color"
             android:onClick="@{activity::emailJoin}"
             android:text="@string/join"

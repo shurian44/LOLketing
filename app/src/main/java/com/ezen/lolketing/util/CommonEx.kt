@@ -6,10 +6,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.text.Html
+import android.text.InputFilter
 import android.text.Spanned
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import java.util.*
 import kotlin.collections.ArrayList
@@ -46,6 +48,10 @@ fun Activity.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
+fun Fragment.toast(msg: String) {
+    requireActivity().toast(msg)
+}
+
 inline fun <reified T>listToArrayList(list : List<T>?) : ArrayList<T>{
     val arrayList : ArrayList<T> = arrayListOf()
     list?.toTypedArray()?.let {
@@ -76,4 +82,13 @@ fun getCurrentDateTime(): Date {
 fun densityDp(context: Context, size: Int) : Int {
     val dm = context.resources.displayMetrics
     return (size * dm.density).roundToInt()
+}
+
+fun setSpecialCharacterRestrictions() = InputFilter { source, _, _, _, _, _ ->
+    source.forEach {
+        if (!Character.isLetterOrDigit(it)) {
+            return@InputFilter ""
+        }
+    }
+    null
 }

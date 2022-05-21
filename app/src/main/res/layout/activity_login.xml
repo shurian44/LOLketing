@@ -30,7 +30,7 @@
         <com.ezen.lolketing.view.custom.CustomEditTextView
             android:id="@+id/loginId"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_user"
             android:hint="@string/hint_id"
@@ -42,7 +42,7 @@
         <com.ezen.lolketing.view.custom.CustomEditTextView
             android:id="@+id/loginPw"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:drawableStart="@drawable/ic_pw"
             android:hint="@string/hint_pw"

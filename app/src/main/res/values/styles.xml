@@ -8,6 +8,7 @@
         <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/colorPrimary</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:ignore="NewApi">@drawable/avd_anim</item>
         <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">500</item>
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
     </style>
 
     <style name="TapTheme" parent="Theme.Material3.DayNight.NoActionBar">
@@ -30,6 +31,24 @@
 
     <style name="OutLineEditText" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/white</item>
+    </style>
+
+    <style name="Transparent" parent="@style/MaterialAlertDialog.Material3">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+
+        <item name="android:background">@drawable/bg_top_round_20_black</item>
     </style>
 
 </resources>

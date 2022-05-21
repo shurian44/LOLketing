@@ -25,7 +25,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun getUserInfo(
-        email: String
+        email: String,
     ) = viewModelScope.launch {
         repository.getUserInfo(
             email= email,

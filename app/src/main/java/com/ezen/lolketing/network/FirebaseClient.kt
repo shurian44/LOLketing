@@ -189,10 +189,21 @@ class FirebaseClient @Inject constructor(
         null
     }
 
+    suspend fun basicAddData(
+        collection: String,
+        document: String,
+        data : Any
+    ) = try {
+        firestore.collection(collection).document(document).set(data).await()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
     suspend fun basicUpdateData(
         collection: String,
         documentId : String,
-        updateData : Map<String, Any>,
+        updateData : Map<String, Any?>,
         successListener : () -> Unit,
         failureListener : () -> Unit
     ) = try {

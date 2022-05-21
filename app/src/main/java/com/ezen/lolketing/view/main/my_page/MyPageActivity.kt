@@ -100,7 +100,7 @@ class MyPageActivity : BaseViewModelActivity<ActivityMyPageBinding, MyPageViewMo
             R.id.txt_grade_detail -> startActivity(MembershipActivity::class.java)
             R.id.btn_modify ->{
                 startActivity(createIntent(JoinDetailActivity::class.java).also {
-                    it.putExtra("modify", "modify")
+                    it.putExtra(JoinDetailActivity.MODIFY, true)
                 })
             }
         }

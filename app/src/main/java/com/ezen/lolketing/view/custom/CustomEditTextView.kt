@@ -1,8 +1,10 @@
 package com.ezen.lolketing.view.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import com.ezen.lolketing.R
 import com.ezen.lolketing.util.densityDp
@@ -26,7 +28,7 @@ class CustomEditTextView : TextInputEditText {
 
     private fun initView() {
         setBackgroundResource(R.drawable.bg_round_outline_3_gray)
-        setPadding(horizontalPadding(), 0, horizontalPadding(), 0)
+        setPadding(getPadding(), getPadding(), getPadding(), getPadding())
         setTextColor(ContextCompat.getColor(context, R.color.white))
         setHintTextColor(ContextCompat.getColor(context, R.color.gray))
         compoundDrawablePadding = densityDp(context, 16)
@@ -46,7 +48,7 @@ class CustomEditTextView : TextInputEditText {
         }
     }
 
-    private fun horizontalPadding() : Int =
+    private fun getPadding() : Int =
         densityDp(context, 12)
 
     fun setStateError(isError: Boolean) {
@@ -70,5 +72,25 @@ class CustomEditTextView : TextInputEditText {
     }
 
     fun getStateError() = stateError
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun setDrawableClickListener(drawablePosition: Int, listener: () -> Unit) {
+        setOnTouchListener { _, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                if (motionEvent.rawX >= (right - compoundDrawables[drawablePosition].bounds.width())) {
+                    listener()
+                    return@setOnTouchListener true
+                }
+            }
+            return@setOnTouchListener false
+        }
+    }
+
+    companion object {
+        const val DRAWABLE_LEFT = 0
+        const val DRAWABLE_TOP = 1
+        const val DRAWABLE_RIGHT = 2
+        const val DRAWABLE_BOTTOM = 3
+    }
 
 }

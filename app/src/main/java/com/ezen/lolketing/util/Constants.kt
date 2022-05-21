@@ -15,4 +15,5 @@ object Constants {
     const val PLATINUM = "플래티넘"
     const val MASTER = "마스터"
     const val URL = "url"
+    const val ADDRESS_API_BASE_URL = "https://www.juso.go.kr/"
 }

@@ -15,11 +15,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity
+            android:name=".view.login.join.AddressActivity"
+            android:exported="false" />
         <activity android:name=".view.main.my_page.MembershipActivity" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,9 +46,9 @@
         <activity
             android:name=".view.main.board.write.BoardWriteActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".view.gallery.GalleryActivity"/>
-        <activity android:name=".view.gallery.detail.GalleryDetailActivity"/>
-        <activity android:name=".view.main.board.BoardListActivity"/>
+        <activity android:name=".view.gallery.GalleryActivity" />
+        <activity android:name=".view.gallery.detail.GalleryDetailActivity" />
+        <activity android:name=".view.main.board.BoardListActivity" />
         <activity android:name=".view.main.board.detail.BoardDetailActivity" />
         <activity android:name=".view.main.shop.PurchaseActivity" />
         <activity android:name=".view.main.shop.ShopDetailActivity" />
