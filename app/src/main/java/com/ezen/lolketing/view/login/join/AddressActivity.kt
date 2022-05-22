@@ -50,10 +50,12 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
         }
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         activity = this@AddressActivity
 
         editAddress.setOnKeyListener { _, keyCode, keyEvent ->
+            // 엔터 키를 이용한 검색
             if (keyEvent.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
                 searchAddress()
                 return@setOnKeyListener false
@@ -61,10 +63,12 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
             false
         }
 
+        // 검색 아이콘을 이용한 검색
         editAddress.setDrawableClickListener(CustomEditTextView.DRAWABLE_RIGHT) {
             searchAddress()
         }
 
+        // 리사이클러뷰의 마지막까지 스크롤 했을 때 다음 페이지 조회
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -76,6 +80,7 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
 
     }
 
+    /** 새 주소 검색 및 UI 설정 **/
     private fun searchAddress() = with(binding) {
         editAddressDetail.isVisible = false
         viewLine.isVisible = true
@@ -92,6 +97,7 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
         viewModel.selectAddress(editAddress.text.toString(), true)
     }
 
+    /** 리사이클러뷰 셋팅 **/
     private fun setRecyclerView(list: List<SearchAddressResult>) = with(binding) {
         txtGuide.isVisible = false
         recyclerView.isVisible = true
@@ -101,6 +107,7 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
         }
     }
 
+    // 등록한 주소를 이전 화면(JoinDetailActivity)에 데이터 전달
     fun addressRegister(view: View) = with(binding) {
         if (editAddressDetail.isVisible.not()) {
             toast(getString(R.string.guide_input_address))
@@ -114,9 +121,11 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
                 "${editAddress.text.toString()}, ${editAddressDetail.text.toString()}"
             }
 
-        setResult(Activity.RESULT_OK, Intent().also {
-            it.putExtra(JoinDetailActivity.ADDRESS, address)
-        })
+        setResult(
+            Activity.RESULT_OK, Intent().also {
+                it.putExtra(JoinDetailActivity.ADDRESS, address)
+            }
+        )
         finish()
     }
 

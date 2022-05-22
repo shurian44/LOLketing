@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".view.login.find.FindIdPwActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.login.join.AddressActivity"
             android:exported="false" />
         <activity android:name=".view.main.my_page.MembershipActivity" />

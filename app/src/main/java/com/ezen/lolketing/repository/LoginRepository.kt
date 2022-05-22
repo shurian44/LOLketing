@@ -1,5 +1,6 @@
 package com.ezen.lolketing.repository
 
+import com.ezen.lolketing.model.Coupon
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
@@ -15,42 +16,66 @@ class LoginRepository @Inject constructor(
     suspend fun joinUser(
         email: String,
         pw: String,
-        successListener: () -> Unit,
+        successListener: (String?) -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         client.joinUser(
             email= email,
             pw= pw,
             successListener = successListener,
             failureListener = failureListener
         )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     suspend fun registerUser(
         email: String,
+        uid: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         client.registerUser(
             email = email,
+            uid = uid,
             successListener= successListener,
             failureListener = failureListener
         )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    suspend fun registerUser(
+        user: Users,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        client.registerUser(
+            user = user,
+            successListener= successListener,
+            failureListener = failureListener
+        )
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 
     suspend fun deleteUser(
         successListener: () -> Unit,
-    ) {
+    ) = try {
         client.deleteUser(
             successListener= successListener
         )
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 
     suspend fun getUserInfo(
         email: String,
         successListener: (JoinDetailViewModel.Event.UserInfo) -> Unit,
         failureListener: (String) -> Unit
-    ) {
+    ) = try {
         client.getBasicSnapshot(
             collection = Constants.USERS,
             document = email,
@@ -66,6 +91,9 @@ class LoginRepository @Inject constructor(
                 failureListener(email)
             }
         )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener(email)
     }
 
     suspend fun updateModifyUserInfo(
@@ -73,30 +101,23 @@ class LoginRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) {
-        val uid = user.uid
-        if (uid == null) {
-            failureListener()
-            return
-        }
+        try {
+            val uid = user.uid
+            if (uid == null) {
+                failureListener()
+                return
+            }
 
-        client.basicUpdateData(
-            collection = Constants.USERS,
-            documentId = uid,
-            updateData = mapOf("nickname" to user.nickname, "phone" to user.phone, "address" to user.address),
-            successListener = successListener,
-            failureListener = failureListener
-        )
-    }
-
-    suspend fun updateNewUserInfo(
-       user: Users,
-       successListener: () -> Unit,
-       failureListener: () -> Unit
-    ) {
-        val uid = user.uid
-        if (uid == null) {
+            client.basicUpdateData(
+                collection = Constants.USERS,
+                documentId = uid,
+                updateData = mapOf("nickname" to user.nickname, "phone" to user.phone, "address" to user.address),
+                successListener = successListener,
+                failureListener = failureListener
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
             failureListener()
-            return
         }
     }
 
@@ -107,12 +128,22 @@ class LoginRepository @Inject constructor(
             address = address
         )
 
-//            firestore.collection("Users").document(auth.currentUser?.email!!).get().addOnCompleteListener {
-//            user = it.result?.toObject(Users::class.java)!!
-//            editNickname.setText(user.nickname)
-//            editPhone.setText(user.phone)
-//            editAddress.setText(user.address)
-//            btnRegister.text = getString(R.string.modify)
-//        }
+    suspend fun setNewUserCoupon(
+        coupon: Coupon,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        client.basicAddData(
+            collection = Constants.COUPON,
+            data = coupon,
+            successListener = {
+                successListener()
+            },
+            failureListener = failureListener
+        )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
 
 }

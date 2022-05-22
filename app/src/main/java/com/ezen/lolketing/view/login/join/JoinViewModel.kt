@@ -4,15 +4,18 @@ import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.repository.LoginRepository
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class JoinViewModel @Inject constructor(
-    private val repository: LoginRepository
+    private val repository: LoginRepository,
+    private val auth : FirebaseAuth
 ) : BaseViewModel<JoinViewModel.Event>() {
 
+    /** 이메일 회원가입 **/
     fun joinUser(
         email: String,
         pw: String
@@ -21,7 +24,12 @@ class JoinViewModel @Inject constructor(
             email= email,
             pw= pw,
             successListener = {
-                registerUser(email)
+                if (it == null) {
+                    auth.signOut()
+                    error(JOIN_FAILURE)
+                } else {
+                    registerUser(email, it)
+                }
             },
             failureListener = {
                 error(ALREADY_JOIN)
@@ -29,11 +37,14 @@ class JoinViewModel @Inject constructor(
         )
     }
 
+    /** 유저 등록 **/
     private fun registerUser(
-        email: String
+        email: String,
+        uid: String
     ) = viewModelScope.launch {
         repository.registerUser(
             email = email,
+            uid = uid,
             successListener = {
                 event(Event.Success)
             },
@@ -44,8 +55,11 @@ class JoinViewModel @Inject constructor(
         )
     }
 
+    /** 유저 삭제 **/
     private fun deleteUser() = viewModelScope.launch {
-        repository.deleteUser {}
+        repository.deleteUser {
+            auth.signOut()
+        }
     }
 
     private fun error(msg: Int) {

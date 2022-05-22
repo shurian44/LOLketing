@@ -24,7 +24,14 @@
     <string name="already_join">회원가입된 아이디입니다.</string>
     <string name="join_failure">회원가입에 실패하였습니다.</string>
     <string name="join_success">회원가입 완료</string>
+    <string name="user_register_success">유저 등록을 성공하였습니다.</string>
+    <string name="user_register_failure">유저 등록을 실패하였습니다.</string>
     <string name="guide_input_check">입력한 내용을 확인해주세요</string>
+
+    <!-- 아이디/비밀번호 찾기 -->
+    <string name="find">찾기</string>
+    <string name="error_not_found_id">가입되지 않은 아이디입니다.</string>
+    <string name="guide_resent_password">이메일로 비밀번호 재설정 메일을 전송하였습니다.</string>
 
     <!-- 회원가입 상세 -->
     <string name="register">등록</string>
@@ -47,6 +54,7 @@
     <!-- 공통 -->
     <string name="cancel">취소</string>
     <string name="ok">확인</string>
+    <string name="error_unexpected">오류가 발생하였습니다. 잠시후 다시 이용바랍니다.</string>
 
     <string name="like_counts">좋아요 %d</string>
     <string name="board_views">조회수 %d</string>

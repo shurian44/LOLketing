@@ -61,15 +61,17 @@ class BoardRepository @Inject constructor(
         successListener : () -> Unit,
         errorListener : () -> Unit
     ) = try {
-        client.basicAddData(Constants.BOARD, data)?.addSnapshotListener { value, error ->
-            error?.let {
-                throw Exception(it)
-            }
-            value?.let {
-                successListener()
-                // DocumentSnapshot{key=Board/Lq9cjEfT5aTbHWFuwiS1, metadata=SnapshotMetadata{hasPendingWrites=false, isFromCache=true}, doc=Document{key=Board/Lq9cjEfT5aTbHWFuwiS1, version=SnapshotVersion(seconds=1652515866, nanos=339083000), readTime=SnapshotVersion(seconds=1652515866, nanos=339083000), type=FOUND_DOCUMENT, documentState=HAS_COMMITTED_MUTATIONS, value=ObjectValue{internalValue={commentCounts:0,content:ㅎㅎ,documentId:null,email:test@test.com,image:null,like:{},likeCounts:0,subject:[게시판],team:T1,timestamp:1652515865469,title:ㄱㄱ,userId:알렌,views:0}}}}
-            }
-        } ?: throw Exception("업로드 과정 중 오류가 발생하였습니다.")
+        client
+            .basicAddData(
+                collection = Constants.BOARD,
+                data = data,
+                successListener = {
+                    successListener()
+                },
+                failureListener = {
+                    errorListener()
+                }
+            )
     } catch (e: Exception) {
         e.printStackTrace()
         errorListener()

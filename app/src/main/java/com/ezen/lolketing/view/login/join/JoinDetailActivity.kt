@@ -25,16 +25,13 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
 
     override val viewModel: JoinDetailViewModel by viewModels()
     @Inject lateinit var firestore : FirebaseFirestore
+    @Inject lateinit var auth : FirebaseAuth
+    val coupon = Coupon()
 
-    private var auth = FirebaseAuth.getInstance()
     private var isModify = false
-    private var user = Users()
-    private lateinit var id : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        id = auth.currentUser?.email!!
 
         repeatOnStarted {
             viewModel.eventFlow.collect { event -> eventHandler(event) }
@@ -106,38 +103,59 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
             is JoinDetailViewModel.Event.UpdateFailure -> {
                 toast(getString(R.string.error_update))
             }
+            is JoinDetailViewModel.Event.CouponIssuanceSuccess -> {
+                viewModel.setNewUserCoupon(coupon)
+            }
+            is JoinDetailViewModel.Event.CouponIssuanceFailure -> {
+                toast(getString(R.string.user_register_failure))
+            }
+            is JoinDetailViewModel.Event.JoinDetailSuccess -> {
+                toast(getString(R.string.user_register_success))
+            }
+            is JoinDetailViewModel.Event.JoinDetailFailure -> {
+                toast(getString(R.string.user_register_failure))
+            }
         }
     }
 
     // 등록하기 버튼 클릭
     fun setUser(view: View) {
-        user.id = id
-        user.uid = auth.currentUser?.uid
-        user.address = binding.editAddress.text.toString()
-        user.nickname = binding.editNickname.text.toString()
-        user.phone = binding.editPhone.text.toString()
-        user.grade = Constants.BRONZE
+        val id = auth.currentUser?.email
+        if (id == null) {
+            toast(getString(R.string.user_register_failure))
+            return
+        }
+
+        val user = Users().apply {
+            this.id = id
+            uid = auth.currentUser?.uid
+            address = binding.editAddress.text.toString()
+            nickname = binding.editNickname.text.toString()
+            phone = binding.editPhone.text.toString()
+            grade = Constants.BRONZE
+        }
 
         // 회원가입 상세의 경우
         if(isModify.not()){
             // 등급을 브론즈로 설정
             // 신규 가입 쿠폰 지급
-            val newUserCoupon = Coupon()
-            newUserCoupon.id = id
-            newUserCoupon.title = "신규 가입 쿠폰"
-            newUserCoupon.limit = "2222.01.01"
-            firestore.collection("Coupon").document().set(newUserCoupon)
+            coupon.apply {
+                this.id = id
+                title = Code.NEW_USER_COUPON.code
+                use = Code.NOT_USE.code
+                limit = getCouponValidityPeriod()
+            }
+            viewModel.updateNewUserInfo(user)
         } else {
             viewModel.updateModifyUserInfo()
         }
-
-        // 유저 정보 수정
-        firestore.collection("Users").document(id).set(user).addOnCompleteListener {
-            if(it.isComplete){
-                finish()
-            }
-        }
     } // setUser()
+
+    // 쿠폰 유효기간 계산 : 60일
+    private fun getCouponValidityPeriod() : String {
+        val lateDay60 = System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 60L)
+        return lateDay60.timestampToString()
+    }
 
     fun moveAddressSearch(view: View) {
         launcher.launch(createIntent(AddressActivity::class.java))

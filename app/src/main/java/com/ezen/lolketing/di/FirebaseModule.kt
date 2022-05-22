@@ -34,14 +34,4 @@ class FirebaseModule {
     fun provideFirebaseFirestore() : FirebaseFirestore =
         Firebase.firestore
 
-
-//    @Provides
-//    @Singleton
-//    fun provideOkHttpClient() : OkHttpClient =
-//        OkHttpClient.Builder()
-//            .readTimeout(10, TimeUnit.SECONDS)
-//            .connectTimeout(10, TimeUnit.SECONDS)
-//            .writeTimeout(15, TimeUnit.SECONDS)
-//            .addInterceptor(getLoggingInterceptor())
-//            .build()
 }

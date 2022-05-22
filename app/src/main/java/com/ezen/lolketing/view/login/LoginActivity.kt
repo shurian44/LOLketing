@@ -14,6 +14,7 @@ import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.login.find.FindIdPwActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -32,7 +33,6 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
     override val viewModel: LoginViewModel by viewModels()
     @Inject lateinit var auth : FirebaseAuth
     private lateinit var googleSignInClient : GoogleSignInClient
-    private var firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +57,12 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
 
     } // onCreate()
 
-    // 회원가입 버튼 클릭 : 회원가입 페이지로 이동
+    /** 회원가입 버튼 클릭 : 회원가입 페이지로 이동 **/
     fun createUser(view: View) {
         startActivity(JoinActivity::class.java)
     } // createUser()
 
-    // 이메일 로그인 버튼 클릭
+    /** 이메일 로그인 버튼 클릭 **/
     fun emailLogin(view: View) = with(binding) {
         val id = loginId.text.toString()
         val pw = loginPw.text.toString()
@@ -84,46 +84,36 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
             }
     } // emailLogin()
 
-    // 구글 로그인 버튼 클릭
+    /** 구글 로그인 버튼 클릭 **/
     fun googleLogin(view: View) {
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
     } // googleLogin()
 
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnSuccessListener {
-                val email = auth.currentUser?.email
-                if (email.isNullOrEmpty()) {
-                    toast(getString(R.string.guide_google_login_fail))
-                    return@addOnSuccessListener
-                }
-                viewModel.getUserInfo(email)
-
-            }
-            .addOnFailureListener {
-                toast(getString(R.string.guide_google_login_fail))
-            }
-    } // firebaseAuthWithGoogle()
-
-    // 메인 페이지로 이동
+    /** 메인 페이지로 이동 **/
     private fun moveMain(){
         startActivity(MainActivity::class.java)
         finish()
     } // moveMain()
+
+    /** Id/Pw 찾기 페이지로 이동 **/
+    fun moveFind(view: View) {
+        startActivity(FindIdPwActivity::class.java)
+    }
 
     private fun eventHandler(event : LoginViewModel.Event) {
         when(event) {
             is LoginViewModel.Event.UserInfoSuccess -> {
                 moveMain()
             }
+            // 구글 로그인 했을 때 유저 정보가 없으면 신규 가입으로 보고 가입 절차 진행
             is LoginViewModel.Event.UserInfoFailure -> {
                 viewModel.registerUser(event.email)
             }
             is LoginViewModel.Event.RegisterSuccess -> {
                 moveMain()
             }
+            // 구글 로그인 성공 후 등록 과정 중 문제가 발생했을 경우 대비
             is LoginViewModel.Event.RegisterFailure -> {
                 viewModel.deleteUser()
             }
@@ -142,5 +132,22 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
             }
         }
     }
+
+    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnSuccessListener {
+                val email = auth.currentUser?.email
+                if (email.isNullOrEmpty()) {
+                    toast(getString(R.string.guide_google_login_fail))
+                    return@addOnSuccessListener
+                }
+                viewModel.getUserInfo(email)
+
+            }
+            .addOnFailureListener {
+                toast(getString(R.string.guide_google_login_fail))
+            }
+    } // firebaseAuthWithGoogle()
 
 }

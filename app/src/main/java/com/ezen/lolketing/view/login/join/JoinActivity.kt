@@ -33,10 +33,12 @@ class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R
         initViews()
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         activity = this@JoinActivity
 
         editJoinId.addTextChangedListener {
+            // 입력한 내용이 비어있는지 이메일 형식이 맞는지 체크
             val status = editJoinId.text.isNullOrEmpty() ||
                     !android.util.Patterns.EMAIL_ADDRESS.matcher(editJoinId.text.toString()).matches()
 
@@ -45,6 +47,7 @@ class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R
         }
 
         editJoinPw.addTextChangedListener {
+            // 영문, 숫자, 특수 문자가 모두 포함하여 6~20자가 맞는지 체크
             val pattern = "\\w+"
             val pw: String = binding.editJoinPw.text.toString()
             val status = Pattern.matches(pattern, pw) || pw.length !in 6..20
@@ -54,6 +57,7 @@ class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R
         }
 
         editJoinPwCheck.addTextChangedListener {
+            // 비밀번호와 비밀번호 확인이 일치하는지 체크
             val status = editJoinPw.text.toString() != editJoinPwCheck.text.toString()
 
             editJoinPwCheck.setStateError(status)
@@ -61,6 +65,7 @@ class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R
         }
     }
 
+    /** EditText 정보 입력 시의 팁 표시 **/
     private fun setTip(msg: String) {
         binding.txtTip.text = msg
     }
@@ -81,6 +86,7 @@ class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R
         }
     }
 
+    /** 이메일 회원가입 **/
     fun emailJoin(view: View) = with(binding) {
         val email = editJoinId.text.toString()
         val pw = editJoinPw.text.toString()

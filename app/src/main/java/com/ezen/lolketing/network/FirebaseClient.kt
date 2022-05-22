@@ -3,10 +3,7 @@ package com.ezen.lolketing.network
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.util.Constants
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -22,12 +19,41 @@ class FirebaseClient @Inject constructor(
     suspend fun joinUser(
         email: String,
         pw: String,
-        successListener: () -> Unit,
+        successListener: (String?) -> Unit,
         failureListener: () -> Unit
     ) {
         try {
             auth
                 .createUserWithEmailAndPassword(email, pw)
+                .addOnSuccessListener {
+                    successListener(it.user?.uid)
+                }
+                .addOnFailureListener {
+                    failureListener()
+                }
+                .await()
+        } catch (e: Exception) {
+            failureListener()
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun registerUser(
+        email: String,
+        uid: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+        try {
+            val user = Users().apply {
+                id = email
+                this.uid = uid
+            }
+
+            firestore
+                .collection(Constants.USERS)
+                .document(email)
+                .set(user)
                 .addOnSuccessListener {
                     successListener()
                 }
@@ -42,18 +68,20 @@ class FirebaseClient @Inject constructor(
     }
 
     suspend fun registerUser(
-        email: String,
+        user: Users,
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) {
         try {
-            val user = Users().apply {
-                id = email
+            val id = user.id
+            if (id == null) {
+                failureListener()
+                return
             }
 
             firestore
                 .collection(Constants.USERS)
-                .document(email)
+                .document(id)
                 .set(user)
                 .addOnSuccessListener {
                     successListener()
@@ -181,9 +209,21 @@ class FirebaseClient @Inject constructor(
 
     suspend fun basicAddData(
         collection: String,
-        data : Any
+        data : Any,
+        successListener: ((DocumentReference) -> Unit)?= null,
+        failureListener: (() -> Unit)?= null
     ) = try {
-        firestore.collection(collection).add(data).await()
+        firestore
+            .collection(collection)
+            .add(data)
+            .addOnSuccessListener {
+                successListener?.invoke(it)
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener?.invoke()
+            }
+            .await()
     } catch (e: Exception) {
         e.printStackTrace()
         null
@@ -192,9 +232,22 @@ class FirebaseClient @Inject constructor(
     suspend fun basicAddData(
         collection: String,
         document: String,
-        data : Any
+        data : Any,
+        successListener: (() -> Unit)?= null,
+        failureListener: (() -> Unit)?= null
     ) = try {
-        firestore.collection(collection).document(document).set(data).await()
+        firestore
+            .collection(collection)
+            .document(document)
+            .set(data)
+            .addOnSuccessListener {
+                successListener?.invoke()
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener?.invoke()
+            }
+            .await()
     } catch (e: Exception) {
         e.printStackTrace()
         null

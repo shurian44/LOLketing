@@ -5,4 +5,5 @@ enum class Code(val code: String, val codeName: String) {
     ROULETTE_COUPON("COUPON002", "룰렛 쿠폰"),
     NOT_USE("STATUS001", "사용 안함"),
     USES("STATUS002", "사용함"),
+    EXPIRY("STATUS003", "기간만료")
 }

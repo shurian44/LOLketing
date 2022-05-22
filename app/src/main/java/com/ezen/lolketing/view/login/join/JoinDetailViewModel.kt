@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
+import com.ezen.lolketing.model.Coupon
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,8 +58,28 @@ class JoinDetailViewModel @Inject constructor(
         }
     }
 
-    fun setNewUserCoupon() = viewModelScope.launch {
+    fun updateNewUserInfo(users: Users) = viewModelScope.launch {
+        repository.registerUser(
+            user = users,
+            successListener = {
+                event(Event.JoinDetailSuccess)
+            },
+            failureListener = {
+                event(Event.JoinDetailFailure)
+            }
+        )
+    }
 
+    fun setNewUserCoupon(coupon: Coupon) = viewModelScope.launch {
+        repository.setNewUserCoupon(
+            coupon = coupon,
+            successListener = {
+                event(Event.CouponIssuanceSuccess)
+            },
+            failureListener = {
+                event(Event.CouponIssuanceFailure)
+            }
+        )
     }
 
     sealed class Event {
@@ -66,6 +87,10 @@ class JoinDetailViewModel @Inject constructor(
         object UserInfoLoadError : Event()
         object UpdateSuccess : Event()
         object UpdateFailure : Event()
+        object JoinDetailSuccess: Event()
+        object JoinDetailFailure: Event()
+        object CouponIssuanceSuccess: Event()
+        object CouponIssuanceFailure: Event()
         data class UserInfo(
             var nickname : String ?= null,
             var phone : String ?= null,
