@@ -32,7 +32,6 @@ class EventDetailActivity : BaseViewModelActivity<ActivityEventDetailBinding, Ev
     override val viewModel: EventDetailViewModel by viewModels()
     @Inject lateinit var auth : FirebaseAuth
     private var coupon = Coupon()
-    private var documentID = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +47,15 @@ class EventDetailActivity : BaseViewModelActivity<ActivityEventDetailBinding, Ev
         val page = intent.getIntExtra("page", 1)
         // 신규 회원가입 페이지의 경우
         if(page == 1) {
+            title = getString(R.string.event_title_new_user)
             setNewUserPage()
         }
 
         // 티켓 구매 이벤트 안내 페이지 일 경우
         if(page == 2){
+            title = getString(R.string.event_title_ticket_reserve)
             imgMain.setImageResource(R.drawable.banner2)
-            eventTxt1.text = getString(R.string.event_ticket_purchase).htmlFormat()
+            txtEvent.text = getString(R.string.event_ticket_purchase).htmlFormat()
             btnCoupon.isVisible = false
         }
     }
@@ -68,7 +69,7 @@ class EventDetailActivity : BaseViewModelActivity<ActivityEventDetailBinding, Ev
     private fun eventHandler(event: EventDetailViewModel.Event) {
         when(event) {
             is EventDetailViewModel.Event.UserNickname -> {
-                binding.eventTxt1.text = getString(R.string.event_new_user, event.nickname).htmlFormat()
+                binding.txtEvent.text = getString(R.string.event_new_user, event.nickname).htmlFormat()
             }
             is EventDetailViewModel.Event.CouponList -> {
                 Log.e("+++++", "${event.list}")
@@ -83,17 +84,6 @@ class EventDetailActivity : BaseViewModelActivity<ActivityEventDetailBinding, Ev
                 toast(event.msg)
             }
         }
-    }
-
-    override fun logout(view: View) {
-        auth.signOut()
-        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        finish()
-    }
-
-    override fun moveHome(view: View) {
-        startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        finish()
     }
 
     companion object {

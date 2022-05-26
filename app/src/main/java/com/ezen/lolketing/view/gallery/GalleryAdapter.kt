@@ -1,5 +1,6 @@
 package com.ezen.lolketing.view.gallery
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -36,6 +37,7 @@ class GalleryAdapter(
                 }
             }
 
+            Log.e("+++++", galleryItem.contentUri.path!!)
             setGlide(imageView, galleryItem.contentUri)
         }
     }

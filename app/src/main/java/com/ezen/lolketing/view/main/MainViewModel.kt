@@ -27,7 +27,7 @@ class MainViewModel @Inject constructor(
         event(
             MainEvent.CheckDetailJoin(
                 isNotJoinComplete = userInfo.nickname.isNullOrBlank(),
-                isMaster = userInfo.grade ?: "" == "마스터"
+                isMaster = (userInfo.grade ?: "") == Constants.MASTER
             )
         )
     }
@@ -37,7 +37,6 @@ class MainViewModel @Inject constructor(
         val images = listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
 
         event(MainEvent.EventBannerList(images))
-
     }
 
     override fun event(event: MainEvent) = viewModelScope.launch {

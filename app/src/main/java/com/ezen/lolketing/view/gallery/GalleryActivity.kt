@@ -63,9 +63,9 @@ class GalleryActivity : BaseViewModelActivity<ActivityGalleryBinding, GalleryVie
     private fun initViews() = with(binding) {
         recyclerView.adapter = GalleryAdapter(
             itemClickListener = {
-                launch.launch(createIntent(GalleryActivity::class.java).also {
-                    it.putExtra(Constants.POSITION, it)
-                    it.putExtra(Constants.SELECT_IMAGE_LIST, getSelectArrayList())
+                launch.launch(createIntent(GalleryDetailActivity::class.java).also {
+//                    it.putExtra(Constants.POSITION, it)
+//                    it.putExtra(Constants.SELECT_IMAGE_LIST, getSelectArrayList())
                 })
             },
             itemCountListener = {

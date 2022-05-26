@@ -1,5 +1,6 @@
 package com.ezen.lolketing.view.dialog
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,8 @@ class TeamSelectDialog(private val listener : (String) -> Unit) : DialogFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 다이얼로그 배경 투명화
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
         binding.dialog = this
 
     }
@@ -27,6 +30,10 @@ class TeamSelectDialog(private val listener : (String) -> Unit) : DialogFragment
 
     fun onClick(team : String) {
         listener(team)
+        dismiss()
+    }
+
+    fun onCancel(view: View) {
         dismiss()
     }
 

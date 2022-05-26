@@ -29,22 +29,30 @@ class EventListActivity : BaseActivity<ActivityEventListBinding>(R.layout.activi
 
     private fun initViews() = with(binding) {
         activity = this@EventListActivity
+        title = getString(R.string.event)
 
-        // 신규 회원 이벤트 페이지
-        binding.eventCard1.setOnClickListener {
-            startActivity(createIntent(EventDetailActivity::class.java).also {
-                it.putExtra(EventDetailActivity.PAGE, 1)
-            })
-        }
-        // 티켓 구입 이벤트 안내 페이지
-        binding.eventCard2.setOnClickListener{
-            startActivity(createIntent(EventDetailActivity::class.java).also {
-                it.putExtra(EventDetailActivity.PAGE, 2)
-            })
-        }
-        // 룰렛 이벤트 페이지
-        binding.eventCard3.setOnClickListener{
-            startActivity(RouletteActivity::class.java)
+        layoutTop.btnBack.setOnClickListener { onBackClick(it) }
+
+    }
+
+    fun moveActivity(view: View) = with(binding) {
+        when(view.id) {
+            cardEvent1.id -> {
+                // 신규 회원 이벤트 페이지
+                startActivity(createIntent(EventDetailActivity::class.java).also {
+                    it.putExtra(EventDetailActivity.PAGE, 1)
+                })
+            }
+            cardEvent2.id -> {
+                // 티켓 구입 이벤트 안내 페이지
+                startActivity(createIntent(EventDetailActivity::class.java).also {
+                    it.putExtra(EventDetailActivity.PAGE, 2)
+                })
+            }
+            cardEvent3.id -> {
+                // 룰렛 이벤트 페이지
+                startActivity(RouletteActivity::class.java)
+            }
         }
     }
 

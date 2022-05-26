@@ -54,16 +54,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
     private fun initViews() {
         viewModel.getUserInfo()
         viewModel.getEventBannerList()
-
-        binding.btnBoard.setOnClickListener {
-            TeamSelectDialog{ team ->
-                startActivity(
-                    Intent(this, BoardListActivity::class.java).also { intent ->
-                        intent.putExtra(Constants.TEAM, team)
-                    }
-                )
-            }.show(supportFragmentManager, "")
-        }
+        binding.activity = this
     }
 
     /** 이벤트 핸들러 **/
@@ -93,7 +84,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
     }
 
     /** 이벤트 베너 등록 **/
-    private fun eventSlide(list : List<Int>) = with(binding.imgAd) {
+    private fun eventSlide(list : List<Int>) = with(binding.viewPagerAd) {
         // AUTO Slider
         setSliderAdapter(EventSliderAdapter(list))
         setIndicatorAnimation(IndicatorAnimations.WORM)
@@ -106,16 +97,25 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
     }
 
     /** 각 버튼별 페이지 이동 **/
-    fun moveActivity(view: View) {
+    fun moveActivity(view: View) = with(binding) {
         when(view.id){
-            R.id.btn_event -> startActivity(EventListActivity::class.java)
-            R.id.btn_myPage -> startActivity(MyPageActivity::class.java)
-            R.id.btn_info -> startActivity(LeagueInfoActivity::class.java)
-            R.id.btn_reserve -> startActivity(ReserveListActivity::class.java)
-            R.id.btn_shop -> startActivity(ShopActivity::class.java)
-            R.id.btn_guid -> startActivity(LoLGuideActivity::class.java)
-            R.id.btn_news -> startActivity(NewsActivity::class.java)
-            R.id.btn_chatting -> startActivity(ChattingListActivity::class.java)
+            btnEvent.id, txtEvent.id -> startActivity(EventListActivity::class.java)
+            btnMyPage.id, txtMyPage.id -> startActivity(MyPageActivity::class.java)
+            btnInfo.id, txtInfo.id -> startActivity(LeagueInfoActivity::class.java)
+            btnReserve.id, txtReserve.id -> startActivity(ReserveListActivity::class.java)
+            btnShop.id, txtShop.id -> startActivity(ShopActivity::class.java)
+            btnGuid.id, txtGuid.id -> startActivity(LoLGuideActivity::class.java)
+            btnNews.id, txtNews.id -> startActivity(NewsActivity::class.java)
+            btnChatting.id, txtChatting.id -> startActivity(ChattingListActivity::class.java)
+            btnBoard.id, txtBoard.id -> {
+                TeamSelectDialog{ team ->
+                    startActivity(
+                        createIntent(BoardListActivity::class.java).also { intent ->
+                            intent.putExtra(Constants.TEAM, team)
+                        }
+                    )
+                }.show(supportFragmentManager, "")
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 package com.ezen.lolketing.view.custom
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.Checkable

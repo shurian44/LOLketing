@@ -51,10 +51,28 @@
     <string name="error_update">업데이트에 실패하였습니다.</string>
     <string name="accept_terms">이용약관 동의</string>
 
+    <!-- 홈 -->
+    <string name="select_board">구단 선택</string>
+
+    <!-- 이벤트 -->
+    <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>
+    <string name="event_title_new_user">[이벤트] 신규 회원 이벤트</string>
+    <string name="event_title_ticket_reserve">[이벤트] 티켓 구입 이벤트</string>
+    <string name="event_title_roulette">[이벤트] 룰렛 이벤트</string>
+
     <!-- 공통 -->
     <string name="cancel">취소</string>
     <string name="ok">확인</string>
     <string name="error_unexpected">오류가 발생하였습니다. 잠시후 다시 이용바랍니다.</string>
+    <string name="board">게시판</string>
+    <string name="event">이벤트</string>
+    <string name="my_page">내 정보</string>
+    <string name="league_info">리그 정보</string>
+    <string name="ticket_reserve">티켓 예매</string>
+    <string name="shopping">쇼핑</string>
+    <string name="lol_guide">롤알못</string>
+    <string name="news">뉴스</string>
+    <string name="chatting">채팅</string>
 
     <string name="like_counts">좋아요 %d</string>
     <string name="board_views">조회수 %d</string>

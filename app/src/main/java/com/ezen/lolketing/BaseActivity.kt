@@ -28,4 +28,8 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
     open fun moveHome(view: View){}
 
+    open fun onBackClick(view: View){
+        finish()
+    }
+
 }

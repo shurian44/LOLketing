@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomEventCardView">
+        <attr name="eventImage" format="reference"/>
+        <attr name="eventTitle" format="string"/>
+        <attr name="eventPeriod" format="string"/>
+    </declare-styleable>
+</resources>
