@@ -13,6 +13,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import okhttp3.internal.format
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
@@ -75,8 +77,12 @@ fun String.htmlFormat() : Spanned =
         Html.fromHtml(this)
     }
 
-fun getCurrentDateTime(): Date {
-    return Calendar.getInstance().time
+fun getCurrentDateTime(): Date =
+    Calendar.getInstance().time
+
+fun getSimpleDateFormatMillSec(date: String, format : String = "yyyy.MM.dd HH:mm") : Long? {
+    val timeFormat = SimpleDateFormat(format, Locale.KOREA)
+    return timeFormat.parse(date)?.time
 }
 
 fun densityDp(context: Context, size: Int) : Int {

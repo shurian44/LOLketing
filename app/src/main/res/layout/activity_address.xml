@@ -23,7 +23,7 @@
             android:background="@drawable/ic_back"
             android:layout_marginTop="16dp"
             android:layout_marginStart="20dp"
-            android:onClick="@{activity::backClick}"
+            android:onClick="@{activity::onBackClick}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 

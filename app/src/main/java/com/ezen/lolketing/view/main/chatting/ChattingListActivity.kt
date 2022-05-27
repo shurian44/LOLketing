@@ -3,23 +3,20 @@ package com.ezen.lolketing.view.main.chatting
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityChattinglistBinding
-import com.ezen.lolketing.model.GameDTO
+import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -93,7 +90,7 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
         }
     }
 
-    private fun setGameData(list: List<GameDTO>) = with(binding) {
+    private fun setGameData(list: List<Game>) = with(binding) {
         isNoGame = true
         if (list.isEmpty()) return@with
 

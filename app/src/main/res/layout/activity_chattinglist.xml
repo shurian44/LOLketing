@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="130dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/img_reserve"
+            android:src="@drawable/img_ticketing"
             android:scaleType="fitXY"
             app:layout_constraintTop_toBottomOf="@id/main_logo"
             app:layout_constraintStart_toStartOf="parent"

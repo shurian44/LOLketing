@@ -10,17 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.ezen.lolketing.R;
-import com.ezen.lolketing.model.GameDTO;
+import com.ezen.lolketing.model.Game;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import java.util.ArrayList;
+public class ScheduleAdapter extends FirestoreRecyclerAdapter<Game, ScheduleAdapter.ScheduleHolder> {
 
-public class ScheduleAdapter extends FirestoreRecyclerAdapter<GameDTO, ScheduleAdapter.ScheduleHolder> {
-
-    public ScheduleAdapter(@NonNull FirestoreRecyclerOptions<GameDTO> options) {
+    public ScheduleAdapter(@NonNull FirestoreRecyclerOptions<Game> options) {
         super(options);
     }
 
@@ -34,7 +31,7 @@ public class ScheduleAdapter extends FirestoreRecyclerAdapter<GameDTO, ScheduleA
 
     @Override
     protected void onBindViewHolder(@NonNull final ScheduleHolder holder, final int position,
-                                    @NonNull final GameDTO gameDTO) {
+                                    @NonNull final Game gameDTO) {
 
         holder.textViewDate.setText(gameDTO.getDate());
         holder.textViewTime.setText(gameDTO.getTime());

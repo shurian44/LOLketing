@@ -15,6 +15,7 @@
     <color name="colorRolster">#221e1f</color>
     <color name="mainColor">#030608</color>
 
+    <color name="light_black">#3E3F44</color>
     <color name="black">#17181D</color>
     <color name="white">#fff</color>
     <color name="main_color">#6200EE</color>
@@ -22,4 +23,6 @@
     <color name="red">#e21e2f</color>
     <color name="light_gray">#CCCCCC</color>
     <color name="gray">#777777</color>
+    <color name="orange">#FD9A71</color>
+    <color name="yellow">#F7DA6E</color>
 </resources>

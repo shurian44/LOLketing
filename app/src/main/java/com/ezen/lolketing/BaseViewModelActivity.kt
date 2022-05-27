@@ -30,7 +30,7 @@ abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
 
     open fun moveHome(view: View){}
 
-    open fun backClick(view: View) {
+    open fun onBackClick(view: View) {
         finish()
     }
 

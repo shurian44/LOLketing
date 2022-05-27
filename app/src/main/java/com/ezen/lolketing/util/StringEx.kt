@@ -1,12 +1,11 @@
 package com.ezen.lolketing.util
 
-import android.annotation.SuppressLint
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.*
 
-@SuppressLint("SimpleDateFormat")
 fun Long.timestampToString(format: String = "yyyy-MM-dd HH:mm") : String {
-    val timeFormat = SimpleDateFormat(format)
+    val timeFormat = SimpleDateFormat(format, Locale.KOREA)
     return timeFormat.format(this)
 }
 

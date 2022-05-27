@@ -1,84 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/solid"
-        android:padding="2dp">
-
-        <View
-            android:id="@+id/reserve_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginRight="25dp"
-            android:background="#1c8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/left_team"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="70dp"
+        android:background="@color/black">
 
         <TextView
-            android:id="@+id/reserve_status"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:text="예약"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@id/reserve_view"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/left_team"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/logo_t1"
-            app:layout_constraintBottom_toBottomOf="@id/middle"
-            app:layout_constraintRight_toLeftOf="@id/middle"
-            app:layout_constraintTop_toTopOf="@id/middle" />
-
-        <TextView
-            android:id="@+id/middle"
-            android:layout_width="48dp"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:text="vs"
-            android:textColor="#f00"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/right_team"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/icon_sandbox"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/middle"
-            app:layout_constraintTop_toTopOf="@id/middle" />
-
-        <TextView
-            android:id="@+id/reserve_text"
+            android:id="@+id/txtTicketingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2020.02.12\n17:00"
+            tools:text="2020.02.12\n17:00"
             android:textAlignment="center"
-            android:textColor="#000"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/white"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/middle"
-            app:layout_constraintLeft_toRightOf="@id/right_team"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/middle" />
+            app:layout_constraintBottom_toBottomOf="@id/txtMiddle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txtMiddle" />
+
+        <ImageView
+            android:id="@+id/imgTeam1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="25dp"
+            android:src="@drawable/logo_t1"
+            app:layout_constraintBottom_toBottomOf="@id/txtMiddle"
+            app:layout_constraintEnd_toStartOf="@id/txtMiddle"
+            app:layout_constraintTop_toTopOf="@id/txtMiddle" />
+
+        <TextView
+            android:id="@+id/txtMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/versus"
+            android:textColor="#B3B3B3"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imgTeam2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="25dp"
+            android:src="@drawable/icon_sandbox"
+            app:layout_constraintBottom_toBottomOf="@id/txtMiddle"
+            app:layout_constraintStart_toEndOf="@id/txtMiddle"
+            app:layout_constraintTop_toTopOf="@id/txtMiddle" />
+
+        <TextView
+            android:id="@+id/txtTicketingStatus"
+            android:layout_width="70dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/ticketing_on"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@color/sub_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

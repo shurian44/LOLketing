@@ -12,7 +12,7 @@ import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityManagerBinding
-import com.ezen.lolketing.model.GameDTO
+import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.model.TeamDTO
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.shop.ShopEventActivity
@@ -119,7 +119,7 @@ class ManagerActivity : BaseActivity<ActivityManagerBinding>(R.layout.activity_m
 
                 Log.e("test", "$date $time : $team")
                 // firestore 에 경기 추가
-                var gameDTO = GameDTO(date, time, team, result, "예매")
+                var gameDTO = Game(date, time, team, result, "예매")
                 firestore.collection("Game").document("${gameDTO.date} ${gameDTO.time}").set(gameDTO)
                 // 새 게임의 경우 Seat 데이터 넣기 : 오류 방지하기 위함
                 if(newGames)

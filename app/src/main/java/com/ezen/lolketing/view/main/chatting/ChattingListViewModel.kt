@@ -3,7 +3,7 @@ package com.ezen.lolketing.view.main.chatting
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
-import com.ezen.lolketing.model.GameDTO
+import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.repository.ChattingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -42,9 +42,9 @@ class ChattingListViewModel @Inject constructor(
         repository.getGameData(
             startDate = startDate,
             successListener = { snapshot ->
-                val list = mutableListOf<GameDTO>()
+                val list = mutableListOf<Game>()
                 snapshot.forEach {
-                    list.add(it.toObject(GameDTO::class.java))
+                    list.add(it.toObject(Game::class.java))
                 }
                 event(Event.GameData(list))
             },
@@ -60,7 +60,7 @@ class ChattingListViewModel @Inject constructor(
 
     sealed class Event {
         data class UserNickName(val nickName: String) : Event()
-        data class GameData(val list: List<GameDTO>) : Event()
+        data class GameData(val list: List<Game>) : Event()
         data class Error(val msg: String) : Event()
     }
 

@@ -23,7 +23,7 @@ import com.ezen.lolketing.view.main.manager.ManagerActivity
 import com.ezen.lolketing.view.main.my_page.MyPageActivity
 import com.ezen.lolketing.view.main.news.NewsActivity
 import com.ezen.lolketing.view.main.shop.ShopActivity
-import com.ezen.lolketing.view.main.ticket.ReserveListActivity
+import com.ezen.lolketing.view.main.ticket.list.ReserveListActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.smarteist.autoimageslider.IndicatorAnimations

@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.ezen.lolketing.R;
 import com.ezen.lolketing.adapter.ScheduleAdapter;
-import com.ezen.lolketing.model.GameDTO;
+import com.ezen.lolketing.model.Game;
 import com.ezen.lolketing.view.main.MainActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,8 +32,8 @@ public class GameScheduleActivity extends AppCompatActivity {
         schedule_recyclerview = findViewById(R.id.schedule_recyclerview);
 
         Query query = firestore.collection("Game").orderBy("date");
-        FirestoreRecyclerOptions<GameDTO> options = new FirestoreRecyclerOptions.Builder<GameDTO>()
-                        .setQuery(query, GameDTO.class)
+        FirestoreRecyclerOptions<Game> options = new FirestoreRecyclerOptions.Builder<Game>()
+                        .setQuery(query, Game.class)
                         .build();
 
         adapter = new ScheduleAdapter(options);
