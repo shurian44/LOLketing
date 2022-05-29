@@ -8,6 +8,7 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityReserveBinding
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.MainActivity
+import com.ezen.lolketing.view.main.ticket.detail.ReserveDetailActivity
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*

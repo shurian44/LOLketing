@@ -1,8 +1,11 @@
 package com.ezen.lolketing.util
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.text.Html
@@ -97,4 +100,8 @@ fun setSpecialCharacterRestrictions() = InputFilter { source, _, _, _, _, _ ->
         }
     }
     null
+}
+
+fun Dialog.backgroundTransparent() {
+    window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 }

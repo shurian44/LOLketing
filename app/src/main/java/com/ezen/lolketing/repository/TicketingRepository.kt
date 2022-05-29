@@ -1,7 +1,9 @@
 package com.ezen.lolketing.repository
 
+import android.util.Log
 import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.model.Ticket
+import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -59,6 +61,43 @@ class TicketingRepository @Inject constructor(
         }
 
         return game
+    }
+
+    suspend fun isMasterUser() : Boolean {
+        val email = client.getCurrentUser()?.email ?: return false
+
+        val user = client
+            .getUserInfo(
+                collectionPath = Constants.USERS,
+                documentPath = email
+            )
+            ?.toObject(Users::class.java)
+            ?: return false
+
+        return user.grade == Constants.MASTER
+    }
+
+    suspend fun addNewGame(
+        date: String,
+        time: String,
+        successListener : () -> Unit,
+        failureListener : () -> Unit,
+    ){
+        val gameData = Game(
+            date = date,
+            status = Code.TICKETING_ON.code,
+            team = getRandomGame(),
+            time = time
+        )
+
+        client
+            .basicAddData(
+                collection = Constants.GAME,
+                document = "$date $time",
+                data = gameData,
+                successListener = successListener,
+                failureListener = failureListener
+            )
     }
 
     companion object {

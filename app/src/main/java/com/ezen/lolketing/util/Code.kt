@@ -10,4 +10,9 @@ enum class Code(val code: String, val codeName: String) {
     TICKETING_SCHEDULE_OPEN("STATUS005", "오픈\n예정"),
     TICKETING_SOLD_OUT("STATUS006", "매진"),
     TICKETING_FINISH("STATUS007", "종료"),
+    BRONZE("USER001", "브론즈"),
+    SILVER("USER002", "실버"),
+    GOLD("USER003", "골드"),
+    PLATINUM("USER004", "플래티넘"),
+    MASTER("USER005", "마스터"),
 }

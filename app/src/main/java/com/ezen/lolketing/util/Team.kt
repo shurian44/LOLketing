@@ -21,3 +21,8 @@ fun setTeamLogoImageView(imageView : ImageView, team : String) {
     val res = Team.values().find { it.teamName.uppercase() == team.uppercase() }?.image ?: Team.T1.image
     imageView.setImageResource(res)
 }
+
+fun getRandomGame() : String {
+    val teamList = Team.values().toMutableList().shuffled()
+    return "${teamList[0]}:${teamList[1]}"
+}

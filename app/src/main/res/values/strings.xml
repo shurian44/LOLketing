@@ -70,6 +70,17 @@
     <string name="guide_sold_out">매진되었습니다</string>
     <string name="guide_finish">경기가 종료되었습니다</string>
     <string name="guide_schedule_open">오픈 예정입니다</string>
+    <string name="add_game">경기 추가</string>
+    <string name="add_game_success">경기 추가 완료</string>
+    <string name="add_game_failure">경기 추가 실패</string>
+    <string name="guide_ticket_info">티켓 안내 ></string>
+    <string name="personnel">인원</string>
+    <string name="seat">좌석</string>
+    <string name="guide_select_seat">좌석을 선택해 주세요</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="hall_a">A홀</string>
+    <string name="make_reservation">예매하기</string>
 
     <!-- 공통 -->
     <string name="cancel">취소</string>
@@ -85,6 +96,7 @@
     <string name="news">뉴스</string>
     <string name="chatting">채팅</string>
     <string name="versus">vs</string>
+    <string name="amount">금액</string>
 
     <string name="like_counts">좋아요 %d</string>
     <string name="board_views">조회수 %d</string>

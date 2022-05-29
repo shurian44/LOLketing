@@ -33,11 +33,34 @@ class ReserveListViewModel @Inject constructor(
         )
     }
 
+    fun isMasterUser() = viewModelScope.launch {
+        event(Event.UserGrade(isMaster = repository.isMasterUser()))
+    }
+
+    fun addNewGame(
+        date: String,
+        time: String
+    ) = viewModelScope.launch {
+        repository.addNewGame(
+            date = date,
+            time = time,
+            successListener = {
+                event(Event.NewGameAddSuccess)
+            },
+            failureListener = {
+                event(Event.NewGameAddFailure)
+            }
+        )
+    }
+
     sealed class Event {
         object EmptyList : Event()
         data class GameList(
             val list : List<Ticket>
         ) : Event()
+        data class UserGrade(val isMaster: Boolean) : Event()
+        object NewGameAddSuccess : Event()
+        object NewGameAddFailure : Event()
     }
 
 }

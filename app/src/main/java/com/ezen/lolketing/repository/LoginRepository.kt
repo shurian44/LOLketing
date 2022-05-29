@@ -102,15 +102,15 @@ class LoginRepository @Inject constructor(
         failureListener: () -> Unit
     ) {
         try {
-            val uid = user.uid
-            if (uid == null) {
+            val id = user.id
+            if (id == null) {
                 failureListener()
                 return
             }
 
             client.basicUpdateData(
                 collection = Constants.USERS,
-                documentId = uid,
+                documentId = id,
                 updateData = mapOf("nickname" to user.nickname, "phone" to user.phone, "address" to user.address),
                 successListener = successListener,
                 failureListener = failureListener

@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.ezen.lolketing.databinding.DialogTeamBinding
+import com.ezen.lolketing.databinding.DialogAddNewGameBinding
 import com.ezen.lolketing.util.backgroundTransparent
 
-class TeamSelectDialog(private val listener : (String) -> Unit) : DialogFragment() {
+class AddNewGameDialog(
+    val addGameClickListener : (String, String) -> Unit
+) : DialogFragment() {
 
-    private val binding : DialogTeamBinding by lazy { DialogTeamBinding.inflate(layoutInflater) }
+    private val binding : DialogAddNewGameBinding by lazy { DialogAddNewGameBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,19 +23,19 @@ class TeamSelectDialog(private val listener : (String) -> Unit) : DialogFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 다이얼로그 배경 투명화
         dialog?.backgroundTransparent()
         binding.dialog = this
 
-    }
+        // todo 피커 추가 예정
 
-
-    fun onClick(team : String) {
-        listener(team)
-        dismiss()
     }
 
     fun onCancel(view: View) {
+        dismiss()
+    }
+
+    fun addGameClick(view: View) {
+        addGameClickListener(binding.editDate.text.toString(), binding.editTime.text.toString())
         dismiss()
     }
 

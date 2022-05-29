@@ -5,4 +5,12 @@
         <attr name="eventTitle" format="string"/>
         <attr name="eventPeriod" format="string"/>
     </declare-styleable>
+    <declare-styleable name="CustomSeatCheckBox">
+        <attr name="seatChecked" format="boolean"/>
+        <attr name="seatEnable" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="CustomSeatRowLayout">
+        <attr name="seatSize" format="integer"/>
+        <attr name="startStr" format="string"/>
+    </declare-styleable>
 </resources>

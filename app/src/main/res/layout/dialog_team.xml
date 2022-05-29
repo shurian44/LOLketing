@@ -82,9 +82,11 @@
 
             <View
                 android:id="@+id/view2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="2dp"
                 android:background="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/imgGeng"
                 app:layout_constraintTop_toBottomOf="@id/imgT1" />
 
@@ -113,9 +115,11 @@
 
             <View
                 android:id="@+id/view3"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="2dp"
                 android:background="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/imgFreecs"
                 app:layout_constraintTop_toBottomOf="@id/imgGeng" />
 
@@ -144,9 +148,11 @@
 
             <View
                 android:id="@+id/view4"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="2dp"
                 android:background="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/imgDamwon"
                 app:layout_constraintTop_toBottomOf="@id/imgFreecs" />
 
@@ -179,6 +185,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/imgRolster"
                 app:layout_constraintTop_toBottomOf="@id/imgDamwon" />
 

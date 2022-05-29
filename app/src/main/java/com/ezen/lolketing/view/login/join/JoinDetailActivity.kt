@@ -99,6 +99,7 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
             }
             is JoinDetailViewModel.Event.UpdateSuccess -> {
                 toast(getString(R.string.guide_update))
+                finish()
             }
             is JoinDetailViewModel.Event.UpdateFailure -> {
                 toast(getString(R.string.error_update))
@@ -111,6 +112,7 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
             }
             is JoinDetailViewModel.Event.JoinDetailSuccess -> {
                 toast(getString(R.string.user_register_success))
+                finish()
             }
             is JoinDetailViewModel.Event.JoinDetailFailure -> {
                 toast(getString(R.string.user_register_failure))
