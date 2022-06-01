@@ -261,7 +261,9 @@ class FirebaseClient @Inject constructor(
         failureListener : () -> Unit
     ) = try {
         firestore
-            .collection(collection).document(documentId).update(updateData)
+            .collection(collection)
+            .document(documentId)
+            .update(updateData)
             .addOnSuccessListener {
                 successListener()
             }
@@ -344,6 +346,56 @@ class FirebaseClient @Inject constructor(
                 failureListener()
             }
             .await()
+    }
+
+    suspend fun getDoubleSnapshot(
+        firstCollection: String,
+        firstDocument: String,
+        secondCollection: String,
+        secondDocument: String,
+        successListener : (DocumentSnapshot) -> Unit,
+        failureListener : () -> Unit
+    ) {
+        firestore
+            .collection(firstCollection)
+            .document(firstDocument)
+            .collection(secondCollection)
+            .document(secondDocument)
+            .get()
+            .addOnSuccessListener(successListener)
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener()
+            }
+            .await()
+    }
+
+    suspend fun doubleAddData(
+        firstCollection: String,
+        firstDocument: String,
+        secondCollection: String,
+        secondDocument: String,
+        data : Any,
+        successListener: (() -> Unit)?= null,
+        failureListener: (() -> Unit)?= null
+    ) = try {
+        firestore
+            .collection(firstCollection)
+            .document(firstDocument)
+            .collection(secondCollection)
+            .document(secondDocument)
+            .set(data)
+            .addOnSuccessListener {
+                successListener?.invoke()
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener?.invoke()
+            }
+            .await()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
     }
 
     companion object {

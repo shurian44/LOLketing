@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".view.main.ticket.payment.PaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.login.find.FindIdPwActivity"
             android:exported="false" />
         <activity

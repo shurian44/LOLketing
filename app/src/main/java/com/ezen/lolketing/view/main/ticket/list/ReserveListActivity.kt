@@ -46,11 +46,15 @@ class ReserveListActivity : BaseViewModelActivity<ActivityReserveListBinding, Re
                 binding.btnAddGame.isVisible = event.isMaster
             }
             is ReserveListViewModel.Event.NewGameAddSuccess -> {
-                toast(getString(R.string.add_game_success))
+//                toast(getString(R.string.add_game_success))
                 viewModel.getGameList()
+                viewModel.setReservedSeat(event.time)
             }
             is ReserveListViewModel.Event.NewGameAddFailure -> {
                 toast(getString(R.string.add_game_failure))
+            }
+            is ReserveListViewModel.Event.ReserveSeatAddSuccess -> {
+                toast(getString(R.string.add_game_success))
             }
         }
     }

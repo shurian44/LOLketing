@@ -1,11 +1,9 @@
 package com.ezen.lolketing.repository
 
-import android.util.Log
-import com.ezen.lolketing.model.Game
-import com.ezen.lolketing.model.Ticket
-import com.ezen.lolketing.model.Users
+import com.ezen.lolketing.model.*
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.*
+import com.ezen.lolketing.view.main.ticket.detail.HallFragment
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -98,12 +96,61 @@ class TicketingRepository @Inject constructor(
                 successListener = successListener,
                 failureListener = failureListener
             )
+
+    }
+
+    suspend fun setReservedSeat(
+        documentId: String,
+        successListener: () -> Unit
+        ) {
+        client
+            .doubleAddData(
+                firstCollection = Constants.GAME,
+                firstDocument = documentId,
+                secondCollection = Constants.SEAT,
+                secondDocument = "seat",
+                data = getSeatList(),
+                successListener = successListener
+            )
+    }
+
+    //        firestore.collection("Game").document(documentID).collection("Seat").document("seat").get().addOnCompleteListener {
+    suspend fun getReservedSeat(
+        documentId: String,
+        hall : String
+    ) {
+        client
+            .getDoubleSnapshot(
+                firstCollection = Constants.GAME,
+                firstDocument = documentId,
+                secondCollection = Constants.SEAT,
+                secondDocument = "seat",
+                successListener = { snapShot ->
+                    val seat = snapShot.toObject(SeatDTO::class.java)
+                    val a = seat?.seats?.filter { it.key.contains(hall) && it.value }?.map { it.key }
+                },
+                failureListener = {
+
+                }
+            )
+    }
+
+    private fun getSeatList() : SeatList {
+        val list = mutableListOf<Seat>()
+        rowList.forEach {
+            for (i in 1..9) {
+                list.add(Seat("A홀 $it$i"))
+            }
+        }
+
+        return SeatList(list)
     }
 
     companion object {
         const val DATE = "date"
         const val STATUS = "status"
         const val FIVE_DATE = 1000 * 60 * 60 * 24 * 5L
+        val rowList = listOf("A", "B", "C", "D", "E", "F", "G", "H")
     }
 
 }

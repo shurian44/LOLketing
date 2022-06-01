@@ -22,7 +22,8 @@
         <include
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
-            app:title="@{title}"/>
+            app:title="@{title}"
+            app:isBackVisible="@{true}"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"

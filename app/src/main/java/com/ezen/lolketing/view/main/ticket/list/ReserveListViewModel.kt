@@ -45,10 +45,21 @@ class ReserveListViewModel @Inject constructor(
             date = date,
             time = time,
             successListener = {
-                event(Event.NewGameAddSuccess)
+                event(Event.NewGameAddSuccess("$date $time"))
             },
             failureListener = {
                 event(Event.NewGameAddFailure)
+            }
+        )
+    }
+
+    fun setReservedSeat(
+        time: String
+    ) = viewModelScope.launch {
+        repository.setReservedSeat(
+            documentId = time,
+            successListener = {
+                event(Event.ReserveSeatAddSuccess)
             }
         )
     }
@@ -59,8 +70,11 @@ class ReserveListViewModel @Inject constructor(
             val list : List<Ticket>
         ) : Event()
         data class UserGrade(val isMaster: Boolean) : Event()
-        object NewGameAddSuccess : Event()
+        data class NewGameAddSuccess(
+            val time: String
+        ) : Event()
         object NewGameAddFailure : Event()
+        object ReserveSeatAddSuccess : Event()
     }
 
 }

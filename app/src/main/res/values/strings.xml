@@ -73,6 +73,7 @@
     <string name="add_game">경기 추가</string>
     <string name="add_game_success">경기 추가 완료</string>
     <string name="add_game_failure">경기 추가 실패</string>
+    <string name="ticket_info">티켓 안내</string>
     <string name="guide_ticket_info">티켓 안내 ></string>
     <string name="personnel">인원</string>
     <string name="seat">좌석</string>
@@ -81,6 +82,24 @@
     <string name="two">2</string>
     <string name="hall_a">A홀</string>
     <string name="make_reservation">예매하기</string>
+    <string name="payment">결제하기</string>
+    <string name="reserve_info">예매 안내</string>
+    <string name="reserve_open_label">예매 오픈 일시</string>
+    <string name="reserve_open">각 경기일 5일 전</string>
+    <string name="purchases_count_label">예매 가능 매수</string>
+    <string name="purchases_count">1인 당 2매</string>
+    <string name="reserve_cancel">예매 취소</string>
+    <string name="guide_reserve_cancel">경기 당일 경기시간 4시간 전까지 가능\n(이후 최소, 환불, 변경 불가)\n예매 당일 취소 수수료 없이 취소가능\n이후 최소 시 티켓 금액의 10% 취소 수수료 부과</string>
+    <string name="disabled_ticket_info">장애인 및 휠체어석 티켓 안내</string>
+    <string name="guide_disabled_ticket_info">휠체어석 예매 및 문의 : 고객센터 1544 - 1555\n장애인 할인 : 복지카드 소지자 본인 50% 할인\n(할인 관련 증빙서류 미지참 시 현장에서 차액 지불해야 함)</string>
+    <string name="pick_up_ticket">티켓 수령 및 입장</string>
+    <string name="guide_pick_up_ticket">- 티켓 박스 오픈 : 당일 경기 2시간 전\n- 1경기 입장시간 : 당일 경기 1시간 전\n- 2경기 입장시간 : 1경기 종료 이후\n- 운영 시간은 현장 상황에 따라 변경될 수 있습니다.\n- 휠체어석은 휠체어 이용 시에만 입장 및 관람이 가능합니다.\n- 본인 확인이 어려울 경우, 예매 티켓 수령이 불가합니다.\n- 모바일 티켓 캡쳐 이미지는 입장이 불가합니다.\n- 티켓 수령 시 반드시 본인 확인이 가능한 실물 신분증 (주민등록증, 운전면허증, 학생증 등)을 지참해 주시기 바랍니다.</string>
+    <string name="notice">유의사항</string>
+    <string name="guide_notice">- 경기일자 및 좌석 변경을 원할 시에는 기존 예매 건을 전체 취소하고 재예매를 진행하셔야 합니다.\n- 취소 좌석에 대한 좌석선점은 보장하지 않습니다.\n- 티켓은 현장 수령만 가능하십니다.\n- 예매 티켓 발권 시 부분 출력은 불가하며, 주문 건 전체 출력만 가능합니다.\n- 주차장 이용방법은 각 경기장 별 홈페이지를 통해 확인하시고, 관람 당일에는 매우 혼잡할 수 있으니 대중교통 이용을 추천합니다.\n- 티켓 예매, 결제, 수령 및 입장과 관련하여 &quot;주최측&quot;의 귀책사유 없는 일체 문제에 대해서는 &quot;관람객&quot;본인 스스로 책임을 부담합니다.</string>
+    <string name="restrictions">관람 시 제한사항</string>
+    <string name="guide_restrictions">- 입장 및 관람시 1인 1티켓을 소지하여야 합니다. (단 만 12세 미만의 경우 보호자 동반이 필요합니다.)\n- &quot;관람객&quot;은 경기를 촬영, 녹은, 기록할 수 없으며, 각종 TV, 인터넷 등과 같은 매체로 전파하거나 상업적 목적으로 이용할 수 없고, 이를 돕는 행가 금지됩니다.\n- &quot;주최측&quot;은 경기장에서 얻은 &quot;관람객&quot;의 음성 및 초상권을 무상으로 이용할 수 있으며, &quot;관람객&quot;의 경기장 입장은 이에 대한 동의로 간주됩니다.\n- 본 티켓은 &quot;주최측&quot;의 허가없이 판매, 교환, 환전, 증여 등의 일체의 양도 행위를 할 수 없습니다. &quot;관람객&quot;이 &quot;주최측&quot;에서 허가하지 않은 양도 행위로 인해 피해를 입을 경우, &quot;관람객&quot; 스스로 책임을 부답합니다.\n- &quot;관람객&quot;으 쾌적한 관람 및 안전을 위한 목적으로 &quot;주최측&quot;이 실시하는 모든 조치에 협력해야 하며, 경기가 시작된 이후에는 입장이 제한될 수 있습니다.&quot;관람객&quot;은 경기 당일 어떠한 경우에도 &quot;주최측&quot;의 허가없이 타인을 비방, 비하할 목적 또는 정치적, 상업적 목적의 설치물 (배너, 현수막, 심볼 등 모든 종류의 표현물)을 경기장에 반입 및 게재할 수 없으며, 위반 시 &quot;주최측&quot;은 경기 종료 시까지 해당 설치물에 대한 임의 보관을 요구할 수 있고, 불응 시 즉시 퇴장을 요구할 수 있습니다. 또한 다른 &quot;관람객&quot;의 경기 관람과 경기 운영을 방해하는 경우 등에 대해 &quot;주최측&quot;은 경고 없이 즉시 퇴장 또는 민/형사상의 책임을 요구할 수 있습니다.\n- 본 티켓은 티켓 전면에 표시된 해당 일이에만 유효하며, 예매분 티켓이 매진되었을 경우 현장 판매는 실시하지 않는 것을 원칙으로 합니다.\n- &quot;관람객&quot;은 &quot;주최측&quot;의 중대한 과실이나 고의로 인한 경우를 제외하고, 경기장 내 발설할 수 있는 모든 문제에 대해 스스로 책임을 부암합니다.\n- 티켓을 분실, 훼손, 미 소지 시 어떠한 경우에도 입장이 불가하고, 환불 및 재발급이 제한됩니다.\n- 결제하신 티켓의 가액에는 &quot;기념품&quot;이 포함되지 않습니다. 현장에서 지급 받는 &quot;기념품&quot;은 주최사가 제공하는 무료 지급 서비스이며, 교환, 환불, 반품, 수리 등을 요구살 수 없고, 분실 등의 이유로 재 지급을 요구살 수 없으며, 양도 불가한 상품입니다.\n- 상기 명시된 내용에 대한 미 숙지로 인한 책임은 &quot;관람객&quot;본인에게 있으며, 이를 위반한 경우 &quot;관람객&quot;의 관람은 거부되고, 티켓은 무효로 간주되며 환불되지 않습니다. 또한 1회라 하더라도 중대한 위반을 하거나, 상습적이고 지속적인 위반행위를 하는 &quot;관람객&quot;은 재 방문이 제한될 수 있습니다.</string>
+
+
 
     <!-- 공통 -->
     <string name="cancel">취소</string>
@@ -97,6 +116,7 @@
     <string name="chatting">채팅</string>
     <string name="versus">vs</string>
     <string name="amount">금액</string>
+    <string name="charging_cache">캐시 충전</string>
 
     <string name="like_counts">좋아요 %d</string>
     <string name="board_views">조회수 %d</string>

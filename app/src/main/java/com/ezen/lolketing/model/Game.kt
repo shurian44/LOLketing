@@ -7,6 +7,7 @@ data class Game(
     var result : String ?= null,
     var status : String ?= null
 ) {
+
     fun mapper() = Ticket(
         date = date,
         time = time,
