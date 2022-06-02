@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="activity"
             type="com.ezen.lolketing.view.main.ticket.detail.ReserveDetailActivity" />
+
         <variable
             name="title"
             type="String" />
@@ -22,17 +23,31 @@
         <include
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
-            app:title="@{title}"
-            app:isBackVisible="@{true}"/>
+            app:isBackVisible="@{true}"
+            app:title="@{title}" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+        <TextView
+            android:id="@+id/txtSelectHall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/sub_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            tools:text="A홀" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toTopOf="@id/layoutInfo"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/txtSelectHall" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutInfo"
@@ -40,41 +55,42 @@
             android:layout_height="wrap_content"
             android:background="@color/light_black"
             app:layout_constraintBottom_toTopOf="@id/btnReserve"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:id="@+id/txtTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="16dp"
                 android:textColor="@color/white"
-                tools:text="2022.05.27 17:00"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                tools:text="2022.05.27 17:00" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/guide_ticket_info"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="15dp"
+                android:text="@string/guide_ticket_info"
+                android:onClick="@{activity::onTicketInfoClick}"
                 android:textColor="@color/light_gray"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtGameTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="T1 VS T1"
-                android:textColor="@color/sub_color"
-                android:textStyle="bold"
-                android:textSize="22sp"
                 android:layout_marginTop="12dp"
+                android:textColor="@color/sub_color"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/txtTime"
                 app:layout_constraintTop_toBottomOf="@id/txtTime"
-                app:layout_constraintStart_toStartOf="@id/txtTime"/>
+                tools:text="T1 VS T1" />
 
             <TextView
                 android:id="@+id/txtPersonnel"
@@ -84,9 +100,9 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="@id/chPersonnelOne"
                 app:layout_constraintBottom_toBottomOf="@id/chPersonnelOne"
-                app:layout_constraintStart_toStartOf="@id/txtTime"/>
+                app:layout_constraintStart_toStartOf="@id/txtTime"
+                app:layout_constraintTop_toTopOf="@id/chPersonnelOne" />
 
             <com.ezen.lolketing.view.custom.CustomSeatCheckBox
                 android:id="@+id/chPersonnelOne"
@@ -94,14 +110,14 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
-                android:textSize="16sp"
                 android:text="@string/one"
-                android:textStyle="bold"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                app:seatChecked="true"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/txtPersonnel"
                 app:layout_constraintTop_toBottomOf="@id/txtGameTitle"
-                app:layout_constraintStart_toEndOf="@id/txtPersonnel"/>
+                app:seatChecked="true" />
 
             <com.ezen.lolketing.view.custom.CustomSeatCheckBox
                 android:id="@+id/chPersonnelTwo"
@@ -109,52 +125,52 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
-                android:textSize="16sp"
                 android:text="@string/two"
-                android:textStyle="bold"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/txtGameTitle"
-                app:layout_constraintStart_toEndOf="@id/chPersonnelOne"/>
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/chPersonnelOne"
+                app:layout_constraintTop_toBottomOf="@id/txtGameTitle" />
 
             <TextView
-                android:id="@+id/txtSeat"
+                android:id="@+id/labelSeat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/seat"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginTop="12dp"
-                app:layout_constraintTop_toBottomOf="@id/chPersonnelOne"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/txtTime"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/chPersonnelOne" />
 
             <TextView
                 android:id="@+id/txtSelectSeat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:text="@string/guide_select_seat"
                 android:textColor="@color/sub_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="@string/guide_select_seat"
-                app:layout_constraintTop_toTopOf="@id/txtSeat"
-                app:layout_constraintStart_toEndOf="@id/txtSeat"
-                tools:text="A관 A1"/>
+                app:layout_constraintStart_toEndOf="@id/labelSeat"
+                app:layout_constraintTop_toTopOf="@id/labelSeat"
+                tools:text="A관 A1" />
 
             <View
                 android:id="@+id/viewLine"
                 android:layout_width="1dp"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/txtAmount"
+                android:id="@+id/labelAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -162,8 +178,8 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="@id/txtSeat"
-                app:layout_constraintStart_toEndOf="@id/viewLine"/>
+                app:layout_constraintStart_toEndOf="@id/viewLine"
+                app:layout_constraintTop_toTopOf="@id/labelSeat" />
 
             <TextView
                 android:id="@+id/txtCurrentAmount"
@@ -173,9 +189,9 @@
                 android:textColor="@color/sub_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="@id/txtSeat"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="11,000원"/>
+                app:layout_constraintTop_toTopOf="@id/labelSeat"
+                tools:text="11,000원" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -183,16 +199,17 @@
             android:id="@+id/btnReserve"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            app:cornerRadius="0dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="@{activity::onReserveClick}"
+            android:text="@string/make_reservation"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="@string/make_reservation"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
+            app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

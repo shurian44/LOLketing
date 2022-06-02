@@ -44,7 +44,7 @@ public class PurchaseAdapter extends
         purchaseHolder.product_name.setText(purchaseDTO.getName());
         purchaseHolder.product_amount.setText(Integer.toString(purchaseDTO.getAmount()));
         purchaseHolder.product_address.setText(purchaseDTO.getAddress());
-        purchaseHolder.product_price.setText(Integer.toString(purchaseDTO.getPrice()));
+//        purchaseHolder.product_price.setText(Integer.toString(purchaseDTO.getPrice()));
         Glide.with(purchaseHolder.itemView.getContext())
                 .load(purchaseDTO.getImage()).into(purchaseHolder.product_image);
     }

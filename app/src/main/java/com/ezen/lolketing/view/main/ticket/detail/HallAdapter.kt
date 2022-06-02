@@ -7,7 +7,7 @@ import com.ezen.lolketing.databinding.ItemHallBinding
 import com.ezen.lolketing.model.SeatItem
 
 class HallAdapter(
-    val checkedChangeListener : (Int, Boolean, String) -> Unit
+    val checkedChangeListener : (Int, SeatItem) -> Unit
 ) : RecyclerView.Adapter<HallAdapter.ViewHolder>() {
 
     private var list = listOf<SeatItem>()
@@ -19,7 +19,7 @@ class HallAdapter(
             checkBox.isChecked = seat.checked
             checkBox.setOnChangeListener {
                 seat.checked = it
-                checkedChangeListener(adapterPosition, it, seat.seatNum)
+                checkedChangeListener(adapterPosition, seat)
             }
         }
     }

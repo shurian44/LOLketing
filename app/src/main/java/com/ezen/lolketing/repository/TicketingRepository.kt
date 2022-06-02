@@ -3,8 +3,8 @@ package com.ezen.lolketing.repository
 import com.ezen.lolketing.model.*
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.*
-import com.ezen.lolketing.view.main.ticket.detail.HallFragment
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -103,39 +103,70 @@ class TicketingRepository @Inject constructor(
         documentId: String,
         successListener: () -> Unit
         ) {
-        client
-            .doubleAddData(
-                firstCollection = Constants.GAME,
-                firstDocument = documentId,
-                secondCollection = Constants.SEAT,
-                secondDocument = "seat",
-                data = getSeatList(),
-                successListener = successListener
-            )
+        getSeatList().forEach {
+            client
+                .doubleAddData(
+                    firstCollection = Constants.GAME,
+                    firstDocument = documentId,
+                    secondCollection = Constants.SEAT,
+                    secondDocument = DOCUMENT_SEAT,
+                    data = it,
+                    successListener = {}
+                )
+        }
+        successListener()
     }
 
-    //        firestore.collection("Game").document(documentID).collection("Seat").document("seat").get().addOnCompleteListener {
     suspend fun getReservedSeat(
         documentId: String,
-        hall : String
+        hall : String,
+        onSuccessListener: (List<SeatItem>) -> Unit,
+        onFailureListener: () -> Unit
     ) {
-        client
-            .getDoubleSnapshot(
-                firstCollection = Constants.GAME,
-                firstDocument = documentId,
-                secondCollection = Constants.SEAT,
-                secondDocument = "seat",
-                successListener = { snapShot ->
-                    val seat = snapShot.toObject(SeatDTO::class.java)
-                    val a = seat?.seats?.filter { it.key.contains(hall) && it.value }?.map { it.key }
-                },
-                failureListener = {
+        try {
+            client
+                .getDoubleSnapshot(
+                    firstCollection = Constants.GAME,
+                    firstDocument = documentId,
+                    orderByField = "seatNum",
+                    orderByDirection = Query.Direction.ASCENDING,
+                    secondCollection = Constants.SEAT,
+                    successListener = { querySnapshot ->
+                        val list = mutableListOf<Seat>()
 
-                }
-            )
+                        querySnapshot.forEach { snapshot ->
+                            list.add(
+                                snapshot.toObject(Seat::class.java).also { seat ->
+                                    seat.documentId = snapshot.id
+                                }
+                            )
+                        }
+
+                        if (list.isEmpty()){
+                            onFailureListener()
+                            return@getDoubleSnapshot
+                        }
+
+                        list
+                            .filter { it.seatNum.contains(hall) }
+                            .map {
+                                it.seatNum = it.seatNum.replace("$hall ", "")
+                                it
+                            }
+                            .map { it.mapper() }
+                            .let {
+                                onSuccessListener(it)
+                            }
+                    },
+                    failureListener = onFailureListener
+                )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            onFailureListener()
+        }
     }
 
-    private fun getSeatList() : SeatList {
+    private fun getSeatList() : List<Seat> {
         val list = mutableListOf<Seat>()
         rowList.forEach {
             for (i in 1..9) {
@@ -143,12 +174,13 @@ class TicketingRepository @Inject constructor(
             }
         }
 
-        return SeatList(list)
+        return list
     }
 
     companion object {
         const val DATE = "date"
         const val STATUS = "status"
+        const val DOCUMENT_SEAT = "seat"
         const val FIVE_DATE = 1000 * 60 * 60 * 24 * 5L
         val rowList = listOf("A", "B", "C", "D", "E", "F", "G", "H")
     }

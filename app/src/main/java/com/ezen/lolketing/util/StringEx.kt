@@ -18,3 +18,9 @@ fun Int.priceFormat() : String =
 fun Long.toComma(): String = DecimalFormat("###,###").format(this)
 
 fun Long.toCommaWon() = toComma().plus("원")
+
+fun String.fromCommaWon(): Long = try {
+    this.replace(",", "").replace("원", "").toLong()
+} catch (e: Exception) {
+    0L
+}

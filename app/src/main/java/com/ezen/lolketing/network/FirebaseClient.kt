@@ -16,6 +16,8 @@ class FirebaseClient @Inject constructor(
 
     fun getCurrentUser() = auth.currentUser
 
+    fun getStorageReference(path: String) = storage.reference.child(path)
+
     suspend fun joinUser(
         email: String,
         pw: String,
@@ -352,15 +354,16 @@ class FirebaseClient @Inject constructor(
         firstCollection: String,
         firstDocument: String,
         secondCollection: String,
-        secondDocument: String,
-        successListener : (DocumentSnapshot) -> Unit,
+        orderByField: String = TIME_STAMP,
+        orderByDirection : Query.Direction = Query.Direction.DESCENDING,
+        successListener : (QuerySnapshot) -> Unit,
         failureListener : () -> Unit
     ) {
         firestore
             .collection(firstCollection)
             .document(firstDocument)
             .collection(secondCollection)
-            .document(secondDocument)
+            .orderBy(orderByField, orderByDirection)
             .get()
             .addOnSuccessListener(successListener)
             .addOnFailureListener {
@@ -383,7 +386,7 @@ class FirebaseClient @Inject constructor(
             .collection(firstCollection)
             .document(firstDocument)
             .collection(secondCollection)
-            .document(secondDocument)
+            .document()
             .set(data)
             .addOnSuccessListener {
                 successListener?.invoke()

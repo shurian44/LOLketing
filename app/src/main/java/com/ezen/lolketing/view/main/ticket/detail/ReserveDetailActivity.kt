@@ -1,16 +1,20 @@
 package com.ezen.lolketing.view.main.ticket.detail
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityReserveDetailBinding
-import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.util.toCommaWon
-import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.util.*
+import com.ezen.lolketing.view.main.ticket.payment.PaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layout.activity_reserve_detail) {
+
+    private lateinit var hallFragment: HallFragment
+    private var documentIdList = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,18 +41,13 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
         txtGameTitle.text = team
         txtCurrentAmount.text = 11000L.toCommaWon()
 
-        val hallAFragment = HallFragment("A") { seat ->
-            txtSelectSeat.text = seat
-        }
-
-        viewPager.adapter = SeatAdapter(this@ReserveDetailActivity).also {
-            it.addFragment(hallAFragment)
-        }
+        txtSelectHall.text = "A홀"
+        setFragment()
 
         chPersonnelOne.setOnChangeListener {
             if(it) {
                 chPersonnelTwo.isChecked = false
-                hallAFragment.setSeatCount(1)
+                hallFragment.setSeatCount(1)
                 txtCurrentAmount.text = 11000L.toCommaWon()
             }
         }
@@ -56,9 +55,49 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
         chPersonnelTwo.setOnChangeListener {
             if(it) {
                 chPersonnelOne.isChecked = false
-                hallAFragment.setSeatCount(2)
+                hallFragment.setSeatCount(2)
                 txtCurrentAmount.text = 22000L.toCommaWon()
             }
         }
     }
+
+    private fun setFragment() = with(binding) {
+        hallFragment = HallFragment(txtSelectHall.text.toString(), txtTime.text.toString()) { seat, documentIdList ->
+            txtSelectSeat.text = seat
+            this@ReserveDetailActivity.documentIdList = documentIdList
+        }
+
+        supportFragmentManager.beginTransaction().also {
+            it.replace(fragmentContainer.id, hallFragment, "")
+            it.commit()
+        }
+    }
+
+    fun onReserveClick(view: View) = with(binding) {
+        if (txtSelectSeat.text == getString(R.string.guide_select_seat)){
+            toast(getString(R.string.guide_select_seat))
+            return@with
+        }
+
+        if (chPersonnelTwo.isChecked && documentIdList.size != 2) {
+            toast(getString(R.string.guide_select_seat))
+            return@with
+        }
+
+        startActivity(
+            createIntent(PaymentActivity::class.java).also {
+//                날짜, 게임 타이틀, 좌석, 금액
+                it.putExtra(PaymentActivity.TIME, txtTime.text.toString())
+                it.putExtra(PaymentActivity.GAME_TITLE, txtGameTitle.text.toString())
+                it.putExtra(PaymentActivity.SEAT, txtSelectSeat.text.toString())
+                it.putExtra(PaymentActivity.AMOUNT, txtCurrentAmount.text.toString())
+                it.putExtra(PaymentActivity.DOCUMENT_ID_LIST, documentIdList)
+            }
+        )
+    }
+
+    fun onTicketInfoClick(view: View) {
+        startActivity(PaymentActivity::class.java)
+    }
+
 }

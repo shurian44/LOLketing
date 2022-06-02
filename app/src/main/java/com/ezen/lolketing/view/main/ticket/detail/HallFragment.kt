@@ -1,54 +1,52 @@
 package com.ezen.lolketing.view.main.ticket.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.ezen.lolketing.BaseViewModelFragment
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.FragmentHallBinding
 import com.ezen.lolketing.model.SeatItem
+import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class HallFragment(
     private val selectHall : String,
-    val changeListener: (String) -> Unit
-) : Fragment() {
+    private val gameTime: String,
+    val changeListener: (String, ArrayList<String>) -> Unit
+) : BaseViewModelFragment<FragmentHallBinding, HallViewModel>(R.layout.fragment_hall) {
 
-    private lateinit var binding : FragmentHallBinding
+    override val viewModel: HallViewModel by viewModels()
     private lateinit var adapter : HallAdapter
     private val positionList = mutableListOf<Int>()
 
     private var selectStr = ""
         set(value) {
             field = value
-            changeListener(value)
+            changeListener(value, selectDocumentList)
         }
-    private var selectList = mutableListOf<String>()
+    private var selectSeatNumList = mutableListOf<String>()
+    private var selectDocumentList = arrayListOf<String>()
 
     private var maxCount = 1
     private var count = 0
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = FragmentHallBinding.inflate(layoutInflater).also { binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
+        repeatOnStarted {
+            viewModel.eventFlow.collect{ event-> eventHandler(event) }
+        }
 
     }
 
     private fun initViews() = with(binding) {
-        txtTitle.text = "${selectHall}홀"
-
-        adapter = HallAdapter { position, checked, seatNum ->
-            when(checked) {
+        adapter = HallAdapter { position, seat ->
+            when(seat.checked) {
                 true -> {
                     count++
                     if (count > maxCount) {
@@ -56,26 +54,37 @@ class HallFragment(
                         adapter.setChecked(position, false)
                         return@HallAdapter
                     }
-                    selectList.add("${binding.txtTitle.text} $seatNum")
+                    selectSeatNumList.add("$selectHall ${seat.seatNum}")
+                    selectDocumentList.add(seat.documentId)
                     positionList.add(position)
-                    setStr()
+                    setSeatStr()
                 }
                 false -> {
                     if (count > 0) count--
-                    selectList.remove("${binding.txtTitle.text} $seatNum")
+                    selectSeatNumList.remove("$selectHall ${seat.seatNum}")
+                    selectDocumentList.remove(seat.documentId)
                     positionList.remove(position)
-                    setStr()
+                    setSeatStr()
                 }
             }
-        }.also {
-            val list = mutableListOf<SeatItem>()
-
-            getAHall().forEach { seatNum ->
-                list.add(SeatItem(seatNum = seatNum))
-            }
-
-            it.setSeatList(list)
         }
+
+        viewModel.getSeatList(documentId = gameTime, selectHall = selectHall)
+    }
+
+    private fun eventHandler(event: HallViewModel.Event) {
+        when(event) {
+            is HallViewModel.Event.Success -> {
+                setRecyclerView(event.list)
+            }
+            is HallViewModel.Event.Failure -> {
+                toast(getString(R.string.error_unexpected))
+            }
+        }
+    }
+
+    private fun setRecyclerView(list: List<SeatItem>) = with(binding) {
+        adapter.setSeatList(list)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(GridLayoutSpacing())
     }
@@ -87,18 +96,19 @@ class HallFragment(
         positionList.forEach {
             adapter.setChecked(it, false)
         }
-        selectList.clear()
+        selectSeatNumList.clear()
+        selectDocumentList.clear()
         positionList.clear()
-        setStr()
+        setSeatStr()
     }
 
-    private fun setStr() {
-        if (selectList.isEmpty()){
+    private fun setSeatStr() {
+        if (selectSeatNumList.isEmpty()){
             selectStr = getString(R.string.guide_select_seat)
             return
         }
         var result = ""
-        selectList.forEach {
+        selectSeatNumList.forEach {
             result += "$it, "
         }
         selectStr = try {
@@ -106,20 +116,6 @@ class HallFragment(
         } catch (e: Exception) {
             getString(R.string.guide_select_seat)
         }
-    }
-
-    private fun getAHall() : List<String> {
-        val list = mutableListOf<String>()
-        rowList.forEach {
-            for (i in 1..9) {
-                list.add("$it$i")
-            }
-        }
-        return list
-    }
-
-    companion object {
-        val rowList = listOf("A", "B", "C", "D", "E", "F", "G", "H")
     }
 
 }

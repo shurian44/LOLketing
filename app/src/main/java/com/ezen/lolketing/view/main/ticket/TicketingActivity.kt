@@ -82,15 +82,15 @@ class TicketingActivity : BaseActivity<ActivityTicketingBinding>(R.layout.activi
 
     // QR 코드 생성
     private fun generateQRCode(content: String) {
-        var qrCodeWriter = QRCodeWriter()
+        val qrCodeWriter = QRCodeWriter()
         try{
-            var bitmap = toBitmap(qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, 200, 200))
+            val bitmap = toBitmap(qrCodeWriter.encode(content, BarcodeFormat.QR_CODE, 200, 200))
             binding.ivGeneratedQrcode.setImageBitmap(bitmap)
 
-            var pathReference = storage.reference.child("ticket/${content}.jpg")
-            var baos = ByteArrayOutputStream()
+            val pathReference = storage.reference.child("ticket/${content}.jpg")
+            val baos = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            var data = baos.toByteArray()
+            val data = baos.toByteArray()
             // 구매 내역에 구매한 티켓 정보 추가
             pathReference.putBytes(data).addOnSuccessListener {
                 pathReference.downloadUrl.addOnCompleteListener {
@@ -100,7 +100,7 @@ class TicketingActivity : BaseActivity<ActivityTicketingBinding>(R.layout.activi
                     purchaseDTO.id = auth.currentUser?.email
                     purchaseDTO.image = it.result.toString()
                     purchaseDTO.name = team
-                    purchaseDTO.price = pay
+                    purchaseDTO.price = pay.toLong()
                     purchaseDTO.status = "usable"
                     purchaseDTO.timestamp = System.currentTimeMillis()
                     purchaseDTO.information = "${time},${seat.replace("/", ",")}"
@@ -115,9 +115,9 @@ class TicketingActivity : BaseActivity<ActivityTicketingBinding>(R.layout.activi
 
     // QR 코드 그리기
     private fun toBitmap(matrix: BitMatrix): Bitmap {
-        var width = matrix?.width ?: 0
-        var height = matrix?.height ?: 0
-        var bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        val width = matrix.width
+        val height = matrix.height
+        val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
         for(x in 0 until width){
             for(y in 0 until height){
                 if(matrix.get(x, y))
