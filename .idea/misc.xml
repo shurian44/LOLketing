@@ -34,7 +34,7 @@
         <entry key="app/src/main/res/layout/activity_board_detail.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_board_list.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_board_write.xml" value="0.28894927536231885" />
-        <entry key="app/src/main/res/layout/activity_cache_charging.xml" value="0.2930253623188406" />
+        <entry key="app/src/main/res/layout/activity_cache_charging.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_chatting.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_chattinglist.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_coupon.xml" value="0.2930253623188406" />
@@ -103,7 +103,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.18" />
+        <option name="scale" value="0.5" />
       </ProjectState>
     </option>
   </component>

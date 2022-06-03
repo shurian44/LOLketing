@@ -50,7 +50,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
     private static final int SEARCH_ADDRESS_ACTIVITY = 10000;
     private String id;
-    int cache = 0;
+    Long cache = 0L;
     String phone;
     String nickname;
 

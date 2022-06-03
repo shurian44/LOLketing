@@ -35,7 +35,7 @@ class ChattingListViewModel @Inject constructor(
         nickName?.let {
             Log.e("+++++", "nickname : $it")
             event(Event.UserNickName(it))
-        } ?: error("유저 정보를 가져오는데 실패하였습니다.")
+        } ?: error("보")
     }
 
     fun getGameData(startDate: String = "2020.02.05") = viewModelScope.launch {

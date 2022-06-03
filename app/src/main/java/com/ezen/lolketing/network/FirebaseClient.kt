@@ -16,7 +16,11 @@ class FirebaseClient @Inject constructor(
 
     fun getCurrentUser() = auth.currentUser
 
+    fun getUserEmail() = getCurrentUser()?.email
+
     fun getStorageReference(path: String) = storage.reference.child(path)
+
+    fun getFirestore(collection: String) = firestore.collection(collection)
 
     suspend fun joinUser(
         email: String,
@@ -115,13 +119,34 @@ class FirebaseClient @Inject constructor(
     }
 
     suspend fun getUserInfo(
-        collectionPath : String,
-        documentPath: String,
-    ) : DocumentSnapshot? = try{
-        firestore.collection(collectionPath).document(documentPath).get().await()
-    } catch (e : Exception) {
-        e.printStackTrace()
-        null
+        successListener: (Users) -> Unit,
+        failureListener: () -> Unit
+    ) {
+        try{
+            val email = auth.currentUser?.email
+            if (email == null) {
+                failureListener()
+                return
+            }
+
+            firestore
+                .collection(Constants.USERS)
+                .document(email)
+                .get()
+                .addOnSuccessListener{
+                    it.toObject(Users::class.java)
+                        ?.let(successListener)
+                        ?:failureListener()
+                }
+                .addOnFailureListener {
+                    it.printStackTrace()
+                    failureListener()
+                }
+                .await()
+        } catch (e : Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun getUserNickName() : String? = try {

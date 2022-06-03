@@ -1,12 +1,15 @@
 package com.ezen.lolketing.view.main.ticket.detail
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityReserveDetailBinding
 import com.ezen.lolketing.util.*
+import com.ezen.lolketing.view.main.ticket.ReserveActivity
 import com.ezen.lolketing.view.main.ticket.payment.PaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +42,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
 
         txtTime.text = time
         txtGameTitle.text = team
-        txtCurrentAmount.text = 11000L.toCommaWon()
+        txtCurrentAmount.text = 11000L.priceFormat()
 
         txtSelectHall.text = "A홀"
         setFragment()
@@ -48,7 +51,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
             if(it) {
                 chPersonnelTwo.isChecked = false
                 hallFragment.setSeatCount(1)
-                txtCurrentAmount.text = 11000L.toCommaWon()
+                txtCurrentAmount.text = 11000L.priceFormat()
             }
         }
 
@@ -56,7 +59,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
             if(it) {
                 chPersonnelOne.isChecked = false
                 hallFragment.setSeatCount(2)
-                txtCurrentAmount.text = 22000L.toCommaWon()
+                txtCurrentAmount.text = 22000L.priceFormat()
             }
         }
     }
@@ -84,7 +87,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
             return@with
         }
 
-        startActivity(
+        launcher.launch(
             createIntent(PaymentActivity::class.java).also {
 //                날짜, 게임 타이틀, 좌석, 금액
                 it.putExtra(PaymentActivity.TIME, txtTime.text.toString())
@@ -97,7 +100,14 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
     }
 
     fun onTicketInfoClick(view: View) {
-        startActivity(PaymentActivity::class.java)
+        startActivity(ReserveActivity::class.java)
+    }
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == Activity.RESULT_OK) {
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
     }
 
 }

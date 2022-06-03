@@ -1,7 +1,9 @@
 package com.ezen.lolketing.view.main.ticket.list
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -82,7 +84,7 @@ class ReserveListActivity : BaseViewModelActivity<ActivityReserveListBinding, Re
                 }
                 // 예매
                 Code.TICKETING_ON.code -> {
-                    startActivity(
+                    launcher.launch(
                         createIntent(ReserveDetailActivity::class.java).also {
                             it.putExtra(Constants.TIME, "${ticket.date} ${ticket.time}")
                             it.putExtra(Constants.TEAM, ticket.team)
@@ -114,6 +116,12 @@ class ReserveListActivity : BaseViewModelActivity<ActivityReserveListBinding, Re
 
         (reserveRecycler.adapter as? ReserveAdapter)?.apply {
             submitList(list)
+        }
+    }
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            finish()
         }
     }
 

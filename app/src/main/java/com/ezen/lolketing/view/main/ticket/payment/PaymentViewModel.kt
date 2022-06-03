@@ -23,6 +23,18 @@ class PaymentViewModel @Inject constructor(
     private val auth: FirebaseAuth
 ): BaseViewModel<PaymentViewModel.Event>() {
 
+    fun getUserInfo() = viewModelScope.launch {
+        repository
+            .getUserCache(
+                successListener = { cache ->
+                    event(Event.MyCache(cache))
+                },
+                failureListener = {
+                    event(Event.UserInfoFailure)
+                }
+            )
+    }
+
     fun updateSeat(
         firstDocumentId: String,
         secondDocumentIdList: List<String>,
@@ -119,12 +131,30 @@ class PaymentViewModel @Inject constructor(
             )
     }
 
+    fun myCacheDeduction(
+        price: Long
+    ) =  viewModelScope.launch {
+        repository
+            .myCacheDeduction(
+                deductionCache = price,
+                successListener = {
+                    event(Event.PaymentSuccess)
+                },
+                failureListener = {
+                    event(Event.Failure)
+                }
+            )
+    }
+
     sealed class Event {
+        data class MyCache(val cache: Long) : Event()
         object SeatSuccess : Event()
         data class QrCodeSuccess(
             val downloadUrl : String
         ) : Event()
         object PurchaseSuccess: Event()
+        object UserInfoFailure: Event()
+        object PaymentSuccess: Event()
         object Failure : Event()
     }
 

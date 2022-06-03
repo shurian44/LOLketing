@@ -16,19 +16,16 @@ class MainViewModel @Inject constructor(
 
     // 유저 정보 조회
     fun getUserInfo() = viewModelScope.launch {
-        val email = repository.getCurrentUser()?.email ?: return@launch
-        val userInfo = repository.getUserInfo(Constants.USERS, email)
-
-        if (userInfo == null) {
-            event(MainEvent.Error("유저 정보 조회 중 오류가 발생하였습니다."))
-            return@launch
-        }
-
-        event(
-            MainEvent.CheckDetailJoin(
-                isNotJoinComplete = userInfo.nickname.isNullOrBlank(),
-                isMaster = (userInfo.grade ?: "") == Constants.MASTER
-            )
+        repository.getUserInfo(
+            successListener = {
+                MainEvent.CheckDetailJoin(
+                    isNotJoinComplete = it.nickname.isNullOrBlank(),
+                    isMaster = (it.grade ?: "") == Constants.MASTER
+                )
+            },
+            failureListener = {
+                event(MainEvent.Error("유저 정보 조회 중 오류가 발생하였습니다."))
+            }
         )
     }
 

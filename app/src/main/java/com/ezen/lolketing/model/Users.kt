@@ -10,5 +10,19 @@ data class Users(
     var rouletteCount : Int ?= 0,
     var accPoint : Int ?= 0,
     var point : Int ?= 0,
-    var cache : Int ?= 0
+    var cache : Long ?= 0
+) {
+    fun mapper() = CacheModifyUser(
+        grade = grade,
+        accPoint = accPoint,
+        point = point,
+        cache = cache
+    )
+}
+
+data class CacheModifyUser(
+    var grade: String?= null,
+    var accPoint: Int?= 0,
+    var point: Int?= 0,
+    var cache: Long?= 0
 )

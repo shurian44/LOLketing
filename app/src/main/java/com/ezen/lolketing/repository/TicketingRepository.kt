@@ -61,18 +61,19 @@ class TicketingRepository @Inject constructor(
         return game
     }
 
-    suspend fun isMasterUser() : Boolean {
-        val email = client.getCurrentUser()?.email ?: return false
-
-        val user = client
+    suspend fun  isMasterUser() : Boolean {
+        var result = false
+        client
             .getUserInfo(
-                collectionPath = Constants.USERS,
-                documentPath = email
+                successListener = { user ->
+                    result = user.grade == Constants.MASTER
+                },
+                failureListener = {
+                    result = false
+                }
             )
-            ?.toObject(Users::class.java)
-            ?: return false
 
-        return user.grade == Constants.MASTER
+        return result
     }
 
     suspend fun addNewGame(

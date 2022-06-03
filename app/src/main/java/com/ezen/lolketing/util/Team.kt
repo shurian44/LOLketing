@@ -24,5 +24,5 @@ fun setTeamLogoImageView(imageView : ImageView, team : String) {
 
 fun getRandomGame() : String {
     val teamList = Team.values().toMutableList().shuffled()
-    return "${teamList[0]}:${teamList[1]}"
+    return "${teamList[0].teamName}:${teamList[1].teamName}"
 }

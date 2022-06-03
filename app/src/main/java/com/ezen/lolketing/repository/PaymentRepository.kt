@@ -1,16 +1,46 @@
 package com.ezen.lolketing.repository
 
+import com.ezen.lolketing.model.CacheModifyUser
 import com.ezen.lolketing.model.PurchaseDTO
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class PaymentRepository @Inject constructor(
-    private val firestore: FirebaseFirestore,
     private val client: FirebaseClient
 ) {
+
+    suspend fun getUserCache(
+        successListener: (Long) -> Unit,
+        failureListener: () -> Unit
+    ) {
+        client
+            .getUserInfo(
+                successListener = {
+                    it.cache?.let(successListener)?:failureListener()
+                },
+                failureListener = {
+                    failureListener()
+                }
+            )
+    }
+
+    suspend fun getUserInfo(
+        successListener: (CacheModifyUser) -> Unit,
+        failureListener: () -> Unit
+    ) {
+        client
+            .getUserInfo(
+                successListener = {
+                    successListener(it.mapper())
+                },
+                failureListener = {
+                    failureListener()
+                }
+            )
+    }
 
     suspend fun updateSeat(
         firstDocumentId: String,
@@ -19,8 +49,8 @@ class PaymentRepository @Inject constructor(
         onSuccessListener: () -> Unit,
         onFailureListener: () -> Unit
     ) {
-        firestore
-            .collection(Constants.GAME)
+        client
+            .getFirestore(Constants.GAME)
             .document(firstDocumentId)
             .collection(Constants.SEAT)
             .document(secondDocumentId)
@@ -72,6 +102,69 @@ class PaymentRepository @Inject constructor(
                 },
                 failureListener = failureListener
             )
+    }
+
+    suspend fun myCacheDeduction(
+        deductionCache: Long,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+        val email = client.getUserEmail()
+
+        if (email == null){
+            failureListener()
+            return
+        }
+
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = email,
+                updateData = mapOf(
+                    CACHE to FieldValue.increment(-deductionCache),
+                    ROULETTE_COUNT to FieldValue.increment(1)
+                ),
+                successListener = successListener,
+                failureListener = failureListener
+            )
+    }
+
+    suspend fun updateChargingCache(
+        addCache: Long,
+        point: Int,
+        grade: String,
+        accPoint: Int,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+        val email = client.getUserEmail()
+
+        if (email == null){
+            failureListener()
+            return
+        }
+
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = email,
+                updateData = mapOf(
+                    CACHE to FieldValue.increment(addCache),
+                    POINT to point,
+                    GRADE to grade,
+                    ACC_POINT to accPoint
+                ),
+                successListener = successListener,
+                failureListener = failureListener
+            )
+    }
+
+    companion object {
+        const val CACHE = "cache"
+        const val POINT = "point"
+        const val GRADE = "grade"
+        const val ACC_POINT = "accPoint"
+        const val ROULETTE_COUNT = "rouletteCount"
     }
 
 }

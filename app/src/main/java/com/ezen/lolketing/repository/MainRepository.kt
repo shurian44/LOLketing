@@ -8,15 +8,14 @@ class MainRepository @Inject constructor(
     private val client: FirebaseClient
 ) {
 
-    suspend fun getCurrentUser() = client.getCurrentUser()
-
     suspend fun getUserInfo(
-        collectionPath : String,
-        documentPath: String,
-    ) : Users? = try {
-        client.getUserInfo(collectionPath, documentPath)?.toObject(Users::class.java)
-    } catch (e : Exception){
-        null
+        successListener: (Users) -> Unit,
+        failureListener: () -> Unit
+    ) {
+        client.getUserInfo(
+            successListener = successListener,
+            failureListener = failureListener
+        )
     }
 
 }
