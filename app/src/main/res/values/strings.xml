@@ -73,8 +73,9 @@
     <string name="add_game">경기 추가</string>
     <string name="add_game_success">경기 추가 완료</string>
     <string name="add_game_failure">경기 추가 실패</string>
-    <string name="ticket_info">티켓 안내</string>
-    <string name="guide_ticket_info">티켓 안내 ></string>
+    <string name="ticket_guide">티켓 안내</string>
+    <string name="ticket_guide_button">티켓 안내 ></string>
+    <string name="ticket_info">티켓 정보</string>
     <string name="personnel">인원</string>
     <string name="seat">좌석</string>
     <string name="guide_select_seat">좌석을 선택해 주세요</string>
@@ -100,12 +101,14 @@
     <string name="restrictions">관람 시 제한사항</string>
     <string name="guide_restrictions">- 입장 및 관람시 1인 1티켓을 소지하여야 합니다. (단 만 12세 미만의 경우 보호자 동반이 필요합니다.)\n- &quot;관람객&quot;은 경기를 촬영, 녹은, 기록할 수 없으며, 각종 TV, 인터넷 등과 같은 매체로 전파하거나 상업적 목적으로 이용할 수 없고, 이를 돕는 행가 금지됩니다.\n- &quot;주최측&quot;은 경기장에서 얻은 &quot;관람객&quot;의 음성 및 초상권을 무상으로 이용할 수 있으며, &quot;관람객&quot;의 경기장 입장은 이에 대한 동의로 간주됩니다.\n- 본 티켓은 &quot;주최측&quot;의 허가없이 판매, 교환, 환전, 증여 등의 일체의 양도 행위를 할 수 없습니다. &quot;관람객&quot;이 &quot;주최측&quot;에서 허가하지 않은 양도 행위로 인해 피해를 입을 경우, &quot;관람객&quot; 스스로 책임을 부답합니다.\n- &quot;관람객&quot;으 쾌적한 관람 및 안전을 위한 목적으로 &quot;주최측&quot;이 실시하는 모든 조치에 협력해야 하며, 경기가 시작된 이후에는 입장이 제한될 수 있습니다.&quot;관람객&quot;은 경기 당일 어떠한 경우에도 &quot;주최측&quot;의 허가없이 타인을 비방, 비하할 목적 또는 정치적, 상업적 목적의 설치물 (배너, 현수막, 심볼 등 모든 종류의 표현물)을 경기장에 반입 및 게재할 수 없으며, 위반 시 &quot;주최측&quot;은 경기 종료 시까지 해당 설치물에 대한 임의 보관을 요구할 수 있고, 불응 시 즉시 퇴장을 요구할 수 있습니다. 또한 다른 &quot;관람객&quot;의 경기 관람과 경기 운영을 방해하는 경우 등에 대해 &quot;주최측&quot;은 경고 없이 즉시 퇴장 또는 민/형사상의 책임을 요구할 수 있습니다.\n- 본 티켓은 티켓 전면에 표시된 해당 일이에만 유효하며, 예매분 티켓이 매진되었을 경우 현장 판매는 실시하지 않는 것을 원칙으로 합니다.\n- &quot;관람객&quot;은 &quot;주최측&quot;의 중대한 과실이나 고의로 인한 경우를 제외하고, 경기장 내 발설할 수 있는 모든 문제에 대해 스스로 책임을 부암합니다.\n- 티켓을 분실, 훼손, 미 소지 시 어떠한 경우에도 입장이 불가하고, 환불 및 재발급이 제한됩니다.\n- 결제하신 티켓의 가액에는 &quot;기념품&quot;이 포함되지 않습니다. 현장에서 지급 받는 &quot;기념품&quot;은 주최사가 제공하는 무료 지급 서비스이며, 교환, 환불, 반품, 수리 등을 요구살 수 없고, 분실 등의 이유로 재 지급을 요구살 수 없으며, 양도 불가한 상품입니다.\n- 상기 명시된 내용에 대한 미 숙지로 인한 책임은 &quot;관람객&quot;본인에게 있으며, 이를 위반한 경우 &quot;관람객&quot;의 관람은 거부되고, 티켓은 무효로 간주되며 환불되지 않습니다. 또한 1회라 하더라도 중대한 위반을 하거나, 상습적이고 지속적인 위반행위를 하는 &quot;관람객&quot;은 재 방문이 제한될 수 있습니다.</string>
     <string name="out_of_cache">잔액이 부족합니다. 캐시 충전 후 이용해주세요</string>
+    <string name="refund">환불하기</string>
+    <string name="refund_impossible">환불 불가</string>
 
     <!-- 캐시 -->
     <string name="my_cache">My 캐시</string>
     <string name="charging_cache">캐시 충전</string>
     <string name="label_guide_charging_cache">충전 시 주의사항</string>
-    <string name="guide_charging_cache"><![CDATA[&quot;롤켓팅&quot;의 캐시는 <font color=\"#03DAC5\"><b>가상머니</b></font>입니다.<br>원하시는 가격을 입력하시고 캐시 충전 버튼을 눌러주세요.\n<font color=\"#03DAC5\"><br>최대 보유 캐시는 100만원 입니다.</font>]]></string>
+    <string name="guide_charging_cache"><![CDATA[&quot;롤켓팅&quot;의 캐시는 <font color=\"#03DAC5\"><b>가상머니</b></font>입니다.<br>원하시는 충전 금액을 입력하시고 캐시 충전 버튼을 눌러주세요.\n<font color=\"#03DAC5\"><br>최대 보유 캐시는 100만원 입니다.</font>]]></string>
     <string name="retained_cache">보유한 캐시</string>
     <string name="amount_charging_cache">충전할 캐시</string>
     <string name="zero_won">0 원</string>
@@ -113,6 +116,11 @@
     <string name="ten_thousand_won">+1만 원</string>
     <string name="hundred_thousand_won">+10만 원</string>
     <string name="success_charging_cache">캐시 충전을 완료하였습니다</string>
+    <string name="game_time">경기 시간</string>
+    <string name="area">장소</string>
+    <string name="game_area">LoL PARK</string>
+    <string name="guide_refund">환불 안내</string>
+    <string name="guide_refund_info">티켓 환불은 당일 경기시간 4시간 전까지 가능합니다.\n예매 당일 환불 시 수수료가 발생하지 않습니다.\n이후 환불 시 티켓 금액의 10% 취소 수수료 부과됩니다.</string>
 
     <!-- 공통 -->
     <string name="cancel">취소</string>
@@ -130,6 +138,7 @@
     <string name="chatting">채팅</string>
     <string name="versus">vs</string>
     <string name="amount">금액</string>
+    <string name="move_home">홈으로 이동</string>
 
     <string name="like_counts">좋아요 %d</string>
     <string name="board_views">조회수 %d</string>

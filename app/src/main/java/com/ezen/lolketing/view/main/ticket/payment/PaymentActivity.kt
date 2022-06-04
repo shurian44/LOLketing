@@ -13,7 +13,7 @@ import com.ezen.lolketing.databinding.ActivityPaymentBinding
 import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity
 import com.ezen.lolketing.view.main.ticket.ReserveActivity
-import com.ezen.lolketing.view.main.ticket.TicketingActivity
+import com.ezen.lolketing.view.main.ticket.info.MyTicketInfoActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -22,6 +22,7 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
 
     override val viewModel: PaymentViewModel by viewModels()
     private var documentedIdList : List<String>? = null
+    private var purchaseId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +46,7 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
 
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
         title = getString(R.string.ticket_payment)
-        viewModel.getUserInfo()
+        viewModel.getUserCache()
     }
 
     private fun eventHandler(event: PaymentViewModel.Event) {
@@ -64,10 +65,12 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
                     downloadUrl = event.downloadUrl,
                     team = binding.txtGameTitle.text.toString(),
                     price = binding.txtPrice.text.toString().removePriceFormat(),
-                    information = "${binding.txtTime.text}, ${binding.txtSeat.text}"
+                    information = "${binding.txtTime.text}, ${binding.txtSeat.text}",
+                    documentList = documentedIdList ?: listOf()
                 )
             }
             is PaymentViewModel.Event.PurchaseSuccess -> {
+                purchaseId = event.documentId
                 viewModel.myCacheDeduction(binding.txtPrice.text.toString().removePriceFormat())
             }
             is PaymentViewModel.Event.MyCache -> {
@@ -78,8 +81,8 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
                 toast(getString(R.string.payment_success))
 
                 startActivity(
-                    createIntent(TicketingActivity::class.java).also {
-
+                    createIntent(MyTicketInfoActivity::class.java).also {
+                        it.putExtra(MyTicketInfoActivity.DOCUMENT_ID, purchaseId)
                     }
                 )
                 setResult(Activity.RESULT_OK)
@@ -95,7 +98,7 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
 
     private fun setMyCache(cache: Long) = with(binding) {
         txtMyCache.text = cache.priceFormat()
-        btnChargingCache.isVisible = (txtPrice.text.toString() > txtMyCache.text.toString())
+        btnChargingCache.isVisible = (txtPrice.text.toString().removePriceFormat() > txtMyCache.text.toString().removePriceFormat())
     }
 
     fun onChargingCacheClick(view: View) {
@@ -107,7 +110,7 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
     }
 
     fun onPaymentClick(view: View) {
-        if (binding.txtPrice.text.toString() > binding.txtMyCache.text.toString()) {
+        if (binding.txtPrice.text.toString().removePriceFormat() > binding.txtMyCache.text.toString().removePriceFormat()) {
             toast(getString(R.string.out_of_cache))
             return
         }
@@ -130,7 +133,7 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            viewModel.getUserInfo()
+            viewModel.getUserCache()
         }
     }
 

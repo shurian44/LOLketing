@@ -42,14 +42,17 @@ class CacheChargingViewModel @Inject constructor(
         var point = user.point ?: 0
         var accPoint = user.accPoint ?: 0
         var grade = user.grade ?: Constants.BRONZE
+        var charging = 0L
 
         // 캐시가 100만이 넘을 경우 100만으로 고정 : Int 형 값 넘어가는 오류 발생 방지
         if(myCache + chargingCache > 1_000_000){
             point += (1_000_000 - myCache.toInt()) / 10
             accPoint += (1_000_000 - myCache.toInt()) / 10
+            charging = 1_000_000 - myCache
         }else{ // 그 외는 충전한 금액 만큼 충전
             point += (chargingCache / 10).toInt()
             accPoint += (chargingCache / 10).toInt()
+            charging = chargingCache
         }
 
         // 포인트와 누적 포인트도 2억 이상일 경우 2억으로 고정
@@ -71,7 +74,7 @@ class CacheChargingViewModel @Inject constructor(
             }
         }
 
-        chargingCache(chargingCache, grade, point, accPoint)
+        chargingCache(charging, grade, point, accPoint)
     }
 
     private fun chargingCache(

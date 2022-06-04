@@ -11,9 +11,26 @@ data class PurchaseDTO(
     var timestamp: Long = 0,
     var information: String? = null,
     var message: String? = null,
-    var address: String? = null
+    var address: String? = null,
+    var documentList : List<String>? = null
 ) {
+    fun ticketMapper() = TicketInfo(
+        amount = amount,
+        image = image?: "",
+        gameTitle = name?: "",
+        information = information ?: "",
+        documentList = documentList ?: listOf()
+    )
+
     companion object {
         const val USABLE = "usable"
     }
 }
+
+data class TicketInfo(
+    val amount : Int,
+    val image: String,
+    val gameTitle: String,
+    val information: String,
+    val documentList: List<String>
+)

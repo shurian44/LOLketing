@@ -61,7 +61,7 @@
         <activity android:name=".view.main.shop.ShopActivity" />
         <activity android:name=".view.main.my_page.cache.CacheChargingActivity" />
         <activity android:name=".view.main.my_page.MyPageActivity" />
-        <activity android:name=".view.main.ticket.TicketingActivity" />
+        <activity android:name=".view.main.ticket.info.MyTicketInfoActivity" />
         <activity android:name=".view.main.ticket.detail.ReserveDetailActivity" />
         <activity android:name=".view.main.ticket.SeatGuideActivity" />
         <activity android:name=".view.main.shop.GameScheduleActivity" />

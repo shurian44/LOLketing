@@ -79,8 +79,8 @@
             app:layout_constraintBottom_toTopOf="@id/labelChargingGuide"
             app:layout_constraintEnd_toStartOf="@id/btnAddTenThousand"
             app:layout_constraintStart_toStartOf="parent"
-            app:strokeColor="@color/main_color"
-            app:strokeWidth="1dp" />
+            app:strokeColor="@color/sub_color"
+            app:strokeWidth="2dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddTenThousand"
@@ -97,8 +97,8 @@
             app:layout_constraintBottom_toBottomOf="@id/btnAddThousand"
             app:layout_constraintEnd_toStartOf="@id/btnAddHundredThousand"
             app:layout_constraintStart_toEndOf="@id/btnAddThousand"
-            app:strokeColor="@color/main_color"
-            app:strokeWidth="1dp" />
+            app:strokeColor="@color/sub_color"
+            app:strokeWidth="2dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddHundredThousand"
@@ -115,8 +115,8 @@
             app:layout_constraintBottom_toBottomOf="@id/btnAddThousand"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnAddTenThousand"
-            app:strokeColor="@color/main_color"
-            app:strokeWidth="1dp" />
+            app:strokeColor="@color/sub_color"
+            app:strokeWidth="2dp" />
 
         <TextView
             android:id="@+id/txtCache"

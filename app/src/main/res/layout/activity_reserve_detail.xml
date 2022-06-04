@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="15dp"
-                android:text="@string/guide_ticket_info"
+                android:text="@string/ticket_guide_button"
                 android:onClick="@{activity::onTicketInfoClick}"
                 android:textColor="@color/light_gray"
                 app:layout_constraintEnd_toEndOf="parent"

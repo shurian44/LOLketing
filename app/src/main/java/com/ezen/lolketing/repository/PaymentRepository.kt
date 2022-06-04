@@ -90,7 +90,7 @@ class PaymentRepository @Inject constructor(
 
     suspend fun setPurchase(
         data: PurchaseDTO,
-        successListener : () -> Unit,
+        successListener : (String) -> Unit,
         failureListener : () -> Unit
     ) {
         client
@@ -98,7 +98,7 @@ class PaymentRepository @Inject constructor(
                 collection = Constants.PURCHASE,
                 data = data,
                 successListener = {
-                    successListener()
+                    successListener(it.id)
                 },
                 failureListener = failureListener
             )
@@ -122,7 +122,7 @@ class PaymentRepository @Inject constructor(
                 documentId = email,
                 updateData = mapOf(
                     CACHE to FieldValue.increment(-deductionCache),
-                    ROULETTE_COUNT to FieldValue.increment(1)
+                    ROULETTE_COUNT to FieldValue.increment(if (deductionCache > 11_000) 2 else 1)
                 ),
                 successListener = successListener,
                 failureListener = failureListener

@@ -11,7 +11,7 @@ class ReserveActivity : BaseActivity<ActivityReserveBinding>(R.layout.activity_r
         super.onCreate(savedInstanceState)
 
         binding.apply {
-            title = getString(R.string.ticket_info)
+            title = getString(R.string.ticket_guide)
             layoutTop.btnBack.setOnClickListener { onBackClick(it) }
         }
 

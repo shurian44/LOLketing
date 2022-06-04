@@ -375,6 +375,26 @@ class FirebaseClient @Inject constructor(
             .await()
     }
 
+    suspend fun basicDelete(
+        collection: String,
+        documentId: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+        firestore
+            .collection(collection)
+            .document(documentId)
+            .delete()
+            .addOnSuccessListener {
+                successListener()
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener()
+            }
+            .await()
+    }
+
     suspend fun getDoubleSnapshot(
         firstCollection: String,
         firstDocument: String,
@@ -424,6 +444,53 @@ class FirebaseClient @Inject constructor(
     } catch (e: Exception) {
         e.printStackTrace()
         null
+    }
+
+    suspend fun doubleUpdateData(
+        firstCollection: String,
+        firstDocument: String,
+        secondCollection: String,
+        secondDocument: String,
+        updateData : Map<String, Any?>,
+        successListener : () -> Unit,
+        failureListener : () -> Unit
+    ) = try {
+        firestore
+            .collection(firstCollection)
+            .document(firstDocument)
+            .collection(secondCollection)
+            .document(secondDocument)
+            .update(updateData)
+            .addOnSuccessListener {
+                successListener()
+            }
+            .addOnFailureListener {
+                failureListener()
+                it.printStackTrace()
+            }
+            .await()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    suspend fun storageDelete(
+        path: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+        storage
+            .reference
+            .child(path)
+            .delete()
+            .addOnSuccessListener {
+                successListener()
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener()
+            }
+            .await()
     }
 
     companion object {
