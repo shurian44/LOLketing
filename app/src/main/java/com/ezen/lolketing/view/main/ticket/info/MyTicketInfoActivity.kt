@@ -44,6 +44,10 @@ class MyTicketInfoActivity : BaseViewModelActivity<ActivityMyTicketInfoBinding, 
                 toast(getString(R.string.error_unexpected))
                 finish()
             }
+            is MyTicketInfoViewModel.Event.RefundSuccess -> {
+                toast(getString(R.string.refund_success))
+                finish()
+            }
         }
     }
 
@@ -82,11 +86,6 @@ class MyTicketInfoActivity : BaseViewModelActivity<ActivityMyTicketInfoBinding, 
             isEnabled = isRefundPossible
             text = if (isRefundPossible) getString(R.string.refund) else getString(R.string.refund_impossible)
         }
-
-    }
-
-    override fun moveHome(view: View) {
-        super.moveHome(view)
 
     }
 

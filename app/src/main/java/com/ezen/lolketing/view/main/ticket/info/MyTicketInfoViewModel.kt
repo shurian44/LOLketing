@@ -111,8 +111,7 @@ class MyTicketInfoViewModel @Inject constructor(
                 false
             }
             // 수수료 면제 : 당일 구매의 경우 수수료 면제
-            // todo 구매일이 없었다..ㅠㅠ
-            dateFormat.format(ticketTime) == dateFormat.format(currentTime) -> {
+            dateFormat.format(ticketInfo.timestamp) == dateFormat.format(currentTime) -> {
                 refund = pay
                 true
             }
@@ -126,6 +125,7 @@ class MyTicketInfoViewModel @Inject constructor(
 
     sealed class Event {
         data class Success(val info : TicketInfo) : Event()
+        object RefundSuccess : Event()
         object Failure : Event()
     }
 
