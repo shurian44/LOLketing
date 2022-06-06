@@ -59,6 +59,8 @@
     <string name="event_title_new_user">[이벤트] 신규 회원 이벤트</string>
     <string name="event_title_ticket_reserve">[이벤트] 티켓 구입 이벤트</string>
     <string name="event_title_roulette">[이벤트] 룰렛 이벤트</string>
+    <string name="roulette_count">룰렛 남은 횟수 : %d번</string>
+    <string name="roulette_result">축하합니다! %dRP에 당첨되셨습니다!!</string>
 
     <!-- 티켓 예매 -->
     <string name="ticketing_on">예매</string>
@@ -103,6 +105,7 @@
     <string name="out_of_cache">잔액이 부족합니다. 캐시 충전 후 이용해주세요</string>
     <string name="refund">환불하기</string>
     <string name="refund_impossible">환불 불가</string>
+    <string name="refund_success">환불 처리가 완료되었습니다</string>
 
     <!-- 캐시 -->
     <string name="my_cache">My 캐시</string>

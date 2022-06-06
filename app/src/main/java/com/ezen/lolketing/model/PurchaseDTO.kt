@@ -19,6 +19,7 @@ data class PurchaseDTO(
         image = image?: "",
         gameTitle = name?: "",
         information = information ?: "",
+        timestamp = timestamp,
         documentList = documentList ?: listOf()
     )
 
@@ -32,5 +33,6 @@ data class TicketInfo(
     val image: String,
     val gameTitle: String,
     val information: String,
+    val timestamp: Long,
     val documentList: List<String>
 )

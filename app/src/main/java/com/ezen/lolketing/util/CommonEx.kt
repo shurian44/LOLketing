@@ -105,3 +105,9 @@ fun setSpecialCharacterRestrictions() = InputFilter { source, _, _, _, _, _ ->
 fun Dialog.backgroundTransparent() {
     window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 }
+
+// 쿠폰 유효기간 계산 : 60일
+fun getCouponValidityPeriod() : String {
+    val lateDay60 = System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 60L)
+    return lateDay60.timestampToString()
+}

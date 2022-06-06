@@ -1,153 +1,117 @@
-package com.ezen.lolketing.view.main.event;
+package com.ezen.lolketing.view.main.event
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.animation.ObjectAnimator
+import android.os.Bundle
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.core.animation.doOnEnd
+import com.ezen.lolketing.BaseViewModelActivity
+import com.ezen.lolketing.R
+import com.ezen.lolketing.databinding.ActivityRouletteBinding
+import com.ezen.lolketing.util.repeatOnStarted
+import com.ezen.lolketing.util.toast
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import java.util.*
 
-import androidx.appcompat.app.AppCompatActivity;
+@AndroidEntryPoint
+class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, RouletteViewModel>(R.layout.activity_roulette) {
 
-import com.ezen.lolketing.R;
-import com.ezen.lolketing.model.Coupon;
-import com.ezen.lolketing.model.Users;
-import com.ezen.lolketing.view.main.MainActivity;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
+    override val viewModel: RouletteViewModel by viewModels()
 
-import java.util.Random;
+    var startDegree = 0f
+    var endDegree = 0f
+    var degreeRand = 0
+    var rouletteResult = 0
+    var count = 0
 
-public class RouletteActivity extends AppCompatActivity {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        initViews()
+        repeatOnStarted {
+            viewModel.eventFlow.collect { event -> eventHandler(event) }
+        }
 
-    ImageView iv_roulette;
-    TextView txt_count;
-    float startDegree = 0f;
-    float endDegree = 0f;
-    int degree_rand = 0;
-    String result = "";
-    int count;
+    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_roulette);
+    private fun initViews() {
+        // Animator 설정
+        setAnimator()
+        // 룰렛 카운트 조회
+        viewModel.getRouletteCount()
+    }
 
-        // 애니메이션 이미지 인식
-        iv_roulette = findViewById(R.id.roulette);
-        txt_count = findViewById(R.id.txt_count);
-
-        firestore.collection("Users").document(auth.getCurrentUser().getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Users user = documentSnapshot.toObject(Users.class);
-                count = user.getRouletteCount();
-                txt_count.setText("남은 횟수 : " + count + " 번");
+    private fun eventHandler(event: RouletteViewModel.Event) {
+        when(event) {
+            is RouletteViewModel.Event.RouletteCount -> {
+                count = event.count
+                binding.txtCount.text = getString(R.string.roulette_count, event.count)
             }
-        });
+            is RouletteViewModel.Event.Success -> {
+                binding.txtCount.text = getString(R.string.roulette_count, --count)
+            }
+            is RouletteViewModel.Event.Failure -> {
+                toast(getString(R.string.error_unexpected))
+                finish()
+            }
+        }
     }
 
     // 룰렛 이미지 터치 시에 호출되는 메소드
-    public void rotate(View v) {
-        if(count <= 0){
-            Toast.makeText(this, "기회를 다 소진하였습니다.", Toast.LENGTH_SHORT).show();
-            return;
+    fun rotate(v: View?) {
+        if (count <= 0) {
+            Toast.makeText(this, "기회를 다 소진하였습니다.", Toast.LENGTH_SHORT).show()
+            return
         }
         // ---------- 회전각도 설정 ----------
-        startDegree = 0;    // 이전 정지 각도를 시작 각도로 설정
-        Random rand = new Random(); // 랜덤 객체 생성
-        degree_rand = rand.nextInt(360);    // 0~359 사이의 정수 추출
-        endDegree = startDegree + 360 * 5 + degree_rand;  // 회전 종료각도 설정(초기 각도에서 세바퀴 돌고 0~359 난수만큼 회전)
+        val rand = Random() // 랜덤 객체 생성
+        degreeRand = rand.nextInt(360) // 0~359 사이의 정수 추출
+        endDegree = startDegree + 360 * 5 + degreeRand // 회전 종료각도 설정(초기 각도에서 세바퀴 돌고 0~359 난수만큼 회전)
+        setAnimator()
+    }
 
+    private fun setAnimator() {
         // ---------- 애니메이션 실행 ----------
         // 애니메이션 이미지에 대해 초기 각도에서 회전종료 각도까지 회전하는 애니메이션 객체 생성
-        ObjectAnimator object = ObjectAnimator.ofFloat(iv_roulette, "rotation", startDegree, endDegree);
+        val animator = ObjectAnimator.ofFloat(binding.imgRoulette, "rotation", startDegree, endDegree)
 
-        object.setInterpolator(new AccelerateDecelerateInterpolator()); // 애니메이션 속력 설정
-        object.setDuration(5000);   // 애니메이션 시간(5초)
-        object.start();   // 애니메이션 시작
-        object.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {}
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if ( degree_rand >= 0 && degree_rand < 45 ) {
-                    result = "2000RP";
-                    Toast.makeText(getApplicationContext(), "축하합니다! 2000RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
-                }else if ( degree_rand >= 45 && degree_rand < 90 ) {
-                    result = "300RP";
-                    Toast.makeText(getApplicationContext(), "축하합니다! 300RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
-                }else if ( degree_rand >= 90 && degree_rand < 135 ) {
-                    result = "350RP";
-                    Toast.makeText(getApplicationContext(), "축하합니다! 3500RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
-                }else if ( degree_rand >= 135 && degree_rand < 180 ) {
-                    result = "200RP";
-                    Toast.makeText(getApplicationContext(), "축하합니다! 200RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
-                }else if ( degree_rand >= 180 && degree_rand < 225 ) {
-                    result = "1000RP";
-                    Toast.makeText(getApplicationContext(), "축하합니다! 1000RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
-                }else if ( degree_rand >= 225 && degree_rand < 270 ) {
-                    result = "250RP";
-                    Toast.makeText(getApplicationContext(), "축하합니다! 250RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
-                }else if ( degree_rand >= 270 && degree_rand < 315 ) {
-                    result = "450RP";
-                    Toast.makeText(getApplicationContext(), "축하합니다! 450RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
-                }else if ( degree_rand >= 315 && degree_rand < 360 ) {
-                    result = "550RP";
-                    Toast.makeText(getApplicationContext(), "축하합니다! 250RP 당첨되셨습니다!!" , Toast.LENGTH_SHORT).show();
+        animator.apply {
+            interpolator = AccelerateDecelerateInterpolator() // 애니메이션 속력 설정
+            duration = 5000 // 애니메이션 시간(5초)
+            startDegree = endDegree // 이전 정지 각도를 시작 각도로 설정
+            doOnEnd {
+                rouletteResult = when (degreeRand) {
+                    in 225..269 -> {
+                        250
+                    }
+                    in 45..89 -> {
+                        300
+                    }
+                    in 90..134 -> {
+                        350
+                    }
+                    in 270..314 -> {
+                        450
+                    }
+                    in 315..359 -> {
+                        550
+                    }
+                    in 180..224 -> {
+                        1000
+                    }
+                    else -> {
+                        2000
+                    }
                 }
-
-                Coupon coupon = new Coupon();
-                coupon.setId(auth.getCurrentUser().getEmail());
-                coupon.setLimit("2222.01.01");
-                coupon.setTitle("룰렛 쿠폰");
-                coupon.setUse("사용 안함");
-                coupon.setCouponNumber(setCouponNumber());
-
-                firestore.collection("Users").document(auth.getCurrentUser().getEmail()).update("rouletteCount", FieldValue.increment(-1));
-                firestore.collection("Coupon").document().set(coupon);
-                count -= 1;
-                txt_count.setText("남은 횟수 : " + count + " 번");
+                toast(getString(R.string.roulette_result, rouletteResult))
+                viewModel.setCoupon(rouletteResult)
             }
-            @Override
-            public void onAnimationCancel(Animator animation) {}
-            @Override
-            public void onAnimationRepeat(Animator animation) {}
-        });
-
-    }
-
-    private String setCouponNumber(){
-        String couponNumber = "";
-        String[] chooseNum = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R"
-                , "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        Random random = new Random();
-
-        for(int i = 0; i < 16; i++) {
-            couponNumber += chooseNum[random.nextInt(36)];
-            if(i % 4 == 3 && i != 15) {
-                couponNumber += "-";
-            }
+            start() // 애니메이션 시작
         }
-        return couponNumber;
+
     }
 
-    public void logout(View view) {
-        auth.signOut();
-    }
-
-    public void moveHome(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
 }

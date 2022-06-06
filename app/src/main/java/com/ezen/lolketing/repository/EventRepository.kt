@@ -1,7 +1,10 @@
 package com.ezen.lolketing.repository
 
+import com.ezen.lolketing.model.Coupon
+import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import javax.inject.Inject
@@ -36,6 +39,71 @@ class EventRepository @Inject constructor(
             successListener = successListener,
             failureListener = failureListener
         )
+    }
+
+    suspend fun getRouletteCount(
+        successListener: (Int) -> Unit,
+        failureListener: () -> Unit
+    ) {
+        val email = client.getUserEmail()
+
+        if (email == null) {
+            failureListener()
+            return
+        }
+
+        client
+            .getBasicSnapshot(
+                collection = Constants.USERS,
+                document = email,
+                successListener = {
+                    it.toObject(Users::class.java)
+                        ?.rouletteCount
+                        ?.let(successListener)
+                        ?: failureListener()
+                },
+                failureListener = failureListener
+            )
+    }
+
+    suspend fun updateCouponCount(
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+
+        val email = client.getUserEmail()
+        if (email == null){
+            failureListener()
+            return
+        }
+
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = email,
+                updateData = mapOf(
+                    "rouletteCount" to FieldValue.increment(-1),
+                    "point" to FieldValue.increment(-1)
+                ),
+                successListener= successListener,
+                failureListener = failureListener
+            )
+    }
+
+    suspend fun setCoupon(
+        coupon: Coupon,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) {
+        client
+            .basicAddData(
+                collection = Constants.COUPON,
+                data = coupon,
+                successListener = {
+                    successListener()
+                },
+                failureListener = failureListener
+            )
     }
 
 }

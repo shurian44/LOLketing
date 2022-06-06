@@ -15,5 +15,5 @@ enum class Code(val code: String, val codeName: String) {
     GOLD("USER003", "골드"),
     PLATINUM("USER004", "플래티넘"),
     MASTER("USER005", "마스터"),
-    PURCHASE_TICKET("PURCHASE001", "ticket")
+    PURCHASE_TICKET("PURCHASE001", "ticket"),
 }

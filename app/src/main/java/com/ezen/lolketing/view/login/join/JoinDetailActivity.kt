@@ -153,12 +153,6 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
         }
     } // setUser()
 
-    // 쿠폰 유효기간 계산 : 60일
-    private fun getCouponValidityPeriod() : String {
-        val lateDay60 = System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 60L)
-        return lateDay60.timestampToString()
-    }
-
     fun moveAddressSearch(view: View) {
         launcher.launch(createIntent(AddressActivity::class.java))
     }
