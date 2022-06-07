@@ -26,9 +26,9 @@
 
         <ImageView
             android:id="@+id/imgRoulette"
-            android:layout_width="330dp"
-            android:layout_height="330dp"
-            android:src="@drawable/roulette"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:src="@drawable/img_roulette"
             android:adjustViewBounds="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -37,11 +37,27 @@
 
         <ImageView
             android:id="@+id/imgRoulettePosition"
-            android:layout_width="50dp"
-            android:layout_height="70dp"
+            android:layout_width="39dp"
+            android:layout_height="58dp"
             android:layout_marginBottom="-30dp"
-            android:src="@drawable/down_arrow"
+            android:src="@drawable/img_position"
             app:layout_constraintBottom_toTopOf="@id/imgRoulette"
+            app:layout_constraintStart_toStartOf="@id/imgRoulette"
+            app:layout_constraintEnd_toEndOf="@id/imgRoulette"/>
+
+        <TextView
+            android:id="@+id/btnSpinning"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:text="Start"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:onClick="@{activity::rotate}"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintTop_toTopOf="@id/imgRoulette"
+            app:layout_constraintBottom_toBottomOf="@id/imgRoulette"
             app:layout_constraintStart_toStartOf="@id/imgRoulette"
             app:layout_constraintEnd_toEndOf="@id/imgRoulette"/>
 
@@ -53,24 +69,9 @@
             android:textColor="@color/sub_color"
             tools:text="남은 횟수 : 0 번"
             app:layout_constraintTop_toBottomOf="@id/imgRoulette"
-            app:layout_constraintBottom_toTopOf="@id/btnSpinning"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
-        <Button
-            android:id="@+id/btnSpinning"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:text="돌리기"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:onClick="@{activity::rotate}"
-            android:background="@color/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,6 +2,7 @@ package com.ezen.lolketing.view.main.event
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
@@ -37,9 +38,12 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
 
     }
 
-    private fun initViews() {
+    private fun initViews() = with(binding) {
         // Animator 설정
-        setAnimator()
+        activity = this@RouletteActivity
+        title = getString(R.string.roulette_title)
+        layoutTop.btnBack.setOnClickListener { onBackClick(it) }
+
         // 룰렛 카운트 조회
         viewModel.getRouletteCount()
     }
@@ -67,8 +71,7 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
             return
         }
         // ---------- 회전각도 설정 ----------
-        val rand = Random() // 랜덤 객체 생성
-        degreeRand = rand.nextInt(360) // 0~359 사이의 정수 추출
+        degreeRand = (0..359).random() // 0~359 사이의 정수 추출
         endDegree = startDegree + 360 * 5 + degreeRand // 회전 종료각도 설정(초기 각도에서 세바퀴 돌고 0~359 난수만큼 회전)
         setAnimator()
     }
@@ -81,7 +84,8 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
         animator.apply {
             interpolator = AccelerateDecelerateInterpolator() // 애니메이션 속력 설정
             duration = 5000 // 애니메이션 시간(5초)
-            startDegree = endDegree // 이전 정지 각도를 시작 각도로 설정
+            startDegree = 0f
+            start() // 애니메이션 시작
             doOnEnd {
                 rouletteResult = when (degreeRand) {
                     in 225..269 -> {
@@ -109,7 +113,6 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
                 toast(getString(R.string.roulette_result, rouletteResult))
                 viewModel.setCoupon(rouletteResult)
             }
-            start() // 애니메이션 시작
         }
 
     }

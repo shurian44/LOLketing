@@ -146,6 +146,7 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
                 title = Code.NEW_USER_COUPON.code
                 use = Code.NOT_USE.code
                 limit = getCouponValidityPeriod()
+                point = 200
             }
             viewModel.updateNewUserInfo(user)
         } else {

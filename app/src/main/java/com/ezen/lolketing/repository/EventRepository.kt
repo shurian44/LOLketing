@@ -95,6 +95,14 @@ class EventRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) {
+        val email = client.getUserEmail()
+        if (email == null){
+            failureListener()
+            return
+        }
+
+        coupon.id = email
+
         client
             .basicAddData(
                 collection = Constants.COUPON,

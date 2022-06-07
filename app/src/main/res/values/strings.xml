@@ -61,6 +61,7 @@
     <string name="event_title_roulette">[이벤트] 룰렛 이벤트</string>
     <string name="roulette_count">룰렛 남은 횟수 : %d번</string>
     <string name="roulette_result">축하합니다! %dRP에 당첨되셨습니다!!</string>
+    <string name="roulette_title">포인트 룰렛</string>
 
     <!-- 티켓 예매 -->
     <string name="ticketing_on">예매</string>

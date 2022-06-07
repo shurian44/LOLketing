@@ -28,15 +28,6 @@ class RouletteViewModel @Inject constructor(
         )
     }
 
-//            val coupon = Coupon()
-//        coupon.id = auth.currentUser!!.email
-//        coupon.limit = "2222.01.01"
-//        coupon.title = "룰렛 쿠폰"
-//        coupon.use = "사용 안함"
-//        coupon.couponNumber = getCouponNumber()
-//        firestore.collection("Users").document(auth.currentUser!!.email!!)
-//            .update("rouletteCount", FieldValue.increment(-1))
-//        firestore.collection("Coupon").document().set(coupon)
     fun setCoupon(
         point: Int
     ) = viewModelScope.launch {
