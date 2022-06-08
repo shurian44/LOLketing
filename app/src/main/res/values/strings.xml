@@ -126,6 +126,9 @@
     <string name="guide_refund">환불 안내</string>
     <string name="guide_refund_info">티켓 환불은 당일 경기시간 4시간 전까지 가능합니다.\n예매 당일 환불 시 수수료가 발생하지 않습니다.\n이후 환불 시 티켓 금액의 10% 취소 수수료 부과됩니다.</string>
 
+    <!-- 뉴스 조회를 실패하였습니다. -->
+    <string name="error_news_search">뉴스 조회에 실패하였습니다.</string>
+
     <!-- 공통 -->
     <string name="cancel">취소</string>
     <string name="ok">확인</string>

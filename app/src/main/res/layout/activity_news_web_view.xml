@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="activity"
-            type="com.ezen.lolketing.view.main.news.NewsWebViewActivity" />
+            name="title"
+            type="String" />
 
     </data>
 
@@ -17,40 +17,20 @@
         android:layout_height="match_parent"
         tools:context=".view.main.news.NewsWebViewActivity">
 
-        <ImageView
-            android:id="@+id/main_logo"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="6dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/lolketing_logo"
-            android:onClick="@{activity::moveHome}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/logout"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
-            android:onClick="@{activity::logout}"
-            app:layout_constraintBottom_toBottomOf="@id/main_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/main_logo" />
+        <include
+            android:id="@+id/layoutTop"
+            layout="@layout/layout_top"
+            app:title="@{title}"
+            app:isBackVisible="@{true}"/>
 
         <WebView
             android:id="@+id/news_webView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_logo" />
+            app:layout_constraintTop_toBottomOf="@id/layoutTop" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

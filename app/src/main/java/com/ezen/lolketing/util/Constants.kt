@@ -19,4 +19,5 @@ object Constants {
     const val MASTER = "마스터"
     const val URL = "url"
     const val ADDRESS_API_BASE_URL = "https://www.juso.go.kr/"
+    const val NAVER_API_BASE_URL = "https://openapi.naver.com/v1/"
 }
