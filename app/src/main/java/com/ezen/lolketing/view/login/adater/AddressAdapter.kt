@@ -1,4 +1,4 @@
-package com.ezen.lolketing.view.dialog.adater
+package com.ezen.lolketing.view.login.adater
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

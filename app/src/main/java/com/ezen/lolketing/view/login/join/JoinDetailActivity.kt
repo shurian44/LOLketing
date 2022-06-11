@@ -1,6 +1,7 @@
 package com.ezen.lolketing.view.login.join
 
 import android.app.Activity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
@@ -24,9 +25,8 @@ import javax.inject.Inject
 class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, JoinDetailViewModel>(R.layout.activity_join_detail) {
 
     override val viewModel: JoinDetailViewModel by viewModels()
-    @Inject lateinit var firestore : FirebaseFirestore
-    @Inject lateinit var auth : FirebaseAuth
-    val coupon = Coupon()
+    @Inject lateinit var pref : SharedPreferences
+    private val coupon = Coupon()
 
     private var isModify = false
 
@@ -122,19 +122,10 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
 
     // 등록하기 버튼 클릭
     fun setUser(view: View) {
-        val id = auth.currentUser?.email
+        val id = pref.getString(Constants.ID, null)
         if (id == null) {
             toast(getString(R.string.user_register_failure))
             return
-        }
-
-        val user = Users().apply {
-            this.id = id
-            uid = auth.currentUser?.uid
-            address = binding.editAddress.text.toString()
-            nickname = binding.editNickname.text.toString()
-            phone = binding.editPhone.text.toString()
-            grade = Constants.BRONZE
         }
 
         // 회원가입 상세의 경우
@@ -148,7 +139,7 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
                 limit = getCouponValidityPeriod()
                 point = 200
             }
-            viewModel.updateNewUserInfo(user)
+            viewModel.updateNewUserInfo(id)
         } else {
             viewModel.updateModifyUserInfo()
         }

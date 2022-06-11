@@ -46,7 +46,7 @@ class JoinDetailViewModel @Inject constructor(
 
     fun updateModifyUserInfo() = viewModelScope.launch {
         _user.value?.let {
-            repository.updateModifyUserInfo(
+            repository.updateUserInfo(
                 user = it,
                 successListener = {
                     event(Event.UpdateSuccess)
@@ -55,19 +55,22 @@ class JoinDetailViewModel @Inject constructor(
                     event(Event.UpdateFailure)
                 }
             )
-        }
+        } ?: event(Event.UpdateFailure)
     }
 
-    fun updateNewUserInfo(users: Users) = viewModelScope.launch {
-        repository.registerUser(
-            user = users,
-            successListener = {
-                event(Event.JoinDetailSuccess)
-            },
-            failureListener = {
-                event(Event.JoinDetailFailure)
-            }
-        )
+    fun updateNewUserInfo(id: String) = viewModelScope.launch {
+        user.value?.let {
+            it.id = id
+            repository.updateUserInfo(
+                user = it,
+                successListener = {
+                    event(Event.JoinDetailSuccess)
+                },
+                failureListener = {
+                    event(Event.JoinDetailFailure)
+                }
+            )
+        } ?: event(Event.JoinDetailFailure)
     }
 
     fun setNewUserCoupon(coupon: Coupon) = viewModelScope.launch {

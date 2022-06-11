@@ -15,12 +15,14 @@ class NewsViewModel @Inject constructor(
 
     private var start = 1
     private val display = 20
-    private var isMore = true
+    private var _isMore = true
+    val isMore : Boolean
+        get() = _isMore
 
     fun getNews(
 
     ) = viewModelScope.launch {
-        if (isMore.not()) return@launch
+        if (_isMore.not()) return@launch
 
         repository.getNews(
             query = "LCK",
@@ -29,7 +31,7 @@ class NewsViewModel @Inject constructor(
             sort = SIMILAR,
             successListener = { result ->
                 if(result.total > start) {
-                    isMore = true
+                    _isMore = true
                     start += display
                 }
                 event(Event.Success(result.mapper()))

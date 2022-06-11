@@ -1,5 +1,6 @@
 package com.ezen.lolketing.network
 
+import android.util.Log
 import com.ezen.lolketing.model.AddressResult
 import com.ezen.lolketing.network.service.AddressService
 import retrofit2.Response
@@ -11,11 +12,26 @@ class AddressClient @Inject constructor(
 
     suspend fun getAddress(
         keyword : String,
-        currentPage : Int?
-    ) : Response<AddressResult> =
-        addressService.getAddress(
+        currentPage : Int?,
+        successListener: (AddressResult) -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        val result = addressService.getAddress(
             keyword = keyword,
             currentPage = currentPage
         )
+
+        if (result.isSuccessful) {
+            result.body()?.let(successListener) ?: failureListener()
+        } else {
+            Log.e("AddressClient", "result fail\n${result.errorBody()}")
+            failureListener()
+        }
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
 
 }

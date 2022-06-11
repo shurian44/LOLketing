@@ -1,44 +1,92 @@
 package com.ezen.lolketing.repository
 
+import android.content.SharedPreferences
+import android.util.Log
 import com.ezen.lolketing.model.Coupon
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
+import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.view.main.event.EventDetailViewModel
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import javax.inject.Inject
 
 class EventRepository @Inject constructor(
-    private val client: FirebaseClient
+    private val client: FirebaseClient,
+    private val pref: SharedPreferences
 ) {
 
     suspend fun getUserNickname(): String? {
         return client.getUserNickName()
     }
 
-//    firestore.collection("Coupon").whereEqualTo("title", "신규 가입 쿠폰").whereEqualTo("id", id).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-//            for (snapshot in querySnapshot!!) {
-//                coupon = snapshot.toObject(Coupon::class.java)
-//                documentID = snapshot.id
-//            }
-//        }
-    // todo Event database 수정 필정
     suspend fun getCouponList(
-        successListener : (QuerySnapshot) -> Unit,
+        successListener : (EventDetailViewModel.Event.NewUserCoupon?) -> Unit,
         failureListener : () -> Unit
     ) {
-        val email = client.getCurrentUser()?.email ?: throw Exception("회원 정보 오류")
+        val email = pref.getString(Constants.ID, null) ?: kotlin.run {
+            failureListener()
+            return
+        }
 
-        client.getBasicQuerySnapshot(
+        client.getBasicSearchData(
             collection = Constants.COUPON,
+            startDate = email,
             field = "id",
-            query = "kmj94102@gmail.com",
-            orderByField = "title",
-            orderByDirection = Query.Direction.ASCENDING,
-            successListener = successListener,
+            successListener = { snapshot ->
+                snapshot
+                    .map {
+                        it.toObject(Coupon::class.java).also { coupon ->
+                            coupon.documentId = it.id
+                        }
+                    }
+                    .filter {
+                        (it.title ?: "") == Code.NEW_USER_COUPON.code
+                    }
+                    .sortedBy { it.limit }
+                    .reversed()
+                    .firstOrNull { it.use == Code.NOT_USE.code }
+                    ?.let {
+                        it.documentId?.let { documentId ->
+                            successListener(
+                                EventDetailViewModel.Event.NewUserCoupon(documentId = documentId)
+                            )
+                        } ?: successListener(null)
+                    }
+                    ?: successListener(null)
+            },
             failureListener = failureListener
         )
+    }
+
+    suspend fun updateCoupon(
+        documentId: String,
+        failureListener: () -> Unit
+    ) {
+        client
+            .basicUpdateData(
+                collection = Constants.COUPON,
+                documentId = documentId,
+                updateData = mapOf("use" to Code.USED.code),
+                successListener = { },
+                failureListener = failureListener
+            )
+    }
+
+    suspend fun updateUserPoint(
+        documentId: String,
+        failureListener: () -> Unit
+    ) {
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = documentId,
+                updateData = mapOf("point" to FieldValue.increment(500)),
+                successListener = { },
+                failureListener = failureListener
+            )
     }
 
     suspend fun getRouletteCount(

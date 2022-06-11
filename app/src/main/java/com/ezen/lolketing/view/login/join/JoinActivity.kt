@@ -1,7 +1,6 @@
 package com.ezen.lolketing.view.login.join
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -10,18 +9,14 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityJoinBinding
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.util.regex.Pattern
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R.layout.activity_join) {
 
     override val viewModel: JoinViewModel by viewModels()
-    @Inject lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

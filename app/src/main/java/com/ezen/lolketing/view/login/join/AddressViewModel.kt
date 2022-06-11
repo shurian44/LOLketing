@@ -15,28 +15,37 @@ class AddressViewModel @Inject constructor(
 
     private var currentPage = 1
     private var currentKeyword = ""
+    private var _isMoreData = true
+    val isMoreData : Boolean
+        get() = _isMoreData
 
     fun selectAddress(keyword: String, isSearch: Boolean) = viewModelScope.launch {
         if (isSearch) {
             currentPage = 1
             currentKeyword = keyword
         }
-        val result = repository.selectAddress(
+
+        repository.selectAddress(
             keyword = currentKeyword,
-            currentPage = currentPage
+            currentPage = currentPage,
+            successListener = {
+                if (it.list == null || it.list.isEmpty()) {
+                    event(Event.Error("입력한 주소를 확인해주세요"))
+                } else {
+                    event(Event.AddressSearchSuccess(it.list))
+                    currentPage++
+                    _isMoreData = it.isMoreData
+                }
+            },
+            failureListener = {
+
+            }
         )
-        if (result?.list.isNullOrEmpty()) {
-            event(Event.Error("입력한 주소를 확인해주세요"))
-        } else {
-            event(Event.AddressSearchSuccess(result!!.list!!, result.isMoreData))
-            currentPage++
-        }
     }
 
     sealed class Event {
         data class AddressSearchSuccess(
             val list : List<SearchAddressResult>,
-            val isMoreData: Boolean
         ) : Event()
         data class Error(
             val msg: String

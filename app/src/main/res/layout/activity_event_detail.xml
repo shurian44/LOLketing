@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.event.EventDetailActivity" />
 
         <variable
             name="title"
@@ -69,14 +72,13 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCoupon"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="56dp"
             android:background="@color/colorPrimary"
             android:text="@string/new_coupon_using"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:onClick="@{activity.userCoupon}"
             app:cornerRadius="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

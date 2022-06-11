@@ -9,14 +9,21 @@ class AddressRepository @Inject constructor(
     private val client : AddressClient
 ) {
 
-    suspend fun selectAddress(keyword : String, currentPage: Int) : SearchResult? =
+    suspend fun selectAddress(
+        keyword : String,
+        currentPage: Int,
+        successListener: (SearchResult) -> Unit,
+        failureListener: () -> Unit
+    )  =
         try {
-            val result = client.getAddress(keyword, currentPage)
-            if (result.isSuccessful) {
-                result.body()?.results?.toSearchResult()
-            } else {
-                null
-            }
+            client.getAddress(
+                keyword = keyword,
+                currentPage = currentPage,
+                successListener = {
+                    successListener(it.results.toSearchResult())
+                },
+                failureListener = failureListener
+            )
         } catch (e: Exception) {
             e.printStackTrace()
             null

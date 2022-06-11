@@ -15,7 +15,7 @@ import com.ezen.lolketing.model.SearchAddressResult
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.custom.CustomEditTextView
-import com.ezen.lolketing.view.dialog.adater.AddressAdapter
+import com.ezen.lolketing.view.login.adater.AddressAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.collect
 class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressViewModel>(R.layout.activity_address) {
 
     override val viewModel: AddressViewModel by viewModels()
-    private var isMoreData = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +38,6 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
         when(event) {
             is AddressViewModel.Event.AddressSearchSuccess -> {
                 setRecyclerView(event.list)
-                isMoreData = event.isMoreData
             }
             is AddressViewModel.Event.Error -> {
                 binding.txtGuide.apply {
@@ -72,7 +70,7 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (isMoreData && !recyclerView.canScrollVertically(1) ) {
+                if (viewModel.isMoreData && !recyclerView.canScrollVertically(1) ) {
                     viewModel.selectAddress("", false)
                 }
             }
@@ -85,7 +83,7 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
         editAddressDetail.isVisible = false
         viewLine.isVisible = true
 
-        val adapter = AddressAdapter{
+        val adapter = AddressAdapter {
             editAddress.setText(it)
             editAddressDetail.isVisible = true
             viewLine.isVisible = false
@@ -122,7 +120,8 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
             }
 
         setResult(
-            Activity.RESULT_OK, Intent().also {
+            Activity.RESULT_OK,
+            Intent().also {
                 it.putExtra(JoinDetailActivity.ADDRESS, address)
             }
         )

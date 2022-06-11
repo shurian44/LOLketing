@@ -8,9 +8,7 @@ import com.ezen.lolketing.view.login.join.JoinActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityLoginBinding
-import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.BaseViewModelActivity
-import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.util.toast
@@ -20,42 +18,59 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel>(R.layout.activity_login) {
 
     override val viewModel: LoginViewModel by viewModels()
-    @Inject lateinit var auth : FirebaseAuth
     private lateinit var googleSignInClient : GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 자동 로그인 : 로그인 상태일 시 바로 메인 페이지로 이동
-        if( auth.currentUser != null)
-            moveMain()
-
         binding.activity = this
-
-        // 구글 로그인 옵션
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         repeatOnStarted {
             viewModel.eventFlow.collect{ event-> eventHandler(event) }
         }
 
+        viewModel.autoLogin()
 
     } // onCreate()
+
+    private fun eventHandler(event : LoginViewModel.Event) {
+        when(event) {
+            is LoginViewModel.Event.AutoLoginSuccess, LoginViewModel.Event.LoginSuccess,
+            LoginViewModel.Event.UserInfoSuccess, LoginViewModel.Event.RegisterSuccess -> {
+                moveMain()
+            }
+            // 자동 로그인 실패 : 최초 로그인 또는 로그아웃한 경우
+            is LoginViewModel.Event.AutoLoginFailure -> {
+                // 구글 로그인 옵션
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+                googleSignInClient = GoogleSignIn.getClient(this, gso)
+            }
+            // 로그인 실패
+            is LoginViewModel.Event.LoginFailure -> {
+                binding.loginPw.text = null
+                toast(event.msg)
+            }
+            // 구글 로그인 했을 때 유저 정보가 없으면 신규 가입으로 보고 가입 절차 진행
+            is LoginViewModel.Event.UserInfoFailure -> {
+                viewModel.registerUser(event.email)
+            }
+            // 구글 로그인 성공 후 등록 과정 중 문제가 발생했을 경우 대비
+            is LoginViewModel.Event.RegisterFailure -> {
+                viewModel.deleteUser()
+            }
+        }
+    }
 
     /** 회원가입 버튼 클릭 : 회원가입 페이지로 이동 **/
     fun createUser(view: View) {
@@ -73,15 +88,11 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
             return@with
         }
 
-        auth.signInWithEmailAndPassword(id, pw)
-            .addOnSuccessListener {
-                moveMain()
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                loginPw.text = null
-                toast(getString(R.string.guide_check_id_pw))
-            }
+        viewModel.emailLogin(
+            id = id,
+            pw = pw,
+            failureMsg = getString(R.string.guide_check_id_pw)
+        )
     } // emailLogin()
 
     /** 구글 로그인 버튼 클릭 **/
@@ -101,31 +112,15 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
         startActivity(FindIdPwActivity::class.java)
     }
 
-    private fun eventHandler(event : LoginViewModel.Event) {
-        when(event) {
-            is LoginViewModel.Event.UserInfoSuccess -> {
-                moveMain()
-            }
-            // 구글 로그인 했을 때 유저 정보가 없으면 신규 가입으로 보고 가입 절차 진행
-            is LoginViewModel.Event.UserInfoFailure -> {
-                viewModel.registerUser(event.email)
-            }
-            is LoginViewModel.Event.RegisterSuccess -> {
-                moveMain()
-            }
-            // 구글 로그인 성공 후 등록 과정 중 문제가 발생했을 경우 대비
-            is LoginViewModel.Event.RegisterFailure -> {
-                viewModel.deleteUser()
-            }
-        }
-    }
-
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             try {
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
+                val account = task.getResult(ApiException::class.java) ?: run {
+                    toast(getString(R.string.guide_google_login_fail))
+                    return@registerForActivityResult
+                }
+                firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
                 e.printStackTrace()
                 toast(getString(R.string.guide_google_login_fail))
@@ -135,19 +130,7 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnSuccessListener {
-                val email = auth.currentUser?.email
-                if (email.isNullOrEmpty()) {
-                    toast(getString(R.string.guide_google_login_fail))
-                    return@addOnSuccessListener
-                }
-                viewModel.getUserInfo(email)
-
-            }
-            .addOnFailureListener {
-                toast(getString(R.string.guide_google_login_fail))
-            }
+        viewModel.googleLogin(credential, getString(R.string.guide_google_login_fail))
     } // firebaseAuthWithGoogle()
 
 }

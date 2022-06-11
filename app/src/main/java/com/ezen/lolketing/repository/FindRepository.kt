@@ -1,6 +1,5 @@
 package com.ezen.lolketing.repository
 
-import android.util.Log
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
 import javax.inject.Inject
@@ -16,10 +15,9 @@ class FindRepository @Inject constructor(
     ) = try {
         client.getBasicSearchData(
             collection = Constants.USERS,
-            field = "id",
+            field = Constants.ID,
             startDate = email,
             successListener = {
-                Log.e("+++++", "$email result : ${it.documents}")
                 if(it.documents.isEmpty()){
                     failureListener()
                 } else {

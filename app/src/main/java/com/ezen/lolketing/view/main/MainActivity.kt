@@ -1,6 +1,7 @@
 package com.ezen.lolketing.view.main
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -25,19 +26,19 @@ import com.ezen.lolketing.view.main.news.NewsActivity
 import com.ezen.lolketing.view.main.shop.ShopActivity
 import com.ezen.lolketing.view.main.ticket.list.ReserveListActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.smarteist.autoimageslider.IndicatorAnimations
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
 
     override val viewModel: MainViewModel by viewModels()
-    var auth = FirebaseAuth.getInstance()
-    var firestore = FirebaseFirestore.getInstance()
+    @Inject lateinit var auth: FirebaseAuth
+    @Inject lateinit var pref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,6 +123,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
     /** 로그아웃 버튼 클릭 **/
     override fun logout(view: View) {
         auth.signOut()
+        pref.edit().putString(Constants.ID, null).apply()
         startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
         finish()
     }

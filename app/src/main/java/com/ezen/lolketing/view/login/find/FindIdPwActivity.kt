@@ -1,6 +1,5 @@
 package com.ezen.lolketing.view.login.find
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels

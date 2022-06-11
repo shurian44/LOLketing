@@ -54,6 +54,7 @@ class FirebaseClient @Inject constructor(
             val user = Users().apply {
                 id = email
                 this.uid = uid
+                grade = Constants.BRONZE
             }
 
             firestore

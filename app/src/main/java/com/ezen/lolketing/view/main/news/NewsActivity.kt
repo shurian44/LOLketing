@@ -45,7 +45,7 @@ class NewsActivity : BaseViewModelActivity<ActivityNewsBinding, NewsViewModel>(R
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1) ) {
+                if (viewModel.isMore && !recyclerView.canScrollVertically(1) ) {
                     viewModel.getNews()
                 }
             }

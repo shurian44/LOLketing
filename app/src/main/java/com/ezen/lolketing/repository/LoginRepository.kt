@@ -96,7 +96,7 @@ class LoginRepository @Inject constructor(
         failureListener(email)
     }
 
-    suspend fun updateModifyUserInfo(
+    suspend fun updateUserInfo(
         user : Users,
         successListener: () -> Unit,
         failureListener: () -> Unit

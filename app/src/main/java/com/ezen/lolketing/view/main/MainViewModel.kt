@@ -3,7 +3,7 @@ package com.ezen.lolketing.view.main
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.R
-import com.ezen.lolketing.repository. MainRepository
+import com.ezen.lolketing.repository.MainRepository
 import com.ezen.lolketing.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
