@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
-import com.ezen.lolketing.TeamActivity
 import com.ezen.lolketing.databinding.ActivityBoardListBinding
 import com.ezen.lolketing.model.Board
 import com.ezen.lolketing.util.*

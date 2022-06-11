@@ -1,15 +1,15 @@
-package com.ezen.lolketing
+package com.ezen.lolketing.view.main.board
 
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import com.ezen.lolketing.BaseActivity
+import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.TeamAdapter
 import com.ezen.lolketing.databinding.ActivityTeamBinding
 import com.ezen.lolketing.model.TeamDTO
-import com.ezen.lolketing.view.main.board.BoardListActivity
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 

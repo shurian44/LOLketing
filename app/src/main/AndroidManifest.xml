@@ -35,7 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WithdrawalActivity" />
+        <activity android:name=".view.main.my_page.WithdrawalActivity" />
         <activity android:name=".view.main.my_page.CouponActivity" />
         <activity android:name=".view.main.event.EventListActivity" />
         <activity android:name=".view.main.event.EventDetailActivity" />
@@ -70,7 +70,7 @@
         <activity android:name=".view.main.ticket.list.ReserveListActivity" />
         <activity android:name=".view.login.DaumWebViewActivity" />
         <activity android:name=".view.login.join.JoinDetailActivity" />
-        <activity android:name=".TeamActivity" />
+        <activity android:name=".view.main.board.TeamActivity" />
         <activity android:name=".view.main.news.NewsActivity" />
         <activity android:name=".view.main.news.NewsWebViewActivity" />
         <activity android:name=".view.main.manager.ManagerActivity" />

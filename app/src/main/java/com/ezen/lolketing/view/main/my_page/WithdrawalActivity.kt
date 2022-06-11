@@ -1,8 +1,10 @@
-package com.ezen.lolketing
+package com.ezen.lolketing.view.main.my_page
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.ezen.lolketing.BaseActivity
+import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityWithdrawalBinding
 import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.LoginActivity

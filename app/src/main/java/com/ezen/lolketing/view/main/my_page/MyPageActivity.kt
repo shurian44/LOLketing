@@ -9,7 +9,6 @@ import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.view.main.shop.PurchaseHistoryActivity
 import com.ezen.lolketing.R
-import com.ezen.lolketing.WithdrawalActivity
 import com.ezen.lolketing.databinding.ActivityMyPageBinding
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.util.Constants
