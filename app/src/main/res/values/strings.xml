@@ -54,6 +54,13 @@
     <!-- 홈 -->
     <string name="select_board">구단 선택</string>
 
+    <!-- 게시판 -->
+    <string name="write">글쓰기</string>
+    <string name="empty_board_list">작성된 글이 없습니다.</string>
+    <string name="select_category">카테고리를 선택해주세요</string>
+    <string name="write_title">제목을 입력해주세요</string>
+    <string name="image_attach">첨부할 이미지를 선택해주세요</string>
+
     <!-- 이벤트 -->
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>
     <string name="event_title_new_user">[이벤트] 신규 회원 이벤트</string>

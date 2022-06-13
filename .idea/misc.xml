@@ -11,7 +11,9 @@
         <entry key="app/src/main/res/drawable/bg_check_box_seat.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/bg_custom_edit_text.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/bg_round_fill_3_light_black.xml" value="0.275" />
+        <entry key="app/src/main/res/drawable/bg_round_fill_3_main_color.xml" value="0.2565" />
         <entry key="app/src/main/res/drawable/bg_round_fill_3_sub_color.xml" value="0.275" />
+        <entry key="app/src/main/res/drawable/bg_round_outline_3_black.xml" value="0.2865" />
         <entry key="app/src/main/res/drawable/bg_round_outline_3_gray.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/bg_round_outline_3_main.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/bg_round_outline_3_red.xml" value="0.268" />
@@ -29,12 +31,15 @@
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/ic_pw.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/ic_user.xml" value="0.3375" />
+        <entry key="app/src/main/res/drawable/ic_write.xml" value="0.2565" />
+        <entry key="app/src/main/res/drawable/round.xml" value="0.2565" />
         <entry key="app/src/main/res/drawable/solid.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/splash.xml" value="0.268" />
+        <entry key="app/src/main/res/layout-v23/activity_board_list.xml" value="0.3734375" />
         <entry key="app/src/main/res/layout/activity_address.xml" value="0.38697916666666665" />
         <entry key="app/src/main/res/layout/activity_board_detail.xml" value="0.40208333333333335" />
-        <entry key="app/src/main/res/layout/activity_board_list.xml" value="0.35144927536231885" />
-        <entry key="app/src/main/res/layout/activity_board_write.xml" value="0.28894927536231885" />
+        <entry key="app/src/main/res/layout/activity_board_list.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_board_write.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_cache_charging.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_chatting.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_chattinglist.xml" value="0.40208333333333335" />
@@ -67,11 +72,13 @@
         <entry key="app/src/main/res/layout/activity_reserve_list.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_roulette.xml" value="0.38697916666666665" />
         <entry key="app/src/main/res/layout/activity_seat_guide.xml" value="0.38697916666666665" />
+        <entry key="app/src/main/res/layout/activity_shop_event.xml" value="0.28894927536231885" />
         <entry key="app/src/main/res/layout/activity_team.xml" value="0.22146739130434784" />
         <entry key="app/src/main/res/layout/activity_ticketing.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_withdrawal.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/custom_check_box.xml" value="0.4010416666666667" />
         <entry key="app/src/main/res/layout/custom_event_card.xml" value="0.38697916666666665" />
+        <entry key="app/src/main/res/layout/custom_limited_edit_text_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_add_new_game.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/dialog_join.xml" value="0.3859375" />
         <entry key="app/src/main/res/layout/dialog_seat.xml" value="0.25" />
@@ -82,6 +89,7 @@
         <entry key="app/src/main/res/layout/fragment_progress.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/item_address.xml" value="0.4010416666666667" />
         <entry key="app/src/main/res/layout/item_board.xml" value="0.35144927536231885" />
+        <entry key="app/src/main/res/layout/item_board_top.xml" value="0.3734375" />
         <entry key="app/src/main/res/layout/item_chat.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/item_comment.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/item_coupon.xml" value="0.40208333333333335" />
@@ -106,7 +114,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.5" />
+        <option name="scale" value="0.28894927536231885" />
       </ProjectState>
     </option>
   </component>

@@ -2,6 +2,7 @@ package com.ezen.lolketing.view.custom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
@@ -20,10 +21,12 @@ class CustomEditTextView : TextInputEditText {
 
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
         initView()
+        getAttrs(attributeSet)
     }
 
     constructor(context: Context, attributeSet: AttributeSet, defStyle : Int) : super(context, attributeSet, defStyle) {
         initView()
+        getAttrs(attributeSet)
     }
 
     private fun initView() {
@@ -39,13 +42,23 @@ class CustomEditTextView : TextInputEditText {
 
             when(isFocused) {
                 true -> {
-                    setBackgroundResource(R.drawable.bg_round_outline_3_white)
+                    setBackgroundResource(R.drawable.bg_round_outline_3_sub_color)
                 }
                 false -> {
                     setBackgroundResource(R.drawable.bg_round_outline_3_gray)
                 }
             }
         }
+    }
+
+    private fun getAttrs(attributeSet: AttributeSet){
+        val typeArray = context.obtainStyledAttributes(attributeSet, R.styleable.CustomEditTextView)
+        setTypeArray(typeArray)
+    }
+
+    private fun setTypeArray(typeArray: TypedArray) {
+        val textColor = typeArray.getResourceId(R.styleable.CustomEditTextView_textColor, R.color.white)
+        setTextColor(ContextCompat.getColor(context, textColor))
     }
 
     private fun getPadding() : Int =
@@ -61,7 +74,7 @@ class CustomEditTextView : TextInputEditText {
             false -> {
                 when(isFocused) {
                     true -> {
-                        setBackgroundResource(R.drawable.bg_round_outline_3_white)
+                        setBackgroundResource(R.drawable.bg_round_outline_3_sub_color)
                     }
                     false -> {
                         setBackgroundResource(R.drawable.bg_round_outline_3_gray)

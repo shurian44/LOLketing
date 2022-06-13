@@ -7,104 +7,80 @@
 
         <variable
             name="board"
-            type="com.ezen.lolketing.model.Board" />
+            type="com.ezen.lolketing.model.Board.BoardItem.BoardListItem" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginVertical="5dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark"
-            app:layout_constraintTop_toTopOf="parent" />
+        tools:background="@color/light_black">
 
         <TextView
-            android:id="@+id/textView_subject"
+            android:id="@+id/txtCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@{board.subject}"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:text="@{board.category}"
+            android:textColor="@color/yellow"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="[말머리]" />
 
         <TextView
-            android:id="@+id/textView_title"
+            android:id="@+id/txtTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="6dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             android:ellipsize="end"
-            android:maxLines="3"
+            android:maxLines="1"
             android:text="@{board.title}"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/textView_subject"
-            app:layout_constraintEnd_toStartOf="@id/textView_commentCounts"
-            app:layout_constraintTop_toBottomOf="@id/textView_subject"
-            tools:text="게시글 제목" />
+            app:layout_constraintEnd_toStartOf="@id/txtCommentCount"
+            app:layout_constraintStart_toStartOf="@id/txtCategory"
+            app:layout_constraintTop_toBottomOf="@id/txtCategory"
+            tools:text="제목이 들어갈 예정입니다." />
 
         <TextView
-            android:id="@+id/textView_userId"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@{board.userId}"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/textView_title"
-            app:layout_constraintTop_toBottomOf="@id/textView_title"
-            tools:text="아이디" />
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            app:boardWriter="@{board}"
+            app:layout_constraintEnd_toStartOf="@id/txtCommentCount"
+            app:layout_constraintStart_toStartOf="@id/txtCategory"
+            app:layout_constraintTop_toBottomOf="@id/txtTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="롤켓팅 2022.05.21 조회수 10" />
 
         <TextView
-            android:id="@+id/textView_timestamp"
+            android:id="@+id/txtCommentCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            app:layout_constraintStart_toEndOf="@id/textView_userId"
-            app:layout_constraintTop_toTopOf="@id/textView_userId"
-            timestamp="@{board.timestamp}"
-            tools:text="작성시간" />
-
-        <TextView
-            android:id="@+id/textView_likeCounts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            android:text="@{@string/like_counts(board.likeCounts)}"
-            app:layout_constraintStart_toEndOf="@id/textView_timestamp"
-            app:layout_constraintTop_toTopOf="@id/textView_timestamp"
-            tools:text="좋아요 3" />
-
-        <TextView
-            android:id="@+id/textView_views"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            android:text="@{@string/board_views(board.views)}"
-            app:layout_constraintStart_toEndOf="@id/textView_likeCounts"
-            app:layout_constraintTop_toTopOf="@id/textView_likeCounts"
-            tools:text="조회수 58" />
-
-        <TextView
-            android:id="@+id/textView_commentCounts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/round"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/bg_round_fill_3_sub_color"
+            android:minWidth="50dp"
             android:padding="5dp"
             android:text="@{@string/comment_counts(board.commentCounts)}"
             android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="6\n댓글" />
+            tools:text="456\n댓글" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -6,45 +6,81 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ItemBoardBinding
+import com.ezen.lolketing.databinding.ItemBoardTopBinding
 import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.Board.Companion.TYPE_TEAM_BOARD
 
 class BoardListAdapter(
-    val onclickListener : (Board) -> Unit,
-    val onLongClickListener: (Board, View) -> Unit,
-) : ListAdapter<Board, BoardListAdapter.ViewHolder>(diffUtil){
+    val onclickListener : (String) -> Unit,
+    val onLongClickListener: (Board.BoardItem.BoardListItem, View) -> Unit,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class ViewHolder(val binding : ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(board: Board) = with(binding) {
+    private val list = mutableListOf<Board.BoardItem>()
+
+    inner class TopImageViewHolder(val binding: ItemBoardTopBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(teamImage : Board.BoardItem.TeamImage) = with(binding) {
+            // todo image 팀별 수정 필요
+            imageView.setImageResource(R.drawable.img_board_t1)
+        }
+    }
+
+    inner class BoardListViewHolder(val binding : ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(board: Board.BoardItem.BoardListItem) = with(binding) {
             this.board = board
+            if (adapterPosition % 2 == 0) {
+                root.setBackgroundResource(R.color.black)
+            } else {
+                root.setBackgroundResource(R.color.light_black)
+            }
+
             root.setOnClickListener {
-                onclickListener(board)
+                board.documentId?.let { id ->
+                    onclickListener(id)
+                }
             }
 
             root.setOnLongClickListener {
                 onLongClickListener(board, it)
                 true
             }
-
-
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ItemBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun getItemCount(): Int = list.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentList[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is TopImageViewHolder) {
+            holder.bind(list[position] as Board.BoardItem.TeamImage)
+        }
+
+        if (holder is BoardListViewHolder) {
+            holder.bind(list[position] as Board.BoardItem.BoardListItem)
+        }
     }
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Board>() {
-            override fun areItemsTheSame(oldItem: Board, newItem: Board): Boolean =
-                oldItem == newItem
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == TYPE_TEAM_BOARD) {
+            BoardListViewHolder(ItemBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        } else {
+            TopImageViewHolder(ItemBoardTopBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        }
+    }
 
-            override fun areContentsTheSame(oldItem: Board, newItem: Board): Boolean =
-                oldItem.userId == newItem.userId && oldItem.timestamp == newItem.timestamp
+    override fun getItemViewType(position: Int): Int {
+        return list[position].type
+    }
 
+    fun addItem(item : Board.BoardItem) {
+        list.add(item)
+        notifyItemChanged(list.lastIndex)
+    }
+
+    fun addItemList(list : List<Board.BoardItem>) {
+        list.forEach {
+            this.list.add(it)
+            notifyItemChanged(list.lastIndex)
         }
     }
 

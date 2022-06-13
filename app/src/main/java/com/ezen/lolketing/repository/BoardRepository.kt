@@ -3,8 +3,7 @@ package com.ezen.lolketing.repository
 import com.ezen.lolketing.model.Board
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
 import javax.inject.Inject
 
 class BoardRepository @Inject constructor(
@@ -17,15 +16,23 @@ class BoardRepository @Inject constructor(
     suspend fun getBoardList(
         field : String = Constants.TEAM,
         query : String,
-        successListener : (QuerySnapshot) -> Unit,
+        successListener : (List<Board.BoardItem.BoardListItem>) -> Unit,
         failureListener : () -> Unit
     ) = try {
         client.getBasicQuerySnapshot(
             collection = Constants.BOARD,
             field = field,
             query = query,
-            successListener = {
-                successListener(it)
+            successListener = { snapshot ->
+                val list = mutableListOf<Board.BoardItem.BoardListItem>()
+                snapshot.forEach{
+                    list.add(
+                        it.toObject(Board::class.java).also { board ->
+                            board.documentId = it.id
+                        }.mapper()
+                    )
+                }
+                successListener(list)
             },
             failureListener = {
                 failureListener()
@@ -38,14 +45,22 @@ class BoardRepository @Inject constructor(
 
     suspend fun getBoardList(
         queryList: List<Pair<String, Any>>,
-        successListener : (QuerySnapshot) -> Unit,
+        successListener : (List<Board.BoardItem.BoardListItem>) -> Unit,
         failureListener : () -> Unit
     ) = try {
         client.getBasicQuerySnapshot(
             collection = Constants.BOARD,
             queryList = queryList,
-            successListener = {
-                successListener(it)
+            successListener = { snapshot ->
+                val list = mutableListOf<Board.BoardItem.BoardListItem>()
+                snapshot.forEach{
+                    list.add(
+                        it.toObject(Board::class.java).also { board ->
+                            board.documentId = it.id
+                        }.mapper()
+                    )
+                }
+                successListener(list)
             },
             failureListener = {
                 failureListener()

@@ -23,7 +23,7 @@
             android:layout_marginStart="8dp"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
-            android:text="@{comment.userId}"
+            android:text="@{comment.nickname}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="name" />
