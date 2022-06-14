@@ -11,7 +11,7 @@ object Constants {
     const val TIME = "time"
     const val ID = "id"
     const val DOCUMENT_ID = "documentId"
-    const val SELECT_IMAGE_LIST = "select_image_list"
+    const val SELECT_IMAGE = "select_image"
     const val POSITION = "position"
     const val BRONZE = "브론즈"
     const val SILVER = "실버"

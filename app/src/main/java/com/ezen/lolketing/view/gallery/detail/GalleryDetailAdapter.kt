@@ -27,13 +27,13 @@ class GalleryDetailAdapter(
         }
     }
 
-    fun getSelectItemList() = currentList.filter { it.isChecked }
+    fun getSelectItem() = currentList.firstOrNull { it.isChecked }
 
-    fun setSelectItemList(list: ArrayList<GalleryItem>?) {
-        list?.forEach { item ->
-            val index = currentList.indexOfFirst { it.id == item.id }
-            currentList[index].isChecked = item.isChecked
-        }
+    fun setSelectItemList(item: GalleryItem?) {
+        item ?: return
+
+        val index = currentList.indexOfFirst { it.id == item.id }
+        currentList[index].isChecked = item.isChecked
     }
 
 

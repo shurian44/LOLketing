@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.ezen.lolketing.BaseActivity
@@ -14,7 +13,6 @@ import com.ezen.lolketing.databinding.ActivityGalleryDetailBinding
 import com.ezen.lolketing.model.GalleryItem
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.GalleryUtil
-import com.ezen.lolketing.util.listToArrayList
 
 class GalleryDetailActivity : BaseActivity<ActivityGalleryDetailBinding>(R.layout.activity_gallery_detail) {
 
@@ -26,6 +24,9 @@ class GalleryDetailActivity : BaseActivity<ActivityGalleryDetailBinding>(R.layou
     }
 
     private fun initViews() = with(binding) {
+        activity = this@GalleryDetailActivity
+        title = getString(R.string.select_image)
+
         viewPager.adapter = GalleryDetailAdapter{
             layoutTop.isVisible = layoutTop.isVisible.not()
         }
@@ -33,18 +34,27 @@ class GalleryDetailActivity : BaseActivity<ActivityGalleryDetailBinding>(R.layou
         checkBox.setOnCheckedChangeListener { _, isChecked ->
             val adapter = (viewPager.adapter as? GalleryDetailAdapter) ?:return@setOnCheckedChangeListener
             adapter.currentList[viewPager.currentItem].isChecked = isChecked
-            binding.textViewCount.text = "${adapter.getSelectItemList().size}"
+
+            if (isChecked) {
+                setOneSelect(adapter.currentList, viewPager.currentItem)
+            }
         }
 
-        textViewComplete.setOnClickListener { back() }
-
-        viewClose.setOnClickListener { back() }
+        btnBack.setOnClickListener { back() }
 
         setViewPager()
     }
 
+    private fun setOneSelect(currentList: List<GalleryItem>, position: Int) {
+        currentList.forEachIndexed { index, galleryItem ->
+            if (galleryItem.isChecked && index != position) {
+                galleryItem.isChecked = false
+            }
+        }
+    }
+
     private fun setViewPager() = with(binding.viewPager){
-        val selectImageList = intent.getParcelableArrayListExtra<GalleryItem>(Constants.SELECT_IMAGE_LIST)
+        val selectImageList = intent.getParcelableExtra<GalleryItem>(Constants.SELECT_IMAGE)
         val position = intent.getIntExtra(Constants.POSITION, 0)
 
         val adapter = (adapter as? GalleryDetailAdapter)?.apply {
@@ -52,7 +62,6 @@ class GalleryDetailActivity : BaseActivity<ActivityGalleryDetailBinding>(R.layou
             setSelectItemList(selectImageList)
             setCurrentItem(position, false)
             binding.checkBox.isChecked = currentList[position].isChecked
-            binding.textViewCount.text = "${getSelectItemList().size}"
         }
 
         registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
@@ -78,13 +87,15 @@ class GalleryDetailActivity : BaseActivity<ActivityGalleryDetailBinding>(R.layou
 
     private fun back(){
         val intent = Intent().apply {
-            val selectList = (binding.viewPager.adapter as? GalleryDetailAdapter)?.getSelectItemList()
-            putExtra(Constants.SELECT_IMAGE_LIST, listToArrayList(selectList))
+            val selectItem = (binding.viewPager.adapter as? GalleryDetailAdapter)?.getSelectItem()
+            putExtra(Constants.SELECT_IMAGE, selectItem)
         }
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
 
-    override fun logout(view: View) {}
+    override fun onBackClick(view: View) {
+        back()
+    }
 
 }

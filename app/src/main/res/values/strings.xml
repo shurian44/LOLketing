@@ -60,6 +60,8 @@
     <string name="select_category">카테고리를 선택해주세요</string>
     <string name="write_title">제목을 입력해주세요</string>
     <string name="image_attach">첨부할 이미지를 선택해주세요</string>
+    <string name="input_contents">내용을 입력해주세요</string>
+    <string name="select_image">이미지 선택</string>
 
     <!-- 이벤트 -->
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>
@@ -157,6 +159,8 @@
     <string name="versus">vs</string>
     <string name="amount">금액</string>
     <string name="move_home">홈으로 이동</string>
+    <string name="change">변경</string>
+    <string name="remove">제거</string>
 
     <string name="like_counts">좋아요 %d</string>
     <string name="board_views">조회수 %d</string>

@@ -16,4 +16,9 @@
         <attr name="seatSize" format="integer"/>
         <attr name="startStr" format="string"/>
     </declare-styleable>
+    <declare-styleable name="CustomLimitedEditTextView">
+        <attr name="limited" format="integer"/>
+        <attr name="registerBtnIsVisible" format="boolean"/>
+        <attr name="minimumHeight" format="integer"/>
+    </declare-styleable>
 </resources>

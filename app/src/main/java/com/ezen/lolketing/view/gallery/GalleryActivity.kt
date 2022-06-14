@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.ezen.lolketing.view.gallery.detail.GalleryDetailActivity
@@ -61,26 +59,28 @@ class GalleryActivity : BaseViewModelActivity<ActivityGalleryBinding, GalleryVie
     }
 
     private fun initViews() = with(binding) {
+        activity = this@GalleryActivity
+        title = getString(R.string.select_image)
+
         recyclerView.adapter = GalleryAdapter(
-            itemClickListener = {
-                launch.launch(createIntent(GalleryDetailActivity::class.java).also {
-//                    it.putExtra(Constants.POSITION, it)
-//                    it.putExtra(Constants.SELECT_IMAGE_LIST, getSelectArrayList())
-                })
-            },
-            itemCountListener = {
-                binding.textViewCount.text = "$it"
+            itemClickListener = { position ->
+                launch.launch(
+                    createIntent(GalleryDetailActivity::class.java).also {
+                        it.putExtra(Constants.POSITION, position)
+                        it.putExtra(Constants.SELECT_IMAGE, getSelectItem())
+                    }
+                )
             }
         )
 
-        textViewComplete.setOnClickListener {
+        btnRegister.setOnClickListener {
             setResult(RESULT_OK, Intent().also {
-                it.putExtra(Constants.SELECT_IMAGE_LIST, getSelectArrayList())
+                it.putExtra(Constants.SELECT_IMAGE, getSelectItem())
             })
             finish()
         }
 
-        btnClose.setOnClickListener { finish() }
+        layoutTop.btnBack.setOnClickListener { onBackClick(it) }
 
         viewModel.getImageList(application)
 
@@ -90,21 +90,15 @@ class GalleryActivity : BaseViewModelActivity<ActivityGalleryBinding, GalleryVie
         (adapter as? GalleryAdapter)?.submitList(list)
     }
 
-    private fun getSelectList() = (binding.recyclerView.adapter as? GalleryAdapter)?.getSelectItemList()
-
-    private fun getSelectArrayList() = listToArrayList(getSelectList())
+    private fun getSelectItem() = (binding.recyclerView.adapter as? GalleryAdapter)?.getSelectItem()
 
     private val launch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == Activity.RESULT_OK) {
-            it.data?.getParcelableArrayListExtra<GalleryItem>(Constants.SELECT_IMAGE_LIST)?.let { list ->
-                (binding.recyclerView.adapter as? GalleryAdapter)?.apply {
-                    setSelectItemList(list)
-                    binding.textViewCount.text = "${getSelectList()?.size}"
-                }
+            val selectItem = it.data?.getParcelableExtra<GalleryItem>(Constants.SELECT_IMAGE)
+            (binding.recyclerView.adapter as? GalleryAdapter)?.apply {
+                setSelectItem(selectItem)
             }
         }
     }
-
-    override fun logout(view: View) {}
 
 }

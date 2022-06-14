@@ -30,23 +30,25 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/btnRegister"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutTop">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp">
 
                 <com.ezen.lolketing.view.custom.CustomEditTextView
                     android:id="@+id/editCategory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
+                    android:focusable="false"
                     android:hint="@string/select_category"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.ezen.lolketing.view.custom.CustomEditTextView
                     android:id="@+id/editTitle"
@@ -58,15 +60,28 @@
                     app:layout_constraintStart_toStartOf="@id/editCategory"
                     app:layout_constraintTop_toBottomOf="@id/editCategory" />
 
+                <com.ezen.lolketing.view.custom.CustomLimitedEditTextView
+                    android:id="@+id/editContents"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/editCategory"
+                    app:layout_constraintStart_toStartOf="@id/editCategory"
+                    app:layout_constraintTop_toBottomOf="@id/editTitle"
+                    app:limited="15000"
+                    app:minimumHeight="235" />
+
                 <ImageView
                     android:id="@+id/imgAttach"
                     android:layout_width="0dp"
                     android:layout_height="235dp"
+                    android:layout_marginTop="16dp"
+                    android:onClick="@{activity::addImage}"
                     android:scaleType="fitXY"
                     android:src="@drawable/img_bg_dot"
                     app:layout_constraintEnd_toEndOf="@id/editCategory"
                     app:layout_constraintStart_toStartOf="@id/editCategory"
-                    app:layout_constraintTop_toBottomOf="@id/editTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/editContents" />
 
                 <View
                     android:id="@+id/imgPlus"
@@ -99,6 +114,64 @@
                     android:layout_height="wrap_content"
                     app:constraint_referenced_ids="imgAttach, imgPlus, txtAttach" />
 
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="@id/editCategory"
+                    app:layout_constraintStart_toStartOf="@id/editCategory"
+                    app:layout_constraintTop_toBottomOf="@id/editContents" />
+
+                <View
+                    android:id="@+id/viewLine"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_round_outline_3_white"
+                    app:layout_constraintBottom_toBottomOf="@id/imageView"
+                    app:layout_constraintEnd_toEndOf="@id/imageView"
+                    app:layout_constraintStart_toStartOf="@id/imageView"
+                    app:layout_constraintTop_toTopOf="@id/imageView" />
+
+                <TextView
+                    android:id="@+id/txtChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_round_fill_3_main_color"
+                    android:onClick="@{activity::addImage}"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/change"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/imageView"
+                    app:layout_constraintEnd_toEndOf="@id/imageView" />
+
+                <TextView
+                    android:id="@+id/txtRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_round_fill_3_sub_color"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/remove"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/txtChange"
+                    app:layout_constraintEnd_toStartOf="@id/txtChange" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="imageView, viewLine, txtChange, txtRemove" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
@@ -107,15 +180,17 @@
             android:id="@+id/btnRegister"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            app:cornerRadius="0dp"
+            android:backgroundTint="@color/main_color"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="@string/register"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

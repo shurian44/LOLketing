@@ -30,7 +30,7 @@ class CustomEditTextView : TextInputEditText {
     }
 
     private fun initView() {
-        setBackgroundResource(R.drawable.bg_round_outline_3_gray)
+        setBackgroundResource(R.drawable.bg_round_outline_3_white)
         setPadding(getPadding(), getPadding(), getPadding(), getPadding())
         setTextColor(ContextCompat.getColor(context, R.color.white))
         setHintTextColor(ContextCompat.getColor(context, R.color.gray))
@@ -45,7 +45,7 @@ class CustomEditTextView : TextInputEditText {
                     setBackgroundResource(R.drawable.bg_round_outline_3_sub_color)
                 }
                 false -> {
-                    setBackgroundResource(R.drawable.bg_round_outline_3_gray)
+                    setBackgroundResource(R.drawable.bg_round_outline_3_white)
                 }
             }
         }
@@ -77,7 +77,7 @@ class CustomEditTextView : TextInputEditText {
                         setBackgroundResource(R.drawable.bg_round_outline_3_sub_color)
                     }
                     false -> {
-                        setBackgroundResource(R.drawable.bg_round_outline_3_gray)
+                        setBackgroundResource(R.drawable.bg_round_outline_3_white)
                     }
                 }
             }

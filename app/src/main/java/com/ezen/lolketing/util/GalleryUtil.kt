@@ -3,7 +3,6 @@ package com.ezen.lolketing.util
 import android.app.Application
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import com.ezen.lolketing.model.GalleryItem
 import java.util.*
 
@@ -53,7 +52,6 @@ class GalleryUtil(private val application: Application) {
                         contentUri = contentUri
                     )
                 )
-                Log.d("+++++", "id: $id, display_name: $displayName, date_taken: $dateTaken, content_uri: $contentUri")
             }
         }
 

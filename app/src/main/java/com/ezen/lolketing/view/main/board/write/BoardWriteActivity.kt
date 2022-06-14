@@ -4,6 +4,7 @@ import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -50,6 +51,8 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
     private fun initViews() = with(binding) {
         team = intent.getStringExtra(Constants.TEAM)
         board = intent.getParcelableExtra(Constants.BOARD)
+        title = team
+        activity = this@BoardWriteActivity
 
 //        boardTitle.text = team
 
@@ -81,6 +84,10 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
 //            }
 //        }
     } // initViews
+
+    fun addImage(view: View) {
+        launcher.launch(createIntent(GalleryActivity::class.java))
+    }
 
     private fun eventHandler(event : BoardWriteViewModel.Event) {
         when(event) {
@@ -162,13 +169,15 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(it.resultCode == Activity.RESULT_OK){
-            val imageArrayList = it.data?.getParcelableArrayListExtra<GalleryItem>(Constants.SELECT_IMAGE_LIST)
+            val selectItem = it.data?.getParcelableExtra<GalleryItem>(Constants.SELECT_IMAGE)
+                ?: return@registerForActivityResult
 
-            if (imageArrayList.isNullOrEmpty()) {
-                return@registerForActivityResult
+            with(binding) {
+                setGlide(imageView, selectItem.contentUri)
+                groupAttach.isVisible = false
+                groupImage.isVisible = true
             }
 
-//            setGlide(binding.boardImage, imageArrayList[0].contentUri)
         }
     }
 

@@ -1,21 +1,17 @@
 package com.ezen.lolketing.view.gallery
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.ezen.lolketing.databinding.ItemGalleryItemBinding
 import com.ezen.lolketing.model.GalleryItem
 import com.ezen.lolketing.util.setGlide
-import java.util.ArrayList
 
 class GalleryAdapter(
     private val itemClickListener : (Int) -> Unit,
-    private val itemCountListener : (Int) -> Unit
 ) : ListAdapter<GalleryItem, GalleryAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding : ItemGalleryItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -32,23 +28,46 @@ class GalleryAdapter(
                 setOnCheckedChangeListener { _, isChecked ->
                     viewBackground.isVisible = isChecked
                     currentList[adapterPosition].isChecked = isChecked
-
-                    itemCountListener(getSelectItemList().size)
+                    if (isChecked) {
+                        setOneSelect(adapterPosition)
+                    }
                 }
             }
 
-            Log.e("+++++", galleryItem.contentUri.path!!)
             setGlide(imageView, galleryItem.contentUri)
         }
     }
 
-    fun getSelectItemList() = currentList.filter { it.isChecked }
+    private fun setOneSelect(position: Int) {
+        currentList.forEachIndexed { index, galleryItem ->
+            if (galleryItem.isChecked && index != position) {
+                galleryItem.isChecked = false
+                notifyItemChanged(index)
+            }
+        }
+    }
 
-    fun setSelectItemList(list: ArrayList<GalleryItem>?) {
-        list?.forEach { item ->
-            val index = currentList.indexOfFirst { it.id == item.id }
-            if (currentList[index].isChecked != item.isChecked){
-                currentList[index].isChecked = item.isChecked
+    fun getSelectItem() = currentList.firstOrNull { it.isChecked }
+
+    fun setSelectItem(selectItem: GalleryItem?) {
+        if (selectItem == null) {
+            currentList.forEachIndexed { index, galleryItem ->
+                if (galleryItem.isChecked) {
+                    galleryItem.isChecked = false
+                    notifyItemChanged(index)
+                }
+            }
+            return
+        }
+
+        currentList.forEachIndexed { index, galleryItem ->
+            if (selectItem.id == galleryItem.id) {
+                galleryItem.isChecked = true
+                notifyItemChanged(index)
+            }
+
+            if (galleryItem.isChecked && selectItem.id != galleryItem.id) {
+                galleryItem.isChecked = false
                 notifyItemChanged(index)
             }
         }
