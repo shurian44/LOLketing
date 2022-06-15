@@ -1,5 +1,7 @@
 package com.ezen.lolketing.network
 
+import android.net.Uri
+import android.util.Log
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.util.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -479,7 +481,7 @@ class FirebaseClient @Inject constructor(
         path: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         storage
             .reference
             .child(path)
@@ -492,6 +494,43 @@ class FirebaseClient @Inject constructor(
                 failureListener()
             }
             .await()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    suspend fun basicFileUpload(
+        fileName: String,
+        uri: Uri,
+        successListener: (String) -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        val storageRef = getStorageReference(fileName)
+
+        storageRef.putFile(uri)
+            .addOnProgressListener {
+                val progress = (100 * it.bytesTransferred / it.totalByteCount)
+            }
+            .addOnSuccessListener {
+                storageRef
+                    .downloadUrl
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            successListener(task.result.toString())
+                        } else {
+                            Log.e("basicFileUpload", "downloadUrl error")
+                            failureListener()
+                        }
+                    }
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener()
+            }
+            .await()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     companion object {

@@ -2,7 +2,7 @@ package com.ezen.lolketing.view.main.board
 
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
-import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.repository.BoardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -55,7 +55,7 @@ class BoardListViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class BoardList(val list: List<Board.BoardItem.BoardListItem>) : Event()
+        data class BoardList(val list: List<BoardItem.BoardListItem>) : Event()
         object DeleteSuccess : Event()
         data class Error(val msg: String) : Event()
     }

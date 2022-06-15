@@ -16,4 +16,14 @@ enum class Code(val code: String, val codeName: String) {
     PLATINUM("USER004", "플래티넘"),
     MASTER("USER005", "마스터"),
     PURCHASE_TICKET("PURCHASE001", "ticket"),
+    FREE_BOARD("CATEGORY001", "자유 게시판"),
+    QUESTION_BOARD("CATEGORY002", "질문 게시판"),
+    GAME_BOARD("CATEGORY003", "게임 게시판"),
+    UNKNOWN("UNKNOWN", "UNKNOWN")
 }
+
+fun findCode(codeName: String) =
+    Code.values().find { it.codeName == codeName }?.code ?: Code.UNKNOWN.code
+
+fun findCodeName(code: String) =
+    Code.values().find { it.code == code }?.codeName ?: Code.UNKNOWN.codeName

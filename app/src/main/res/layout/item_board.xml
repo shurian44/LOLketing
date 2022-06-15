@@ -7,7 +7,7 @@
 
         <variable
             name="board"
-            type="com.ezen.lolketing.model.Board.BoardItem.BoardListItem" />
+            type="com.ezen.lolketing.model.BoardItem.BoardListItem" />
 
     </data>
 
@@ -22,10 +22,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:text="@{board.category}"
             android:textColor="@color/yellow"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:codeName="@{board.category}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="[말머리]" />
@@ -58,10 +58,10 @@
             android:textColor="@color/gray"
             android:textStyle="bold"
             app:boardWriter="@{board}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/txtCommentCount"
             app:layout_constraintStart_toStartOf="@id/txtCategory"
             app:layout_constraintTop_toBottomOf="@id/txtTitle"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="롤켓팅 2022.05.21 조회수 10" />
 
         <TextView

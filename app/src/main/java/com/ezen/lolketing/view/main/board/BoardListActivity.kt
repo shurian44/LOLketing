@@ -11,6 +11,7 @@ import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityBoardListBinding
 import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.dialog.BoardPopup
 import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
@@ -62,7 +63,6 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
 
         setAdapter()
-        recyclerView.adapter = adapter
 
         getBoardList()
 
@@ -171,11 +171,12 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
                 }
             }
         ).also {
-            it.addItem(Board.BoardItem.TeamImage(team = team))
+            it.addItem(BoardItem.TeamImage(team = team))
         }
     }
 
-    private fun setRecyclerView(list: List<Board.BoardItem.BoardListItem>) {
+    private fun setRecyclerView(list: List<BoardItem.BoardListItem>) {
+        binding.recyclerView.adapter = adapter
         if (list.isEmpty() && adapter.itemCount < 2) {
             binding.txtEmpty.isVisible = true
             return

@@ -3,7 +3,6 @@ package com.ezen.lolketing.view.main.board.write
 import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -11,28 +10,25 @@ import androidx.core.view.isVisible
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityBoardWriteBinding
-import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.BoardWriteInfo
 import com.ezen.lolketing.model.GalleryItem
 import com.ezen.lolketing.util.*
+import com.ezen.lolketing.view.dialog.CategorySelectDialog
 import com.ezen.lolketing.view.gallery.GalleryActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, BoardWriteViewModel>(R.layout.activity_board_write) { // class
+class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, BoardWriteViewModel>(R.layout.activity_board_write) {
 
     override val viewModel: BoardWriteViewModel by viewModels()
-    @Inject lateinit var auth : FirebaseAuth
-    @Inject lateinit var storage : FirebaseStorage
-    private var team: String? = null
-    private var board : Board?= null
-    private var isModify : Boolean = false
 
+    private var team: String? = null
+    private var documentId: String?= null
+    private var isModify : Boolean = false
     private var nickname: String? = null
     private var filePath: Uri? = null
+    private var isImageChange: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,49 +37,32 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
             viewModel.eventFlow.collect { event -> eventHandler(event) }
         }
 
-        initViews()
-
-        viewModel.getUserNickName()
+        initSettings()
 
     }
 
-    /** 각종 뷰들 초기화 **/
-    private fun initViews() = with(binding) {
+    /** 각종 설정 초기화 **/
+    private fun initSettings() = with(binding) {
         team = intent.getStringExtra(Constants.TEAM)
-        board = intent.getParcelableExtra(Constants.BOARD)
+        documentId = intent.getStringExtra(Constants.DOCUMENT_ID)
         title = team
         activity = this@BoardWriteActivity
 
-//        boardTitle.text = team
-
-        // 글 수정 시 이미지 여부 확인 및 등록
-        board?.let {
-            if (it.image != null && it.image.length > 4) {
-//                setGlide(boardImage, it.image)
-//                iconPhoto.isVisible = false
-            }
-//            inputTitle.setText(it.title)
-//            inputContent.setText(it.content)
+        documentId?.let {
+            // 게시글 조회
+            viewModel.getBoard(it)
             isModify = true
         }
 
-        // 이미지 업로드 클릭 이벤트
-//        boardImage.setOnClickListener {
-//            launcher.launch(createIntent(GalleryActivity::class.java))
-//        }
-
-        // 취소 버튼 클릭 이벤트
-//        btnCancel.setOnClickListener { finish() }
-
-        // 등록 버튼 클릭 이벤트
-//        btnSubmit.setOnClickListener {
-//            if (filePath != null) {
-//                uploadFile()
-//            } else {
-//                uploadBoard(null)
-//            }
-//        }
     } // initViews
+
+    fun selectCategory(view: View) {
+        CategorySelectDialog(
+            data = binding.editCategory.text.toString()
+        ){
+            binding.editCategory.setText(it)
+        }.show(supportFragmentManager, "category")
+    }
 
     fun addImage(view: View) {
         launcher.launch(createIntent(GalleryActivity::class.java))
@@ -91,27 +70,52 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
 
     private fun eventHandler(event : BoardWriteViewModel.Event) {
         when(event) {
+            is BoardWriteViewModel.Event.WriteInfo -> {
+                setModifyInfoViews(event.info)
+            }
             is BoardWriteViewModel.Event.UserNickName -> {
                 nickname = event.nickName
             }
             is BoardWriteViewModel.Event.UploadSuccess -> {
                 toast("글이 작성 되었습니다.")
+                setResult(RESULT_OK)
                 finish()
             }
             is BoardWriteViewModel.Event.UpdateSuccess -> {
                 toast("글이 수정 되었습니다.")
+                setResult(RESULT_OK)
                 finish()
             }
             is BoardWriteViewModel.Event.Error -> {
                 toast(event.msg)
             }
+            is BoardWriteViewModel.Event.ImageUploadSuccess -> {
+                uploadBoard(event.downloadUri)
+            }
+        }
+    }
+
+    fun upload(view: View) = with(binding) {
+        if (editContents.getText().isEmpty() || editTitle.text.toString().isEmpty()
+            || editCategory.text.toString().isEmpty()){
+            toast(getString(R.string.input_contents))
+            return@with
+        }
+
+        if (filePath != null) {
+            uploadFile()
+        } else {
+            uploadBoard(null)
         }
     }
 
     // 파일 업로드
     private fun uploadFile() {
-        // todo Firebase 한 번에 진행 예정
-
+        if (isModify && isImageChange.not()) {
+            uploadBoard(null)
+            return
+        }
+        filePath?.let { viewModel.uploadImage(it) } ?: uploadBoard(null)
     } // uploadFile
 
     // 게시글 세팅
@@ -119,52 +123,68 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
 
         when(isModify) {
             true -> {
-                if (nickNameError(board?.documentId)) {
-                    return
+                val updateData = mutableMapOf<String, Any>(
+                    "content" to binding.editContents.getText(),
+                    "title" to binding.editTitle.text.toString(),
+                    "category" to binding.editCategory.text.toString(),
+                )
+                downloadUrl?.let{
+                    updateData["image"] = it
                 }
-//                val updateData = mutableMapOf<String, Any>(
-//                    "content" to binding.inputContent.text.toString(),
-//                    "title" to binding.inputTitle.text.toString(),
-//                )
-//                downloadUrl?.let{
-//                    updateData["image"] = it
-//                }
-//
-//                board?.documentId?.let {
-//                    viewModel.updateBoard(
-//                        documentId = it,
-//                        updateData = updateData
-//                    )
-//                }
+
+                documentId?.let {
+                    viewModel.updateBoard(
+                        documentId = it,
+                        updateData = updateData
+                    )
+                } ?: toast(getString(R.string.error_unexpected))
             }
             false -> {
-                nickNameError(nickname)
-//                board = Board(
-//                    email = auth.currentUser!!.email,
-//                    title = binding.inputTitle.text.toString(),
-//                    content = binding.inputContent.text.toString(),
-//                    nickname = nickname,
-//                    like = HashMap(),
-//                    image = downloadUrl,
-//                    category = "[게시판]",
-//                    team = team,
-//                    timestamp = System.currentTimeMillis(),
-//                    commentCounts= 0,
-//                    views = 0,
-//                    likeCounts = 0,
-//                )
-
-                viewModel.uploadBoard(board)
+                viewModel.uploadBoard(
+                    title = binding.editTitle.text.toString(),
+                    content = binding.editContents.getText(),
+                    category = binding.editCategory.text.toString(),
+                    image = downloadUrl,
+                    team = team
+                )
             }
         }
     }
 
-    private fun nickNameError(nickname: String?) : Boolean {
-        if (nickname == null) {
-            Handler(mainLooper).postDelayed({ toast("회원 정보를 찾지 못했습니다. 문제가 계속 발생하면 다시 로그인 후 이용해주세요") }, 1000)
-            return true
+    private fun setModifyInfoViews(writeInfo: BoardWriteInfo) = with(binding) {
+        editContents.setText(writeInfo.content)
+        editTitle.setText(writeInfo.title)
+
+        writeInfo.image?.let {
+            setImage(Uri.parse(it))
         }
-        return false
+
+        val category = when(writeInfo.category) {
+            Code.QUESTION_BOARD.code -> {
+                Code.QUESTION_BOARD.codeName
+            }
+            Code.GAME_BOARD.code -> {
+                Code.GAME_BOARD.codeName
+            }
+            else -> {
+                Code.FREE_BOARD.codeName
+            }
+        }
+        editCategory.setText(category)
+
+    }
+
+    private fun setImage(uri: Uri) = with(binding) {
+        setGlide(imageView, uri)
+        filePath = uri
+        groupAttach.isVisible = false
+        groupImage.isVisible = true
+    }
+
+    fun removeImage(view: View) = with(binding) {
+        filePath = null
+        groupAttach.isVisible = true
+        groupImage.isVisible = false
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -172,11 +192,8 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
             val selectItem = it.data?.getParcelableExtra<GalleryItem>(Constants.SELECT_IMAGE)
                 ?: return@registerForActivityResult
 
-            with(binding) {
-                setGlide(imageView, selectItem.contentUri)
-                groupAttach.isVisible = false
-                groupImage.isVisible = true
-            }
+            setImage(selectItem.contentUri)
+            isImageChange = true
 
         }
     }

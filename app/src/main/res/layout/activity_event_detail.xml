@@ -78,7 +78,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:onClick="@{activity.userCoupon}"
+            android:onClick="@{activity::userCoupon}"
             app:cornerRadius="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

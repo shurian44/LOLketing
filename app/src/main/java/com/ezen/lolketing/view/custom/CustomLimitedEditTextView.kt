@@ -99,6 +99,10 @@ class CustomLimitedEditTextView : ConstraintLayout {
         this.listener = listener
     }
 
+    fun setText(text: String?) {
+        binding.editTextView.setText(text)
+    }
+
     fun getText() : String = binding.editTextView.text.toString()
 
 }

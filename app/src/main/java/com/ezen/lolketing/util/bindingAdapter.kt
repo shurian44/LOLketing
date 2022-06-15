@@ -1,9 +1,8 @@
 package com.ezen.lolketing.util
 
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.databinding.BindingAdapter
-import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.view.custom.CustomSeatCheckBox
 
 @BindingAdapter("timestamp")
@@ -23,7 +22,12 @@ fun setHtml(textView: TextView, str: String) {
 }
 
 @BindingAdapter("boardWriter")
-fun setBoardWriter(textView: TextView, boardItem: Board.BoardItem.BoardListItem) {
+fun setBoardWriter(textView: TextView, boardItem: BoardItem.BoardListItem) {
     val writer = "${boardItem.nickname} ${boardItem.timestamp?.timestampToString("yyyy.MM.dd")} 조회 ${boardItem.views}"
     textView.text = writer
+}
+
+@BindingAdapter("codeName")
+fun setCodeName(textView: TextView, code: String) {
+    textView.text = findCodeName(code)
 }

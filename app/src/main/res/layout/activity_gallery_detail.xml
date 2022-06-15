@@ -79,7 +79,7 @@
             android:layout_height="56dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:text="@string/register"
+            android:text="@string/ok"
             android:textSize="20sp"
             android:textStyle="bold"
             android:onClick="@{activity::onBackClick}"

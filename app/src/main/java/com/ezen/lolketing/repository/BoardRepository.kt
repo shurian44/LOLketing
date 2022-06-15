@@ -1,9 +1,11 @@
 package com.ezen.lolketing.repository
 
+import android.net.Uri
 import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.BoardItem
+import com.ezen.lolketing.model.BoardWriteInfo
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
 import javax.inject.Inject
 
 class BoardRepository @Inject constructor(
@@ -16,7 +18,7 @@ class BoardRepository @Inject constructor(
     suspend fun getBoardList(
         field : String = Constants.TEAM,
         query : String,
-        successListener : (List<Board.BoardItem.BoardListItem>) -> Unit,
+        successListener : (List<BoardItem.BoardListItem>) -> Unit,
         failureListener : () -> Unit
     ) = try {
         client.getBasicQuerySnapshot(
@@ -24,12 +26,12 @@ class BoardRepository @Inject constructor(
             field = field,
             query = query,
             successListener = { snapshot ->
-                val list = mutableListOf<Board.BoardItem.BoardListItem>()
+                val list = mutableListOf<BoardItem.BoardListItem>()
                 snapshot.forEach{
                     list.add(
                         it.toObject(Board::class.java).also { board ->
                             board.documentId = it.id
-                        }.mapper()
+                        }.boardListItemMapper()
                     )
                 }
                 successListener(list)
@@ -45,19 +47,19 @@ class BoardRepository @Inject constructor(
 
     suspend fun getBoardList(
         queryList: List<Pair<String, Any>>,
-        successListener : (List<Board.BoardItem.BoardListItem>) -> Unit,
+        successListener : (List<BoardItem.BoardListItem>) -> Unit,
         failureListener : () -> Unit
     ) = try {
         client.getBasicQuerySnapshot(
             collection = Constants.BOARD,
             queryList = queryList,
             successListener = { snapshot ->
-                val list = mutableListOf<Board.BoardItem.BoardListItem>()
+                val list = mutableListOf<BoardItem.BoardListItem>()
                 snapshot.forEach{
                     list.add(
                         it.toObject(Board::class.java).also { board ->
                             board.documentId = it.id
-                        }.mapper()
+                        }.boardListItemMapper()
                     )
                 }
                 successListener(list)
@@ -69,6 +71,41 @@ class BoardRepository @Inject constructor(
     } catch (e : Exception) {
         e.printStackTrace()
         null
+    }
+
+    suspend fun getBoard(
+        documentId: String,
+        successListener: (BoardWriteInfo) -> Unit,
+        failureListener: () -> Unit
+    ) {
+        client
+            .getBasicSnapshot(
+                collection = Constants.BOARD,
+                document = documentId,
+                successListener = { snapshot ->
+                    snapshot.toObject(Board::class.java)
+                        ?.boardWriteInfoMapper()
+                        ?.let{
+                            successListener(it)
+                        }
+                        ?: failureListener()
+                },
+                failureListener = failureListener
+            )
+    }
+
+    suspend fun uploadImage(
+        uri: Uri,
+        successListener: (String) -> Unit,
+        failureListener: () -> Unit
+    ) {
+        client
+            .basicFileUpload(
+                fileName = "board/${System.currentTimeMillis()}.png",
+                uri = uri,
+                successListener = successListener,
+                failureListener = failureListener
+            )
     }
 
     suspend fun uploadBoard(

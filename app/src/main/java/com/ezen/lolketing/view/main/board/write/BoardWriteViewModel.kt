@@ -1,9 +1,15 @@
 package com.ezen.lolketing.view.main.board.write
 
+import android.content.SharedPreferences
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.BoardWriteInfo
 import com.ezen.lolketing.repository.BoardRepository
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.Team
+import com.ezen.lolketing.util.findCode
 import com.ezen.lolketing.view.main.board.BoardListViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,17 +17,43 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoardWriteViewModel @Inject constructor(
-    private val repository: BoardRepository
+    private val repository: BoardRepository,
+    private val pref: SharedPreferences
 ) : BaseViewModel<BoardWriteViewModel.Event>() {
 
-    // 유저 닉네임 표시
-    fun getUserNickName() = viewModelScope.launch {
-        repository.getUserNickname()?.let {
-            event(Event.UserNickName(nickName = it))
-        } ?: error("회원 정보를 찾지 못했습니다.")
+    fun getBoard(
+        documentId: String
+    ) = viewModelScope.launch {
+        repository.getBoard(
+            documentId = documentId,
+            successListener = {
+                event(Event.WriteInfo(it))
+            },
+            failureListener = {
+                error("게시판 조회를 실패하였습니다.")
+            }
+        )
     }
 
-    fun updateBoard(documentId: String, updateData: Map<String, Any>) = viewModelScope.launch {
+    fun uploadImage(
+        uri: Uri
+    ) = viewModelScope.launch {
+        repository
+            .uploadImage(
+                uri = uri,
+                successListener = {
+                    event(Event.ImageUploadSuccess(it))
+                },
+                failureListener = {
+                    error("이미지 업로드에 실패하였습니다.")
+                }
+            )
+    }
+
+    fun updateBoard(
+        documentId: String,
+        updateData: Map<String, Any>
+    ) = viewModelScope.launch {
 
         repository.updateBoard(
             documentId = documentId,
@@ -35,71 +67,62 @@ class BoardWriteViewModel @Inject constructor(
         )
     }
 
-    fun uploadBoard(board: Board?) = viewModelScope.launch {
-        board?.let {
-            repository.uploadBoard(
-                it,
-                successListener = {
-                    event(Event.UploadSuccess)
-                },
-                errorListener = {
-                    error("파일 업로드 과정 중 오류가 발생하였습니다.")
-                }
-            )
-        } ?: error("파일 업로드 과정 중 오류가 발생하였습니다.")
+    fun uploadBoard(
+        title: String,
+        content: String,
+        category: String,
+        image: String?,
+        team: String?
+    ) = viewModelScope.launch {
+
+        val nickName = repository.getUserNickname()
+        val email = pref.getString(Constants.ID, "")
+
+        if (nickName.isNullOrEmpty() || email.isNullOrEmpty()) {
+            error("유저 정보 조회 중 오류가 발생하였습니다.")
+            return@launch
+        }
+
+        val board = Board(
+            title = title,
+            content = content,
+            category = findCode(category),
+            image = image,
+            email = email,
+            nickname = nickName,
+            team = team,
+            timestamp = System.currentTimeMillis(),
+            commentCounts = 0,
+            likeCounts = 0,
+            views = 0
+        )
+
+        repository.uploadBoard(
+            board,
+            successListener = {
+                event(Event.UploadSuccess)
+            },
+            errorListener = {
+                error("파일 업로드 과정 중 오류가 발생하였습니다.")
+            }
+        )
+    }
+
+    fun getUserInfo() {
+        repository
     }
 
     private fun error(message : String) {
         event(Event.Error(message))
     }
 
-//    // 상태가 글 수정일 시 기존 시간 불러오기
-//        if (statement != null && (statement == "modify")) {
-//        } else {
-//        }
-
-    //        val storageRef = storage.reference.child("board/$filename")
-//        // 업로드 진행 Dialog
-//        progressDialog = ProgressDialog(this)
-//        progressDialog!!.setTitle("업로드중...")
-//        progressDialog!!.show()
-//
-//        // 파일명 지정
-//        val formatter = SimpleDateFormat("yyyyMMdd_HHmmss")
-//        val now = Date()
-//        val filename = formatter.format(now) + ".png"
-//        //storage 주소와 폴더 파일명을 지정
-//        val storageRef = storage.reference.child("board/$filename")
-//        storageRef.putFile((filePath)!!) //진행중
-//            .addOnProgressListener(object : OnProgressListener<UploadTask.TaskSnapshot> {
-//                override fun onProgress(taskSnapshot: UploadTask.TaskSnapshot) {
-//                    val progress =
-//                        ((100 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount).toDouble()
-//                    // 다이얼로그에 진행률을 퍼센트로 출력
-//                    progressDialog!!.setMessage("Uploaded " + (progress.toInt()) + "% ...")
-//                }
-//            }) //성공 시
-//            .addOnSuccessListener(object : OnSuccessListener<UploadTask.TaskSnapshot?> {
-//                override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot?) {
-//                    progressDialog!!.dismiss() // 업로드 진행 Dialog 상자 닫기
-//                    Toast.makeText(applicationContext, "업로드 완료!", Toast.LENGTH_SHORT).show()
-//                    storageRef.downloadUrl.addOnCompleteListener(object : OnCompleteListener<Uri> {
-//                        override fun onComplete(task: Task<Uri>) {
-//                            uploadBoard(task.result.toString())
-//                        }
-//                    })
-//                }
-//            }) //실패 시
-//            .addOnFailureListener(object : OnFailureListener {
-//                override fun onFailure(e: Exception) {
-//                    progressDialog!!.dismiss()
-//                    Toast.makeText(applicationContext, "업로드 실패!", Toast.LENGTH_SHORT).show()
-//                }
-//            })
-
     sealed class Event {
+        data class WriteInfo(val info : BoardWriteInfo) : Event()
         data class UserNickName(val nickName: String) : Event()
         data class Error(val msg: String) : Event()
+        data class ImageUploadSuccess(
+            val downloadUri : String
+        ) : Event()
         object UploadSuccess : Event()
         object UpdateSuccess : Event()
     }

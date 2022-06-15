@@ -3,31 +3,29 @@ package com.ezen.lolketing.view.main.board.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ItemBoardBinding
 import com.ezen.lolketing.databinding.ItemBoardTopBinding
-import com.ezen.lolketing.model.Board
-import com.ezen.lolketing.model.Board.Companion.TYPE_TEAM_BOARD
+import com.ezen.lolketing.model.BoardItem
+import com.ezen.lolketing.model.BoardItem.Companion.TYPE_TEAM_BOARD
 
 class BoardListAdapter(
     val onclickListener : (String) -> Unit,
-    val onLongClickListener: (Board.BoardItem.BoardListItem, View) -> Unit,
+    val onLongClickListener: (BoardItem.BoardListItem, View) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val list = mutableListOf<Board.BoardItem>()
+    private val list = mutableListOf<BoardItem>()
 
     inner class TopImageViewHolder(val binding: ItemBoardTopBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(teamImage : Board.BoardItem.TeamImage) = with(binding) {
+        fun bind(teamImage : BoardItem.TeamImage) = with(binding) {
             // todo image 팀별 수정 필요
             imageView.setImageResource(R.drawable.img_board_t1)
         }
     }
 
     inner class BoardListViewHolder(val binding : ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(board: Board.BoardItem.BoardListItem) = with(binding) {
+        fun bind(board: BoardItem.BoardListItem) = with(binding) {
             this.board = board
             if (adapterPosition % 2 == 0) {
                 root.setBackgroundResource(R.color.black)
@@ -52,11 +50,11 @@ class BoardListAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is TopImageViewHolder) {
-            holder.bind(list[position] as Board.BoardItem.TeamImage)
+            holder.bind(list[position] as BoardItem.TeamImage)
         }
 
         if (holder is BoardListViewHolder) {
-            holder.bind(list[position] as Board.BoardItem.BoardListItem)
+            holder.bind(list[position] as BoardItem.BoardListItem)
         }
     }
 
@@ -72,12 +70,12 @@ class BoardListAdapter(
         return list[position].type
     }
 
-    fun addItem(item : Board.BoardItem) {
+    fun addItem(item : BoardItem) {
         list.add(item)
         notifyItemChanged(list.lastIndex)
     }
 
-    fun addItemList(list : List<Board.BoardItem>) {
+    fun addItemList(list : List<BoardItem>) {
         list.forEach {
             this.list.add(it)
             notifyItemChanged(list.lastIndex)
