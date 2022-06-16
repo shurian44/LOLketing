@@ -62,6 +62,7 @@
     <string name="image_attach">첨부할 이미지를 선택해주세요</string>
     <string name="input_contents">내용을 입력해주세요</string>
     <string name="select_image">이미지 선택</string>
+    <string name="board_detail_title"><![CDATA[<font color=\"#F7DA6E\"><b>[%s]</b></font> %s]]></string>
 
     <!-- 이벤트 -->
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>

@@ -143,9 +143,9 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
 
     private fun setAdapter(){
         adapter = BoardListAdapter(
-            onclickListener = { board ->
+            onclickListener = { documentId ->
                 val intent = Intent(this, BoardDetailActivity::class.java).apply {
-//                    putExtra(Constants.BOARD, board)
+                    putExtra(Constants.DOCUMENT_ID, documentId)
                 }
                 launcher.launch(intent)
             },

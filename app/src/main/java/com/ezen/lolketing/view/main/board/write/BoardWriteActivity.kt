@@ -48,6 +48,8 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         title = team
         activity = this@BoardWriteActivity
 
+        layoutTop.btnBack.setOnClickListener { onBackClick(it) }
+
         documentId?.let {
             // 게시글 조회
             viewModel.getBoard(it)

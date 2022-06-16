@@ -8,285 +8,231 @@
         <variable
             name="activity"
             type="com.ezen.lolketing.view.main.board.detail.BoardDetailActivity" />
+
+        <variable
+            name="board"
+            type="com.ezen.lolketing.model.Board" />
+
+        <variable
+            name="title"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black"
         tools:context=".view.main.board.detail.BoardDetailActivity">
 
+        <include
+            android:id="@+id/layoutTop"
+            layout="@layout/layout_top"
+            app:isBackVisible="@{true}"
+            app:title="@{title}" />
+
         <ScrollView
-            android:id="@+id/scrollView2"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/layoutBottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/layoutTop">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="30dp">
 
-                <ImageView
-                    android:id="@+id/main_logo"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="6dp"
-                    android:onClick="@{activity::moveHome}"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/main_logo_small"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
-                    android:id="@+id/btn_logout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:text="로그아웃"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/main_logo"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/main_logo" />
-
-                <TextView
-                    android:id="@+id/board_title"
+                    android:id="@+id/txtTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:padding="8dp"
-                    android:paddingStart="10dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="100dp"
-                    android:paddingBottom="8dp"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
-                    android:textSize="18sp"
+                    android:layout_marginHorizontal="20dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:html="@{@string/board_detail_title(board.category, board.title)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/main_logo"
-                    tools:text="팀 게시판 - " />
-
-                <TextView
-                    android:id="@+id/content_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="8dp"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="24sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/board_title"
-                    tools:text="게시글 제목입니다" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="[타이틀] 제목제목" />
 
                 <ImageView
-                    android:id="@+id/img_rank"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="8dp"
-                    android:src="@color/colorPrimaryDark"
-                    app:layout_constraintStart_toStartOf="@id/content_title"
-                    app:layout_constraintTop_toBottomOf="@id/content_title" />
+                    android:id="@+id/imgIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@id/txtTitle"
+                    app:layout_constraintTop_toBottomOf="@id/txtTitle"
+                    tools:src="@drawable/icon_bronze" />
 
                 <TextView
-                    android:id="@+id/userId"
+                    android:id="@+id/txtNickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textColor="@color/colorPrimary"
-                    app:layout_constraintStart_toEndOf="@id/img_rank"
-                    app:layout_constraintTop_toTopOf="@id/img_rank"
-                    tools:text="userId" />
-
-                <ImageView
-                    android:id="@+id/btn_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_more_vert_black_24dp"
-                    app:layout_constraintBottom_toBottomOf="@id/timestamp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/userId" />
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:text="@{board.nickname}"
+                    app:layout_constraintBottom_toBottomOf="@id/imgIcon"
+                    app:layout_constraintStart_toEndOf="@id/imgIcon"
+                    app:layout_constraintTop_toTopOf="@id/imgIcon"
+                    tools:text="롤켓팅" />
 
                 <TextView
-                    android:id="@+id/timestamp"
+                    android:id="@+id/txtDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="@id/userId"
-                    app:layout_constraintTop_toBottomOf="@id/userId"
-                    tools:text="2020.02.20 12:12" />
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:timestamp="@{board.timestamp}"
+                    app:layout_constraintBottom_toBottomOf="@id/imgIcon"
+                    app:layout_constraintStart_toEndOf="@id/txtNickname"
+                    app:layout_constraintTop_toTopOf="@id/imgIcon"
+                    tools:text="2022.05.21" />
 
                 <TextView
-                    android:id="@+id/views"
+                    android:id="@+id/txtViews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    app:layout_constraintStart_toEndOf="@id/timestamp"
-                    app:layout_constraintTop_toTopOf="@id/timestamp"
-                    tools:text="조회수 26" />
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:text="@{@string/board_views(board.views)}"
+                    app:layout_constraintBottom_toBottomOf="@id/imgIcon"
+                    app:layout_constraintStart_toEndOf="@id/txtDate"
+                    app:layout_constraintTop_toTopOf="@id/imgIcon"
+                    tools:text="조회 10" />
 
                 <View
-                    android:id="@+id/view1"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorPrimaryDark"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/views" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/boardConst"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:minHeight="200dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view1">
-
-                    <ImageView
-                        android:id="@+id/board_img"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:src="@drawable/haed_coach"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:id="@+id/view2"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@color/colorPrimaryDark"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/board_img" />
-
-                    <TextView
-                        android:id="@+id/board_content"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginTop="8dp"
-                        android:textSize="16sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/view2"
-                        tools:text="힘내자 하나 둘 셋 화이팅." />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <ToggleButton
-                    android:id="@+id/img_like"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/heart_toggle"
-                    android:textOff=""
-                    android:textOn=""
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/boardConst" />
-
-                <TextView
-                    android:id="@+id/txt_likeCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@id/img_like"
-                    app:layout_constraintStart_toEndOf="@id/img_like"
-                    app:layout_constraintTop_toTopOf="@id/img_like"
-                    tools:text="3" />
-
-                <ImageView
-                    android:id="@+id/img_comment"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/icon_comment"
-                    app:layout_constraintStart_toEndOf="@id/txt_likeCount"
-                    app:layout_constraintTop_toTopOf="@id/img_like" />
-
-                <TextView
-                    android:id="@+id/txt_commentCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="1"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@id/img_comment"
-                    app:layout_constraintStart_toEndOf="@id/img_comment"
-                    app:layout_constraintTop_toTopOf="@id/img_comment" />
-
-                <ImageView
-                    android:id="@+id/img_report"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/icon_report"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/img_like" />
+                    android:id="@+id/viewMore"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ic_more"
+                    app:layout_constraintBottom_toTopOf="@id/viewLine"
+                    app:layout_constraintEnd_toEndOf="@id/viewLine" />
 
                 <View
-                    android:id="@+id/view3"
+                    android:id="@+id/viewLine"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/img_like" />
+                    app:layout_constraintTop_toBottomOf="@id/txtNickname" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView_comment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="8dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view3" />
-
-                <EditText
-                    android:id="@+id/input_comment"
+                <ImageView
+                    android:id="@+id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:hint="댓글을 남겨보세요."
-                    android:inputType="textMultiLine"
-                    app:layout_constraintEnd_toStartOf="@id/btn_submit"
-                    app:layout_constraintStart_toStartOf="@id/recyclerView_comment"
-                    app:layout_constraintTop_toBottomOf="@id/recyclerView_comment" />
+                    app:urlImage="@{board.image}"
+                    app:layout_constraintEnd_toEndOf="@id/viewLine"
+                    app:layout_constraintStart_toStartOf="@id/viewLine"
+                    app:layout_constraintTop_toBottomOf="@id/viewLine"
+                    tools:src="@drawable/img_reserve" />
 
-                <Button
-                    android:id="@+id/btn_submit"
+                <View
+                    android:id="@+id/viewImageLine"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_round_outline_3_white"
+                    app:layout_constraintBottom_toBottomOf="@id/imageView"
+                    app:layout_constraintEnd_toEndOf="@id/imageView"
+                    app:layout_constraintStart_toStartOf="@id/imageView"
+                    app:layout_constraintTop_toTopOf="@id/imageView" />
+
+                <TextView
+                    android:id="@+id/txtContents"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/viewLine"
+                    app:layout_constraintTop_toBottomOf="@id/imageView"
+                    tools:text="내용이 들어갑니다." />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:text="글등록"
-                    app:layout_constraintBottom_toBottomOf="@id/input_comment"
+                    android:layout_marginTop="32dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/input_comment" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtContents"
+                    tools:listitem="@layout/item_comment" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/layoutBottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutBottom"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:background="@color/light_black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/txtCommentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="10" />
+
+            <View
+                android:id="@+id/viewComment"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_comment"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/txtCommentCount"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtLikeCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/viewComment"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="10" />
+
+            <View
+                android:id="@+id/viewHeart"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_heart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/txtLikeCount"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

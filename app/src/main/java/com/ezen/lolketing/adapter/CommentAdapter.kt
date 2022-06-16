@@ -19,9 +19,9 @@ class CommentAdapter(
 
         fun bind(comment: Board.Comment) {
             binding.comment = comment
-            binding.imageViewDelete.setOnClickListener {
-                deleteListener(comment)
-            }
+//            binding.imageViewDelete.setOnClickListener {
+//                deleteListener(comment)
+//            }
         }
     } // CommentHolder
 

@@ -40,8 +40,8 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
     var get_image: String? = null
     var get_content: String? = null
     var team: String? = null
-    var auth = FirebaseAuth.getInstance()
-    var firestore = FirebaseFirestore.getInstance()
+//    var auth = FirebaseAuth.getInstance()
+//    var firestore = FirebaseFirestore.getInstance()
     var query: Query? = null
     var adapter: CommentAdapter? = null
     private var comment: Comment? = null
@@ -61,7 +61,10 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
 
     private fun eventHandler(event: BoardDetailViewModel.Event) {
         when(event) {
-            is BoardDetailViewModel.Event -> {
+            is BoardDetailViewModel.Event.BoardInfoSuccess -> {
+                binding.board = event.board
+            }
+            is BoardDetailViewModel.Event.Failure -> {
 
             }
         }
@@ -69,14 +72,18 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
 
     // 뷰 메소드 캡슐화
     private fun initViews() = with(binding) {
-        board = intent.getParcelableExtra(Constants.BOARD)
-        if (board == null) {
-            toast("오류가 발생하였습니다.")
+        title
+
+        documentID = intent.getStringExtra(Constants.DOCUMENT_ID)
+        intent.getStringExtra(Constants.DOCUMENT_ID)?.let {
+            viewModel.getBoard(it)
+        } ?: kotlin.run {
+            toast(getString(R.string.error_unexpected))
             return@with
         }
-        documentID = intent.getStringExtra("documentID")
 
-        boardTitle.append(board!!.team)
+
+//        boardTitle.append(board!!.team)
 //        firestore.collection("Board").document(documentID!!).get()
 //            .addOnSuccessListener { documentSnapshot ->
 //                board = documentSnapshot.toObject(BoardDTO::class.java)
@@ -128,105 +135,105 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
         val title = arrayOf("부적절한 홍보게시물", "음란성 또는 청소년에게 부적합한 내용", "명예훼손/사생활 침해 및 저작권침해 등")
 
         // 신고하기 버튼
-        binding.imgReport.setOnClickListener {
-            val pc = AlertDialog.Builder(this@BoardDetailActivity)
-            pc.setTitle("신고하기")
-            pc.setSingleChoiceItems(title, 3) { dialog, which -> }
-            pc.setPositiveButton("확인") { dialog, which -> dialog.dismiss() }
-            pc.setNegativeButton("취소") { dialog, which -> dialog.dismiss() }
-            pc.show()
-        }
+//        binding.imgReport.setOnClickListener {
+//            val pc = AlertDialog.Builder(this@BoardDetailActivity)
+//            pc.setTitle("신고하기")
+//            pc.setSingleChoiceItems(title, 3) { dialog, which -> }
+//            pc.setPositiveButton("확인") { dialog, which -> dialog.dismiss() }
+//            pc.setNegativeButton("취소") { dialog, which -> dialog.dismiss() }
+//            pc.show()
+//        }
 
         // 좋아요 버튼 클릭 이벤트
-        binding.imgLike.setOnClickListener {
-            val likeCount = binding.txtLikeCount.text.toString().toInt()
-            if (binding.imgLike.isChecked) {
-                firestore.collection("Board").document(documentID!!)
-                    .update("like." + user!!.nickname, true, "likeCounts", FieldValue.increment(1))
-                binding.txtLikeCount.text = (likeCount + 1).toString() + ""
-            } else {
-                firestore.collection("Board").document(documentID!!).update(
-                    "like." + user!!.nickname,
-                    false,
-                    "likeCounts",
-                    FieldValue.increment(-1)
-                )
-                binding.txtLikeCount.text = (likeCount - 1).toString() + ""
-            }
-        }
+//        binding.imgLike.setOnClickListener {
+//            val likeCount = binding.txtLikeCount.text.toString().toInt()
+//            if (binding.imgLike.isChecked) {
+//                firestore.collection("Board").document(documentID!!)
+//                    .update("like." + user!!.nickname, true, "likeCounts", FieldValue.increment(1))
+//                binding.txtLikeCount.text = (likeCount + 1).toString() + ""
+//            } else {
+//                firestore.collection("Board").document(documentID!!).update(
+//                    "like." + user!!.nickname,
+//                    false,
+//                    "likeCounts",
+//                    FieldValue.increment(-1)
+//                )
+//                binding.txtLikeCount.text = (likeCount - 1).toString() + ""
+//            }
+//        }
 
         // 댓글 등록 버튼
-        binding.btnSubmit.setOnClickListener {
-            val commentCount = binding.txtCommentCount.text.toString().toInt()
-            if (binding.inputComment.length() < 1) {
-                Toast.makeText(this@BoardDetailActivity, "댓글 내용이 없습니다.", Toast.LENGTH_SHORT).show()
-            } else {
-                setFirestore()
-                // 댓글 남길 때 댓글 수 증가
-                firestore.collection("Board").document(intent.getStringExtra("documentID")!!)
-                    .update("commentCounts", FieldValue.increment(1))
-                binding.txtCommentCount.text = (commentCount + 1).toString() + ""
-            }
-        }
+//        binding.btnSubmit.setOnClickListener {
+//            val commentCount = binding.txtCommentCount.text.toString().toInt()
+//            if (binding.inputComment.length() < 1) {
+//                Toast.makeText(this@BoardDetailActivity, "댓글 내용이 없습니다.", Toast.LENGTH_SHORT).show()
+//            } else {
+//                setFirestore()
+//                 댓글 남길 때 댓글 수 증가
+//                firestore.collection("Board").document(intent.getStringExtra("documentID")!!)
+//                    .update("commentCounts", FieldValue.increment(1))
+//                binding.txtCommentCount.text = (commentCount + 1).toString() + ""
+//            }
+//        }
 
         // 더보기 버튼 클릭 이벤트
-        binding.btnMore.setOnClickListener { // 팝업메뉴 생성
-            val popup = PopupMenu(applicationContext, binding.btnMore)
-            // 팝업메뉴 클릭 이벤트
-            popup.menuInflater.inflate(R.menu.menu_board, popup.menu)
-            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.modify -> {
-                        if (auth.currentUser!!.email == board!!.email) {
-                            Toast.makeText(applicationContext, "글 수정", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(applicationContext, BoardWriteActivity::class.java)
-                            intent.putExtra("title", binding.contentTitle.text.toString())
-                            intent.putExtra("image", get_image)
-                            intent.putExtra("content", binding.boardContent.text.toString())
-                            intent.putExtra("team", team)
-                            intent.putExtra("documentId", documentID)
-                            intent.putExtra("statement", "modify")
-                            startActivity(intent)
-                        } else {
-                            Toast.makeText(applicationContext, "글 수정 권한이 없습니다.", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        return@OnMenuItemClickListener true
-                    }
-                    R.id.delete -> {
-                        if (auth.currentUser!!.email == board!!.email) {
-                            commentDelete()
-                        } else {
-                            Toast.makeText(applicationContext, "글 삭제 권한이 없습니다.", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        return@OnMenuItemClickListener true
-                    }
-                }
-                false
-            })
-            popup.show()
-        }
+//        binding.btnMore.setOnClickListener { // 팝업메뉴 생성
+//            val popup = PopupMenu(applicationContext, binding.btnMore)
+//             팝업메뉴 클릭 이벤트
+//            popup.menuInflater.inflate(R.menu.menu_board, popup.menu)
+//            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+//                when (item.itemId) {
+//                    R.id.modify -> {
+//                        if (auth.currentUser!!.email == board!!.email) {
+//                            Toast.makeText(applicationContext, "글 수정", Toast.LENGTH_SHORT).show()
+//                            val intent = Intent(applicationContext, BoardWriteActivity::class.java)
+//                            intent.putExtra("title", binding.contentTitle.text.toString())
+//                            intent.putExtra("image", get_image)
+//                            intent.putExtra("content", binding.boardContent.text.toString())
+//                            intent.putExtra("team", team)
+//                            intent.putExtra("documentId", documentID)
+//                            intent.putExtra("statement", "modify")
+//                            startActivity(intent)
+//                        } else {
+//                            Toast.makeText(applicationContext, "글 수정 권한이 없습니다.", Toast.LENGTH_SHORT)
+//                                .show()
+//                        }
+//                        return@OnMenuItemClickListener true
+//                    }
+//                    R.id.delete -> {
+//                        if (auth.currentUser!!.email == board!!.email) {
+//                            commentDelete()
+//                        } else {
+//                            Toast.makeText(applicationContext, "글 삭제 권한이 없습니다.", Toast.LENGTH_SHORT)
+//                                .show()
+//                        }
+//                        return@OnMenuItemClickListener true
+//                    }
+//                }
+//                false
+//            })
+//            popup.show()
+//        }
     } // setViews
 
     // 글 삭제 메소드
     private fun commentDelete() {
-        val builder = AlertDialog.Builder(this@BoardDetailActivity)
-        builder.setTitle("글 삭제").setMessage("정말 삭제하시겠습니까?")
-        builder.setPositiveButton("네") { dialog, id ->
-            firestore.collection("Board").document(documentID!!).delete()
-            Toast.makeText(this@BoardDetailActivity, "글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show()
-            finish()
-        }
-        builder.setNegativeButton("아니오") { dialog, id ->
-            Toast.makeText(
-                this@BoardDetailActivity,
-                "삭제가 취소되었습니다.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        val alertDialog = builder.create()
-        alertDialog.show()
+//        val builder = AlertDialog.Builder(this@BoardDetailActivity)
+//        builder.setTitle("글 삭제").setMessage("정말 삭제하시겠습니까?")
+//        builder.setPositiveButton("네") { dialog, id ->
+//            firestore.collection("Board").document(documentID!!).delete()
+//            Toast.makeText(this@BoardDetailActivity, "글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show()
+//            finish()
+//        }
+//        builder.setNegativeButton("아니오") { dialog, id ->
+//            Toast.makeText(
+//                this@BoardDetailActivity,
+//                "삭제가 취소되었습니다.",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
+//        val alertDialog = builder.create()
+//        alertDialog.show()
     } // CommentDelete
 
     // 댓글 세팅
@@ -251,18 +258,5 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
 //                }
 //            }
     } // setFirestore
-
-    // 로그아웃
-    override fun logout(view: View) {
-        auth.signOut()
-    }
-
-    // 로고(홈)
-    override fun moveHome(view: View) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
-    }
-
 
 } // class

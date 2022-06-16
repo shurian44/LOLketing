@@ -73,11 +73,12 @@ class BoardRepository @Inject constructor(
         null
     }
 
-    suspend fun getBoard(
+    // 수정을 위한 보드 정보 조회
+    suspend fun getBoardModifyInfo(
         documentId: String,
         successListener: (BoardWriteInfo) -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         client
             .getBasicSnapshot(
                 collection = Constants.BOARD,
@@ -92,6 +93,60 @@ class BoardRepository @Inject constructor(
                 },
                 failureListener = failureListener
             )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    // 게시글을 위한 보드 조회
+    suspend fun getBoardReadInfo(
+        documentId: String,
+        successListener: (Board) -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        client
+            .getBasicSnapshot(
+                collection = Constants.BOARD,
+                document = documentId,
+                successListener = { snapshot ->
+                    snapshot.toObject(Board::class.java)
+                        ?.let {
+                            // todo code값 수정 필요
+                            it.category
+                        }
+                        ?:failureListener()
+                },
+                failureListener = failureListener
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    suspend fun getComments(
+        documentId: String,
+        successListener: (List<Board.Comment>) -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        client
+            .getDoubleSnapshot(
+                firstCollection = Constants.BOARD,
+                firstDocument = documentId,
+                secondCollection = Constants.COMMENTS,
+                successListener = { querySnapshot ->
+                    val list = mutableListOf<Board.Comment>()
+                    querySnapshot.forEach {
+                        it.toObject(Board.Comment::class.java).let { comment ->
+                            list.add(comment)
+                        }
+                    }
+                    successListener(list)
+                },
+                failureListener = failureListener
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     suspend fun uploadImage(

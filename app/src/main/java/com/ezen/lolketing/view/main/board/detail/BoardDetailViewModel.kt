@@ -1,13 +1,31 @@
 package com.ezen.lolketing.view.main.board.detail
 
+import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
+import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.repository.BoardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BoardDetailViewModel @Inject constructor(
-
+    private val repository: BoardRepository
 ) : BaseViewModel<BoardDetailViewModel.Event>(){
+
+    fun getBoard(
+        documentId : String
+    ) = viewModelScope.launch {
+        repository.getBoardReadInfo(
+            documentId = documentId,
+            successListener = {
+                event(Event.BoardInfoSuccess(it))
+            },
+            failureListener = {
+                event(Event.Failure)
+            }
+        )
+    }
 
     //
     private fun getCommentList() {
@@ -27,8 +45,11 @@ class BoardDetailViewModel @Inject constructor(
     }
 
 
-    sealed class Event() {
-
+    sealed class Event {
+        data class BoardInfoSuccess(
+            val board: Board
+        ) : Event()
+        object Failure : Event()
     }
 
 }

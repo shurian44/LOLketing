@@ -1,7 +1,9 @@
 package com.ezen.lolketing.util
 
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.view.custom.CustomSeatCheckBox
 
@@ -30,4 +32,10 @@ fun setBoardWriter(textView: TextView, boardItem: BoardItem.BoardListItem) {
 @BindingAdapter("codeName")
 fun setCodeName(textView: TextView, code: String) {
     textView.text = findCodeName(code)
+}
+
+@BindingAdapter("urlImage")
+fun setImage(imageView: ImageView, url: String?) {
+    if (url == null) return
+    setGlide(imageView, url)
 }

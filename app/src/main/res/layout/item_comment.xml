@@ -14,52 +14,56 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        tools:background="@color/black">
 
         <TextView
-            android:id="@+id/textView_userId"
+            android:id="@+id/txtNickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            android:text="@{comment.nickname}"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="name" />
+            tools:text="롤켓팅" />
 
         <TextView
-            android:id="@+id/textView_timestamp"
+            android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            timestamp="@{comment.timestamp}"
-            app:layout_constraintBottom_toBottomOf="@id/textView_userId"
-            app:layout_constraintStart_toEndOf="@id/textView_userId"
-            app:layout_constraintTop_toTopOf="@id/textView_userId"
-            tools:text="작성 시간" />
-
-        <ImageView
-            android:id="@+id/imageView_delete"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/icon_delete"
-            app:layout_constraintBottom_toBottomOf="@id/textView_userId"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/textView_userId" />
+            android:layout_marginStart="5dp"
+            android:textColor="@color/gray"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/txtNickname"
+            app:layout_constraintTop_toTopOf="@id/txtNickname"
+            tools:text="2022.05.21" />
 
         <TextView
-            android:id="@+id/textView_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textColor="#000"
-            android:text="@{comment.comment}"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/textView_userId"
-            app:layout_constraintTop_toBottomOf="@id/textView_userId"
-            tools:text="댓글입니다." />
+            app:layout_constraintStart_toStartOf="@id/txtNickname"
+            app:layout_constraintTop_toBottomOf="@id/txtNickname"
+            tools:text="댓글 내용이 들어갑니다" />
 
+        <View
+            android:id="@+id/viewMenu"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_more"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

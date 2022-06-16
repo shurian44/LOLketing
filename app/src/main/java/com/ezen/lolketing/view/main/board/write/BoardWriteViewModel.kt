@@ -8,9 +8,7 @@ import com.ezen.lolketing.model.Board
 import com.ezen.lolketing.model.BoardWriteInfo
 import com.ezen.lolketing.repository.BoardRepository
 import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.util.Team
 import com.ezen.lolketing.util.findCode
-import com.ezen.lolketing.view.main.board.BoardListViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +22,7 @@ class BoardWriteViewModel @Inject constructor(
     fun getBoard(
         documentId: String
     ) = viewModelScope.launch {
-        repository.getBoard(
+        repository.getBoardModifyInfo(
             documentId = documentId,
             successListener = {
                 event(Event.WriteInfo(it))

@@ -4,6 +4,7 @@ object Constants {
     const val USERS = "Users"
     const val TEAM = "team"
     const val BOARD = "Board"
+    const val COMMENTS = "Comments"
     const val GAME = "Game"
     const val SEAT = "Seat"
     const val COUPON = "Coupon"
