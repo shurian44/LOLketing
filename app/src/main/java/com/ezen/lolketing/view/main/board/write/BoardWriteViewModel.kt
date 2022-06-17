@@ -92,7 +92,8 @@ class BoardWriteViewModel @Inject constructor(
             timestamp = System.currentTimeMillis(),
             commentCounts = 0,
             likeCounts = 0,
-            views = 0
+            views = 0,
+            like = mutableMapOf()
         )
 
         repository.uploadBoard(

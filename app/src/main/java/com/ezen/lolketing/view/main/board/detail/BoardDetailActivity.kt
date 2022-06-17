@@ -1,45 +1,38 @@
 package com.ezen.lolketing.view.main.board.detail
 
-import android.app.AlertDialog
-import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import android.widget.*
 import androidx.activity.viewModels
-import com.bumptech.glide.Glide
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.CommentAdapter
 import com.ezen.lolketing.databinding.ActivityBoardDetailBinding
 import com.ezen.lolketing.model.Board
-import com.ezen.lolketing.model.BoardDTO
-import com.ezen.lolketing.model.BoardDTO.commentDTO
-import com.ezen.lolketing.model.Users
-import com.ezen.lolketing.view.main.MainActivity
-import com.ezen.lolketing.view.main.board.write.BoardWriteActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import java.text.SimpleDateFormat
-import java.util.*
 import com.ezen.lolketing.model.Board.Comment
+import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.repeatOnStarted
+import com.ezen.lolketing.util.setGradeImageView
 import com.ezen.lolketing.util.toast
+import com.google.firebase.firestore.Query
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, BoardDetailViewModel>(R.layout.activity_board_detail) {
 
     override val viewModel : BoardDetailViewModel by viewModels()
-    private var board : Board?= null
+    @Inject lateinit var pref: SharedPreferences
 
-    private var documentID: String? = null
+    var team: String? = null
+    private var documentID: String = ""
+    private var email = ""
+
+    private var board : Board?= null
     var get_image: String? = null
     var get_content: String? = null
-    var team: String? = null
 //    var auth = FirebaseAuth.getInstance()
 //    var firestore = FirebaseFirestore.getInstance()
     var query: Query? = null
@@ -63,25 +56,48 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
         when(event) {
             is BoardDetailViewModel.Event.BoardInfoSuccess -> {
                 binding.board = event.board
+                setLikeView(event.board.like?.get(email) ?: false)
+                viewModel.updateViews(documentID)
+                viewModel.getUserGrade()
+                viewModel.getCommentsList(documentID)
+            }
+            is BoardDetailViewModel.Event.UserGrade -> {
+                setGradeImageView(binding.imgIcon, event.grade)
+            }
+            is BoardDetailViewModel.Event.CommentsListSuccess -> {
+                setAdapter(event.comments)
+            }
+            is BoardDetailViewModel.Event.LikeUpdateSuccess -> {
+                setLikeView(event.like)
+                binding.board = event.board
+            }
+            is BoardDetailViewModel.Event.LikeUpdateFailure -> {
             }
             is BoardDetailViewModel.Event.Failure -> {
-
+                toast(getString(R.string.error_unexpected))
             }
         }
     }
 
     // 뷰 메소드 캡슐화
     private fun initViews() = with(binding) {
-        title
-
-        documentID = intent.getStringExtra(Constants.DOCUMENT_ID)
-        intent.getStringExtra(Constants.DOCUMENT_ID)?.let {
-            viewModel.getBoard(it)
-        } ?: kotlin.run {
+        activity = this@BoardDetailActivity
+        title = intent.getStringExtra(Constants.TEAM)
+        documentID = intent.getStringExtra(Constants.DOCUMENT_ID) ?: kotlin.run {
             toast(getString(R.string.error_unexpected))
             return@with
         }
 
+        layoutTop.btnBack.setOnClickListener {
+            onBackClick(it)
+        }
+
+        viewModel.getBoard(documentID)
+
+        email = pref.getString(Constants.ID, null) ?: ""
+
+        // todo 오늘 작업 예정
+        //  좋아요 누르기, 댓글 추가, 메뉴
 
 //        boardTitle.append(board!!.team)
 //        firestore.collection("Board").document(documentID!!).get()
@@ -215,6 +231,31 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
 //            popup.show()
 //        }
     } // setViews
+
+    fun onLikeClick(view: View) {
+        viewModel.updateLike(documentID)
+        binding.viewHeart.isEnabled = false
+        binding.txtLikeCount.isEnabled = false
+    }
+
+    private fun setLikeView(isLike: Boolean) = with(binding) {
+        binding.viewHeart.isEnabled = true
+        binding.txtLikeCount.isEnabled = true
+
+        if (isLike) {
+            viewHeart.setBackgroundResource(R.drawable.ic_heart_fill)
+        } else {
+            viewHeart.setBackgroundResource(R.drawable.ic_heart)
+        }
+    }
+
+    private fun setAdapter(list: List<Comment>) = with(binding) {
+        val adapter = CommentAdapter().also {
+            it.addList(list)
+        }
+
+        recyclerView.adapter = adapter
+    }
 
     // 글 삭제 메소드
     private fun commentDelete() {

@@ -4,8 +4,11 @@ import android.net.Uri
 import com.ezen.lolketing.model.Board
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.model.BoardWriteInfo
+import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.findCodeName
+import com.google.firebase.firestore.FieldValue
 import javax.inject.Inject
 
 class BoardRepository @Inject constructor(
@@ -14,6 +17,27 @@ class BoardRepository @Inject constructor(
 
     suspend fun getUserNickname() : String? =
         client.getUserNickName()
+
+    suspend fun getUserGrade(
+        email : String,
+        successListener: (String) -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        client
+            .getBasicSnapshot(
+                collection = Constants.USERS,
+                document = email,
+                successListener = {
+                    it.toObject(Users::class.java)?.let { userInfo ->
+                        userInfo.grade?.let(successListener) ?: failureListener()
+                    }
+                },
+                failureListener = failureListener
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
 
     suspend fun getBoardList(
         field : String = Constants.TEAM,
@@ -110,9 +134,11 @@ class BoardRepository @Inject constructor(
                 document = documentId,
                 successListener = { snapshot ->
                     snapshot.toObject(Board::class.java)
-                        ?.let {
-                            // todo code값 수정 필요
-                            it.category
+                        ?.let { board ->
+                            board.category?.let {
+                                board.category = findCodeName(it)
+                            }
+                            successListener(board)
                         }
                         ?:failureListener()
                 },
@@ -153,7 +179,7 @@ class BoardRepository @Inject constructor(
         uri: Uri,
         successListener: (String) -> Unit,
         failureListener: () -> Unit
-    ) {
+    ): Any = try {
         client
             .basicFileUpload(
                 fileName = "board/${System.currentTimeMillis()}.png",
@@ -161,11 +187,49 @@ class BoardRepository @Inject constructor(
                 successListener = successListener,
                 failureListener = failureListener
             )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    suspend fun updateViews(
+        documentId: String
+    ) = try {
+        client
+            .basicUpdateData(
+                collection = Constants.BOARD,
+                documentId = documentId,
+                updateData = mapOf("views" to FieldValue.increment(1)),
+                successListener = {},
+                failureListener = {}
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+    suspend fun updateLikes(
+        documentId: String,
+        board: Board,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        // firebase update 사용 불가, like - key 의 값에 넣은 이메일의 . 때문에 오류 발생
+        client
+            .basicAddData(
+                collection = Constants.BOARD,
+                document = documentId,
+                data = board,
+                successListener = successListener,
+                failureListener = failureListener
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     suspend fun uploadBoard(
         data : Board,
-        successListener : () -> Unit,
+        successListener : (String) -> Unit,
         errorListener : () -> Unit
     ) = try {
         client
@@ -173,7 +237,7 @@ class BoardRepository @Inject constructor(
                 collection = Constants.BOARD,
                 data = data,
                 successListener = {
-                    successListener()
+                    successListener(it.id)
                 },
                 failureListener = {
                     errorListener()
@@ -199,6 +263,44 @@ class BoardRepository @Inject constructor(
         )
     } catch (e : Exception) {
         e.printStackTrace()
+    }
+
+    suspend fun uploadComment(
+        documentId: String
+    ) = try {
+        client
+            .doubleAddData(
+                firstCollection = Constants.BOARD,
+                firstDocument = documentId,
+                secondCollection = Constants.COMMENTS,
+                data = Board.Comment(),
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+    suspend fun getCommentsList(
+        documentId: String,
+        successListener: (List<Board.Comment>) -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        client
+            .getDoubleSnapshot(
+                firstCollection = Constants.BOARD,
+                firstDocument = documentId,
+                secondCollection = Constants.COMMENTS,
+                successListener = {
+                    val list = mutableListOf<Board.Comment>()
+                    it.forEach { snapshot ->
+                        list.add(snapshot.toObject(Board.Comment::class.java))
+                    }
+                    successListener(list)
+                },
+                failureListener = failureListener
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     suspend fun deleteBoard(

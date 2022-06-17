@@ -434,6 +434,33 @@ class FirebaseClient @Inject constructor(
             .collection(firstCollection)
             .document(firstDocument)
             .collection(secondCollection)
+            .document(secondDocument)
+            .set(data)
+            .addOnSuccessListener {
+                successListener?.invoke()
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener?.invoke()
+            }
+            .await()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    suspend fun doubleAddData(
+        firstCollection: String,
+        firstDocument: String,
+        secondCollection: String,
+        data : Any,
+        successListener: (() -> Unit)?= null,
+        failureListener: (() -> Unit)?= null
+    ) = try {
+        firestore
+            .collection(firstCollection)
+            .document(firstDocument)
+            .collection(secondCollection)
             .document()
             .set(data)
             .addOnSuccessListener {

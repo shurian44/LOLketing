@@ -136,15 +136,14 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
     }
 
     private fun getBoardList() {
-        intent?.getStringExtra(Constants.TEAM)?.let {
-            viewModel.getBoardList(it)
-        }
+        viewModel.getBoardList(team)
     }
 
     private fun setAdapter(){
         adapter = BoardListAdapter(
             onclickListener = { documentId ->
                 val intent = Intent(this, BoardDetailActivity::class.java).apply {
+                    putExtra(Constants.TEAM, team)
                     putExtra(Constants.DOCUMENT_ID, documentId)
                 }
                 launcher.launch(intent)

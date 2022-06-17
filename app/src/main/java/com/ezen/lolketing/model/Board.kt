@@ -9,13 +9,13 @@ data class Board(
     val nickname: String?= null,
     val team : String?= null,
     val timestamp: Long?= null,
-    val category: String?= null,
+    var category: String?= null,
     val title : String?= null,
     val content: String?= null,
     val image : String?= null,
     val commentCounts : Long?= null,
-    val like : Map<String, Boolean>?= null,
-    val likeCounts : Long?= null,
+    val like : MutableMap<String, Boolean>?= null,
+    var likeCounts : Long?= null,
     val views : Long?= null,
     var documentId : String?= null
 ) : Parcelable {

@@ -110,7 +110,6 @@ class TicketingRepository @Inject constructor(
                     firstCollection = Constants.GAME,
                     firstDocument = documentId,
                     secondCollection = Constants.SEAT,
-                    secondDocument = DOCUMENT_SEAT,
                     data = it,
                     successListener = {}
                 )

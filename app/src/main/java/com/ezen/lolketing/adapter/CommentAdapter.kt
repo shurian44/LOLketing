@@ -10,10 +10,10 @@ import com.ezen.lolketing.databinding.ItemCommentBinding
 import com.ezen.lolketing.model.Board
 
 class CommentAdapter(
-    private val deleteListener : (Board.Comment) -> Unit
+//    private val deleteListener : (Board.Comment) -> Unit
 ) : RecyclerView.Adapter<CommentAdapter.CommentHolder>() { // class CommentAdapter
 
-    private val commentList = listOf<Board.Comment >()
+    private val commentList = mutableListOf<Board.Comment >()
 
     inner class CommentHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -60,5 +60,9 @@ class CommentAdapter(
 
     override fun getItemCount(): Int =
         commentList.size
+
+    fun addList(list: List<Board.Comment>) {
+        commentList.addAll(list)
+    }
 
 }
