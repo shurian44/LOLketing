@@ -25,6 +25,7 @@
             android:textColor="@color/gray"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:text="@{comment.nickname}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="롤켓팅" />
@@ -36,6 +37,7 @@
             android:layout_marginStart="5dp"
             android:textColor="@color/gray"
             android:textSize="12sp"
+            app:timestamp="@{comment.timestamp}"
             app:layout_constraintStart_toEndOf="@id/txtNickname"
             app:layout_constraintTop_toTopOf="@id/txtNickname"
             tools:text="2022.05.21" />
@@ -49,6 +51,7 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
+            android:text="@{comment.comment}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/txtNickname"

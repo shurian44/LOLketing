@@ -3,7 +3,7 @@ package com.ezen.lolketing.util
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
+import com.ezen.lolketing.R
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.view.custom.CustomSeatCheckBox
 
@@ -20,6 +20,13 @@ fun setSeatCheckBoxStatus(checkBox : CustomSeatCheckBox, isEnabled : Boolean = t
 
 @BindingAdapter("html")
 fun setHtml(textView: TextView, str: String) {
+    textView.text = str.htmlFormat()
+}
+
+@BindingAdapter(value = ["boardTitle", "boardCategory"])
+fun setBoardTitle(textView: TextView, boardTitle: String, boardCategory: String) {
+    val codeName = findCodeName(boardCategory)
+    val str = textView.context.getString(R.string.board_detail_title, codeName, boardTitle)
     textView.text = str.htmlFormat()
 }
 

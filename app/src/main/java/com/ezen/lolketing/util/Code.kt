@@ -19,7 +19,11 @@ enum class Code(val code: String, val codeName: String) {
     FREE_BOARD("CATEGORY001", "자유 게시판"),
     QUESTION_BOARD("CATEGORY002", "질문 게시판"),
     GAME_BOARD("CATEGORY003", "게임 게시판"),
-    UNKNOWN("UNKNOWN", "UNKNOWN")
+    REPORT_PROMOTION("REPORT001", "부적절한 홍보게시물"),
+    REPORT_OBSCENITY("REPORT002", "음란성 또는 청소년에게 부적합한 내용"),
+    REPORT_COPYRIGHT("REPORT003", "명예훼손/사생활 침해 및 저작권침해"),
+    REPORT_ETC("REPORT004", "기타"),
+    UNKNOWN("UNKNOWN", "UNKNOWN"),
 }
 
 fun findCode(codeName: String) =

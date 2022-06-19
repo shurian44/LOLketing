@@ -63,6 +63,7 @@
     <string name="input_contents">내용을 입력해주세요</string>
     <string name="select_image">이미지 선택</string>
     <string name="board_detail_title"><![CDATA[<font color=\"#F7DA6E\"><b>[%s]</b></font> %s]]></string>
+    <string name="comments_detail">댓글 상세보기</string>
 
     <!-- 이벤트 -->
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>
@@ -143,6 +144,15 @@
     <string name="already_used_coupon">이미 사용한 쿠폰입니다.</string>
     <string name="new_user_coupon_used">500 포인트가 지급되었습니다</string>
 
+    <!-- 신고하기 -->
+    <string name="report_type">신고 유형을 선택해주세요</string>
+    <string name="report_promotion">부적절한 홍보게시물</string>
+    <string name="report_obscenity">음란성 또는 청소년에게 부적합한 내용</string>
+    <string name="report_copyright">명예훼손/사생활 침해 및 저작권침해</string>
+    <string name="report_etc">기타</string>
+    <string name="report_received">신고 접수가 완료되었습니다</string>
+    <string name="report_received_contents">신고가 접수되어 비공개 처리되었습니다</string>
+
     <!-- 공통 -->
     <string name="cancel">취소</string>
     <string name="ok">확인</string>
@@ -162,6 +172,11 @@
     <string name="move_home">홈으로 이동</string>
     <string name="change">변경</string>
     <string name="remove">제거</string>
+    <string name="select_modify">수정하기</string>
+    <string name="select_delete">삭제하기</string>
+    <string name="select_comment">댓글쓰기</string>
+    <string name="select_report">신고하기</string>
+    <string name="delete_complete">삭제를 완료하였습니다</string>
 
     <string name="like_counts">좋아요 %d</string>
     <string name="board_views">조회수 %d</string>

@@ -94,23 +94,36 @@ class BoardDetailViewModel @Inject constructor(
             )
     }
 
-    //
-    private fun getCommentList() {
-//        // 댓글 시간 순으로 내림차순 정렬
-//        query = firestore.collection("Board").document(documentID!!).collection("Comment")
-//            .orderBy("timestamp", Query.Direction.DESCENDING)
-//        val options: FirestoreRecyclerOptions<Comment> =
-//            FirestoreRecyclerOptions.Builder<Comment>()
-//                .setQuery(query!!, Comment::class.java)
-//                .build()
-//        adapter = CommentAdapter(options, documentID)
-//        binding.recyclerViewComment.adapter = adapter
-//
-//        // 조회수 증가
-//        firestore.collection("Board").document(intent.getStringExtra("documentID")!!)
-//            .update("views", FieldValue.increment(1))
+    fun deleteBoard(
+        documentId: String
+    ) = viewModelScope.launch {
+        repository
+            .deleteBoard(
+                documentId = documentId,
+                successListener = {
+                    event(Event.DeleteSuccess)
+                },
+                failureListener = {
+                    event(Event.Failure)
+                }
+            )
     }
 
+    fun updateReportList(
+        documentId: String,
+        reportList: List<String>
+    ) = viewModelScope.launch {
+        repository.updateBoardReport(
+            documentId = documentId,
+            reportList = reportList,
+            successListener = {
+                event(Event.ReportSuccess)
+            },
+            failureListener = {
+                event(Event.Failure)
+            }
+        )
+    }
 
     sealed class Event {
         data class BoardInfoSuccess(
@@ -126,6 +139,8 @@ class BoardDetailViewModel @Inject constructor(
             val like: Boolean,
             val board: Board
         ) : Event()
+        object DeleteSuccess : Event()
+        object ReportSuccess : Event()
         object LikeUpdateFailure : Event()
         object Failure : Event()
     }

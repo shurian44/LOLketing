@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/drawable/btn_round_fill.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/btn_round_fill2.xml" value="0.2235" />
         <entry key="app/src/main/res/drawable/checkbox_state.xml" value="0.268" />
+        <entry key="app/src/main/res/drawable/checkbox_state_light_black.xml" value="0.256" />
         <entry key="app/src/main/res/drawable/fragment_holl_a.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/ic_cancel.xml" value="0.275" />
@@ -43,6 +44,7 @@
         <entry key="app/src/main/res/layout/activity_cache_charging.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_chatting.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_chattinglist.xml" value="0.40208333333333335" />
+        <entry key="app/src/main/res/layout/activity_comment.xml" value="0.37447916666666664" />
         <entry key="app/src/main/res/layout/activity_coupon.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/activity_daum_web_view.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/activity_event_detail.xml" value="0.40208333333333335" />
@@ -80,8 +82,11 @@
         <entry key="app/src/main/res/layout/custom_event_card.xml" value="0.38697916666666665" />
         <entry key="app/src/main/res/layout/custom_limited_edit_text_view.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_add_new_game.xml" value="0.40208333333333335" />
+        <entry key="app/src/main/res/layout/dialog_board_menu.xml" value="0.3859375" />
         <entry key="app/src/main/res/layout/dialog_category_select.xml" value="0.37447916666666664" />
         <entry key="app/src/main/res/layout/dialog_join.xml" value="0.3859375" />
+        <entry key="app/src/main/res/layout/dialog_rank.xml" value="0.37447916666666664" />
+        <entry key="app/src/main/res/layout/dialog_report.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_seat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_team.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/fragment_hall.xml" value="0.38697916666666665" />

@@ -17,14 +17,16 @@ data class Board(
     val like : MutableMap<String, Boolean>?= null,
     var likeCounts : Long?= null,
     val views : Long?= null,
-    var documentId : String?= null
+    var documentId : String?= null,
+    val reportList : List<String>?= null
 ) : Parcelable {
     @Parcelize
     data class Comment(
         val email : String?= null,
         val nickname : String?= null,
         val timestamp : Long?= null,
-        val comment : String?= null
+        val comment : String?= null,
+        val reportList : List<String>?= null
     ) : Parcelable
 
     fun boardListItemMapper() = BoardItem.BoardListItem(

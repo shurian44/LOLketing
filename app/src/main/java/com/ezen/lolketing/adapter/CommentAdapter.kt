@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ItemCommentBinding
 import com.ezen.lolketing.model.Board
 
@@ -17,8 +18,14 @@ class CommentAdapter(
 
     inner class CommentHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(comment: Board.Comment) {
-            binding.comment = comment
+        fun bind(comment: Board.Comment) = with(binding) {
+            this.comment = comment
+
+            if (adapterPosition % 2 == 0) {
+                root.setBackgroundResource(R.color.light_black)
+            } else {
+                root.setBackgroundResource(R.color.black)
+            }
 //            binding.imageViewDelete.setOnClickListener {
 //                deleteListener(comment)
 //            }

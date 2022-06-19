@@ -134,12 +134,7 @@ class BoardRepository @Inject constructor(
                 document = documentId,
                 successListener = { snapshot ->
                     snapshot.toObject(Board::class.java)
-                        ?.let { board ->
-                            board.category?.let {
-                                board.category = findCodeName(it)
-                            }
-                            successListener(board)
-                        }
+                        ?.let(successListener)
                         ?:failureListener()
                 },
                 failureListener = failureListener
@@ -321,4 +316,70 @@ class BoardRepository @Inject constructor(
     } catch (e: Exception) {
         e.printStackTrace()
     }
+
+    suspend fun updateBoardReport(
+        documentId: String,
+        reportList: List<String>,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        client
+            .basicUpdateData(
+                collection = Constants.BOARD,
+                documentId = documentId,
+                updateData = mapOf("reportList" to reportList),
+                successListener = successListener,
+                failureListener = failureListener
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    suspend fun addComment(
+        documentId: String,
+        comment: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        val email = client.getUserEmail() ?: throw Exception("email is null")
+        val nickname = getUserNickname() ?: throw Exception("nickname is null")
+
+        val commentItem = Board.Comment(
+            email = email,
+            nickname = nickname,
+            timestamp = System.currentTimeMillis(),
+            comment = comment
+        )
+
+        client
+            .doubleAddData(
+                firstCollection = Constants.BOARD,
+                firstDocument = documentId,
+                secondCollection = Constants.COMMENTS,
+                data = commentItem,
+                successListener = successListener,
+                failureListener = failureListener
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    suspend fun updateBoardCommentCount(
+        documentId: String,
+        count: Int
+    ) = try {
+        client
+            .basicUpdateData(
+                collection = Constants.BOARD,
+                documentId = documentId,
+                updateData = mapOf("commentCounts" to count),
+                successListener = {},
+                failureListener = {}
+            )
+    } catch (e: Exception) {
+
+    }
+
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="dialog"
-            type="com.ezen.lolketing.view.dialog.CategorySelectDialog" />
+            type="com.ezen.lolketing.view.dialog.DialogReport" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -41,7 +41,7 @@
                 android:background="@color/black"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="@string/select_category"
+                android:text="@string/report_type"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -59,18 +59,65 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/txtTitle" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@id/btnCancel"
+                android:layout_marginHorizontal="1dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtTitle"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_select" />
+                app:layout_constraintTop_toBottomOf="@id/txtTitle">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioPromotion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/checkbox_state_light_black"
+                    android:button="@android:color/transparent"
+                    android:paddingHorizontal="20dp"
+                    android:text="@string/report_promotion"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioCopyright"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/checkbox_state"
+                    android:button="@android:color/transparent"
+                    android:paddingHorizontal="20dp"
+                    android:text="@string/report_copyright"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioObscenity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/checkbox_state_light_black"
+                    android:button="@android:color/transparent"
+                    android:paddingHorizontal="20dp"
+                    android:text="@string/report_obscenity"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioEtc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/checkbox_state"
+                    android:button="@android:color/transparent"
+                    android:paddingHorizontal="20dp"
+                    android:text="@string/report_etc"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </RadioGroup>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancel"
@@ -88,7 +135,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnOk"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerView"
+                app:layout_constraintTop_toBottomOf="@id/radioGroup"
                 app:strokeColor="@color/main_color"
                 app:strokeWidth="1dp" />
 
