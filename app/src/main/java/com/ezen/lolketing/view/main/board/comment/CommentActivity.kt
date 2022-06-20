@@ -1,6 +1,7 @@
 package com.ezen.lolketing.view.main.board.comment
 
 import android.app.Activity
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.ezen.lolketing.BaseViewModelActivity
@@ -11,13 +12,16 @@ import com.ezen.lolketing.model.Board
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.dialog.DialogReport
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CommentActivity : BaseViewModelActivity<ActivityCommentBinding, CommentViewModel>(R.layout.activity_comment) {
 
     override val viewModel: CommentViewModel by viewModels()
+    @Inject lateinit var pref : SharedPreferences
     private lateinit var documentId : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,20 +70,54 @@ class CommentActivity : BaseViewModelActivity<ActivityCommentBinding, CommentVie
                 toast(getString(R.string.error_unexpected))
             }
             CommentViewModel.Event.AddCommentSuccess -> {
-                toast("댓글 등록 완료")
-                setResult(Activity.RESULT_OK)
+                toast(getString(R.string.add_comment_success))
+                setResult(RESULT_OK)
                 viewModel.getCommentList(documentId)
                 binding.editComment.setText("")
             }
             CommentViewModel.Event.AddCommentFailure -> {
-                toast("댓글 등록 실패")
+                toast(getString(R.string.add_comment_failure))
+            }
+            CommentViewModel.Event.CommentDeleteSuccess -> {
+                viewModel.getCommentList(documentId)
+            }
+            CommentViewModel.Event.CommentReportSuccess -> {
+                toast(getString(R.string.report_received))
             }
         }
     }
 
     private fun setAdapter(list: List<Board.Comment>) = with(binding) {
-        val adapter = CommentAdapter().also {
+
+        val email = pref.getString(Constants.ID, "") ?: ""
+
+        val adapter = CommentAdapter(
+            layoutInflater = layoutInflater,
+            myEmail = email
+        ).also {
             it.addList(list)
+
+            it.setDeleteListener { commentDocumentId ->
+                viewModel.deleteComment(documentId, commentDocumentId)
+            }
+
+            it.setReportListener { commentDocumentId, reportList ->
+                val resultList = mutableListOf<String>()
+                reportList?.let {
+                    resultList.addAll(reportList)
+                }
+
+                DialogReport { select ->
+                    resultList.add(select)
+
+                    viewModel.updateCommentReport(
+                        boardDocumentId = documentId,
+                        commentDocumentId = commentDocumentId,
+                        reportList = resultList
+                    )
+
+                }.show(supportFragmentManager, "")
+            }
         }
 
         recyclerView.adapter = adapter

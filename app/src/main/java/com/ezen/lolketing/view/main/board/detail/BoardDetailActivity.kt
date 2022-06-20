@@ -3,7 +3,6 @@ package com.ezen.lolketing.view.main.board.detail
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -75,6 +74,13 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
                 toast(getString(R.string.report_received))
                 finish()
             }
+            BoardDetailViewModel.Event.CommentDeleteSuccess -> {
+                toast(getString(R.string.delete_complete))
+                viewModel.getCommentsList(documentID)
+            }
+            BoardDetailViewModel.Event.CommentReportSuccess -> {
+                toast(getString(R.string.report_received))
+            }
         }
     }
 
@@ -103,7 +109,6 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
 
     private fun createPopupMenu() =
         BoardMenuPopup(layoutInflater).also {
-            Log.e("+++++", "board email = ${ binding.board?.email} / email : $email")
             if (email == binding.board?.email) {
                 it.createPopup(BoardMenuPopup.MY_BOARD)
             } else {
@@ -112,7 +117,7 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
 
             it.setListener(
                 modifyListener = {
-                    launcher.launch(
+                    modifyLauncher.launch(
                         createIntent(BoardWriteActivity::class.java).also { intent ->
                             intent.putExtra(Constants.TEAM, team)
                             intent.putExtra(Constants.DOCUMENT_ID, documentID)
@@ -172,9 +177,34 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
 
     private fun setAdapter(list: List<Comment>) = with(binding) {
         commentCount = list.size
-        val adapter = CommentAdapter().also {
+        val adapter = CommentAdapter(
+            layoutInflater = layoutInflater,
+            myEmail = email
+        ).also {
             val maxLength = if (list.size > 5) 5 else list.size
             it.addList(list.subList(0, maxLength))
+
+            it.setDeleteListener { commentDocumentId ->
+                viewModel.deleteComment(documentID, commentDocumentId)
+            }
+
+            it.setReportListener { commentDocumentId, reportList ->
+                val resultList = mutableListOf<String>()
+                reportList?.let {
+                    resultList.addAll(reportList)
+                }
+
+                DialogReport { select ->
+                    resultList.add(select)
+
+                    viewModel.updateCommentReport(
+                        boardDocumentId = documentID,
+                        commentDocumentId = commentDocumentId,
+                        reportList = resultList
+                    )
+
+                }.show(supportFragmentManager, "")
+            }
         }
 
         recyclerView.adapter = adapter

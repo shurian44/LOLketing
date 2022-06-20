@@ -26,6 +26,7 @@ data class Board(
         val nickname : String?= null,
         val timestamp : Long?= null,
         val comment : String?= null,
+        var documentId : String?= null,
         val reportList : List<String>?= null
     ) : Parcelable
 

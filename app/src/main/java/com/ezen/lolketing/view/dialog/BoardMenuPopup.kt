@@ -1,7 +1,5 @@
 package com.ezen.lolketing.view.dialog
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +42,16 @@ class BoardMenuPopup(
             ANOTHER_PERSON_BOARD -> {
                 txtModify.isVisible = false
                 txtDelete.isVisible = false
+            }
+            MY_COMMENT -> {
+                txtModify.isVisible = false
+                txtComment.isVisible = false
+                txtReport.isVisible = false
+            }
+            ANOTHER_PERSON_COMMENT -> {
+                txtModify.isVisible = false
+                txtDelete.isVisible = false
+                txtComment.isVisible = false
             }
         }
     }
@@ -92,6 +100,8 @@ class BoardMenuPopup(
     companion object {
         const val MY_BOARD = "my_board"
         const val ANOTHER_PERSON_BOARD = "another_person_board"
+        const val MY_COMMENT = "my_comment"
+        const val ANOTHER_PERSON_COMMENT = "another_person_comment"
     }
 
 }

@@ -64,6 +64,8 @@
     <string name="select_image">이미지 선택</string>
     <string name="board_detail_title"><![CDATA[<font color=\"#F7DA6E\"><b>[%s]</b></font> %s]]></string>
     <string name="comments_detail">댓글 상세보기</string>
+    <string name="add_comment_success">댓글 등록 완료</string>
+    <string name="add_comment_failure">댓글 등록 실패</string>
 
     <!-- 이벤트 -->
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>

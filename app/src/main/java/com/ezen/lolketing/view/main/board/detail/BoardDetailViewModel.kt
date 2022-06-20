@@ -125,6 +125,39 @@ class BoardDetailViewModel @Inject constructor(
         )
     }
 
+    fun updateCommentReport(
+        boardDocumentId: String,
+        commentDocumentId: String,
+        reportList: List<String>
+    ) = viewModelScope.launch {
+        repository
+            .updateCommentReport(
+                boardDocumentId = boardDocumentId,
+                commentDocumentId = commentDocumentId,
+                reportList =  reportList,
+                successListener = {
+                    event(Event.CommentReportSuccess)
+                }
+            )
+    }
+
+    fun deleteComment(
+        boardDocumentId: String,
+        commentDocumentId: String
+    ) = viewModelScope.launch {
+        repository
+            .deleteComment(
+                boardDocumentId = boardDocumentId,
+                commentDocumentId = commentDocumentId,
+                successListener = {
+                    event(Event.CommentDeleteSuccess)
+                },
+                failureListener = {
+                    event(Event.Failure)
+                }
+            )
+    }
+
     sealed class Event {
         data class BoardInfoSuccess(
             val board: Board
@@ -142,6 +175,8 @@ class BoardDetailViewModel @Inject constructor(
         object DeleteSuccess : Event()
         object ReportSuccess : Event()
         object LikeUpdateFailure : Event()
+        object CommentDeleteSuccess : Event()
+        object CommentReportSuccess : Event()
         object Failure : Event()
     }
 

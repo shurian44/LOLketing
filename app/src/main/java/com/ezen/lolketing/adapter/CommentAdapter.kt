@@ -1,20 +1,23 @@
 package com.ezen.lolketing.adapter
 
-import android.app.AlertDialog
-import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ItemCommentBinding
 import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.view.dialog.BoardMenuPopup
 
 class CommentAdapter(
-//    private val deleteListener : (Board.Comment) -> Unit
+    private val layoutInflater: LayoutInflater,
+    private val myEmail : String
 ) : RecyclerView.Adapter<CommentAdapter.CommentHolder>() { // class CommentAdapter
 
     private val commentList = mutableListOf<Board.Comment >()
+    private var deleteLister : ((String) -> Unit)? = null
+    private var reportLister : ((String, List<String>?) -> Unit)? = null
 
     inner class CommentHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -26,9 +29,12 @@ class CommentAdapter(
             } else {
                 root.setBackgroundResource(R.color.black)
             }
-//            binding.imageViewDelete.setOnClickListener {
-//                deleteListener(comment)
-//            }
+
+            txtReport.isVisible = (comment.reportList?.size ?: 0) > 5
+
+            viewMenu.setOnClickListener { view ->
+                createMenu(view, comment)
+            }
         }
     } // CommentHolder
 
@@ -39,30 +45,35 @@ class CommentAdapter(
         holder.bind(commentList[position])
     }
 
-    fun commentDelete(context: Context?, position: Int, email: String) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("댓글 삭제").setMessage("정말 삭제하시겠습니까?")
-        builder.setPositiveButton("네") { dialog, id ->
+    private fun createMenu(view: View, comment: Board.Comment) {
+        val commentEmail = comment.email ?: return
+        val documentId = comment.documentId ?: return
 
-//            if (email == auth.currentUser!!.email) {
-//                snapshots.getSnapshot(position).reference.delete()
-//                Toast.makeText(context, "댓글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show()
-//                FirebaseFirestore.getInstance().collection("Board").document(documentID)
-//                    .update("commentCounts", FieldValue.increment(-1))
-//            } else {
-//                Toast.makeText(context, "삭제 권한이 없습니다", Toast.LENGTH_SHORT).show()
-//            }
-            //                notifyDataSetChanged();
+        BoardMenuPopup(layoutInflater).also {
+            if (myEmail == commentEmail) {
+                it.createPopup(BoardMenuPopup.MY_COMMENT)
+            } else {
+                it.createPopup(BoardMenuPopup.ANOTHER_PERSON_COMMENT)
+            }
+
+            it.setListener(
+                deleteListener = {
+                    deleteLister?.invoke(documentId)
+                },
+                reportListener = {
+                    reportLister?.invoke(documentId, comment.reportList)
+                }
+            )
+            it.showPopup(view)
         }
-        builder.setNegativeButton("아니오") { dialog, id ->
-            Toast.makeText(
-                context,
-                "삭제 취소.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        val alertDialog = builder.create()
-        alertDialog.show()
+    }
+
+    fun setDeleteListener(listener : (String) -> Unit) {
+        deleteLister = listener
+    }
+
+    fun setReportListener(listener: (String, List<String>?) -> Unit) {
+        reportLister = listener
     }
 
     override fun getItemCount(): Int =

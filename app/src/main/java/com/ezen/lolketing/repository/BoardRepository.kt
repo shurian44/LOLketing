@@ -7,7 +7,6 @@ import com.ezen.lolketing.model.BoardWriteInfo
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.util.findCodeName
 import com.google.firebase.firestore.FieldValue
 import javax.inject.Inject
 
@@ -287,7 +286,11 @@ class BoardRepository @Inject constructor(
                 successListener = {
                     val list = mutableListOf<Board.Comment>()
                     it.forEach { snapshot ->
-                        list.add(snapshot.toObject(Board.Comment::class.java))
+                        list.add(
+                            snapshot.toObject(Board.Comment::class.java).also { board ->
+                                board.documentId = snapshot.id
+                            }
+                        )
                     }
                     successListener(list)
                 },
@@ -379,7 +382,47 @@ class BoardRepository @Inject constructor(
                 failureListener = {}
             )
     } catch (e: Exception) {
+        e.printStackTrace()
+    }
 
+    suspend fun updateCommentReport(
+        boardDocumentId: String,
+        commentDocumentId: String,
+        reportList: List<String>,
+        successListener: () -> Unit
+    ) = try {
+        client
+            .doubleUpdateData(
+                firstCollection = Constants.BOARD,
+                firstDocument = boardDocumentId,
+                secondCollection = Constants.COMMENTS,
+                secondDocument = commentDocumentId,
+                updateData = mapOf("reportList" to reportList),
+                successListener = successListener,
+                failureListener = {}
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+    suspend fun deleteComment(
+        boardDocumentId: String,
+        commentDocumentId: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+     ) = try {
+        client
+            .doubleDelete(
+                firstCollection = Constants.BOARD,
+                firstDocument = boardDocumentId,
+                secondCollection = Constants.COMMENTS,
+                secondDocument = commentDocumentId,
+                successListener = successListener,
+                failureListener = failureListener
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
 }

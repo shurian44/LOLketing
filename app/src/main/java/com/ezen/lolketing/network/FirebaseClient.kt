@@ -504,6 +504,33 @@ class FirebaseClient @Inject constructor(
         null
     }
 
+    suspend fun doubleDelete(
+        firstCollection: String,
+        firstDocument: String,
+        secondCollection: String,
+        secondDocument: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ): Any = try {
+        firestore
+            .collection(firstCollection)
+            .document(firstDocument)
+            .collection(secondCollection)
+            .document(secondDocument)
+            .delete()
+            .addOnSuccessListener {
+                successListener()
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                failureListener()
+            }
+            .await()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
     suspend fun storageDelete(
         path: String,
         successListener: () -> Unit,
@@ -531,7 +558,7 @@ class FirebaseClient @Inject constructor(
         uri: Uri,
         successListener: (String) -> Unit,
         failureListener: () -> Unit
-    ) = try {
+    ): Any = try {
         val storageRef = getStorageReference(fileName)
 
         storageRef.putFile(uri)
