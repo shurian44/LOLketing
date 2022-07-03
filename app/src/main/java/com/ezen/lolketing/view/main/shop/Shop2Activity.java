@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class ShopActivity extends AppCompatActivity
+public class Shop2Activity extends AppCompatActivity
         implements ShopAdapter.MoveActivityListener, ShopSliderAdapter.MoveActivityListener {
 
     private ShopAdapter adapter;
@@ -76,7 +76,7 @@ public class ShopActivity extends AppCompatActivity
 
                         // auto slide -> shop event banner
                         SliderView sliderView = findViewById(R.id.imageSlider);
-                        ShopSliderAdapter shopSliderAdapter = new ShopSliderAdapter(ShopActivity.this, images, shopDTOS);
+                        ShopSliderAdapter shopSliderAdapter = new ShopSliderAdapter(Shop2Activity.this, images, shopDTOS);
                         sliderView.setSliderAdapter(shopSliderAdapter);
                         sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); // set indicator animation : SliderLayout.IndicatorAnimations.~
                         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);

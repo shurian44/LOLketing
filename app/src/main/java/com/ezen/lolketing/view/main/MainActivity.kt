@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -56,6 +57,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         viewModel.getUserInfo()
         viewModel.getEventBannerList()
         binding.activity = this
+        Handler(mainLooper).postDelayed({ binding.btnShop.performClick() }, 500)
     }
 
     /** 이벤트 핸들러 **/

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,9 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m">
-        <activity android:name=".view.main.board.comment.CommentActivity"
-            android:exported="false"/>
+        tools:targetApi="m" >
+        <activity
+            android:name=".view.main.shop.ShopActivity"
+            android:exported="false"
+            android:label="@string/title_activity_shop"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".view.main.board.comment.CommentActivity"
+            android:exported="false" />
         <activity
             android:name=".view.main.ticket.payment.PaymentActivity"
             android:exported="false" />
@@ -30,7 +36,7 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,7 +66,7 @@
         <activity android:name=".view.main.board.detail.BoardDetailActivity" />
         <activity android:name=".view.main.shop.PurchaseActivity" />
         <activity android:name=".view.main.shop.ShopDetailActivity" />
-        <activity android:name=".view.main.shop.ShopActivity" />
+        <activity android:name=".view.main.shop.Shop2Activity" />
         <activity android:name=".view.main.my_page.cache.CacheChargingActivity" />
         <activity android:name=".view.main.my_page.MyPageActivity" />
         <activity android:name=".view.main.ticket.info.MyTicketInfoActivity" />
