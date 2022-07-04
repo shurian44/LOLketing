@@ -26,7 +26,7 @@ class ShopSliderAdapter(
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     intent.putExtra("category", shops[position].group)
                     intent.putExtra("name", shops[position].name)
-                    intent.putExtra("image", shops[position].images)
+//                    intent.putExtra("image", shops[position].images)
                     intent.putExtra("price", shops[position].price)
                     listener.moveActivity(intent)
                 }

@@ -1,58 +1,62 @@
 package com.ezen.lolketing.view.main.shop
 
 import android.app.Activity
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ezen.lolketing.R
+import com.ezen.lolketing.model.ShopListItem
+import com.ezen.lolketing.util.findCodeName
+import com.ezen.lolketing.util.getShoppingCategoryList
+import com.ezen.lolketing.util.priceFormat
+import com.ezen.lolketing.view.main.CustomScrollableTabRow
 import com.ezen.lolketing.view.main.TitleBar
 import com.ezen.lolketing.view.ui.theme.Black
 import com.ezen.lolketing.view.ui.theme.SubColor
 import com.ezen.lolketing.view.ui.theme.White
-import kotlin.random.Random
+import com.skydoves.landscapist.ShimmerParams
+import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun ShoppingContainer() {
-    Box(
+fun ShoppingContainer(routeAction: RouteAction) {
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Black)
     ) {
         val activity = (LocalContext.current as? Activity)
-        ShoppingTitleBar(activity = activity)
-        Column(modifier = Modifier.padding(0.dp, 56.dp, 0.dp, 0.dp)) {
-            TabBar()
-            GridTest()
-            Text(text = "test", style = TextStyle(color = White))
-        }
+        val tabIndex = remember { mutableStateOf(0) }
+
+        ShoppingTitleBar { activity?.finish() }
+        TabBar(tabIndex)
+        ShopListItem(tabIndex, routeAction)
     }
 }
 
 @Composable
-fun ShoppingTitleBar(activity: Activity?) {
-    TitleBar("쇼핑", onBackClick = {
-        activity?.finish()
+fun ShoppingTitleBar(onBackListener : () -> Unit) {
+    TitleBar("굿즈 쇼핑", onBackClick = {
+        onBackListener()
     }) {
         Box(modifier = Modifier.align(Alignment.CenterEnd)) {
             Image(
@@ -79,120 +83,126 @@ fun ShoppingTitleBar(activity: Activity?) {
 }
 
 @Composable
-fun TabBar(modifier: Modifier = Modifier) {
-    var tabIndex by remember { mutableStateOf(0) }
-    val tabTitles = listOf("First", "Second", "Thread", "First", "Second", "Thread", "First", "Second", "Thread")
+fun TabBar(tabIndex: MutableState<Int>, modifier: Modifier = Modifier) {
+    val tabTitles = getShoppingCategoryList()
 
     Column(modifier = modifier) {
         CustomScrollableTabRow(
             tabs = tabTitles,
-            selectedTabIndex = tabIndex,
+            selectedTabIndex = tabIndex.value,
         ) { index ->
-            tabIndex = index
+            tabIndex.value = index
         }
     }
 }
 
 @Composable
-fun GridTest() {
-    val list = (1..10).map { "${it}번째 아이템" }
+fun ShopListItem(tabIndex: MutableState<Int>, routeAction: RouteAction, viewModel: ShopViewModel = hiltViewModel()) {
+    val list by viewModel.shopListState.collectAsState()
+    viewModel.getShopList(tabIndex.value)
+
+    if (list.isEmpty()) {
+        Text(
+            text = "상품 준비중입니다.",
+            color = White,
+            fontSize = 16.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        return
+    }
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 150.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth(),
+        contentPadding = PaddingValues(20.dp, 14.dp, 20.dp, 20.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         items(list) {
-            GridTestItem(it)
+            ShopItem(it) {
+                routeAction.navToDetail(it.documentId)
+            }
         }
     }
+
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GridTestItem(item: String) {
-    val red = Random.nextInt(256)
-    val green = Random.nextInt(256)
-    val blue = Random.nextInt(256)
-    val color = Color(red, green, blue)
-
-    Box(modifier = Modifier
-        .size(150.dp)
-        .background(color)
+fun ShopItem(shopListItem: ShopListItem, onClickListener : () -> Unit) {
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        border = BorderStroke(3.dp, SubColor),
+        colors = CardDefaults.cardColors(
+            containerColor = White
+        ),
+        onClick = onClickListener,
+        modifier = Modifier
+            .width(153.dp)
+            .height(196.dp)
     ) {
-        Text(text = item, color = White)
-    }
-}
+        val modifier = Modifier
+            .fillMaxWidth()
+            .height(153.dp)
+            .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
+            .border(3.dp, SubColor)
 
-// 출처 : https://medium.com/@sukhdip_sandhu/jetpack-compose-scrollabletabrow-indicator-matches-width-of-text-e79c0e5826fe
-@Composable
-fun CustomScrollableTabRow(
-    tabs: List<String>,
-    selectedTabIndex: Int,
-    onTabClick: (Int) -> Unit
-) {
-    val density = LocalDensity.current
-    val tabWidths = remember {
-        val tabWidthStateList = mutableStateListOf<Dp>()
-        repeat(tabs.size) {
-            tabWidthStateList.add(0.dp)
-        }
-        tabWidthStateList
-    }
-
-    ScrollableTabRow(
-        selectedTabIndex = selectedTabIndex,
-        containerColor = Color.Transparent,
-        contentColor = Color.White,
-        edgePadding = 0.dp,
-        indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                modifier = Modifier.customTabIndicatorOffset(
-                    currentTabPosition = tabPositions[selectedTabIndex],
-                    tabWidth = tabWidths[selectedTabIndex]
-                ),
-                color = SubColor
-            )
-        }
-    ) {
-        tabs.forEachIndexed { tabIndex, tab ->
-            Tab(
-                selected = selectedTabIndex == tabIndex,
-                onClick = { onTabClick(tabIndex) },
-                selectedContentColor = SubColor,
-                unselectedContentColor = White,
-                text = {
+        GlideImage(
+            imageModel = shopListItem.image,
+            shimmerParams = ShimmerParams(
+                baseColor = Black,
+                highlightColor = SubColor,
+                durationMillis = 350,
+                dropOff = 0.65f,
+                tilt = 20f
+            ),
+            failure = {
+                Column(modifier = modifier, verticalArrangement = Arrangement.Center) {
                     Text(
-                        text = tab,
-                        onTextLayout = { textLayoutResult ->
-                            tabWidths[tabIndex] =
-                                with(density) { textLayoutResult.size.width.toDp() }
-                        }
+                        text = "이미지 로드 실패",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
                     )
                 }
+            },
+            modifier = modifier
+        )
+
+        val textStyle = TextStyle(
+            fontSize = 12.sp,
+            color = Black,
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 3.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "[${findCodeName(shopListItem.group)}]",
+                    style = textStyle
+                )
+                Text(
+                    text = shopListItem.price.priceFormat(),
+                    textAlign = TextAlign.End,
+                    style = textStyle,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+            Text(
+                text = shopListItem.name,
+                style = textStyle,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
-}
-
-fun Modifier.customTabIndicatorOffset(
-    currentTabPosition: TabPosition,
-    tabWidth: Dp
-): Modifier = composed(
-    inspectorInfo = debugInspectorInfo {
-        name = "customTabIndicatorOffset"
-        value = currentTabPosition
-    }
-) {
-    val currentTabWidth by animateDpAsState(
-        targetValue = tabWidth,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)
-    )
-    val indicatorOffset by animateDpAsState(
-        targetValue = ((currentTabPosition.left + currentTabPosition.right - tabWidth) / 2),
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)
-    )
-    fillMaxWidth()
-        .wrapContentSize(Alignment.BottomStart)
-        .offset(x = indicatorOffset)
-        .width(currentTabWidth)
 }
 
 @Composable

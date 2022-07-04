@@ -23,6 +23,16 @@ enum class Code(val code: String, val codeName: String) {
     REPORT_OBSCENITY("REPORT002", "음란성 또는 청소년에게 부적합한 내용"),
     REPORT_COPYRIGHT("REPORT003", "명예훼손/사생활 침해 및 저작권침해"),
     REPORT_ETC("REPORT004", "기타"),
+    SHOP_ALL("SHOP001", "All"),
+    STATUE("SHOP002", "스태츄"),
+    FIGURE("SHOP003", "피규어"),
+    ACCESSORY("SHOP04", "액세서리"),
+    DOLL("SHOP005", "인형"),
+    T_SHIRT("SHOP006", "티셔츠"),
+    JACKET("SHOP007", "후드와 자켓"),
+    PAJAMAS("SHOP008", "잠옷"),
+    ART("SHOP009", "서적/아트"),
+    BOARD_GAME("SHOP010", "보드게임"),
     UNKNOWN("UNKNOWN", "UNKNOWN"),
 }
 

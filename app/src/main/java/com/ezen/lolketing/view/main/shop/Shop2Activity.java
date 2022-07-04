@@ -61,7 +61,7 @@ public class Shop2Activity extends AppCompatActivity
 
         String group = shopDTO.getGroup();
         String name = shopDTO.getName();
-        int price = shopDTO.getPrice();
+        Long price = shopDTO.getPrice();
 
         firestore.collection("ShopEvent").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

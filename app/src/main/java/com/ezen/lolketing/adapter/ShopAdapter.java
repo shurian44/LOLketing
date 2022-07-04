@@ -53,7 +53,7 @@ public class ShopAdapter extends FirestoreRecyclerAdapter<ShopDTO, ShopAdapter.S
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("category", shopDTO.getGroup());
                 intent.putExtra("name", shopDTO.getName());
-                intent.putExtra("image", shopDTO.getImages());
+//                intent.putExtra("image", shopDTO.getImages());
                 intent.putExtra("price", shopDTO.getPrice());
                 listener.MoveActivity(intent);
             }

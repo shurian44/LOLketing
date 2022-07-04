@@ -182,6 +182,26 @@ class FirebaseClient @Inject constructor(
         null
     }
 
+    suspend fun getBasicSnapshot(
+        collection: String,
+        successListener : (QuerySnapshot) -> Unit,
+        failureListener : () -> Unit
+    ) = try {
+        firestore
+            .collection(collection)
+            .get()
+            .addOnSuccessListener {
+                successListener(it)
+            }
+            .addOnFailureListener {
+                failureListener()
+            }
+            .await()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
     suspend fun getBasicQuerySnapshot(
         collection : String,
         field: String,

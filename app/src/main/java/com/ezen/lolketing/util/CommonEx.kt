@@ -55,6 +55,10 @@ fun Activity.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
+fun Context.toast(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+}
+
 fun View.showKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
     imm?.showSoftInput(this, 0)
@@ -123,3 +127,9 @@ fun getCouponValidityPeriod() : String {
     val lateDay60 = System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 60L)
     return lateDay60.timestampToString()
 }
+
+fun getShoppingCategoryList() = listOf(
+    Code.SHOP_ALL.codeName, Code.STATUE.codeName, Code.FIGURE.codeName,
+    Code.ACCESSORY.codeName, Code.DOLL.codeName, Code.T_SHIRT.codeName,
+    Code.JACKET.codeName, Code.PAJAMAS.codeName, Code.ART.codeName, Code.BOARD_GAME.codeName
+)
