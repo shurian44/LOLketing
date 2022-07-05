@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -53,10 +54,20 @@ fun LOLketingTheme(
         else -> LightColorScheme
     }
     val view = LocalView.current
+    val systemUiController = rememberSystemUiController()
     if (!view.isInEditMode) {
         SideEffect {
             (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
+            if(darkTheme){
+                systemUiController.setSystemBarsColor(
+                    color = Black
+                )
+            }else{
+                systemUiController.setSystemBarsColor(
+                    color = Black
+                )
+            }
         }
     }
 

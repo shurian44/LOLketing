@@ -2,13 +2,13 @@ package com.ezen.lolketing.view.main.shop
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.model.ShopDTO
 import com.ezen.lolketing.model.ShopItem
 import com.ezen.lolketing.model.ShopListItem
 import com.ezen.lolketing.repository.ShopRepository
 import com.ezen.lolketing.util.Code
+import com.ezen.lolketing.util.getCurrentDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +19,7 @@ class ShopViewModel @Inject constructor(
 
     val shopListState = MutableStateFlow<List<ShopListItem>>(emptyList())
     val shopItemState = MutableStateFlow<ShopItem?>(null)
+    val purchaseCount = MutableStateFlow(1)
 
     fun getShopList(tabIndex: Int) = viewModelScope.launch {
         val query = when(tabIndex) {
@@ -68,6 +69,40 @@ class ShopViewModel @Inject constructor(
                 shopItemState.value = null
             }
         )
+    }
+
+    fun purchaseCountIncrease() {
+        purchaseCount.value = purchaseCount.value + 1
+    }
+
+    fun purchaseCountDecrease() {
+        purchaseCount.value = purchaseCount.value - 1
+    }
+
+    fun insertShopBasket() = viewModelScope.launch {
+        val item = shopItemState.value ?: return@launch
+        repository.insertShoppingBasket(
+            item = item,
+            count = purchaseCount.value,
+            timestamp = System.currentTimeMillis(),
+            listener = {
+
+            }
+        )
+    }
+
+    fun getShopBasketList() = viewModelScope.launch {
+        repository.selectAllShoppingBasket {
+            it.onStart {
+            }
+            .onEach {
+            }
+            .onEmpty {
+            }
+            .catch {
+            }
+            .launchIn(viewModelScope)
+        }
     }
 
 }

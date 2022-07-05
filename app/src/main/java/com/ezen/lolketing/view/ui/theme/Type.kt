@@ -14,21 +14,33 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
+    ),
+    labelLarge = TextStyle(
+        color = White,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold
+    ),
+    labelMedium = TextStyle(
+        color = White,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold
     ),
     labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        color = White,
+        fontSize = 16.sp
+    ),
+    displaySmall = TextStyle(
+        color = White,
+        fontSize = 12.sp
+    ),
+    titleMedium = TextStyle(
+        color = SubColor,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold
+    ),
+    titleLarge = TextStyle(
+        color = SubColor,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold
     )
-    */
 )

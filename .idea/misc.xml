@@ -30,9 +30,12 @@
         <entry key="app/src/main/res/drawable/checkbox_state_light_black.xml" value="0.256" />
         <entry key="app/src/main/res/drawable/fragment_holl_a.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.268" />
+        <entry key="app/src/main/res/drawable/ic_btn_minus.xml" value="0.131" />
         <entry key="app/src/main/res/drawable/ic_cancel.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/ic_check_box_checked.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/ic_check_box_unchecked.xml" value="0.268" />
+        <entry key="app/src/main/res/drawable/ic_minus.xml" value="0.131" />
+        <entry key="app/src/main/res/drawable/ic_plus.xml" value="0.131" />
         <entry key="app/src/main/res/drawable/ic_position.xml" value="0.2805" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/ic_pw.xml" value="0.3375" />

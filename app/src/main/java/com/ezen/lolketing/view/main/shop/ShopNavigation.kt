@@ -39,7 +39,15 @@ fun ShopNavigationGraph() {
                 return@composable
             }
 
-            ShopDetailContainer(navHostController = navHostController, documentId)
+            ShopDetailContainer(
+                navHostController = navHostController,
+                documentId = documentId,
+                routeAction = routeAction
+            )
+        }
+
+        composable(RouteAction.Purchase) {
+            PurchaseContainer(navHostController = navHostController)
         }
     }
 }
@@ -50,9 +58,14 @@ class RouteAction(navHostController: NavHostController) {
         navHostController.navigate("$Detail/$it")
     }
 
+    val navToPurchase: () -> Unit = {
+        navHostController.navigate(Purchase)
+    }
+
     companion object {
         const val Shop = "shop"
         const val Detail = "detail"
+        const val Purchase = "purchase"
     }
 
 }
