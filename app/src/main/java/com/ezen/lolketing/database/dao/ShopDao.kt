@@ -15,6 +15,10 @@ interface ShopDao {
     @Query("SELECT * FROM ShopEntity")
     fun selectAllShoppingBasket() : Flow<List<ShopEntity>>
 
+    @Query("SELECT * FROM ShopEntity WHERE id = :id")
+    fun selectShoppingBasket(id: Long) : Flow<ShopEntity>
 
+    @Query("SELECT * FROM ShopEntity WHERE id IN (:id)")
+    fun selectShoppingBasketList(id: List<Long>) : Flow<List<ShopEntity>>
 
 }

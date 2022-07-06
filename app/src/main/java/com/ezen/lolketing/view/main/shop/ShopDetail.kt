@@ -2,6 +2,7 @@ package com.ezen.lolketing.view.main.shop
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -9,15 +10,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.ezen.lolketing.R
+import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.model.ShopItem
 import com.ezen.lolketing.util.findCodeName
 import com.ezen.lolketing.util.priceFormat
+import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -35,26 +40,27 @@ fun ShopDetailContainer(
     viewModel: ShopViewModel = hiltViewModel()
 ) {
 
-    val scrollState = rememberScrollState()
     val shopItem = viewModel.shopItemState.collectAsState()
     viewModel.getShopItem(documentId)
 
     Box {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Black)
                 .padding(vertical = 56.dp)
-                .verticalScroll(scrollState)
         ) {
             shopItem.value?.let {
-                ImageViewPager(it.images)
-                ShopItemInfo(itemInfo = it, viewModel)
+                item { ImageViewPager(it.images) }
+                item { ShopItemInfo(itemInfo = it, viewModel) }
             }
         }
         ShoppingTitleBar { navHostController.popBackStack() }
         ShopPurchaseSelection(
             routeAction = routeAction,
+            navHostController = navHostController,
+            shopItem = shopItem.value,
+            viewModel = viewModel,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
@@ -156,10 +162,26 @@ fun ShopItemInfo(itemInfo: ShopItem, viewModel: ShopViewModel) {
 }
 
 @Composable
-fun ShopPurchaseSelection(routeAction: RouteAction, modifier: Modifier = Modifier) {
+fun ShopPurchaseSelection(
+    routeAction: RouteAction,
+    navHostController: NavHostController,
+    shopItem: ShopItem?,
+    viewModel: ShopViewModel,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
     Row(modifier = modifier.fillMaxWidth()) {
         Button(
-            onClick = { },
+            onClick = {
+                viewModel.insertShopBasket {
+                    if (it == 0L) {
+                        context.toast("장바구니 담기에 실패하였습니다.")
+                    } else {
+                        context.toast("장바구니에 담겼습니다.")
+                        navHostController.popBackStack()
+                    }
+                }
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = SubColor
             ),
@@ -177,7 +199,15 @@ fun ShopPurchaseSelection(routeAction: RouteAction, modifier: Modifier = Modifie
         }
 
         Button(
-            onClick = { routeAction.navToPurchase() },
+            onClick = {
+                viewModel.insertShopBasket {
+                    if (it == 0L) {
+                        context.toast(context.getString(R.string.error_unexpected))
+                    } else {
+                        routeAction.navToRightAwayPurchase(longArrayOf(it))
+                    }
+                }
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MainColor
             ),

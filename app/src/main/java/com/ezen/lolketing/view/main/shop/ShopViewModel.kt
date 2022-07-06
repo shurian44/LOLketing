@@ -79,15 +79,15 @@ class ShopViewModel @Inject constructor(
         purchaseCount.value = purchaseCount.value - 1
     }
 
-    fun insertShopBasket() = viewModelScope.launch {
+    fun insertShopBasket(
+        listener: (Long) -> Unit
+    ) = viewModelScope.launch {
         val item = shopItemState.value ?: return@launch
         repository.insertShoppingBasket(
             item = item,
             count = purchaseCount.value,
             timestamp = System.currentTimeMillis(),
-            listener = {
-
-            }
+            listener = listener
         )
     }
 

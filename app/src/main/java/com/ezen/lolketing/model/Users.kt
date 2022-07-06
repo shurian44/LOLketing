@@ -18,6 +18,15 @@ data class Users(
         point = point,
         cache = cache
     )
+    fun mapperShippingInfo(): ShippingInfo? {
+        return ShippingInfo(
+            id = id ?: return null,
+            nickname = nickname ?: return null,
+            phone = phone ?: return null,
+            address = address ?: return null,
+            cache = cache ?: return null
+        )
+    }
 }
 
 data class CacheModifyUser(
@@ -25,4 +34,12 @@ data class CacheModifyUser(
     var accPoint: Int?= 0,
     var point: Int?= 0,
     var cache: Long?= 0
+)
+
+data class ShippingInfo(
+    val id: String,
+    val nickname: String,
+    val phone: String,
+    val address: String,
+    val cache: Long
 )

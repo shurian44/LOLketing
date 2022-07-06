@@ -1,6 +1,8 @@
 package com.ezen.lolketing.repository
 
+import com.ezen.lolketing.database.dao.ShopDao
 import com.ezen.lolketing.model.PurchaseDTO
+import com.ezen.lolketing.model.ShippingInfo
 import com.ezen.lolketing.model.TicketInfo
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
@@ -8,7 +10,8 @@ import com.google.firebase.firestore.FieldValue
 import javax.inject.Inject
 
 class PurchaseRepository @Inject constructor(
-    private val client: FirebaseClient
+    private val client: FirebaseClient,
+    private val database: ShopDao
 ) {
 
     suspend fun getTicketInfo(
@@ -98,6 +101,27 @@ class PurchaseRepository @Inject constructor(
                 successListener = successListener,
                 failureListener = failureListener
             )
+    }
+
+    fun selectAllShoppingBasket() =
+        database.selectAllShoppingBasket()
+
+    fun selectShoppingBasket(id: Long) =
+        database.selectShoppingBasket(id)
+
+    fun selectShoppingBasketList(id: List<Long>) =
+        database.selectShoppingBasketList(id)
+
+    suspend fun getUserInfo(
+        successListener: (ShippingInfo) -> Unit,
+        failureListener: () -> Unit
+    ) {
+        client.getUserInfo(
+            successListener = {
+                it.mapperShippingInfo()?.let(successListener) ?: failureListener()
+            },
+            failureListener = failureListener
+        )
     }
 
     companion object {

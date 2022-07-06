@@ -1,5 +1,6 @@
 package com.ezen.lolketing.repository
 
+import android.util.Log
 import com.ezen.lolketing.database.dao.ShopDao
 import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.model.ShopDTO

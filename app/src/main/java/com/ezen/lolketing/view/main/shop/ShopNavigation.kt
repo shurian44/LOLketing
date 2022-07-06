@@ -1,5 +1,7 @@
 package com.ezen.lolketing.view.main.shop
 
+import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -11,7 +13,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ezen.lolketing.R
+import com.ezen.lolketing.database.entity.ShopEntity
+import com.ezen.lolketing.model.ShopItem
 import com.ezen.lolketing.util.toast
+import com.google.gson.Gson
 
 @Composable
 fun ShopNavigationGraph() {
@@ -49,6 +54,24 @@ fun ShopNavigationGraph() {
         composable(RouteAction.Purchase) {
             PurchaseContainer(navHostController = navHostController)
         }
+
+        composable(
+            route = "${RouteAction.Purchase}?indexList={indexList}",
+            arguments = listOf(
+                navArgument("indexList") { type = NavType.StringType },
+            )
+        ) { entry ->
+            val result = entry.arguments?.getString("indexList")
+            val after = Uri.decode(Gson().toJson(result))
+            val indexList = try {
+                after.substring(2, after.length - 2).split(",").map { it.toLong() }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyList()
+            }
+
+            PurchaseContainer(navHostController = navHostController, indexList)
+        }
     }
 }
 
@@ -60,6 +83,11 @@ class RouteAction(navHostController: NavHostController) {
 
     val navToPurchase: () -> Unit = {
         navHostController.navigate(Purchase)
+    }
+
+    val navToRightAwayPurchase: (LongArray) -> Unit = {
+        val url = Uri.encode(Gson().toJson(it))
+        navHostController.navigate("$Purchase?indexList=$url")
     }
 
     companion object {
