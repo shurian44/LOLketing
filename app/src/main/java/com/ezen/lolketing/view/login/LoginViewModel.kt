@@ -35,16 +35,22 @@ class LoginViewModel @Inject constructor(
         pw: String,
         failureMsg: String
     ) = viewModelScope.launch {
-        auth.signInWithEmailAndPassword(id, pw)
-            .addOnSuccessListener {
-                editPrefId(id)
-                event(Event.LoginSuccess)
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                event(Event.LoginFailure(failureMsg))
-            }
-            .await()
+        try {
+            auth.signInWithEmailAndPassword(id, pw)
+                .addOnSuccessListener {
+                    editPrefId(id)
+                    event(Event.LoginSuccess)
+                }
+                .addOnFailureListener {
+                    it.printStackTrace()
+                    event(Event.LoginFailure(failureMsg))
+                }
+                .await()
+        } catch (e: Exception) {
+            event(Event.LoginFailure(failureMsg))
+            e.printStackTrace()
+        }
+
     }
 
     fun googleLogin(
