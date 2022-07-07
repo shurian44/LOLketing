@@ -59,14 +59,14 @@ class CacheChargingActivity : BaseViewModelActivity<ActivityCacheChargingBinding
 
         // 금액에 맞게 충전할 캐시 증가
         val charging = when(view.id){
-            binding.btnAddThousand.id -> 1_000
-            binding.btnAddTenThousand.id -> 10_000
-            binding.btnAddHundredThousand.id -> 100_000
+            binding.btnAddThousand.id -> 10_000
+            binding.btnAddTenThousand.id -> 100_000
+            binding.btnAddHundredThousand.id -> 1_000_000
             else -> 0
         }
 
-        val after = if (before + charging > 1_000_000) {
-            1_000_000
+        val after = if (before + charging > 100_000_000) {
+            100_000_000
         } else {
             before + charging
         }

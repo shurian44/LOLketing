@@ -44,24 +44,24 @@ class CacheChargingViewModel @Inject constructor(
         var grade = user.grade ?: Constants.BRONZE
         var charging = 0L
 
-        // 캐시가 100만이 넘을 경우 100만으로 고정 : Int 형 값 넘어가는 오류 발생 방지
-        if(myCache + chargingCache > 1_000_000){
-            point += (1_000_000 - myCache.toInt()) / 10
-            accPoint += (1_000_000 - myCache.toInt()) / 10
-            charging = 1_000_000 - myCache
+        // 캐시가 1억이 넘을 경우 1억으로 고정
+        if(myCache + chargingCache > 100_000_000){
+            point += (100_000_000 - myCache.toInt()) / 10
+            accPoint += (100_000_000 - myCache.toInt()) / 10
+            charging = 100_000_000 - myCache
         }else{ // 그 외는 충전한 금액 만큼 충전
             point += (chargingCache / 10).toInt()
             accPoint += (chargingCache / 10).toInt()
             charging = chargingCache
         }
 
-        // 포인트와 누적 포인트도 2억 이상일 경우 2억으로 고정
-        if(point > 1_000_000){
-            point = 1_000_000
+        // 포인트와 누적 포인트도 1억 이상일 경우 1억으로 고정
+        if(point > 100_000_000){
+            point = 100_000_000
         }
 
-        if(accPoint > 1_000_000){
-            accPoint = 1_000_000
+        if(accPoint > 100_000_000){
+            accPoint = 100_000_000
         }
 
         // 마스터 등급을 제외하고 누적 포인트에 따라 등급 설정
