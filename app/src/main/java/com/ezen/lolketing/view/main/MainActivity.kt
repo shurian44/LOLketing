@@ -57,7 +57,6 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         viewModel.getUserInfo()
         viewModel.getEventBannerList()
         binding.activity = this
-        Handler(mainLooper).postDelayed({ binding.btnShop.performClick() }, 500)
     }
 
     /** 이벤트 핸들러 **/

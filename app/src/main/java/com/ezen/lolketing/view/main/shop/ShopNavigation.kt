@@ -1,7 +1,6 @@
 package com.ezen.lolketing.view.main.shop
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -13,8 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ezen.lolketing.R
-import com.ezen.lolketing.database.entity.ShopEntity
-import com.ezen.lolketing.model.ShopItem
 import com.ezen.lolketing.util.toast
 import com.google.gson.Gson
 
@@ -52,7 +49,7 @@ fun ShopNavigationGraph() {
         }
 
         composable(RouteAction.Purchase) {
-            PurchaseContainer(navHostController = navHostController)
+            PurchaseContainer(navHostController = navHostController, routeAction = routeAction)
         }
 
         composable(
@@ -70,7 +67,15 @@ fun ShopNavigationGraph() {
                 emptyList()
             }
 
-            PurchaseContainer(navHostController = navHostController, indexList)
+            PurchaseContainer(
+                navHostController = navHostController,
+                routeAction = routeAction,
+                indexList = indexList
+            )
+        }
+
+        composable(RouteAction.Basket) {
+            ShoppingBasketContainer(navHostController = navHostController, routeAction = routeAction)
         }
     }
 }
@@ -81,19 +86,20 @@ class RouteAction(navHostController: NavHostController) {
         navHostController.navigate("$Detail/$it")
     }
 
-    val navToPurchase: () -> Unit = {
-        navHostController.navigate(Purchase)
-    }
-
     val navToRightAwayPurchase: (LongArray) -> Unit = {
         val url = Uri.encode(Gson().toJson(it))
         navHostController.navigate("$Purchase?indexList=$url")
+    }
+
+    val navToShopBasket: () -> Unit = {
+        navHostController.navigate(Basket)
     }
 
     companion object {
         const val Shop = "shop"
         const val Detail = "detail"
         const val Purchase = "purchase"
+        const val Basket = "basket"
     }
 
 }

@@ -38,8 +38,8 @@ data class CacheModifyUser(
 
 data class ShippingInfo(
     val id: String,
-    val nickname: String,
-    val phone: String,
-    val address: String,
+    var nickname: String,
+    var phone: String,
+    var address: String,
     val cache: Long
 )

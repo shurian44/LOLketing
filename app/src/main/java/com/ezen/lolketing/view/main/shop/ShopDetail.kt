@@ -55,11 +55,10 @@ fun ShopDetailContainer(
                 item { ShopItemInfo(itemInfo = it, viewModel) }
             }
         }
-        ShoppingTitleBar { navHostController.popBackStack() }
+        ShoppingTitleBar(routeAction = routeAction, viewModel = viewModel) { navHostController.popBackStack() }
         ShopPurchaseSelection(
             routeAction = routeAction,
             navHostController = navHostController,
-            shopItem = shopItem.value,
             viewModel = viewModel,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
@@ -165,7 +164,6 @@ fun ShopItemInfo(itemInfo: ShopItem, viewModel: ShopViewModel) {
 fun ShopPurchaseSelection(
     routeAction: RouteAction,
     navHostController: NavHostController,
-    shopItem: ShopItem?,
     viewModel: ShopViewModel,
     modifier: Modifier = Modifier
 ) {

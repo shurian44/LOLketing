@@ -1,6 +1,5 @@
 package com.ezen.lolketing.repository
 
-import android.util.Log
 import com.ezen.lolketing.database.dao.ShopDao
 import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.model.ShopDTO
@@ -102,11 +101,6 @@ class ShopRepository @Inject constructor(
         listener(result)
     }
 
-    suspend fun selectAllShoppingBasket(
-        listener : (Flow<List<ShopEntity>>) -> Unit
-    ) {
-        val result = db.selectAllShoppingBasket()
-        listener(result)
-    }
+    fun selectBasketCount() = db.selectBasketCount()
 
 }

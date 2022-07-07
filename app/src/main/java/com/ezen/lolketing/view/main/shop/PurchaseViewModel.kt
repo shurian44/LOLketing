@@ -36,6 +36,14 @@ class PurchaseViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun updateBasketChecked(id: Long, isChecked: Boolean) = viewModelScope.launch {
+        repository.updateBasketChecked(id, isChecked)
+    }
+
+    fun deleteBasketItems(idList: List<Long>) = viewModelScope.launch {
+        repository.deleteBasketItems(idList)
+    }
+
     fun getUserInfo() = viewModelScope.launch {
         repository.getUserInfo(
             successListener = {
@@ -45,6 +53,29 @@ class PurchaseViewModel @Inject constructor(
                 userInfoState.value = null
             }
         )
+    }
+
+    fun setPurchaseItems(
+        list: List<ShopEntity>,
+        userInfo: ShippingInfo,
+        message: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) = viewModelScope.launch {
+        repository.setPurchaseItems(
+            list = list,
+            userInfo = userInfo,
+            message = message,
+            successListener = {
+                deletePurchase(list.map { it.id })
+                successListener()
+            },
+            failureListener = failureListener
+        )
+    }
+
+    private fun deletePurchase(idList: List<Long>) = viewModelScope.launch {
+        repository.deleteBasketItems(idList = idList)
     }
 
     sealed class Event {

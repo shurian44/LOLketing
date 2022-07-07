@@ -1,6 +1,7 @@
 package com.ezen.lolketing.repository
 
 import com.ezen.lolketing.database.dao.ShopDao
+import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.model.PurchaseDTO
 import com.ezen.lolketing.model.ShippingInfo
 import com.ezen.lolketing.model.TicketInfo
@@ -18,7 +19,7 @@ class PurchaseRepository @Inject constructor(
         documentId: String,
         successListener: (TicketInfo) -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         client
             .getBasicSnapshot(
                 collection = Constants.PURCHASE,
@@ -30,19 +31,17 @@ class PurchaseRepository @Inject constructor(
                 },
                 failureListener = failureListener
             )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     suspend fun updateUserCache(
         refund: Long,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) {
-        val email = client.getUserEmail()
-
-        if (email == null) {
-            failureListener()
-            return
-        }
+    ) = try {
+        val email = client.getUserEmail() ?: throw Exception("email is null")
 
         client
             .basicUpdateData(
@@ -52,6 +51,9 @@ class PurchaseRepository @Inject constructor(
                 successListener = successListener,
                 failureListener = failureListener
             )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     suspend fun updateSeatInfo(
@@ -59,7 +61,7 @@ class PurchaseRepository @Inject constructor(
         documentIdList: List<String>,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         documentIdList.forEach {
             client
                 .doubleUpdateData(
@@ -73,13 +75,16 @@ class PurchaseRepository @Inject constructor(
                 )
         }
         successListener()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     suspend fun deletePurchase(
         documentId: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         client
             .basicDelete(
                 collection = Constants.PURCHASE,
@@ -87,30 +92,38 @@ class PurchaseRepository @Inject constructor(
                 successListener = successListener,
                 failureListener = failureListener
             )
-
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     suspend fun deleteQrCode(
         path: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         client
             .storageDelete(
                 path = path,
                 successListener = successListener,
                 failureListener = failureListener
             )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     fun selectAllShoppingBasket() =
         database.selectAllShoppingBasket()
 
-    fun selectShoppingBasket(id: Long) =
-        database.selectShoppingBasket(id)
+    fun selectShoppingBasketList(idList: List<Long>) =
+        database.selectShoppingBasketList(idList)
 
-    fun selectShoppingBasketList(id: List<Long>) =
-        database.selectShoppingBasketList(id)
+    suspend fun updateBasketChecked(id: Long, isChecked: Boolean) =
+        database.updateBasketChecked(id, isChecked)
+
+    suspend fun deleteBasketItems(idList: List<Long>) =
+        database.deleteBasketItems(idList)
 
     suspend fun getUserInfo(
         successListener: (ShippingInfo) -> Unit,
@@ -122,6 +135,57 @@ class PurchaseRepository @Inject constructor(
             },
             failureListener = failureListener
         )
+    }
+
+    suspend fun setPurchaseItems(
+        list: List<ShopEntity>,
+        userInfo: ShippingInfo,
+        message: String,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        list.forEach {
+            val item = PurchaseDTO(
+                id = userInfo.id,
+                address = userInfo.address,
+                amount = it.count,
+                group = it.group,
+                image = it.image,
+                information = null,
+                message = message,
+                price = it.price,
+                name = it.name,
+                status = null,
+                timestamp = System.currentTimeMillis()
+            )
+
+            client
+                .basicAddData(
+                    collection = Constants.PURCHASE,
+                    data = item,
+                    failureListener = {
+                        failureListener()
+                        return@basicAddData
+                    }
+                )
+
+        }
+
+        val result = list.sumOf { it.price }
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = userInfo.id,
+                updateData = mapOf("cache" to FieldValue.increment(result * -1)),
+                successListener = {},
+                failureListener = failureListener
+            )
+
+        successListener()
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
     companion object {

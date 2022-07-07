@@ -20,19 +20,40 @@ class ShopViewModel @Inject constructor(
     val shopListState = MutableStateFlow<List<ShopListItem>>(emptyList())
     val shopItemState = MutableStateFlow<ShopItem?>(null)
     val purchaseCount = MutableStateFlow(1)
+    val basketCount = MutableStateFlow(0L)
 
     fun getShopList(tabIndex: Int) = viewModelScope.launch {
-        val query = when(tabIndex) {
-            1 -> { Code.STATUE.code }
-            2 -> { Code.FIGURE.code }
-            3 -> { Code.ACCESSORY.code }
-            4 -> { Code.DOLL.code }
-            5 -> { Code.T_SHIRT.code }
-            6 -> { Code.JACKET.code }
-            7 -> { Code.PAJAMAS.code }
-            8 -> { Code.ART.code }
-            9 -> { Code.BOARD_GAME.code }
-            else -> { "" }
+        val query = when (tabIndex) {
+            1 -> {
+                Code.STATUE.code
+            }
+            2 -> {
+                Code.FIGURE.code
+            }
+            3 -> {
+                Code.ACCESSORY.code
+            }
+            4 -> {
+                Code.DOLL.code
+            }
+            5 -> {
+                Code.T_SHIRT.code
+            }
+            6 -> {
+                Code.JACKET.code
+            }
+            7 -> {
+                Code.PAJAMAS.code
+            }
+            8 -> {
+                Code.ART.code
+            }
+            9 -> {
+                Code.BOARD_GAME.code
+            }
+            else -> {
+                ""
+            }
         }
 
         if (query.isEmpty()) {
@@ -92,17 +113,14 @@ class ShopViewModel @Inject constructor(
     }
 
     fun getShopBasketList() = viewModelScope.launch {
-        repository.selectAllShoppingBasket {
-            it.onStart {
-            }
+        repository.selectBasketCount()
             .onEach {
+                basketCount.value = it
             }
             .onEmpty {
-            }
-            .catch {
+                basketCount.value = 0
             }
             .launchIn(viewModelScope)
-        }
     }
 
 }

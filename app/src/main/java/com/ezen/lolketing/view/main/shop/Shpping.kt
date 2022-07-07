@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ezen.lolketing.R
 import com.ezen.lolketing.model.ShopListItem
 import com.ezen.lolketing.util.findCodeName
@@ -38,7 +39,10 @@ import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
-fun ShoppingContainer(routeAction: RouteAction) {
+fun ShoppingContainer(
+    routeAction: RouteAction,
+    viewModel: ShopViewModel = hiltViewModel()
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,36 +51,32 @@ fun ShoppingContainer(routeAction: RouteAction) {
         val activity = (LocalContext.current as? Activity)
         val tabIndex = remember { mutableStateOf(0) }
 
-        ShoppingTitleBar { activity?.finish() }
+        ShoppingTitleBar(routeAction = routeAction, viewModel = viewModel) { activity?.finish() }
         TabBar(tabIndex)
-        ShopListItem(tabIndex, routeAction)
+        ShopListItem(tabIndex, routeAction, Modifier.weight(1f))
     }
 }
 
 @Composable
-fun ShoppingTitleBar(onBackListener : () -> Unit) {
+fun ShoppingTitleBar(
+    routeAction: RouteAction? = null,
+    viewModel: ShopViewModel = hiltViewModel(),
+    onBackListener: () -> Unit
+) {
+    val basketCount = viewModel.basketCount.collectAsState()
+    viewModel.getShopBasketList()
+
     TitleBar("굿즈 쇼핑", onBackClick = {
         onBackListener()
     }) {
         Box(modifier = Modifier.align(Alignment.CenterEnd)) {
+            val res = if (basketCount.value > 0) R.drawable.ic_cart_fill else R.drawable.ic_cart
             Image(
-                painter = painterResource(id = R.drawable.ic_cart),
-                contentDescription = "cart"
-            )
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(0.dp, 1.dp)
-                    .size(15.dp)
-                    .clip(CircleShape)
-                    .background(SubColor)
-            )
-            Text(
-                text = "1",
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(0.dp, 0.dp),
-                color = White
+                painter = painterResource(id = res),
+                contentDescription = "cart",
+                modifier = Modifier.clickable {
+                    routeAction?.navToShopBasket?.invoke()
+                }
             )
         }
     }
@@ -97,17 +97,25 @@ fun TabBar(tabIndex: MutableState<Int>, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ShopListItem(tabIndex: MutableState<Int>, routeAction: RouteAction, viewModel: ShopViewModel = hiltViewModel()) {
+fun ShopListItem(
+    tabIndex: MutableState<Int>,
+    routeAction: RouteAction,
+    modifier: Modifier = Modifier,
+    viewModel: ShopViewModel = hiltViewModel()
+) {
     val list by viewModel.shopListState.collectAsState()
     viewModel.getShopList(tabIndex.value)
 
     if (list.isEmpty()) {
-        Text(
-            text = "상품 준비중입니다.",
-            color = White,
-            fontSize = 16.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Column(modifier = modifier, verticalArrangement = Arrangement.Center) {
+            Text(
+                text = "상품 준비중입니다.",
+                color = White,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         return
     }
 
@@ -130,7 +138,7 @@ fun ShopListItem(tabIndex: MutableState<Int>, routeAction: RouteAction, viewMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShopItem(shopListItem: ShopListItem, onClickListener : () -> Unit) {
+fun ShopItem(shopListItem: ShopListItem, onClickListener: () -> Unit) {
     Card(
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(3.dp, SubColor),
