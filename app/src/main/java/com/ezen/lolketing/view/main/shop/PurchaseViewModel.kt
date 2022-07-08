@@ -1,5 +1,6 @@
 package com.ezen.lolketing.view.main.shop
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.database.entity.ShopEntity
@@ -17,6 +18,9 @@ class PurchaseViewModel @Inject constructor(
 
     val purchaseState = MutableStateFlow<Event>(Event.Init)
     val userInfoState = MutableStateFlow<ShippingInfo?>(null)
+    var isDeleteDialogState = mutableStateOf(false)
+    var isOutOfCacheDialogState = mutableStateOf(false)
+    var isPurchaseDialogState = mutableStateOf(false)
 
     fun selectAllShoppingBasket() {
         repository.selectAllShoppingBasket()

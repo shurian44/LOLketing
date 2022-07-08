@@ -1,14 +1,17 @@
 package com.ezen.lolketing.view.main.shop
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.model.ShopItem
 import com.ezen.lolketing.model.ShopListItem
 import com.ezen.lolketing.repository.ShopRepository
 import com.ezen.lolketing.util.Code
-import com.ezen.lolketing.util.getCurrentDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +24,7 @@ class ShopViewModel @Inject constructor(
     val shopItemState = MutableStateFlow<ShopItem?>(null)
     val purchaseCount = MutableStateFlow(1)
     val basketCount = MutableStateFlow(0L)
+    val dialogIsShow = mutableStateOf(false)
 
     fun getShopList(tabIndex: Int) = viewModelScope.launch {
         val query = when (tabIndex) {

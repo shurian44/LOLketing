@@ -23,6 +23,7 @@ import com.ezen.lolketing.model.ShopItem
 import com.ezen.lolketing.util.findCodeName
 import com.ezen.lolketing.util.priceFormat
 import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.main.BasicContentsDialog
 import com.ezen.lolketing.view.ui.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -40,6 +41,7 @@ fun ShopDetailContainer(
     viewModel: ShopViewModel = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
     val shopItem = viewModel.shopItemState.collectAsState()
     viewModel.getShopItem(documentId)
 
@@ -58,10 +60,24 @@ fun ShopDetailContainer(
         ShoppingTitleBar(routeAction = routeAction, viewModel = viewModel) { navHostController.popBackStack() }
         ShopPurchaseSelection(
             routeAction = routeAction,
-            navHostController = navHostController,
             viewModel = viewModel,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
+
+        BasicContentsDialog(
+            contents = "장바구니에 등록하시겠습니까?",
+            confirmText = "확인",
+            isShow = viewModel.dialogIsShow
+        ) {
+            viewModel.insertShopBasket {
+                if (it == 0L) {
+                    context.toast("장바구니 담기에 실패하였습니다.")
+                } else {
+                    context.toast("장바구니에 담겼습니다.")
+                    navHostController.popBackStack()
+                }
+            }
+        }
     }
 }
 
@@ -163,23 +179,13 @@ fun ShopItemInfo(itemInfo: ShopItem, viewModel: ShopViewModel) {
 @Composable
 fun ShopPurchaseSelection(
     routeAction: RouteAction,
-    navHostController: NavHostController,
     viewModel: ShopViewModel,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     Row(modifier = modifier.fillMaxWidth()) {
         Button(
-            onClick = {
-                viewModel.insertShopBasket {
-                    if (it == 0L) {
-                        context.toast("장바구니 담기에 실패하였습니다.")
-                    } else {
-                        context.toast("장바구니에 담겼습니다.")
-                        navHostController.popBackStack()
-                    }
-                }
-            },
+            onClick = { viewModel.dialogIsShow.value = true },
             colors = ButtonDefaults.buttonColors(
                 containerColor = SubColor
             ),

@@ -3,17 +3,18 @@ package com.ezen.lolketing.view.main
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
@@ -21,12 +22,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.ezen.lolketing.R
-import com.ezen.lolketing.view.ui.theme.SubColor
-import com.ezen.lolketing.view.ui.theme.White
+import com.ezen.lolketing.view.ui.theme.*
 
 @Composable
 fun TitleBar(
@@ -137,4 +139,225 @@ fun Modifier.customTabIndicatorOffset(
         .wrapContentSize(Alignment.BottomStart)
         .offset(x = indicatorOffset)
         .width(currentTabWidth)
+}
+
+@Composable
+fun BasicTitleDialog(
+    title: String,
+    contents: String,
+    confirmText: String,
+    isShow: MutableState<Boolean>,
+    onConfirmClick: (() -> Unit)? = null
+) {
+
+    if (isShow.value) {
+        Dialog(onDismissRequest = { isShow.value = true }) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Black)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = title,
+                        style = Typography.labelLarge,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                    )
+                    Text(
+                        text = contents,
+                        style = Typography.labelMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Button(
+                        onClick = {
+                            onConfirmClick?.invoke()
+                            isShow.value = false
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MainColor
+                        ),
+                        shape = RoundedCornerShape(3.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = confirmText, style = Typography.labelLarge)
+                    }
+                }
+                Image(
+                    painter = painterResource(id = R.drawable.ic_cancel),
+                    contentDescription = "cancel",
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                        .clickable {
+                            isShow.value = false
+                        }
+                )
+            }
+        }
+
+    }
+
+}
+
+@Composable
+fun BasicContentsDialog(
+    isShow: MutableState<Boolean>,
+    contents: String,
+    confirmText: String,
+    onConfirmClick: (() -> Unit)? = null
+) {
+
+    if (isShow.value) {
+        Dialog(onDismissRequest = { isShow.value = true }) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(
+                        minHeight = 200.dp
+                    )
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Black)
+            ) {
+
+                Text(
+                    text = contents,
+                    style = Typography.labelMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 72.dp)
+                        .align(Alignment.Center)
+                )
+                Button(
+                    onClick = {
+                        onConfirmClick?.invoke()
+                        isShow.value = false
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MainColor
+                    ),
+                    shape = RoundedCornerShape(3.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .align(Alignment.BottomCenter)
+                ) {
+                    Text(text = confirmText, style = Typography.labelLarge)
+                }
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_cancel),
+                    contentDescription = "cancel",
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                        .clickable {
+                            isShow.value = false
+                        }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BasicContentsDialog(
+    isShow: MutableState<Boolean>,
+    contents: String,
+    confirmText: String,
+    cancelText: String,
+    onConfirmClick: (() -> Unit)? = null,
+    onCancelClick: (() -> Unit)? = null
+) {
+
+    if (isShow.value) {
+        Dialog(onDismissRequest = { isShow.value = true }) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(
+                        minHeight = 200.dp
+                    )
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Black)
+            ) {
+
+                Text(
+                    text = contents,
+                    style = Typography.labelMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, bottom = 72.dp)
+                        .align(Alignment.Center)
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .align(Alignment.BottomCenter)
+                ) {
+                    OutlinedButton(
+                        onClick = {
+                            onCancelClick?.invoke()
+                            isShow.value = false
+                        },
+                        shape = RoundedCornerShape(3.dp),
+                        border = BorderStroke(1.dp, MainColor),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = cancelText, style = Typography.labelLarge)
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(
+                        onClick = {
+                            onConfirmClick?.invoke()
+                            isShow.value = false
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MainColor
+                        ),
+                        shape = RoundedCornerShape(3.dp),
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = confirmText, style = Typography.labelLarge)
+                    }
+                }
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_cancel),
+                    contentDescription = "cancel",
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(16.dp)
+                        .clickable {
+                            isShow.value = false
+                        }
+                )
+            }
+        }
+
+    }
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    LOLketingTheme {
+        Column(modifier = Modifier.fillMaxSize()) {
+        }
+    }
 }

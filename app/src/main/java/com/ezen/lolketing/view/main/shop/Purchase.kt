@@ -31,6 +31,8 @@ import com.ezen.lolketing.util.findCodeName
 import com.ezen.lolketing.util.priceFormat
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.main.BasicContentsDialog
+import com.ezen.lolketing.view.main.BasicTitleDialog
 import com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity
 import com.ezen.lolketing.view.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
@@ -279,29 +281,9 @@ fun PurchaseContainer(
         Button(
             onClick = {
                 if (totalPrice > (userInfoState.value?.cache ?: 0)) {
-                    context.startActivity(CacheChargingActivity::class.java)
+                    viewModel.isOutOfCacheDialogState.value = true
                 } else {
-                    val list = (purchaseState.value as? PurchaseViewModel.Event.PurchaseItems)?.list
-                    val userInfo = userInfoState.value
-                    if (list == null || userInfo == null) {
-                        context.toast(R.string.error_unexpected)
-                        return@Button
-                    }
-                    isEnabled = false
-
-                    viewModel.setPurchaseItems(
-                        list,
-                        userInfo,
-                        messageState.text,
-                        successListener = {
-                            isEnabled = true
-                            context.toast("구매가 완료되었습니다.")
-                            navHostController.popBackStack()
-                        },
-                        failureListener = {
-                            isEnabled = true
-                        }
-                    )
+                    viewModel.isPurchaseDialogState.value = true
                 }
             },
             shape = RectangleShape,
@@ -316,8 +298,50 @@ fun PurchaseContainer(
         ) {
             Text(text = "결제하기", style = Typography.labelLarge)
         }
-    }
 
+        /** 잔액 부족 다이얼로그 **/
+        BasicTitleDialog(
+            title = "잔액 부족",
+            contents = context.getString(R.string.out_of_cache),
+            confirmText = context.getString(R.string.ok),
+            isShow = viewModel.isOutOfCacheDialogState
+        ) {
+            context.startActivity(CacheChargingActivity::class.java)
+        }
+
+        /** 결제하기 다이얼로그 **/
+        BasicContentsDialog(
+            isShow = viewModel.isPurchaseDialogState,
+            contents = "결제를 진행하시겠습니까?",
+            confirmText = context.getString(R.string.ok),
+            cancelText = context.getString(R.string.cancel),
+            onConfirmClick = {
+                val list = (purchaseState.value as? PurchaseViewModel.Event.PurchaseItems)?.list
+                val userInfo = userInfoState.value
+                if (list == null || userInfo == null) {
+                    context.toast(R.string.error_unexpected)
+                    viewModel.isPurchaseDialogState.value = false
+                    return@BasicContentsDialog
+                }
+                isEnabled = false
+
+                viewModel.setPurchaseItems(
+                    list,
+                    userInfo,
+                    messageState.text,
+                    successListener = {
+                        isEnabled = true
+                        context.toast("구매가 완료되었습니다.")
+                        navHostController.popBackStack()
+                    },
+                    failureListener = {
+                        isEnabled = true
+                    }
+                )
+            }
+        )
+
+    }
 
 }
 

@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,6 +26,7 @@ import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.util.findCodeName
 import com.ezen.lolketing.util.priceFormat
 import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.main.BasicContentsDialog
 import com.ezen.lolketing.view.main.TitleBar
 import com.ezen.lolketing.view.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
@@ -115,12 +115,11 @@ fun ShoppingBasketContainer(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .clickable {
-                        purchaseItems?.list
-                            ?.filter { it.isChecked }
-                            ?.map { it.id }
-                            ?.let {
-                                viewModel.deleteBasketItems(idList = it)
-                            }
+                        if(purchaseItems?.list.isNullOrEmpty()) {
+                            context.toast("등록된 상품이 없습니다.")
+                        } else {
+                            viewModel.isDeleteDialogState.value = true
+                        }
                     }
             )
         }
@@ -154,6 +153,22 @@ fun ShoppingBasketContainer(
         ) {
             Text(text = "선택 상품 구매하기", style = Typography.labelLarge)
         }
+
+        /** 삭제 다이얼로그 **/
+        BasicContentsDialog(
+            isShow = viewModel.isDeleteDialogState,
+            contents = "선택한 상품들을 삭제하시겠습니까?",
+            confirmText = "예",
+            cancelText = "아니오",
+            onConfirmClick = {
+                purchaseItems?.list
+                    ?.filter { it.isChecked }
+                    ?.map { it.id }
+                    ?.let {
+                        viewModel.deleteBasketItems(idList = it)
+                    }
+            }
+        )
     }
 }
 
