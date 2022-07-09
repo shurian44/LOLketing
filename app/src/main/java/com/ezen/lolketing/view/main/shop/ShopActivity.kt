@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ezen.lolketing.view.ui.theme.Black
 import com.ezen.lolketing.view.ui.theme.LOLketingTheme
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +24,7 @@ class ShopActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Black
                 ) {
                     ShopNavigationGraph()
                 }

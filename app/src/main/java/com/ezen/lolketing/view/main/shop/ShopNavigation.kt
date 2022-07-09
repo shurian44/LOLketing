@@ -1,29 +1,41 @@
 package com.ezen.lolketing.view.main.shop
 
 import android.net.Uri
+import androidx.compose.animation.*
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ezen.lolketing.R
 import com.ezen.lolketing.util.toast
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.gson.Gson
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ShopNavigationGraph() {
-    val navHostController = rememberNavController()
+    val navHostController = rememberAnimatedNavController()
     val routeAction = remember(navHostController) {
         RouteAction(navHostController)
     }
 
-    NavHost(navController = navHostController, startDestination = RouteAction.Shop) {
-        composable(RouteAction.Shop) {
+    AnimatedNavHost(
+        navController = navHostController,
+        startDestination = RouteAction.Shop,
+
+        ) {
+        composable(
+            route = RouteAction.Shop,
+            enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
+            exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
+        ) {
             ShoppingContainer(routeAction)
         }
 
@@ -31,7 +43,9 @@ fun ShopNavigationGraph() {
             route = "${RouteAction.Detail}/{documentId}",
             arguments = listOf(
                 navArgument("documentId") { type = NavType.StringType }
-            )
+            ),
+            enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
+            exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
         ) { entry ->
             val documentId = entry.arguments?.getString("documentId")
             val context = LocalContext.current
@@ -48,7 +62,11 @@ fun ShopNavigationGraph() {
             )
         }
 
-        composable(RouteAction.Purchase) {
+        composable(
+            route = RouteAction.Purchase,
+            enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
+            exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
+        ) {
             PurchaseContainer(navHostController = navHostController, routeAction = routeAction)
         }
 
@@ -56,7 +74,9 @@ fun ShopNavigationGraph() {
             route = "${RouteAction.Purchase}?indexList={indexList}",
             arguments = listOf(
                 navArgument("indexList") { type = NavType.StringType },
-            )
+            ),
+            enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
+            exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
         ) { entry ->
             val result = entry.arguments?.getString("indexList")
             val after = Uri.decode(Gson().toJson(result))
@@ -74,8 +94,15 @@ fun ShopNavigationGraph() {
             )
         }
 
-        composable(RouteAction.Basket) {
-            ShoppingBasketContainer(navHostController = navHostController, routeAction = routeAction)
+        composable(
+            route = RouteAction.Basket,
+            enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
+            exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
+        ) {
+            ShoppingBasketContainer(
+                navHostController = navHostController,
+                routeAction = routeAction
+            )
         }
     }
 }
