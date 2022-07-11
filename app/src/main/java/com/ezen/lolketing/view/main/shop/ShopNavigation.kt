@@ -122,6 +122,10 @@ class RouteAction(navHostController: NavHostController) {
         navHostController.navigate(Basket)
     }
 
+    val popBackStack: () -> Unit = {
+        navHostController.popBackStack()
+    }
+
     companion object {
         const val Shop = "shop"
         const val Detail = "detail"

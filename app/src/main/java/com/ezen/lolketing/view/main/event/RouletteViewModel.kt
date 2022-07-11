@@ -36,7 +36,8 @@ class RouletteViewModel @Inject constructor(
             title = Code.ROULETTE_COUPON.code,
             use = Code.NOT_USE.code,
             point = point,
-            couponNumber = getCouponNumber()
+            couponNumber = getCouponNumber(),
+            timestamp = System.currentTimeMillis()
         )
         repository.setCoupon(
             coupon = coupon,

@@ -354,5 +354,6 @@
 개인정보 취급 관련 안정성 확보를 위해 정기적(분기 1회)으로 자체 감사를 실시하고 있습니다.
     </string>
     <string name="title_activity_shop">ShopActivity</string>
+    <string name="title_activity_my_page">MyPageActivity</string>
 
 </resources>

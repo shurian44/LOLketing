@@ -32,6 +32,7 @@ class CacheChargingActivity : BaseViewModelActivity<ActivityCacheChargingBinding
     private fun initViews() = with(binding) {
         activity = this@CacheChargingActivity
         title = getString(R.string.charging_cache)
+        layoutTop.btnBack.setOnClickListener { finish() }
 
         viewModel.getUserCache()
     }

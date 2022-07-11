@@ -11,8 +11,8 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class FirebaseClient @Inject constructor(
-    private val auth : FirebaseAuth,
-    private val storage : FirebaseStorage,
+    private val auth: FirebaseAuth,
+    private val storage: FirebaseStorage,
     private val firestore: FirebaseFirestore
 ) {
 
@@ -107,7 +107,7 @@ class FirebaseClient @Inject constructor(
 
     suspend fun deleteUser(
         successListener: () -> Unit,
-        failureListener: (() -> Unit)?= null
+        failureListener: (() -> Unit)? = null
     ) {
         try {
             getCurrentUser()
@@ -115,7 +115,6 @@ class FirebaseClient @Inject constructor(
                 ?.addOnSuccessListener { successListener() }
                 ?.addOnFailureListener { failureListener?.invoke() }
                 ?.await()
-                ?: failureListener?.invoke()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -125,7 +124,7 @@ class FirebaseClient @Inject constructor(
         successListener: (Users) -> Unit,
         failureListener: () -> Unit
     ) {
-        try{
+        try {
             val email = auth.currentUser?.email
             if (email == null) {
                 failureListener()
@@ -136,25 +135,26 @@ class FirebaseClient @Inject constructor(
                 .collection(Constants.USERS)
                 .document(email)
                 .get()
-                .addOnSuccessListener{
+                .addOnSuccessListener {
                     it.toObject(Users::class.java)
                         ?.let(successListener)
-                        ?:failureListener()
+                        ?: failureListener()
                 }
                 .addOnFailureListener {
                     it.printStackTrace()
                     failureListener()
                 }
                 .await()
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             failureListener()
         }
     }
 
-    suspend fun getUserNickName() : String? = try {
+    suspend fun getUserNickName(): String? = try {
         val email = getCurrentUser()?.email ?: throw Exception("회원 정보를 찾지 못했습니다.")
-        firestore.collection(Constants.USERS).document(email).get().await().toObject(Users::class.java)?.nickname
+        firestore.collection(Constants.USERS).document(email).get().await()
+            .toObject(Users::class.java)?.nickname
     } catch (e: Exception) {
         e.printStackTrace()
         null
@@ -163,8 +163,8 @@ class FirebaseClient @Inject constructor(
     suspend fun getBasicSnapshot(
         collection: String,
         document: String,
-        successListener : (DocumentSnapshot) -> Unit,
-        failureListener : () -> Unit
+        successListener: (DocumentSnapshot) -> Unit,
+        failureListener: () -> Unit
     ) = try {
         firestore
             .collection(collection)
@@ -184,8 +184,8 @@ class FirebaseClient @Inject constructor(
 
     suspend fun getBasicSnapshot(
         collection: String,
-        successListener : (QuerySnapshot) -> Unit,
-        failureListener : () -> Unit
+        successListener: (QuerySnapshot) -> Unit,
+        failureListener: () -> Unit
     ) = try {
         firestore
             .collection(collection)
@@ -203,14 +203,14 @@ class FirebaseClient @Inject constructor(
     }
 
     suspend fun getBasicQuerySnapshot(
-        collection : String,
+        collection: String,
         field: String,
-        query : Any,
+        query: Any,
         orderByField: String = TIME_STAMP,
-        orderByDirection : Query.Direction = Query.Direction.DESCENDING,
-        successListener : (QuerySnapshot) -> Unit,
-        failureListener : () -> Unit
-    ) : QuerySnapshot? = try {
+        orderByDirection: Query.Direction = Query.Direction.DESCENDING,
+        successListener: (QuerySnapshot) -> Unit,
+        failureListener: () -> Unit
+    ): QuerySnapshot? = try {
         firestore
             .collection(collection)
             .whereEqualTo(field, query)
@@ -230,13 +230,13 @@ class FirebaseClient @Inject constructor(
     }
 
     suspend fun getBasicQuerySnapshot(
-        collection : String,
-        queryList : List<Pair<String, Any>>,
+        collection: String,
+        queryList: List<Pair<String, Any>>,
         orderByField: String = TIME_STAMP,
-        orderByDirection : Query.Direction = Query.Direction.DESCENDING,
-        successListener : (QuerySnapshot) -> Unit,
-        failureListener : () -> Unit
-    ) : QuerySnapshot? = try {
+        orderByDirection: Query.Direction = Query.Direction.DESCENDING,
+        successListener: (QuerySnapshot) -> Unit,
+        failureListener: () -> Unit
+    ): QuerySnapshot? = try {
         val reference = firestore.collection(collection)
         queryList.forEach {
             reference.whereEqualTo(it.first, it.second)
@@ -259,9 +259,9 @@ class FirebaseClient @Inject constructor(
 
     suspend fun basicAddData(
         collection: String,
-        data : Any,
-        successListener: ((DocumentReference) -> Unit)?= null,
-        failureListener: (() -> Unit)?= null
+        data: Any,
+        successListener: ((DocumentReference) -> Unit)? = null,
+        failureListener: (() -> Unit)? = null
     ) = try {
         firestore
             .collection(collection)
@@ -282,9 +282,9 @@ class FirebaseClient @Inject constructor(
     suspend fun basicAddData(
         collection: String,
         document: String,
-        data : Any,
-        successListener: (() -> Unit)?= null,
-        failureListener: (() -> Unit)?= null
+        data: Any,
+        successListener: (() -> Unit)? = null,
+        failureListener: (() -> Unit)? = null
     ) = try {
         firestore
             .collection(collection)
@@ -305,10 +305,10 @@ class FirebaseClient @Inject constructor(
 
     suspend fun basicUpdateData(
         collection: String,
-        documentId : String,
-        updateData : Map<String, Any?>,
-        successListener : () -> Unit,
-        failureListener : () -> Unit
+        documentId: String,
+        updateData: Map<String, Any?>,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
     ) = try {
         firestore
             .collection(collection)
@@ -330,8 +330,8 @@ class FirebaseClient @Inject constructor(
     suspend fun basicDeleteData(
         collection: String,
         documentId: String,
-        successListener : () -> Unit,
-        failureListener : () -> Unit
+        successListener: () -> Unit,
+        failureListener: () -> Unit
     ) = try {
         firestore
             .collection(collection)
@@ -344,7 +344,7 @@ class FirebaseClient @Inject constructor(
                 failureListener()
             }
             .await()
-    } catch (e: Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     }
@@ -423,9 +423,9 @@ class FirebaseClient @Inject constructor(
         firstDocument: String,
         secondCollection: String,
         orderByField: String = TIME_STAMP,
-        orderByDirection : Query.Direction = Query.Direction.DESCENDING,
-        successListener : (QuerySnapshot) -> Unit,
-        failureListener : () -> Unit
+        orderByDirection: Query.Direction = Query.Direction.DESCENDING,
+        successListener: (QuerySnapshot) -> Unit,
+        failureListener: () -> Unit
     ) {
         firestore
             .collection(firstCollection)
@@ -446,9 +446,9 @@ class FirebaseClient @Inject constructor(
         firstDocument: String,
         secondCollection: String,
         secondDocument: String,
-        data : Any,
-        successListener: (() -> Unit)?= null,
-        failureListener: (() -> Unit)?= null
+        data: Any,
+        successListener: (() -> Unit)? = null,
+        failureListener: (() -> Unit)? = null
     ) = try {
         firestore
             .collection(firstCollection)
@@ -473,9 +473,9 @@ class FirebaseClient @Inject constructor(
         firstCollection: String,
         firstDocument: String,
         secondCollection: String,
-        data : Any,
-        successListener: (() -> Unit)?= null,
-        failureListener: (() -> Unit)?= null
+        data: Any,
+        successListener: (() -> Unit)? = null,
+        failureListener: (() -> Unit)? = null
     ) = try {
         firestore
             .collection(firstCollection)
@@ -501,9 +501,9 @@ class FirebaseClient @Inject constructor(
         firstDocument: String,
         secondCollection: String,
         secondDocument: String,
-        updateData : Map<String, Any?>,
-        successListener : () -> Unit,
-        failureListener : () -> Unit
+        updateData: Map<String, Any?>,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
     ) = try {
         firestore
             .collection(firstCollection)

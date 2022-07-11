@@ -19,3 +19,6 @@ fun setGradeImageView(imageView: ImageView, gradeCode: String) {
 
 fun getGradeName(gradeCode: String) =
     Grade.values().find { it.gradeCode == gradeCode }?.gradeName ?: Grade.BRONZE.gradeName
+
+fun getGradeImageRes(gradeName: String) =
+    Grade.values().find { it.gradeName == gradeName }?.image ?: Grade.BRONZE.image

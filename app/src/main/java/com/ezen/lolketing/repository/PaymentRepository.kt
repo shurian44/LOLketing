@@ -131,9 +131,9 @@ class PaymentRepository @Inject constructor(
 
     suspend fun updateChargingCache(
         addCache: Long,
-        point: Int,
+        point: Long,
         grade: String,
-        accPoint: Int,
+        accPoint: Long,
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) {

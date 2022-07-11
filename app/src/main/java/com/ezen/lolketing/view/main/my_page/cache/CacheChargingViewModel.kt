@@ -80,8 +80,8 @@ class CacheChargingViewModel @Inject constructor(
     private fun chargingCache(
         addCache : Long,
         grade: String,
-        point: Int,
-        accPoint: Int
+        point: Long,
+        accPoint: Long
     ) = viewModelScope.launch {
         repository
             .updateChargingCache(
