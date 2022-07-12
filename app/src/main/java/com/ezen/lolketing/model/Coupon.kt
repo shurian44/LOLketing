@@ -21,10 +21,28 @@ data class Coupon(
         )
     }
 
+    fun mapperCouponListInfo(documentId: String) : CouponInfo? {
+        return CouponInfo(
+            title = title ?: return null,
+            use = use ?: return null,
+            point = point,
+            limit = limit ?: return null,
+            documentId = documentId
+        )
+    }
+
 }
 
 data class MyPageCouponInfo(
     val id : String,
     val use : String,
     val limit : String,
+)
+
+data class CouponInfo(
+    val title : String,
+    val use : String,
+    val point: Int,
+    val limit : String,
+    val documentId : String
 )

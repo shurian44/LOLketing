@@ -15,7 +15,6 @@ enum class Code(val code: String, val codeName: String) {
     GOLD("USER003", "골드"),
     PLATINUM("USER004", "플래티넘"),
     MASTER("USER005", "마스터"),
-    PURCHASE_TICKET("PURCHASE001", "ticket"),
     FREE_BOARD("CATEGORY001", "자유 게시판"),
     QUESTION_BOARD("CATEGORY002", "질문 게시판"),
     GAME_BOARD("CATEGORY003", "게임 게시판"),
@@ -32,6 +31,7 @@ enum class Code(val code: String, val codeName: String) {
     JACKET("SHOP007", "후드와 자켓"),
     PAJAMAS("SHOP008", "잠옷"),
     ART("SHOP009", "서적/아트"),
+    PURCHASE_TICKET("PURCHASE001", "경기 티켓"),
     BOARD_GAME("SHOP010", "보드게임"),
     UNKNOWN("UNKNOWN", "UNKNOWN"),
 }

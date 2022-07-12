@@ -155,6 +155,9 @@
     <string name="report_received">신고 접수가 완료되었습니다</string>
     <string name="report_received_contents">신고가 접수되어 비공개 처리되었습니다</string>
 
+    <!-- 마이페이지 -->
+    <string name="purchase_history">구매 내역</string>
+
     <!-- 공통 -->
     <string name="cancel">취소</string>
     <string name="ok">확인</string>

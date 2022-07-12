@@ -2,9 +2,7 @@ package com.ezen.lolketing.repository
 
 import com.ezen.lolketing.database.dao.ShopDao
 import com.ezen.lolketing.database.entity.ShopEntity
-import com.ezen.lolketing.model.PurchaseDTO
-import com.ezen.lolketing.model.ShippingInfo
-import com.ezen.lolketing.model.TicketInfo
+import com.ezen.lolketing.model.*
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
 import com.google.firebase.firestore.FieldValue
@@ -101,7 +99,7 @@ class PurchaseRepository @Inject constructor(
         path: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) = try {
+    ): Any = try {
         client
             .storageDelete(
                 path = path,
@@ -151,7 +149,7 @@ class PurchaseRepository @Inject constructor(
                 amount = it.count,
                 group = it.group,
                 image = it.image,
-                information = null,
+                information = it.documentId,
                 message = message,
                 price = it.price,
                 name = it.name,
@@ -183,6 +181,31 @@ class PurchaseRepository @Inject constructor(
 
         successListener()
 
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    suspend fun getPurchaseHistoryList(
+        successListener: (List<PurchaseHistory>) -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+        val id = client.getUserEmail() ?: throw Exception("email is null")
+
+        client
+            .getBasicQuerySnapshot(
+                collection = Constants.PURCHASE,
+                field = "id",
+                query = id,
+                successListener = { snapshot ->
+                    val result = snapshot.mapNotNull {
+                        it.toObject(PurchaseDTO::class.java)
+                            .historyMapper(it.id)
+                    }
+                    successListener(result.mapper())
+                },
+                failureListener = failureListener
+            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()

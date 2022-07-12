@@ -110,7 +110,7 @@ fun MyPageContainer(
                         modifier = Modifier
                             .weight(1f)
                     ) {
-                        activity?.toast("쿠폰함 이동합시당")
+                        routeAction.navToCoupon()
                     }
                 }
             }

@@ -71,7 +71,7 @@ class ShopRepository @Inject constructor(
             document = documentId,
             successListener = {
                 it.toObject(ShopDTO::class.java)
-                    ?.itemMapper()
+                    ?.itemMapper(it.id)
                     ?.let(successListener)
                     ?: failureListener()
             },
@@ -95,6 +95,7 @@ class ShopRepository @Inject constructor(
                 price = item.price,
                 image = item.images[0],
                 count = count,
+                documentId = item.documentId,
                 timestamp = timestamp
             )
         )

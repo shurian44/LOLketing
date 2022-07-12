@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(indices = [Index(value = ["group", "name", "price",
-    "images", "count", "timestamp", "isChecked"], unique = true)])
+    "images", "count", "timestamp", "documentId", "isChecked"], unique = true)])
 data class ShopEntity (
     @PrimaryKey(autoGenerate = true) val id : Long = 0,
     @ColumnInfo(name = "group") val group : String = "",
@@ -15,5 +15,6 @@ data class ShopEntity (
     @ColumnInfo(name = "images") val image : String = "",
     @ColumnInfo(name = "count") val  count : Int = 0,
     @ColumnInfo(name = "timestamp") val timestamp: Long = 0,
+    @ColumnInfo(name = "documentId") val documentId: String = "",
     @ColumnInfo(name = "isChecked") var isChecked: Boolean = true
 )

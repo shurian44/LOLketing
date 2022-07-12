@@ -15,12 +15,13 @@ data class ShopDTO(
         )
     }
 
-    fun itemMapper() : ShopItem? {
+    fun itemMapper(documentId: String) : ShopItem? {
         return ShopItem(
             images = images?: return null,
             price = price ?: return null,
             name = name ?: return null,
-            group = group ?: return null
+            group = group ?: return null,
+            documentId = documentId
         )
     }
 }
@@ -37,5 +38,6 @@ data class ShopItem(
     val images : List<String>,
     val price : Long,
     val name : String,
-    val group : String
+    val group : String,
+    val documentId: String
 )

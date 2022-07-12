@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.database.entity.ShopEntity
+import com.ezen.lolketing.model.PurchaseHistory
 import com.ezen.lolketing.model.ShippingInfo
 import com.ezen.lolketing.repository.PurchaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ class PurchaseViewModel @Inject constructor(
 
     val purchaseState = MutableStateFlow<Event>(Event.Init)
     val userInfoState = MutableStateFlow<ShippingInfo?>(null)
+    val purchaseHistoryState = MutableStateFlow<List<PurchaseHistory>>(emptyList())
     var isDeleteDialogState = mutableStateOf(false)
     var isOutOfCacheDialogState = mutableStateOf(false)
     var isPurchaseDialogState = mutableStateOf(false)
@@ -80,6 +82,17 @@ class PurchaseViewModel @Inject constructor(
 
     private fun deletePurchase(idList: List<Long>) = viewModelScope.launch {
         repository.deleteBasketItems(idList = idList)
+    }
+
+    fun getPurchaseHistoryList() = viewModelScope.launch {
+        repository.getPurchaseHistoryList(
+            successListener = {
+                purchaseHistoryState.value = it
+            },
+            failureListener = {
+                purchaseHistoryState.value = emptyList()
+            }
+        )
     }
 
     sealed class Event {

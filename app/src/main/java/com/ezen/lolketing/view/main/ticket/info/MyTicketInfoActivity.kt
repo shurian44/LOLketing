@@ -54,6 +54,8 @@ class MyTicketInfoActivity : BaseViewModelActivity<ActivityMyTicketInfoBinding, 
     private fun initViews(info: TicketInfo) = with(binding) {
 
         activity = this@MyTicketInfoActivity
+        layoutTop.btnBack.setOnClickListener { finish() }
+        title = getString(R.string.purchase_history)
 
         val list = info.information.split(", ")
 

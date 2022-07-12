@@ -6,7 +6,14 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.ezen.lolketing.R
+import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.main.my_page.cache.CouponListContainer
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -22,7 +29,7 @@ fun MyPageNavigationGraph() {
         startDestination = MyPageRouteAction.MyPage
     ) {
         composable(
-            MyPageRouteAction.MyPage,
+            route = MyPageRouteAction.MyPage,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
             exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
         ) {
@@ -30,7 +37,7 @@ fun MyPageNavigationGraph() {
         }
 
         composable(
-            MyPageRouteAction.UserWithdrawal,
+            route = MyPageRouteAction.UserWithdrawal,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
             exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
         ) {
@@ -38,12 +45,42 @@ fun MyPageNavigationGraph() {
         }
 
         composable(
-            MyPageRouteAction.PurchaseHistory,
+            route = MyPageRouteAction.PurchaseHistory,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
             exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
         ) {
             PurchaseHistoryContainer(routeAction = routeAction)
         }
+
+        composable(
+            route = "${MyPageRouteAction.PurchaseHistoryDetail}/{documentId}/{amount}",
+            arguments = listOf(
+                navArgument("documentId") { type = NavType.StringType },
+                navArgument("amount") { type = NavType.IntType }
+            ),
+            enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
+            exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
+        ) { entry ->
+            val documentId = entry.arguments?.getString("documentId")
+            val amount = entry.arguments?.getInt("amount")
+            val context = LocalContext.current
+
+            if (documentId == null || amount == null) {
+                context.toast(stringResource(id = R.string.error_unexpected))
+                return@composable
+            }
+
+            PurchaseHistoryDetail(routeAction = routeAction, documentId = documentId, amount = amount)
+        }
+
+        composable(
+            route = MyPageRouteAction.CouponList,
+            enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
+            exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
+        ) {
+            CouponListContainer(routeAction)
+        }
+
     }
 
 }
@@ -53,8 +90,8 @@ class MyPageRouteAction(private val navHostController: NavHostController) {
         navHostController.navigate(PurchaseHistory)
     }
 
-    val navToModify: () -> Unit = {
-
+    val navToHistoryDetail: (String, Int) -> Unit = { documentId, amount ->
+        navHostController.navigate("$PurchaseHistoryDetail/$documentId/$amount")
     }
 
     val navToWithdrawal: () -> Unit = {
@@ -62,7 +99,7 @@ class MyPageRouteAction(private val navHostController: NavHostController) {
     }
 
     val navToCoupon: () -> Unit = {
-
+        navHostController.navigate(CouponList)
     }
 
     fun popBackStack() {
@@ -72,6 +109,7 @@ class MyPageRouteAction(private val navHostController: NavHostController) {
     companion object {
         const val MyPage = "my_page"
         const val PurchaseHistory = "purchase_history"
+        const val PurchaseHistoryDetail = "purchase_history_detail"
         const val UserWithdrawal = "user_withdrawal"
         const val CouponList = "coupon_list"
 

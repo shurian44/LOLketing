@@ -3,6 +3,7 @@ package com.ezen.lolketing.view.main.my_page
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ezen.lolketing.model.CouponInfo
 import com.ezen.lolketing.model.MyPageInfo
 import com.ezen.lolketing.repository.MyPageRepository
 import com.ezen.lolketing.util.Code
@@ -23,7 +24,9 @@ class MyPageViewModel @Inject constructor(
 
     val userInfoState = MutableStateFlow<MyPageInfo?>(null)
     val couponInfoState = MutableStateFlow("0 / 0")
+    val couponListState = MutableStateFlow<List<CouponInfo>>(emptyList())
     val deleteUserState = MutableStateFlow<Event>(Event.Init)
+    val updateState = MutableStateFlow<Event>(Event.Init)
 
     fun getUserInfo() = viewModelScope.launch {
         repository.getUserInfo(
@@ -46,7 +49,8 @@ class MyPageViewModel @Inject constructor(
                         info.use == Code.NOT_USE.code
                     }
                     .count { info ->
-                        (getSimpleDateFormatMillSec(info.limit, "yyyy-MM-dd HH:mm") ?: 0) >= System.currentTimeMillis()
+                        (getSimpleDateFormatMillSec(info.limit, "yyyy-MM-dd HH:mm")
+                            ?: 0) >= System.currentTimeMillis()
                     }
                 couponInfoState.value = "$notUseCount / ${it.size}"
             },
@@ -74,11 +78,41 @@ class MyPageViewModel @Inject constructor(
         )
     }
 
+    fun getCouponList() = viewModelScope.launch {
+        repository.getCouponList(
+            successListener = {
+                couponListState.value = it
+            },
+            failureListener = {
+                couponListState.value = emptyList()
+            }
+        )
+    }
+
+    fun updateCoupon(
+        documentId: String,
+        point: Int
+    ) = viewModelScope.launch {
+        updateState.value = Event.Loading
+
+        repository.updateCoupon(
+            documentId = documentId,
+            point = point,
+            successListener = {
+                getCouponList()
+                updateState.value = Event.Success
+            },
+            failureListener = {
+                updateState.value = Event.Failure
+            }
+        )
+    }
+
     sealed class Event {
-        object Init: Event()
-        object Loading: Event()
-        object Success: Event()
-        object Failure: Event()
+        object Init : Event()
+        object Loading : Event()
+        object Success : Event()
+        object Failure : Event()
     }
 
 }

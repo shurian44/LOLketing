@@ -1,10 +1,13 @@
 package com.ezen.lolketing.repository
 
 import com.ezen.lolketing.model.Coupon
+import com.ezen.lolketing.model.CouponInfo
 import com.ezen.lolketing.model.MyPageCouponInfo
 import com.ezen.lolketing.model.MyPageInfo
 import com.ezen.lolketing.network.FirebaseClient
+import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.Constants
+import com.google.firebase.firestore.FieldValue
 import javax.inject.Inject
 
 class MyPageRepository @Inject constructor(
@@ -59,6 +62,70 @@ class MyPageRepository @Inject constructor(
         )
     } catch (e: Exception) {
         e.printStackTrace()
+    }
+
+    suspend fun getCouponList(
+        successListener: (List<CouponInfo>) -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+
+        val id = client.getUserEmail() ?: throw Exception("email is null")
+
+        client
+            .getBasicQuerySnapshot(
+                collection = Constants.COUPON,
+                field = "id",
+                query = id,
+                successListener = { snapshot ->
+                    val result = snapshot.mapNotNull {
+                        it.toObject(Coupon::class.java)
+                            .mapperCouponListInfo(it.id)
+                    }
+                    successListener(result)
+                },
+                failureListener = {
+
+                }
+            )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
+    }
+
+    suspend fun updateCoupon(
+        documentId: String,
+        point: Int,
+        successListener: () -> Unit,
+        failureListener: () -> Unit
+    ) = try {
+
+        val id = client.getUserEmail() ?: throw Exception("email is null")
+
+        client
+            .basicUpdateData(
+                collection = Constants.COUPON,
+                documentId = documentId,
+                updateData = mapOf("use" to Code.USED.code),
+                successListener = {},
+                failureListener = failureListener
+            )
+
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = id,
+                updateData = mapOf(
+                    "accPoint" to FieldValue.increment(point.toLong()),
+                    "point" to FieldValue.increment(point.toLong())
+                ),
+                successListener = {},
+                failureListener = failureListener
+            )
+
+        successListener()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
 }
