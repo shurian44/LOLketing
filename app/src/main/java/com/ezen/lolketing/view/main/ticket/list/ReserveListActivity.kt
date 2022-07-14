@@ -16,7 +16,6 @@ import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.dialog.AddNewGameDialog
 import com.ezen.lolketing.view.main.ticket.detail.ReserveDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ReserveListActivity : BaseViewModelActivity<ActivityReserveListBinding, ReserveListViewModel>(R.layout.activity_reserve_list){

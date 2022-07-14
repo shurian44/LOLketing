@@ -12,27 +12,27 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 
 class ChattingAdapter(
     options : FirebaseRecyclerOptions<ChattingDTO.Comment>,
-    private val listener : moveScrollListener
+    private val dataChangeListener: () -> Unit
 ) : FirebaseRecyclerAdapter<ChattingDTO.Comment, ChattingAdapter.ChattingHolder>(options){
 
     class ChattingHolder(private val binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: ChattingDTO.Comment) {
-            binding.txtChatting.text = model.message
-            binding.txtName.text = model.id
+        fun bind(model: ChattingDTO.Comment) = with(binding) {
+            txtChatting.text = model.message
+            txtName.text = model.id
             if(model.team == "R"){
-                binding.txtChatting.setBackgroundResource(R.drawable.bubble_right)
-                binding.chattingLinear.gravity = Gravity.RIGHT
+                txtChatting.setBackgroundResource(R.drawable.bubble_right)
+                chattingLinear.gravity = Gravity.RIGHT
             }
             else{
-                binding.txtChatting.setBackgroundResource(R.drawable.bubble_left)
-                binding.chattingLinear.gravity = Gravity.LEFT
+                txtChatting.setBackgroundResource(R.drawable.bubble_left)
+                chattingLinear.gravity = Gravity.LEFT
             }
         }
     }
 
     override fun onDataChanged() {
         super.onDataChanged()
-        listener.moveScroll()
+        dataChangeListener()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChattingHolder =
@@ -40,9 +40,5 @@ class ChattingAdapter(
 
     override fun onBindViewHolder(holder: ChattingHolder, position: Int, model: ChattingDTO.Comment) {
         holder.bind(model)
-    }
-
-    interface moveScrollListener{
-        fun moveScroll()
     }
 }

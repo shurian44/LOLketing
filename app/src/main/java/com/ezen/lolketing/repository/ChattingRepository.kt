@@ -1,5 +1,7 @@
 package com.ezen.lolketing.repository
 
+import com.ezen.lolketing.model.ChattingInfo
+import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
 import com.google.firebase.firestore.QuerySnapshot
@@ -8,24 +10,31 @@ import javax.inject.Inject
 
 class ChattingRepository @Inject constructor(
     private val client: FirebaseClient
-){
+) {
 
     suspend fun getUserNickName(): String? =
         client.getUserNickName()
 
     suspend fun getGameData(
         startDate: String,
-        successListener: (QuerySnapshot) -> Unit,
+        successListener: (List<ChattingInfo>) -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         client
             .getBasicSearchData(
                 collection = Constants.GAME,
                 field = "date",
                 startDate = startDate,
-                successListener = successListener,
+                successListener = { snapshot ->
+                    snapshot
+                        .mapNotNull { it.toObject(Game::class.java).mapperChattingInfo() }
+                        .let(successListener)
+                },
                 failureListener = failureListener
             )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
 }

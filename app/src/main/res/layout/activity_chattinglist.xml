@@ -14,6 +14,10 @@
             name="isNoGame"
             type="Boolean" />
 
+        <variable
+            name="title"
+            type="String" />
+
         <import type="android.view.View"/>
         
     </data>
@@ -21,95 +25,71 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black"
         tools:context=".view.main.chatting.ChattingListActivity">
 
-        <ImageView
-            android:id="@+id/main_logo"
-            android:layout_width="80dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="6dp"
-            android:src="@drawable/lolketing_logo"
-            android:onClick="@{activity::moveHome}"
-            android:scaleType="fitXY"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+        <include
+            android:id="@+id/layoutTop"
+            layout="@layout/layout_top"
+            app:isBackVisible="@{true}"
+            app:title="@{title}" />
 
-        <TextView
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/logout"
-            android:onClick="@{activity::logout}"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintTop_toTopOf="@id/main_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/main_logo"/>
 
         <ImageView
             android:id="@+id/img1"
             android:layout_width="0dp"
-            android:layout_height="130dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="250dp"
             android:src="@drawable/img_ticketing"
             android:scaleType="fitXY"
-            app:layout_constraintTop_toBottomOf="@id/main_logo"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_today"
+        <View
+            android:id="@+id/viewPrev"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_prev"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:onClick="@{activity::previousDay}"
+            app:layout_constraintTop_toBottomOf="@id/img1"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/txtDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
+            android:text="2020.02.05"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="20dp"
             android:onClick="@{activity::showDatePickerDialog}"
+            app:layout_constraintTop_toTopOf="@id/viewNext"
+            app:layout_constraintBottom_toBottomOf="@id/viewNext"
+            app:layout_constraintStart_toEndOf="@id/viewPrev"
+            app:layout_constraintEnd_toStartOf="@id/viewNext"/>
+
+        <View
+            android:id="@+id/viewNext"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_next"
+            android:layout_marginEnd="20dp"
+            android:onClick="@{activity::nextDay}"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/img1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="#000"
-                android:text="&lt;"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txt_today"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2020.02.05"
-                android:textSize="20sp"
-                android:textColor="#000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="&gt;"
-                android:textSize="20sp"
-                android:textColor="#000"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_game"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="@{isNoGame ? View.GONE : View.VISIBLE, default = gone}"
-            app:layout_constraintTop_toBottomOf="@id/layout_today"
-            app:layout_constraintStart_toStartOf="@id/layout_today"
-            app:layout_constraintEnd_toEndOf="@id/layout_today"
+            app:layout_constraintTop_toBottomOf="@id/txtDate"
+            app:layout_constraintStart_toStartOf="@id/viewPrev"
+            app:layout_constraintEnd_toEndOf="@id/viewNext"
             tools:visibility="visible">
 
             <TextView
@@ -118,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="17:00"
-                android:textColor="#000"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
@@ -129,7 +109,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/logo_t1"
+                tools:src="@drawable/logo_t1"
                 android:onClick="@{activity::enterChatting}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/txt_vs1"
@@ -142,7 +122,7 @@
                 android:text="vs"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:textColor="#f00"
+                android:textColor="@color/red"
                 app:layout_constraintTop_toTopOf="@id/img_team1"
                 app:layout_constraintBottom_toBottomOf="@id/img_team1"
                 app:layout_constraintStart_toEndOf="@id/img_team1"
@@ -152,7 +132,7 @@
                 android:id="@+id/img_team2"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/logo_afreeca"
+                tools:src="@drawable/logo_afreeca"
                 android:onClick="@{activity::enterChatting}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txt_vs1"
@@ -170,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="20:00"
-                android:textColor="#000"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/img_team1"
@@ -181,7 +161,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/logo_t1"
+                tools:src="@drawable/logo_t1"
                 android:onClick="@{activity::enterChatting}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/txt_vs2"
@@ -194,7 +174,7 @@
                 android:text="vs"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:textColor="#f00"
+                android:textColor="@color/red"
                 app:layout_constraintTop_toTopOf="@id/img_team3"
                 app:layout_constraintBottom_toBottomOf="@id/img_team3"
                 app:layout_constraintStart_toEndOf="@id/img_team3"
@@ -204,7 +184,7 @@
                 android:id="@+id/img_team4"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/logo_afreeca"
+                tools:src="@drawable/logo_afreeca"
                 android:onClick="@{activity::enterChatting}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txt_vs2"
@@ -227,19 +207,20 @@
             android:textSize="20sp"
             android:visibility="@{isNoGame ? View.VISIBLE : View.GONE, default = visible}"
             android:text="게임이 없는 날입니다."
-            app:layout_constraintTop_toBottomOf="@id/layout_today"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/txtDate"
             app:layout_constraintBottom_toTopOf="@id/title1"
-            app:layout_constraintStart_toStartOf="@id/layout_today"
-            app:layout_constraintEnd_toEndOf="@id/layout_today"/>
+            app:layout_constraintStart_toStartOf="@id/txtDate"
+            app:layout_constraintEnd_toEndOf="@id/txtDate"/>
 
         <TextView
             android:id="@+id/title1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
             android:layout_marginVertical="8dp"
-            android:background="@color/colorPrimary"
-            android:padding="8dp"
+            android:background="@color/sub_color"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="20dp"
             android:text="채팅 응원 이용 안내"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:textSize="18sp"
@@ -251,8 +232,10 @@
             android:id="@+id/txt3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="15dp"
+            android:lineSpacingMultiplier="1.2"
+            android:textColor="@color/white"
             android:text="원하는 팀의 이미지를 터치하여 팀을 응원해주세요\n채팅 오픈은 경기 시작 30분 전에 오픈됩니다.\n욕설 및 비방등 부적절한 채팅을 입력 시에 재재 당할 수 있습니다."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/title1"

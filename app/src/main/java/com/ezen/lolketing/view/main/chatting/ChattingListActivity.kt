@@ -3,6 +3,7 @@ package com.ezen.lolketing.view.main.chatting
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -10,6 +11,7 @@ import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityChattinglistBinding
+import com.ezen.lolketing.model.ChattingInfo
 import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.login.LoginActivity
@@ -17,13 +19,13 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, ChattingListViewModel>(R.layout.activity_chattinglist) {
 
     override val viewModel: ChattingListViewModel by viewModels()
-    @Inject lateinit var auth : FirebaseAuth
 
     private var teamA : String?= null // 17:00 게임 팀
     private var teamB : String?= null // 20:00 게임 팀
@@ -47,17 +49,18 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
     private fun initViews() = with(binding){
 
         activity = this@ChattingListActivity
+        layoutTop.btnBack.setOnClickListener { finish() }
 
         val today = getCurrentDateTime().time.timestampToString("yyyy.MM.dd")
         viewModel.getGameData(today)
-
         viewModel.getUserNickName()
 
-        txtToday.text = today
-        year = today.split(".")[0].toInt()
-        month = today.split(".")[1].toInt()
-        date = today.split(".")[2].toInt()
-
+        txtDate.text = today
+        today.split(".").apply {
+            year = get(0).toInt()
+            month = get(1).toInt()
+            date = get(2).toInt()
+        }
     }
 
     fun showDatePickerDialog(view : View) {
@@ -67,13 +70,39 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
                 this.year = year
                 this.month = month + 1
                 this.date = dayOfMonth
-                binding.txtToday.text = "$year.${this.month.toString().padStart(2, '0')}.${date.toString().padStart(2, '0')}"
-                viewModel.getGameData(binding.txtToday.text.toString())
+
+                setDate()
             },
             year,
             month-1,
             date
         ).show()
+    }
+
+    fun previousDay(view: View) {
+        dateCalculation(-1)
+        setDate()
+    }
+
+    fun nextDay(view: View) {
+        dateCalculation(1)
+        setDate()
+    }
+
+    private fun dateCalculation(addDate : Int) {
+        val cal = Calendar.getInstance().also {
+            it.set(year, month, date)
+            it.add(Calendar.DATE, addDate)
+        }
+
+        year = cal.get(Calendar.YEAR)
+        month = cal.get(Calendar.MONTH)
+        date = cal.get(Calendar.DATE)
+    }
+
+    private fun setDate() {
+        binding.txtDate.text = "$year.${this.month.toString().padStart(2, '0')}.${date.toString().padStart(2, '0')}"
+        viewModel.getGameData(binding.txtDate.text.toString())
     }
 
     private fun eventHandler(event: ChattingListViewModel.Event) {
@@ -90,7 +119,7 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
         }
     }
 
-    private fun setGameData(list: List<Game>) = with(binding) {
+    private fun setGameData(list: List<ChattingInfo>) = with(binding) {
         isNoGame = true
         if (list.isEmpty()) return@with
 
@@ -131,7 +160,7 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
         val intent = createIntent(ChattingActivity::class.java)
         var selectTeam = "" // 선택한 팀의 위치 저장 L or R : DB에 입장한 유저 따로 저장하기 위함
         // ex) 2020.02.05 -> 20200205 수정 : realtimeDatabase 에서 .은 하위 노드로 판단하기 때문에 제거
-        var time = binding.txtToday.text.toString().replace(".", "")
+        var time = binding.txtDate.text.toString().replace(".", "")
 
         when(view.id){
             R.id.img_team1 ->{
@@ -186,17 +215,6 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
 
         startActivity(intent)
     } // enterChatting()
-
-    override fun logout(view: View) {
-        auth.signOut()
-        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        finish()
-    }
-
-    override fun moveHome(view: View) {
-        startActivity(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        finish()
-    }
 
     companion object {
         const val MINUTE = 1000 * 60
