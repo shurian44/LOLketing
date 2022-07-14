@@ -61,19 +61,22 @@ class TicketingRepository @Inject constructor(
         return game
     }
 
-    suspend fun  isMasterUser() : Boolean {
-        var result = false
+    suspend fun  isMasterUser(
+        listener: (Boolean) -> Unit
+    ) = try{
         client
             .getUserInfo(
                 successListener = { user ->
-                    result = user.grade == Constants.MASTER
+                    listener(user.grade == Code.MASTER.code)
                 },
                 failureListener = {
-                    result = false
+                    listener(false)
                 }
             )
 
-        return result
+    } catch (e: Exception) {
+        e.printStackTrace()
+        listener(false)
     }
 
     suspend fun addNewGame(

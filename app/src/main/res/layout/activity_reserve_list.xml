@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:text="@string/not_ticket"
+            android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@id/viewBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

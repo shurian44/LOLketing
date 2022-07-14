@@ -34,7 +34,9 @@ class ReserveListViewModel @Inject constructor(
     }
 
     fun isMasterUser() = viewModelScope.launch {
-        event(Event.UserGrade(isMaster = repository.isMasterUser()))
+        repository.isMasterUser {
+            event(Event.UserGrade(isMaster = it))
+        }
     }
 
     fun addNewGame(
