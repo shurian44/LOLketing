@@ -16,6 +16,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".view.main.guide.GuideActivity"
+            android:exported="false"
+            android:label="@string/title_activity_guide"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".view.main.my_page.MyPageActivity"
             android:exported="false"
             android:label="@string/title_activity_my_page"

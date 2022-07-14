@@ -14,8 +14,7 @@ import com.ezen.lolketing.view.login.join.JoinDetailActivity
 import com.ezen.lolketing.view.main.board.BoardListActivity
 import com.ezen.lolketing.view.main.chatting.ChattingListActivity
 import com.ezen.lolketing.view.main.event.EventListActivity
-import com.ezen.lolketing.view.main.guide.LoLGuideActivity
-import com.ezen.lolketing.view.main.league_info.LeagueInfoActivity
+import com.ezen.lolketing.view.main.guide.GuideActivity
 import com.ezen.lolketing.view.main.my_page.MyPageActivity
 import com.ezen.lolketing.view.main.news.NewsActivity
 import com.ezen.lolketing.view.main.shop.ShopActivity
@@ -88,10 +87,10 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         when(view.id){
             btnEvent.id, txtEvent.id -> startActivity(EventListActivity::class.java)
             btnMyPage.id, txtMyPage.id -> startActivity(MyPageActivity::class.java)
-            btnInfo.id, txtInfo.id -> startActivity(LeagueInfoActivity::class.java)
+            btnInfo.id, txtInfo.id -> startActivity(com.ezen.lolketing.view.main.league_info.LeagueInfoActivity::class.java)
             btnReserve.id, txtReserve.id -> startActivity(ReserveListActivity::class.java)
             btnShop.id, txtShop.id -> startActivity(ShopActivity::class.java)
-            btnGuid.id, txtGuid.id -> startActivity(LoLGuideActivity::class.java)
+            btnGuid.id, txtGuid.id -> startActivity(GuideActivity::class.java)
             btnNews.id, txtNews.id -> startActivity(NewsActivity::class.java)
             btnChatting.id, txtChatting.id -> startActivity(ChattingListActivity::class.java)
             btnBoard.id, txtBoard.id -> {

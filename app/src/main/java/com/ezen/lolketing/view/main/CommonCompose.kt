@@ -34,6 +34,7 @@ import com.ezen.lolketing.view.ui.theme.*
 fun TitleBar(
     title: String = "",
     onBackClick: () -> Unit,
+    titleColor: Color= SubColor,
     content: @Composable BoxScope.() -> Unit = {}
 ) {
     Box(
@@ -56,7 +57,7 @@ fun TitleBar(
             style = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = SubColor,
+                color = titleColor,
                 textAlign = TextAlign.Center
             ),
             modifier = Modifier

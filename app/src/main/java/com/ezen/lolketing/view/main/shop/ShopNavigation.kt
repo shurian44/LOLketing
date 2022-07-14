@@ -29,7 +29,6 @@ fun ShopNavigationGraph() {
     AnimatedNavHost(
         navController = navHostController,
         startDestination = RouteAction.Shop,
-
         ) {
         composable(
             route = RouteAction.Shop,

@@ -61,4 +61,11 @@
         <item name="cornerSizeTopRight">10dp</item>
     </style>
 
+    <style name="MyTabTheme" parent="Widget.Material3.ActionBar.Solid">
+        <item name="colorPrimary">@color/sub_color</item>
+        <item name="android:textColorPrimary">@color/sub_color</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="colorAccent">@color/sub_color</item>
+    </style>
+
 </resources>
