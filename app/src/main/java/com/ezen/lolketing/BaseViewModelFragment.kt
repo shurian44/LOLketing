@@ -18,7 +18,7 @@ abstract class BaseViewModelFragment<B : ViewDataBinding, VM : ViewModel>(
 
     protected lateinit var binding: B
     abstract val viewModel : VM
-    protected val dialog = LoadingDialog()
+    protected lateinit var dialog : LoadingDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +37,15 @@ abstract class BaseViewModelFragment<B : ViewDataBinding, VM : ViewModel>(
     }
 
     protected fun showDialog() {
-        dialog.show(parentFragmentManager, null)
+        dialog = LoadingDialog().also {
+            it.show(parentFragmentManager, null)
+        }
     }
 
     protected fun dismissDialog(){
-        dialog.dismissDialog()
+        if (this::dialog.isInitialized) {
+            dialog.dismissDialog()
+        }
     }
 
 }

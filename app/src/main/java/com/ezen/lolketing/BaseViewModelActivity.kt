@@ -15,7 +15,7 @@ abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
 
     protected lateinit var binding: B
     abstract val viewModel : VM
-    protected val dialog = LoadingDialog()
+    protected lateinit var dialog : LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +37,15 @@ abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
     }
 
     protected fun showDialog() {
-        dialog.show(supportFragmentManager, null)
+        dialog = LoadingDialog().also {
+            it.show(supportFragmentManager, null)
+        }
     }
 
     protected fun dismissDialog(){
-        dialog.dismissDialog()
+        if (this::dialog.isInitialized) {
+            dialog.dismissDialog()
+        }
     }
 
 }

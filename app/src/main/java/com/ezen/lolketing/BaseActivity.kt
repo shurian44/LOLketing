@@ -13,7 +13,7 @@ abstract class BaseActivity<B : ViewDataBinding>(
 ) : AppCompatActivity() {
 
     protected lateinit var binding: B
-    protected val dialog = LoadingDialog()
+    protected lateinit var dialog : LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +21,6 @@ abstract class BaseActivity<B : ViewDataBinding>(
 
         with(binding) {
             lifecycleOwner = this@BaseActivity
-//            setVariable(BR._all, viewModel)
         }
 
     }
@@ -35,11 +34,15 @@ abstract class BaseActivity<B : ViewDataBinding>(
     }
 
     protected fun showDialog() {
-        dialog.show(supportFragmentManager, null)
+        dialog = LoadingDialog().also {
+            it.show(supportFragmentManager, null)
+        }
     }
 
     protected fun dismissDialog(){
-        dialog.dismissDialog()
+        if (this::dialog.isInitialized) {
+            dialog.dismissDialog()
+        }
     }
 
 }
