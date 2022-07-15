@@ -26,16 +26,17 @@ class LoginViewModel @Inject constructor(
         if (id.isNullOrEmpty()) {
             event(Event.AutoLoginFailure)
         } else {
-            event(Event.AutoLoginSuccess)
+            event(Event.LoginSuccess)
         }
     }
 
+    /** 이메일 로그인 **/
     fun emailLogin(
         id: String,
         pw: String,
-        failureMsg: String
     ) = viewModelScope.launch {
         try {
+            event(Event.Loading)
             auth.signInWithEmailAndPassword(id, pw)
                 .addOnSuccessListener {
                     editPrefId(id)
@@ -43,36 +44,38 @@ class LoginViewModel @Inject constructor(
                 }
                 .addOnFailureListener {
                     it.printStackTrace()
-                    event(Event.LoginFailure(failureMsg))
+                    event(Event.LoginFailure)
                 }
                 .await()
         } catch (e: Exception) {
-            event(Event.LoginFailure(failureMsg))
+            event(Event.LoginFailure)
             e.printStackTrace()
         }
 
     }
 
+    /** 구글 로그인 **/
     fun googleLogin(
         credential: AuthCredential,
-        failureMsg: String
     ) = viewModelScope.launch {
+        event(Event.Loading)
         auth.signInWithCredential(credential)
             .addOnSuccessListener {
                 val email = auth.currentUser?.email ?: kotlin.run {
-                    event(Event.LoginFailure(failureMsg))
+                    event(Event.GoogleLoginFailure)
                     return@addOnSuccessListener
                 }
                 getUserInfo(email)
             }
             .addOnFailureListener {
-                event(Event.LoginFailure(failureMsg))
+                event(Event.GoogleLoginFailure)
             }
             .await()
     }
 
     /** 유저 등록 **/
-    fun registerUser(email: String) = viewModelScope.launch {
+    private fun registerUser(email: String) = viewModelScope.launch {
+        event(Event.Loading)
         val uid = auth.uid
         if (uid == null) {
             event(Event.RegisterFailure)
@@ -84,10 +87,10 @@ class LoginViewModel @Inject constructor(
             uid = uid,
             successListener = {
                 editPrefId(email)
-                event(Event.RegisterSuccess)
+                event(Event.LoginSuccess)
             },
             failureListener = {
-                event(Event.RegisterFailure)
+                deleteUser()
             }
         )
     }
@@ -100,37 +103,34 @@ class LoginViewModel @Inject constructor(
             email= email,
             successListener = {
                 editPrefId(email)
-                event(Event.UserInfoSuccess)
+                event(Event.LoginSuccess)
             },
             failureListener = {
-                event(Event.UserInfoFailure(it))
+                // 구글 로그인 했을 때 유저 정보가 없으면 신규 가입으로 보고 가입 절차 진행
+                registerUser(it)
             }
         )
     }
 
     /** 유저 삭제 **/
-    fun deleteUser() = viewModelScope.launch {
+    private fun deleteUser() = viewModelScope.launch {
         repository.deleteUser {
             auth.signOut()
+            event(Event.RegisterFailure)
         }
     }
 
+    /** 유저 이메일 등록 **/
     private fun editPrefId(id: String) {
         pref.edit().putString(Constants.ID, id).apply()
     }
 
     sealed class Event {
-        object AutoLoginSuccess : Event()
-        object AutoLoginFailure : Event()
+        object Loading: Event()
         object LoginSuccess : Event()
-        data class LoginFailure(
-            val msg : String
-        ) : Event()
-        object UserInfoSuccess : Event()
-        data class UserInfoFailure(
-            val email : String
-        ) : Event()
-        object RegisterSuccess : Event()
+        object LoginFailure : Event()
+        object GoogleLoginFailure : Event()
+        object AutoLoginFailure : Event()
         object RegisterFailure : Event()
     }
 

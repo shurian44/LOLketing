@@ -17,7 +17,6 @@ import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.custom.CustomEditTextView
 import com.ezen.lolketing.view.login.adater.AddressAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressViewModel>(R.layout.activity_address) {
@@ -107,7 +106,7 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
 
     // 등록한 주소를 이전 화면(JoinDetailActivity)에 데이터 전달
     fun addressRegister(view: View) = with(binding) {
-        if (editAddressDetail.isVisible.not()) {
+        if (editAddressDetail.isVisible.not() || editAddress.text.toString().isEmpty()) {
             toast(getString(R.string.guide_input_address))
             return
         }

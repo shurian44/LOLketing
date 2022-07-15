@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.ezen.lolketing.view.login.DaumWebViewActivity;
 import com.ezen.lolketing.view.main.MainActivity;
 import com.ezen.lolketing.R;
 import com.ezen.lolketing.model.PurchaseDTO;
@@ -112,8 +111,6 @@ public class PurchaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.e("PurchaseActivity", "주소 변경 버튼 클릭됨");
-                Intent i = new Intent(getApplicationContext(), DaumWebViewActivity.class);
-                startActivityForResult(i, SEARCH_ADDRESS_ACTIVITY);
                 // 주소를 못받아온다. 뭐지?
             }
         });

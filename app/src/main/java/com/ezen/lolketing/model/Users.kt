@@ -40,6 +40,12 @@ data class Users(
     }
 }
 
+data class UserInfo(
+    var nickname : String ?= null,
+    var phone : String ?= null,
+    var address : String ?= null
+)
+
 data class CacheModifyUser(
     var grade: String?= null,
     var accPoint: Long?= 0,

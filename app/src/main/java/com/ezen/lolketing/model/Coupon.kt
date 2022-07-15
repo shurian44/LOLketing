@@ -5,7 +5,7 @@ import com.ezen.lolketing.util.Code
 data class Coupon(
     var title : String ?= null,
     var id : String ?= null,
-    var use : String ?= Code.USED.code,
+    var use : String ?= Code.NOT_USE.code,
     var point: Int = 0,
     var couponNumber : String?= null,
     var limit : String ?= null,

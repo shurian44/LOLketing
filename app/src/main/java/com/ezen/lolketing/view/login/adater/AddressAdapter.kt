@@ -4,27 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.databinding.ItemAddressBinding
 import com.ezen.lolketing.model.SearchAddressResult
 
 class AddressAdapter(
-    val clickListener: (String) -> Unit
-) : ListAdapter<SearchAddressResult, AddressAdapter.ViewHolder>(diffUtil) {
+    private val clickListener: (String) -> Unit
+) : ListAdapter<SearchAddressResult, AddressViewHolder>(diffUtil) {
 
-    inner class ViewHolder(val binding: ItemAddressBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: SearchAddressResult) = with(binding) {
-            txtAddress.text = data.roadAddr
-            root.setOnClickListener {
-                clickListener(data.roadAddr ?: "")
-            }
-        }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder =
+        AddressViewHolder(
+            binding = ItemAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            clickListener = clickListener
+        )
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ItemAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AddressViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 

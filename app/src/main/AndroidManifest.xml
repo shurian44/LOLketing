@@ -85,7 +85,6 @@
         <activity android:name=".view.main.league_info.LeagueInfoActivity" />
         <activity android:name=".view.main.ticket.ReserveActivity" />
         <activity android:name=".view.main.ticket.list.ReserveListActivity" />
-        <activity android:name=".view.login.DaumWebViewActivity" />
         <activity android:name=".view.login.join.JoinDetailActivity" />
         <activity android:name=".view.main.board.TeamActivity" />
         <activity android:name=".view.main.news.NewsActivity" />

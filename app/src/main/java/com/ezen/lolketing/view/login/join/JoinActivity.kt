@@ -3,14 +3,15 @@ package com.ezen.lolketing.view.login.join
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityJoinBinding
 import com.ezen.lolketing.util.repeatOnStarted
+import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.util.regex.Pattern
 
 @AndroidEntryPoint
@@ -38,7 +39,7 @@ class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R
                     !android.util.Patterns.EMAIL_ADDRESS.matcher(editJoinId.text.toString()).matches()
 
             editJoinId.setStateError(status)
-            if (status) setTip(getString(R.string.guide_create_id)) else setTip("")
+            txtTipId.isVisible = status
         }
 
         editJoinPw.addTextChangedListener {
@@ -48,7 +49,7 @@ class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R
             val status = Pattern.matches(pattern, pw) || pw.length !in 6..20
 
             editJoinPw.setStateError(status)
-            if (status) setTip(getString(R.string.guide_create_pw)) else setTip("")
+            txtTipPassWord.isVisible = status
         }
 
         editJoinPwCheck.addTextChangedListener {
@@ -56,19 +57,18 @@ class JoinActivity : BaseViewModelActivity<ActivityJoinBinding, JoinViewModel>(R
             val status = editJoinPw.text.toString() != editJoinPwCheck.text.toString()
 
             editJoinPwCheck.setStateError(status)
-            if (status) setTip(getString(R.string.guide_create_pw_check)) else setTip("")
+            txtTipCheck.isVisible = status
         }
     }
 
-    /** EditText 정보 입력 시의 팁 표시 **/
-    private fun setTip(msg: String) {
-        binding.txtTip.text = msg
-    }
-
     private fun eventHandler(event: JoinViewModel.Event) {
+        dismissDialog()
         when(event) {
+            is JoinViewModel.Event.Loading -> {
+                showDialog()
+            }
             is JoinViewModel.Event.Success -> {
-                toast(getString(R.string.join_success))
+                startActivity(JoinDetailActivity::class.java)
                 finish()
             }
             is JoinViewModel.Event.Error -> {

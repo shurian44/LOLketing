@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.R
 import com.ezen.lolketing.repository.MainRepository
-import com.ezen.lolketing.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,10 +17,7 @@ class MainViewModel @Inject constructor(
     fun getUserInfo() = viewModelScope.launch {
         repository.getUserInfo(
             successListener = {
-                MainEvent.CheckDetailJoin(
-                    isNotJoinComplete = it.nickname.isNullOrBlank(),
-                    isMaster = (it.grade ?: "") == Constants.MASTER
-                )
+                event(MainEvent.CheckDetailJoin(it))
             },
             failureListener = {
                 event(MainEvent.Error("유저 정보 조회 중 오류가 발생하였습니다."))
@@ -41,7 +37,7 @@ class MainViewModel @Inject constructor(
     }
 
     sealed class MainEvent {
-        data class CheckDetailJoin(val isNotJoinComplete : Boolean, val isMaster : Boolean) : MainEvent()
+        data class CheckDetailJoin(val isNotJoinComplete : Boolean) : MainEvent()
         data class EventBannerList(val list: List<Int>) : MainEvent()
         data class Error(val msg: String) : MainEvent()
     }

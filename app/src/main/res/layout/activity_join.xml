@@ -28,17 +28,48 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtTip"
+            android:id="@+id/txtTipId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/guide_create_id"
+            android:textColor="@color/sub_color"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/txtTipPassWord"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_goneMarginBottom="24dp" />
+
+        <TextView
+            android:id="@+id/txtTipPassWord"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/guide_create_pw"
+            android:textColor="@color/sub_color"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/txtTipCheck"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_goneMarginBottom="24dp" />
+
+        <TextView
+            android:id="@+id/txtTipCheck"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
+            android:text="@string/guide_create_pw_check"
             android:textColor="@color/sub_color"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/editJoinId"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="안내문구 나올 예정" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.ezen.lolketing.view.custom.CustomEditTextView
             android:id="@+id/editJoinId"
@@ -86,7 +117,7 @@
             android:layout_marginBottom="20dp"
             android:backgroundTint="@color/main_color"
             android:onClick="@{activity::emailJoin}"
-            android:text="@string/join"
+            android:text="@string/next"
             android:textColor="#fff"
             android:textSize="20sp"
             android:textStyle="bold"

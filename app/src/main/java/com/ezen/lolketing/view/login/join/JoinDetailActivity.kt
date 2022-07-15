@@ -1,7 +1,6 @@
 package com.ezen.lolketing.view.login.join
 
 import android.app.Activity
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
@@ -12,23 +11,13 @@ import androidx.core.widget.addTextChangedListener
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityJoinDetailBinding
-import com.ezen.lolketing.model.Coupon
-import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.util.*
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, JoinDetailViewModel>(R.layout.activity_join_detail) {
 
     override val viewModel: JoinDetailViewModel by viewModels()
-    @Inject lateinit var pref : SharedPreferences
-    private val coupon = Coupon()
-
-    private var isModify = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,19 +28,17 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
 
         initViews()
 
-
     } // onCreate()
 
     private fun initViews() = with(binding) {
         vm = viewModel
         activity = this@JoinDetailActivity
-        isModify = intent?.getBooleanExtra(MODIFY, false) ?: false
+        viewModel.isModify = intent?.getBooleanExtra(MODIFY, false) ?: false
 
-        viewModel.getUserId()
+        viewModel.getUserInfo(viewModel.isModify)
 
         // 회원정보 수정일 경우
-        if(isModify){
-            viewModel.getUserInfo()
+        if(viewModel.isModify){
             layoutCheck.isVisible = false
             layoutRegister.isVisible = true
         }
@@ -60,23 +47,24 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
         editNickname.filters = arrayOf(setSpecialCharacterRestrictions(), InputFilter.LengthFilter(10))
         editPhone.filters = arrayOf(setSpecialCharacterRestrictions(), InputFilter.LengthFilter(11))
 
-        //길이 체크
+        // 닉네임 길이가 2~10자가 맞는지 체크
         editNickname.addTextChangedListener {
             if(editNickname.length() !in 2..10) {
-                txtTip.text = getString(R.string.guide_create_nickname)
+                txtTipNickname.isVisible = true
                 editNickname.setStateError(true)
             } else {
-                txtTip.text = ""
+                txtTipNickname.isVisible = false
                 editNickname.setStateError(false)
             }
         }
 
+        // 전화번호 길이가 10~11자가 맞는지 체크
         editPhone.addTextChangedListener {
             if(editPhone.length() !in 10..11) {
-                txtTip.text = getString(R.string.guide_create_phone)
+                txtTipPhone.isVisible = true
                 editPhone.setStateError(true)
             } else {
-                txtTip.text = ""
+                txtTipNickname.isVisible = false
                 editPhone.setStateError(false)
             }
         }
@@ -90,12 +78,17 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
     }
 
     private fun eventHandler(event: JoinDetailViewModel.Event) {
+        dismissDialog()
         when(event) {
             is JoinDetailViewModel.Event.Error -> {
                 toast(event.msg)
             }
+            is JoinDetailViewModel.Event.Loading -> {
+                showDialog()
+            }
             is JoinDetailViewModel.Event.UserInfoLoadError -> {
                 toast(getString(R.string.error_user_info_search))
+                finish()
             }
             is JoinDetailViewModel.Event.UpdateSuccess -> {
                 toast(getString(R.string.guide_update))
@@ -105,14 +98,11 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
                 toast(getString(R.string.error_update))
             }
             is JoinDetailViewModel.Event.CouponIssuanceSuccess -> {
-                viewModel.setNewUserCoupon(coupon)
+                toast(getString(R.string.user_register_success))
+                finish()
             }
             is JoinDetailViewModel.Event.CouponIssuanceFailure -> {
                 toast(getString(R.string.user_register_failure))
-            }
-            is JoinDetailViewModel.Event.JoinDetailSuccess -> {
-                toast(getString(R.string.user_register_success))
-                finish()
             }
             is JoinDetailViewModel.Event.JoinDetailFailure -> {
                 toast(getString(R.string.user_register_failure))
@@ -122,30 +112,16 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
 
     // 등록하기 버튼 클릭
     fun setUser(view: View) {
-        val id = pref.getString(Constants.ID, null)
-        if (id == null) {
-            toast(getString(R.string.user_register_failure))
-            return
-        }
-
         // 회원가입 상세의 경우
-        if(isModify.not()){
+        if(viewModel.isModify.not()){
             // 등급을 브론즈로 설정
-            // 신규 가입 쿠폰 지급
-            coupon.apply {
-                this.id = id
-                title = Code.NEW_USER_COUPON.code
-                use = Code.NOT_USE.code
-                limit = getCouponValidityPeriod()
-                point = 200
-                timestamp = System.currentTimeMillis()
-            }
-            viewModel.updateNewUserInfo(id)
+            viewModel.updateNewUserInfo()
         } else {
             viewModel.updateModifyUserInfo()
         }
     } // setUser()
 
+    /** 주소 페이지로 이동 **/
     fun moveAddressSearch(view: View) {
         launcher.launch(createIntent(AddressActivity::class.java))
     }

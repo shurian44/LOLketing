@@ -1,6 +1,5 @@
 package com.ezen.lolketing.repository
 
-import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
 import javax.inject.Inject
 
@@ -9,13 +8,18 @@ class MainRepository @Inject constructor(
 ) {
 
     suspend fun getUserInfo(
-        successListener: (Users) -> Unit,
+        successListener: (Boolean) -> Unit,
         failureListener: () -> Unit
-    ) {
+    ) = try {
         client.getUserInfo(
-            successListener = successListener,
+            successListener = {
+                successListener(it.nickname.isNullOrEmpty())
+            },
             failureListener = failureListener
         )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        failureListener()
     }
 
 }

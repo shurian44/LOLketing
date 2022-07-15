@@ -1,9 +1,11 @@
 package com.ezen.lolketing.view.login.join
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.repository.LoginRepository
-import com.google.android.gms.tasks.OnSuccessListener
+import com.ezen.lolketing.util.Constants
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,7 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class JoinViewModel @Inject constructor(
     private val repository: LoginRepository,
-    private val auth : FirebaseAuth
+    private val auth : FirebaseAuth,
+    private val pref : SharedPreferences
 ) : BaseViewModel<JoinViewModel.Event>() {
 
     /** 이메일 회원가입 **/
@@ -20,6 +23,7 @@ class JoinViewModel @Inject constructor(
         email: String,
         pw: String
     ) = viewModelScope.launch {
+        event(Event.Loading)
         repository.joinUser(
             email= email,
             pw= pw,
@@ -42,10 +46,12 @@ class JoinViewModel @Inject constructor(
         email: String,
         uid: String
     ) = viewModelScope.launch {
+        event(Event.Loading)
         repository.registerUser(
             email = email,
             uid = uid,
             successListener = {
+                pref.edit { putString(Constants.ID, email) }
                 event(Event.Success)
             },
             failureListener = {
@@ -67,6 +73,7 @@ class JoinViewModel @Inject constructor(
     }
 
     sealed class Event {
+        object Loading: Event()
         object Success: Event()
         data class Error(val code: Int): Event()
     }

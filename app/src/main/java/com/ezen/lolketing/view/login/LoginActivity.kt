@@ -20,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel>(R.layout.activity_login) {
@@ -42,14 +41,15 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
     } // onCreate()
 
     private fun eventHandler(event : LoginViewModel.Event) {
+        dismissDialog()
         when(event) {
-            is LoginViewModel.Event.AutoLoginSuccess, LoginViewModel.Event.LoginSuccess,
-            LoginViewModel.Event.UserInfoSuccess, LoginViewModel.Event.RegisterSuccess -> {
+            // 로그인 결과 성공 시
+            is LoginViewModel.Event.LoginSuccess-> {
                 moveMain()
             }
             // 자동 로그인 실패 : 최초 로그인 또는 로그아웃한 경우
             is LoginViewModel.Event.AutoLoginFailure -> {
-                // 구글 로그인 옵션
+                // 구글 로그인 옵션 초기화
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()
@@ -59,15 +59,19 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
             // 로그인 실패
             is LoginViewModel.Event.LoginFailure -> {
                 binding.loginPw.text = null
-                toast(event.msg)
+                toast(getString(R.string.guide_check_id_pw))
             }
-            // 구글 로그인 했을 때 유저 정보가 없으면 신규 가입으로 보고 가입 절차 진행
-            is LoginViewModel.Event.UserInfoFailure -> {
-                viewModel.registerUser(event.email)
+            // 구글 로그인 실패
+            is LoginViewModel.Event.GoogleLoginFailure -> {
+                toast(getString(R.string.guide_check_id_pw))
             }
             // 구글 로그인 성공 후 등록 과정 중 문제가 발생했을 경우 대비
             is LoginViewModel.Event.RegisterFailure -> {
-                viewModel.deleteUser()
+                toast(getString(R.string.guide_google_login_fail))
+            }
+            // 로딩
+            is LoginViewModel.Event.Loading -> {
+                showDialog()
             }
         }
     }
@@ -91,7 +95,6 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
         viewModel.emailLogin(
             id = id,
             pw = pw,
-            failureMsg = getString(R.string.guide_check_id_pw)
         )
     } // emailLogin()
 
@@ -130,7 +133,7 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        viewModel.googleLogin(credential, getString(R.string.guide_google_login_fail))
+        viewModel.googleLogin(credential)
     } // firebaseAuthWithGoogle()
 
 }
