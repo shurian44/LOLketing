@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
+import com.ezen.lolketing.view.dialog.LoadingDialog
 
 abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
     @LayoutRes private val layoutId : Int
@@ -14,6 +15,7 @@ abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
 
     protected lateinit var binding: B
     abstract val viewModel : VM
+    protected val dialog = LoadingDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,14 @@ abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
 
     open fun onBackClick(view: View) {
         finish()
+    }
+
+    protected fun showDialog() {
+        dialog.show(supportFragmentManager, null)
+    }
+
+    protected fun dismissDialog(){
+        dialog.dismissDialog()
     }
 
 }

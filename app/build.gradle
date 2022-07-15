@@ -162,6 +162,9 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
 
+    // Lottie Animation
+    implementation 'com.airbnb.android:lottie:5.2.0'
+
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
