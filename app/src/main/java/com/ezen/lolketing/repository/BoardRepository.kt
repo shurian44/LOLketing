@@ -49,13 +49,9 @@ class BoardRepository @Inject constructor(
             field = field,
             query = query,
             successListener = { snapshot ->
-                val list = mutableListOf<BoardItem.BoardListItem>()
-                snapshot.forEach{
-                    list.add(
-                        it.toObject(Board::class.java).also { board ->
-                            board.documentId = it.id
-                        }.boardListItemMapper()
-                    )
+                val list = snapshot.mapNotNull {
+                    it.toObject(Board::class.java)
+                        .boardListItemMapper(it.id)
                 }
                 successListener(list)
             },
@@ -77,13 +73,9 @@ class BoardRepository @Inject constructor(
             collection = Constants.BOARD,
             queryList = queryList,
             successListener = { snapshot ->
-                val list = mutableListOf<BoardItem.BoardListItem>()
-                snapshot.forEach{
-                    list.add(
-                        it.toObject(Board::class.java).also { board ->
-                            board.documentId = it.id
-                        }.boardListItemMapper()
-                    )
+                val list = snapshot.mapNotNull {
+                    it.toObject(Board::class.java)
+                        .boardListItemMapper(it.id)
                 }
                 successListener(list)
             },
@@ -109,9 +101,7 @@ class BoardRepository @Inject constructor(
                 successListener = { snapshot ->
                     snapshot.toObject(Board::class.java)
                         ?.boardWriteInfoMapper()
-                        ?.let{
-                            successListener(it)
-                        }
+                        ?.let(successListener)
                         ?: failureListener()
                 },
                 failureListener = failureListener
@@ -169,6 +159,7 @@ class BoardRepository @Inject constructor(
         failureListener()
     }
 
+    // 이미지 업로드
     suspend fun uploadImage(
         uri: Uri,
         successListener: (String) -> Unit,
@@ -186,6 +177,7 @@ class BoardRepository @Inject constructor(
         failureListener()
     }
 
+    // 조회수 업데이트
     suspend fun updateViews(
         documentId: String
     ) = try {
@@ -201,6 +193,7 @@ class BoardRepository @Inject constructor(
         e.printStackTrace()
     }
 
+    // 좋아요 업데이트
     suspend fun updateLikes(
         documentId: String,
         board: Board,
@@ -221,6 +214,7 @@ class BoardRepository @Inject constructor(
         failureListener()
     }
 
+    // 게시글 업로드
     suspend fun uploadBoard(
         data : Board,
         successListener : (String) -> Unit,
@@ -242,6 +236,7 @@ class BoardRepository @Inject constructor(
         errorListener()
     }
 
+    // 게시글 수정
     suspend fun updateBoard(
         documentId: String,
         updateData: Map<String, Any>,
@@ -259,20 +254,7 @@ class BoardRepository @Inject constructor(
         e.printStackTrace()
     }
 
-    suspend fun uploadComment(
-        documentId: String
-    ) = try {
-        client
-            .doubleAddData(
-                firstCollection = Constants.BOARD,
-                firstDocument = documentId,
-                secondCollection = Constants.COMMENTS,
-                data = Board.Comment(),
-            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-
+    // 댓글 조회
     suspend fun getCommentsList(
         documentId: String,
         successListener: (List<Board.Comment>) -> Unit,
@@ -301,6 +283,7 @@ class BoardRepository @Inject constructor(
         failureListener()
     }
 
+    // 게시글 삭제
     suspend fun deleteBoard(
         documentId: String,
         successListener: () -> Unit,
@@ -320,6 +303,7 @@ class BoardRepository @Inject constructor(
         e.printStackTrace()
     }
 
+    // 게시글 신고 업데이트
     suspend fun updateBoardReport(
         documentId: String,
         reportList: List<String>,
@@ -339,6 +323,7 @@ class BoardRepository @Inject constructor(
         failureListener()
     }
 
+    // 댓글 입력
     suspend fun addComment(
         documentId: String,
         comment: String,
@@ -369,6 +354,7 @@ class BoardRepository @Inject constructor(
         failureListener()
     }
 
+    // 댓글 수 수정
     suspend fun updateBoardCommentCount(
         documentId: String,
         count: Int
@@ -385,6 +371,7 @@ class BoardRepository @Inject constructor(
         e.printStackTrace()
     }
 
+    // 댓글 신고 업데이트
     suspend fun updateCommentReport(
         boardDocumentId: String,
         commentDocumentId: String,
@@ -405,6 +392,7 @@ class BoardRepository @Inject constructor(
         e.printStackTrace()
     }
 
+    // 댓글 삭제
     suspend fun deleteComment(
         boardDocumentId: String,
         commentDocumentId: String,

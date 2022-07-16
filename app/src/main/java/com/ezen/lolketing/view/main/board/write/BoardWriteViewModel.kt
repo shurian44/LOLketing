@@ -19,9 +19,11 @@ class BoardWriteViewModel @Inject constructor(
     private val pref: SharedPreferences
 ) : BaseViewModel<BoardWriteViewModel.Event>() {
 
+    /** 게시글 조회 : 수정시에만 조회 **/
     fun getBoard(
         documentId: String
     ) = viewModelScope.launch {
+        event(Event.Loading)
         repository.getBoardModifyInfo(
             documentId = documentId,
             successListener = {
@@ -33,9 +35,11 @@ class BoardWriteViewModel @Inject constructor(
         )
     }
 
+    /** 이미지 업로드 **/
     fun uploadImage(
         uri: Uri
     ) = viewModelScope.launch {
+        event(Event.Loading)
         repository
             .uploadImage(
                 uri = uri,
@@ -48,11 +52,12 @@ class BoardWriteViewModel @Inject constructor(
             )
     }
 
+    /** 게시글 수정 **/
     fun updateBoard(
         documentId: String,
         updateData: Map<String, Any>
     ) = viewModelScope.launch {
-
+        event(Event.Loading)
         repository.updateBoard(
             documentId = documentId,
             updateData = updateData,
@@ -65,6 +70,7 @@ class BoardWriteViewModel @Inject constructor(
         )
     }
 
+    /** 게시글 업로드 **/
     fun uploadBoard(
         title: String,
         content: String,
@@ -72,7 +78,7 @@ class BoardWriteViewModel @Inject constructor(
         image: String?,
         team: String?
     ) = viewModelScope.launch {
-
+        event(Event.Loading)
         val nickName = repository.getUserNickname()
         val email = pref.getString(Constants.ID, "")
 
@@ -107,10 +113,6 @@ class BoardWriteViewModel @Inject constructor(
         )
     }
 
-    fun getUserInfo() {
-        repository
-    }
-
     private fun error(message : String) {
         event(Event.Error(message))
     }
@@ -124,6 +126,7 @@ class BoardWriteViewModel @Inject constructor(
         ) : Event()
         object UploadSuccess : Event()
         object UpdateSuccess : Event()
+        object Loading: Event()
     }
 
 }

@@ -48,6 +48,8 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         title = team
         activity = this@BoardWriteActivity
 
+        root.setOnClickListener { clearFocus() }
+        layout.setOnClickListener { clearFocus() }
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
 
         documentId?.let {
@@ -58,7 +60,9 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
 
     } // initViews
 
+    /** 카테고리 선택 다이얼로그 **/
     fun selectCategory(view: View) {
+        clearFocus()
         CategorySelectDialog(
             data = binding.editCategory.text.toString()
         ){
@@ -66,12 +70,18 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         }.show(supportFragmentManager, "category")
     }
 
+    /** 이미지 추가 버튼 클릭 **/
     fun addImage(view: View) {
+        clearFocus()
         launcher.launch(createIntent(GalleryActivity::class.java))
     }
 
     private fun eventHandler(event : BoardWriteViewModel.Event) {
+        dismissDialog()
         when(event) {
+            is BoardWriteViewModel.Event.Loading -> {
+                showDialog()
+            }
             is BoardWriteViewModel.Event.WriteInfo -> {
                 setModifyInfoViews(event.info)
             }
@@ -79,12 +89,12 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
                 nickname = event.nickName
             }
             is BoardWriteViewModel.Event.UploadSuccess -> {
-                toast("글이 작성 되었습니다.")
+                toast(R.string.board_write_complete)
                 setResult(RESULT_OK)
                 finish()
             }
             is BoardWriteViewModel.Event.UpdateSuccess -> {
-                toast("글이 수정 되었습니다.")
+                toast(R.string.board_modify_complete)
                 setResult(RESULT_OK)
                 finish()
             }
@@ -97,10 +107,18 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         }
     }
 
-    fun upload(view: View) = with(binding) {
-        if (editContents.getText().isEmpty() || editTitle.text.toString().isEmpty()
-            || editCategory.text.toString().isEmpty()){
+    /** 업로드 체크 **/
+    fun uploadCheck(view: View) = with(binding) {
+        if (editContents.getText().isEmpty()){
             toast(getString(R.string.input_contents))
+            return@with
+        }
+        if (editTitle.text.toString().isEmpty()) {
+            toast(R.string.write_title)
+            return@with
+        }
+        if (editCategory.text.toString().isEmpty()) {
+            toast(R.string.select_category)
             return@with
         }
 
@@ -111,7 +129,7 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         }
     }
 
-    // 파일 업로드
+    /** 파일 업로드 **/
     private fun uploadFile() {
         if (isModify && isImageChange.not()) {
             uploadBoard(null)
@@ -120,7 +138,7 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         filePath?.let { viewModel.uploadImage(it) } ?: uploadBoard(null)
     } // uploadFile
 
-    // 게시글 세팅
+    /** 게시글 업로드 **/
     private fun uploadBoard(downloadUrl: String?) {
 
         when(isModify) {
@@ -128,7 +146,7 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
                 val updateData = mutableMapOf<String, Any>(
                     "content" to binding.editContents.getText(),
                     "title" to binding.editTitle.text.toString(),
-                    "category" to binding.editCategory.text.toString(),
+                    "category" to findCode(binding.editCategory.text.toString()),
                 )
                 downloadUrl?.let{
                     updateData["image"] = it
@@ -153,6 +171,7 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         }
     }
 
+    /** 수정 시 뷰 셋팅 **/
     private fun setModifyInfoViews(writeInfo: BoardWriteInfo) = with(binding) {
         editContents.setText(writeInfo.content)
         editTitle.setText(writeInfo.title)
@@ -161,21 +180,11 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
             setImage(Uri.parse(it))
         }
 
-        val category = when(writeInfo.category) {
-            Code.QUESTION_BOARD.code -> {
-                Code.QUESTION_BOARD.codeName
-            }
-            Code.GAME_BOARD.code -> {
-                Code.GAME_BOARD.codeName
-            }
-            else -> {
-                Code.FREE_BOARD.codeName
-            }
-        }
-        editCategory.setText(category)
+        editCategory.setText(findCodeName(writeInfo.category))
 
     }
 
+    /** 이미지 셋팅 **/
     private fun setImage(uri: Uri) = with(binding) {
         setGlide(imageView, uri)
         filePath = uri
@@ -183,10 +192,17 @@ class BoardWriteActivity : BaseViewModelActivity<ActivityBoardWriteBinding, Boar
         groupImage.isVisible = true
     }
 
+    /** 이미지 제거 **/
     fun removeImage(view: View) = with(binding) {
         filePath = null
         groupAttach.isVisible = true
         groupImage.isVisible = false
+    }
+
+    /** 포케스 제거 **/
+    private fun clearFocus() = with(binding) {
+        editTitle.clearFocus()
+        editContents.clearFocus()
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){

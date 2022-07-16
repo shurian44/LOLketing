@@ -30,34 +30,38 @@ data class Board(
         val reportList : List<String>?= null
     ) : Parcelable
 
-    fun boardListItemMapper() = BoardItem.BoardListItem(
-        email = email,
-        nickname = nickname,
-        team = team,
-        title = title,
-        timestamp = timestamp,
-        category = category,
-        commentCounts = commentCounts,
-        views = views,
-        documentId = documentId
-    )
+    fun boardListItemMapper(documentId: String) : BoardItem.BoardListItem? {
+        return BoardItem.BoardListItem(
+            email = email ?: return null,
+            nickname = nickname ?: return null,
+            team = team ?: return null,
+            title = title ?: return null,
+            timestamp = timestamp ?: return null,
+            category = category ?: return null,
+            commentCounts = commentCounts ?: 0,
+            views = views ?: 0,
+            documentId = documentId
+        )
+    }
 
-    fun boardWriteInfoMapper() = BoardWriteInfo(
-        category = category,
-        title = title,
-        content = content,
-        image = image,
-        email = email
-    )
+    fun boardWriteInfoMapper() : BoardWriteInfo? {
+        return BoardWriteInfo(
+            category = category ?: return null,
+            title = title ?: return null,
+            content = content ?: return null,
+            image = image,
+            email = email ?: return null
+        )
+    }
 
 }
 
 data class BoardWriteInfo(
-    val category: String?= null,
-    val title: String?= null,
-    val content: String?= null,
+    val category: String,
+    val title: String,
+    val content: String,
     val image: String?= null,
-    val email: String?= null
+    val email: String
 )
 
 open class BoardItem(val type: Int) {
@@ -66,15 +70,15 @@ open class BoardItem(val type: Int) {
     ) : BoardItem(type = TYPE_TEAM_IMAGE)
 
     data class BoardListItem(
-        val email: String?= null,
-        val nickname: String? = null,
-        val team: String?= null,
-        val timestamp: Long?= null,
-        val category: String?= null,
-        val title: String?= null,
-        val commentCounts: Long?= null,
-        val views: Long?= null,
-        val documentId: String?= null
+        val email: String,
+        val nickname: String,
+        val team: String,
+        val timestamp: Long,
+        val category: String,
+        val title: String,
+        val commentCounts: Long,
+        val views : Long,
+        val documentId: String
     ) : BoardItem(TYPE_TEAM_BOARD)
 
     companion object {

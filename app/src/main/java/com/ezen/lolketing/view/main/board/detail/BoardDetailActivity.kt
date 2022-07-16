@@ -17,7 +17,6 @@ import com.ezen.lolketing.view.dialog.DialogReport
 import com.ezen.lolketing.view.main.board.comment.CommentActivity
 import com.ezen.lolketing.view.main.board.write.BoardWriteActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -87,7 +86,8 @@ class BoardDetailActivity : BaseViewModelActivity<ActivityBoardDetailBinding, Bo
     // 뷰 메소드 캡슐화
     private fun initViews() = with(binding) {
         activity = this@BoardDetailActivity
-        title = intent.getStringExtra(Constants.TEAM)
+        team = intent.getStringExtra(Constants.TEAM)
+        title = team
         documentID = intent.getStringExtra(Constants.DOCUMENT_ID) ?: kotlin.run {
             toast(getString(R.string.error_unexpected))
             return@with

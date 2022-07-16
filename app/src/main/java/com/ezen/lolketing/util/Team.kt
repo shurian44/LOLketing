@@ -1,5 +1,6 @@
 package com.ezen.lolketing.util
 
+import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.ezen.lolketing.R
@@ -25,4 +26,21 @@ fun setTeamLogoImageView(imageView : ImageView, team : String) {
 fun getRandomGame() : String {
     val teamList = Team.values().toMutableList().shuffled()
     return "${teamList[0].teamName}:${teamList[1].teamName}"
+}
+
+fun getBoardImage(teamName: String) : Int {
+
+    return when (teamName) {
+        Team.T1.teamName -> R.drawable.img_board_t1
+        Team.GRIFFIN.teamName -> R.drawable.img_board_griffin
+        Team.GENG.teamName -> R.drawable.img_board_geng
+        Team.DRAGON.teamName -> R.drawable.img_board_dragon
+        Team.AF.teamName -> R.drawable.img_board_af
+        Team.SANDBOX.teamName -> R.drawable.img_board_sandbox
+        Team.DAMWON.teamName -> R.drawable.img_board_damwon
+        Team.APK.teamName -> R.drawable.img_board_apk
+        Team.KT.teamName -> R.drawable.img_board_kt
+        Team.HANWHA.teamName -> R.drawable.img_board_hanwha
+        else -> R.drawable.img_board_t1
+    }
 }

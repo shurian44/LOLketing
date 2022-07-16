@@ -1,7 +1,6 @@
 package com.ezen.lolketing.view.main.board.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
@@ -9,18 +8,17 @@ import com.ezen.lolketing.databinding.ItemBoardBinding
 import com.ezen.lolketing.databinding.ItemBoardTopBinding
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.model.BoardItem.Companion.TYPE_TEAM_BOARD
+import com.ezen.lolketing.util.getBoardImage
 
 class BoardListAdapter(
     val onclickListener : (String) -> Unit,
-    val onLongClickListener: (BoardItem.BoardListItem, View) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val list = mutableListOf<BoardItem>()
 
     inner class TopImageViewHolder(val binding: ItemBoardTopBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(teamImage : BoardItem.TeamImage) = with(binding) {
-            // todo image 팀별 수정 필요
-            imageView.setImageResource(R.drawable.img_board_t1)
+            imageView.setImageResource(getBoardImage(teamImage.team))
         }
     }
 
@@ -37,11 +35,6 @@ class BoardListAdapter(
                 board.documentId?.let { id ->
                     onclickListener(id)
                 }
-            }
-
-            root.setOnLongClickListener {
-                onLongClickListener(board, it)
-                true
             }
         }
     }
@@ -70,6 +63,8 @@ class BoardListAdapter(
         return list[position].type
     }
 
+
+
     fun addItem(item : BoardItem) {
         list.add(item)
         notifyItemChanged(list.lastIndex)
@@ -83,31 +78,3 @@ class BoardListAdapter(
     }
 
 }
-
-
-//
-//    // 글 삭제 메소드
-//    public void CommentDelete(final Context context, final int position) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//
-//        builder.setTitle("글 삭제").setMessage("정말 삭제하시겠습니까?");
-//        builder.setPositiveButton("네", new DialogInterface.OnClickListener(){
-//            @Override
-//            public void onClick(DialogInterface dialog, int id)
-//            {
-//                getSnapshots().getSnapshot(position).getReference().delete();
-//                Toast.makeText(context, "글이 삭제 되었습니다.", Toast.LENGTH_SHORT).show();
-//                notifyDataSetChanged();
-//            }
-//        });
-//        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener(){
-//            @Override
-//            public void onClick(DialogInterface dialog, int id)
-//            {
-//                Toast.makeText(context, "삭제가 취소되었습니다.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//    }
-//

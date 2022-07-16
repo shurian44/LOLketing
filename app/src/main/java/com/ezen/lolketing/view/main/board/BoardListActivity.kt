@@ -1,24 +1,20 @@
 package com.ezen.lolketing.view.main.board
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityBoardListBinding
-import com.ezen.lolketing.model.Board
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.util.*
-import com.ezen.lolketing.view.dialog.BoardPopup
 import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
 import com.ezen.lolketing.view.main.board.detail.BoardDetailActivity
 import com.ezen.lolketing.view.main.board.write.BoardWriteActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardListViewModel>(R.layout.activity_board_list) {
@@ -35,7 +31,6 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
         }
 
         initViews()
-
     }
 
     private fun eventHandler(event : BoardListViewModel.Event) {
@@ -44,136 +39,58 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
                 setRecyclerView(event.list)
             }
             is BoardListViewModel.Event.Error -> {
-                toast(event.msg)
-            }
-            is BoardListViewModel.Event.DeleteSuccess -> {
-                getBoardList()
+                toast(getString(R.string.error_board_load))
             }
         }
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         team = intent?.getStringExtra(Constants.TEAM) ?: Team.T1.name
-        title = getString(R.string.board_title, team)
+        title = team
         activity = this@BoardListActivity
 
-        // todo scroll 위치에 따라 background color 변경하기
         layoutTop.layoutTop.setBackgroundResource(android.R.color.transparent)
-        layoutTop.txtTitle.setTextColor(ContextCompat.getColor(this@BoardListActivity, R.color.white))
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
 
+        // 스크롤에따라 타이틀 영역 색상 변경
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val res = if (recyclerView.computeVerticalScrollOffset() > 200) {
+                    R.color.black
+                } else {
+                    android.R.color.transparent
+                }
+
+                layoutTop.layoutTop.setBackgroundResource(res)
+            }
+        })
+
         setAdapter()
-
-        getBoardList()
-
-//        // 구단 정보 버튼 클릭 이벤트
-//        btnTeamInfo.setOnClickListener {
-//            getResult.launch(
-//                createIntent(TeamActivity::class.java).also {
-//                    it.putExtra(Constants.TEAM, team)
-//                }
-//            )
-//        }
-
-        // 내가 쓴 글 검색 및 모든 글 보기
-//        txtListBy.setOnClickListener {
-            // todo 수정 필요
-//                if(txt_listBy.getText().toString().equals("내가 쓴 글")) {
-//                    txt_listBy.setText("<  전체 글");
-//                    query = firestore.collection("Board").whereEqualTo("email", auth.getCurrentUser().getEmail()).whereEqualTo("team", team);
-//
-//                }else if(txt_listBy.getText().toString().equals("<  전체 글")) {
-//                    txt_listBy.setText("내가 쓴 글");
-//                    query = firestore.collection("Board").whereEqualTo("team", team).orderBy("timestamp", Query.Direction.DESCENDING);
-//                }
-//                adapter.stopListening();
-//                setRecycler(query);
-//                adapter.startListening();
-//            }
-            // query = firestore.collection("Board").whereEqualTo("email", auth.getCurrentUser().getEmail()).whereEqualTo("team", team);
-//            viewModel.getBoardList(listOf(Pair("email", auth.currentUser?.email ?: ""), Pair(Constants.TEAM, team)))
-//        }
-
-        // 글쓰기 버튼 클릭
-//        btnWrite.setOnClickListener {
-//            getResult.launch(
-//                createIntent(
-//                    BoardWriteActivity::class.java,
-//                    Intent.FLAG_ACTIVITY_SINGLE_TOP,
-//                    Intent.FLAG_ACTIVITY_CLEAR_TOP,
-//                    Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP
-//                ).also {
-//                    it.putExtra(Constants.TEAM, team)
-//                }
-//            )
-//        }
-        // 검색 조건 클릭
-//        boardSearchBy.setOnClickListener {
-//             searchBy()
-//        }
-        // 검색 버튼 클릭
-//        boardSearchButton.setOnClickListener {
-//            val search = boardSearchBar.text.toString()
-//            toast("준비중입니다.")
-//                if(board_searchBy.getText().toString().equals("검색조건")){
-//                    Toast.makeText(BoardListActivity.this, "검색조건을 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                else if(board_searchBy.getText().toString().equals("제목")){
-//                    query = firestore.collection("Board").whereEqualTo("team", team).orderBy("title").startAt(search).endAt(search + "\uf8ff");
-//                }
-//                else if(board_searchBy.getText().toString().equals("작성자")){
-//                    query = firestore.collection("Board").whereEqualTo("team", team).orderBy("userId").startAt(search).endAt(search + "\uf8ff");
-//                }
-//                else if(board_searchBy.getText().toString().equals("내용")){
-//                    query = firestore.collection("Board").whereEqualTo("team", team).orderBy("content").startAt(search).endAt(search + "\uf8ff");
-//                }
-//
-//                adapter.stopListening();
-//                setRecycler(query);
-//                adapter.startListening();
-//        }
     }
 
-    private fun getBoardList() {
-        viewModel.getBoardList(team)
-    }
-
+    /** adapter 설정 **/
     private fun setAdapter(){
         adapter = BoardListAdapter(
             onclickListener = { documentId ->
-                val intent = Intent(this, BoardDetailActivity::class.java).apply {
-                    putExtra(Constants.TEAM, team)
-                    putExtra(Constants.DOCUMENT_ID, documentId)
-                }
-                launcher.launch(intent)
-            },
-            onLongClickListener = { board, view ->
-//                if (auth.currentUser?.email != board.email){
-//                    toast("수정 권한이 없습니다.")
-//                    return@BoardListAdapter
-//                }
-
-                // 팝업메뉴 생성
-                BoardPopup.createPopup(
-                    view = view,
-                    menuRes = R.menu.menu_board,
-                ) { menuId ->
-                    when(menuId) {
-                        R.id.modify -> {
-//                            modifyBoard(board)
-                        }
-                        R.id.delete -> {
-//                            deleteBoard(board)
-                        }
+                launcher.launch(
+                    createIntent(BoardDetailActivity::class.java).also {
+                        it.putExtra(Constants.TEAM, team)
+                        it.putExtra(Constants.DOCUMENT_ID, documentId)
                     }
-                }
+                )
             }
         ).also {
+            // 최상단 이미지
             it.addItem(BoardItem.TeamImage(team = team))
         }
+
+        viewModel.getBoardList(team)
     }
 
+    /** Recyclerview 설정 **/
     private fun setRecyclerView(list: List<BoardItem.BoardListItem>) {
         binding.recyclerView.adapter = adapter
         if (list.isEmpty() && adapter.itemCount < 2) {
@@ -185,6 +102,7 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
         }
     }
 
+    /** 글쓰기 버튼 클릭 **/
     fun writeBoard(view: View) {
         launcher.launch(
             createIntent(BoardWriteActivity::class.java).also{
@@ -193,50 +111,8 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
         )
     }
 
-    private fun modifyBoard(board: Board) {
-        launcher.launch(
-            createIntent(BoardWriteActivity::class.java).also{
-                it.putExtra(Constants.TEAM, team)
-                it.putExtra(Constants.BOARD, board)
-            }
-        )
-    }
-
-    private fun deleteBoard(board: Board) {
-        board.documentId?.let {
-            viewModel.deleteBoard(it)
-        } ?: kotlin.run {
-            toast("글 삭제를 실패하였습니다.")
-        }
-    }
-
-    //    // 검색조건 드랍다운 메뉴
-    private fun searchBy() {
-        // 팝업메뉴 생성
-//        BoardPopup.createPopup(
-//            view = binding.boardSearchBy,
-//            menuRes = R.menu.menu_search
-//        ) { menuId ->
-//            binding.boardSearchBy.text = when(menuId) {
-//                R.id.searchByTitle -> {
-//                    "제목"
-//                }
-//                R.id.searchByWriter -> {
-//                    "작성자"
-//                }
-//                R.id.searchByContent -> {
-//                    "내용"
-//                }
-//                else -> {
-//                    "검색조건"
-//                }
-//            }
-//        }
-    }
-
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         setAdapter()
-        getBoardList()
     }
 
 }

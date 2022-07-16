@@ -12,6 +12,7 @@ import android.os.Build
 import android.text.Html
 import android.text.InputFilter
 import android.text.Spanned
+import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -119,6 +120,12 @@ fun getSimpleDateFormatMillSec(date: String, format : String = "yyyy.MM.dd HH:mm
 fun densityDp(context: Context, size: Int) : Int {
     val dm = context.resources.displayMetrics
     return (size * dm.density).roundToInt()
+}
+
+fun dpToPx(context: Context, size: Int) : Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, size.toFloat(), context.resources.displayMetrics
+    ).roundToInt()
 }
 
 fun setSpecialCharacterRestrictions() = InputFilter { source, _, _, _, _, _ ->

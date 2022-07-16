@@ -18,6 +18,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/img_board_t1"/>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#4D000000"
+            app:layout_constraintTop_toTopOf="@id/imageView"
+            app:layout_constraintBottom_toBottomOf="@id/imageView"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintEnd_toEndOf="@id/imageView"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
