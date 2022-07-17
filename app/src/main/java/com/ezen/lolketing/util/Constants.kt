@@ -10,6 +10,8 @@ object Constants {
     const val SEAT = "Seat"
     const val COUPON = "Coupon"
     const val PURCHASE = "Purchase"
+    const val TeamCollection = "Team"
+    const val PLAYER = "Player"
     const val TIME = "time"
     const val ID = "id"
     const val DOCUMENT_ID = "documentId"
@@ -23,6 +25,4 @@ object Constants {
     const val URL = "url"
     const val ADDRESS_API_BASE_URL = "https://www.juso.go.kr/"
     const val NAVER_API_BASE_URL = "https://openapi.naver.com/v1/"
-
-    // todo 등급 정리가 필요함
 }

@@ -100,9 +100,9 @@ class CustomEditTextView : TextInputEditText {
     }
 
     companion object {
-        const val DRAWABLE_LEFT = 0
+        const val DRAWABLE_START = 0
         const val DRAWABLE_TOP = 1
-        const val DRAWABLE_RIGHT = 2
+        const val DRAWABLE_END = 2
         const val DRAWABLE_BOTTOM = 3
     }
 

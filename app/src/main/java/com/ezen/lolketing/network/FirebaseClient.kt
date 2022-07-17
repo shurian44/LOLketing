@@ -532,7 +532,7 @@ class FirebaseClient @Inject constructor(
         secondDocument: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ): Any = try {
+    ): Any? = try {
         firestore
             .collection(firstCollection)
             .document(firstDocument)
@@ -556,7 +556,7 @@ class FirebaseClient @Inject constructor(
         path: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) = try {
+    ): Any? = try {
         storage
             .reference
             .child(path)
@@ -579,7 +579,7 @@ class FirebaseClient @Inject constructor(
         uri: Uri,
         successListener: (String) -> Unit,
         failureListener: () -> Unit
-    ): Any = try {
+    ): Any? = try {
         val storageRef = getStorageReference(fileName)
 
         storageRef.putFile(uri)

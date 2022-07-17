@@ -11,8 +11,12 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityBoardListBinding
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.util.*
+import com.ezen.lolketing.view.dialog.MenuPopup
 import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
 import com.ezen.lolketing.view.main.board.detail.BoardDetailActivity
+import com.ezen.lolketing.view.main.board.my_board.MyBoardActivity
+import com.ezen.lolketing.view.main.board.search.SearchActivity
+import com.ezen.lolketing.view.main.board.team.TeamActivity
 import com.ezen.lolketing.view.main.board.write.BoardWriteActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,6 +56,27 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
 
         layoutTop.layoutTop.setBackgroundResource(android.R.color.transparent)
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
+        layoutTop.btnMenu.setOnClickListener {
+            MenuPopup(layoutInflater).also { popup ->
+                popup.createPopup()
+                popup.setListener(
+                    teamListener = {
+                        startActivity(
+                            createIntent(TeamActivity::class.java).also { intent ->
+                                intent.putExtra(Constants.TEAM, team)
+                            }
+                        )
+                    },
+                    myBoardListener = {
+                        startActivity(
+                            createIntent(MyBoardActivity::class.java).also { intent ->
+                                intent.putExtra(Constants.TEAM, team)
+                            }
+                        )
+                    }
+                )
+            }.showPopup(it)
+        }
 
         // 스크롤에따라 타이틀 영역 색상 변경
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -106,6 +131,15 @@ class BoardListActivity : BaseViewModelActivity<ActivityBoardListBinding, BoardL
     fun writeBoard(view: View) {
         launcher.launch(
             createIntent(BoardWriteActivity::class.java).also{
+                it.putExtra(Constants.TEAM, team)
+            }
+        )
+    }
+
+    /** 검색 페이지 이동 **/
+    fun searchBoard(view: View) {
+        startActivity(
+            createIntent(SearchActivity::class.java).also {
                 it.putExtra(Constants.TEAM, team)
             }
         )

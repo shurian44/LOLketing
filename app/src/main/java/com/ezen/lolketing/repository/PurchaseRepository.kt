@@ -99,7 +99,7 @@ class PurchaseRepository @Inject constructor(
         path: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ): Any = try {
+    ): Any? = try {
         client
             .storageDelete(
                 path = path,

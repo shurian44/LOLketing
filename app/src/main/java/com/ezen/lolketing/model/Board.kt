@@ -17,7 +17,6 @@ data class Board(
     val like : MutableMap<String, Boolean>?= null,
     var likeCounts : Long?= null,
     val views : Long?= null,
-    var documentId : String?= null,
     val reportList : List<String>?= null
 ) : Parcelable {
     @Parcelize
@@ -26,7 +25,6 @@ data class Board(
         val nickname : String?= null,
         val timestamp : Long?= null,
         val comment : String?= null,
-        var documentId : String?= null,
         val reportList : List<String>?= null
     ) : Parcelable
 
@@ -87,3 +85,22 @@ open class BoardItem(val type: Int) {
     }
 }
 
+data class CommentItem(
+    val email : String,
+    val nickname : String,
+    val timestamp : Long,
+    val comment : String,
+    var documentId : String,
+    val reportList : List<String>
+)
+
+fun Board.Comment.mapper(documentId: String) : CommentItem? {
+    return CommentItem(
+        email = email ?: return null,
+        nickname = nickname ?: return null,
+        timestamp = timestamp ?: return null,
+        comment = comment ?: return null,
+        documentId = documentId,
+        reportList = emptyList()
+    )
+}

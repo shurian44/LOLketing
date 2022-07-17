@@ -1,7 +1,9 @@
 package com.ezen.lolketing.view.dialog
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.PopupWindow
 import androidx.annotation.MenuRes
 
 object BoardPopup {

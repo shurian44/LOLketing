@@ -61,7 +61,7 @@ class AddressActivity : BaseViewModelActivity<ActivityAddressBinding, AddressVie
         }
 
         // 검색 아이콘을 이용한 검색
-        editAddress.setDrawableClickListener(CustomEditTextView.DRAWABLE_RIGHT) {
+        editAddress.setDrawableClickListener(CustomEditTextView.DRAWABLE_END) {
             searchAddress()
         }
 

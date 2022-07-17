@@ -1,10 +1,7 @@
 package com.ezen.lolketing.repository
 
 import android.net.Uri
-import com.ezen.lolketing.model.Board
-import com.ezen.lolketing.model.BoardItem
-import com.ezen.lolketing.model.BoardWriteInfo
-import com.ezen.lolketing.model.Users
+import com.ezen.lolketing.model.*
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
 import com.google.firebase.firestore.FieldValue
@@ -164,7 +161,7 @@ class BoardRepository @Inject constructor(
         uri: Uri,
         successListener: (String) -> Unit,
         failureListener: () -> Unit
-    ): Any = try {
+    ): Any? = try {
         client
             .basicFileUpload(
                 fileName = "board/${System.currentTimeMillis()}.png",
@@ -257,7 +254,7 @@ class BoardRepository @Inject constructor(
     // 댓글 조회
     suspend fun getCommentsList(
         documentId: String,
-        successListener: (List<Board.Comment>) -> Unit,
+        successListener: (List<CommentItem>) -> Unit,
         failureListener: () -> Unit
     ) = try {
         client
@@ -265,16 +262,12 @@ class BoardRepository @Inject constructor(
                 firstCollection = Constants.BOARD,
                 firstDocument = documentId,
                 secondCollection = Constants.COMMENTS,
-                successListener = {
-                    val list = mutableListOf<Board.Comment>()
-                    it.forEach { snapshot ->
-                        list.add(
-                            snapshot.toObject(Board.Comment::class.java).also { board ->
-                                board.documentId = snapshot.id
-                            }
-                        )
+                successListener = { snapshot ->
+                    val result = snapshot.mapNotNull {
+                        it.toObject(Board.Comment::class.java)
+                            .mapper(it.id)
                     }
-                    successListener(list)
+                    successListener(result)
                 },
                 failureListener = failureListener
             )

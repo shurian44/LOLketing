@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ItemCommentBinding
 import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.CommentItem
 import com.ezen.lolketing.view.dialog.BoardMenuPopup
 
 class CommentAdapter(
@@ -15,13 +16,13 @@ class CommentAdapter(
     private val myEmail : String
 ) : RecyclerView.Adapter<CommentAdapter.CommentHolder>() { // class CommentAdapter
 
-    private val commentList = mutableListOf<Board.Comment >()
+    private val commentList = mutableListOf<CommentItem>()
     private var deleteLister : ((String) -> Unit)? = null
     private var reportLister : ((String, List<String>?) -> Unit)? = null
 
     inner class CommentHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(comment: Board.Comment) = with(binding) {
+        fun bind(comment: CommentItem) = with(binding) {
             this.comment = comment
 
             if (adapterPosition % 2 == 0) {
@@ -45,9 +46,9 @@ class CommentAdapter(
         holder.bind(commentList[position])
     }
 
-    private fun createMenu(view: View, comment: Board.Comment) {
-        val commentEmail = comment.email ?: return
-        val documentId = comment.documentId ?: return
+    private fun createMenu(view: View, comment: CommentItem) {
+        val commentEmail = comment.email
+        val documentId = comment.documentId
 
         BoardMenuPopup(layoutInflater).also {
             if (myEmail == commentEmail) {
@@ -79,7 +80,7 @@ class CommentAdapter(
     override fun getItemCount(): Int =
         commentList.size
 
-    fun addList(list: List<Board.Comment>) {
+    fun addList(list: List<CommentItem>) {
         commentList.addAll(list)
     }
 

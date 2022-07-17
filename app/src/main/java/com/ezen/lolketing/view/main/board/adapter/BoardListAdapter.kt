@@ -2,6 +2,8 @@ package com.ezen.lolketing.view.main.board.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ItemBoardBinding
@@ -32,9 +34,7 @@ class BoardListAdapter(
             }
 
             root.setOnClickListener {
-                board.documentId?.let { id ->
-                    onclickListener(id)
-                }
+                onclickListener(board.documentId)
             }
         }
     }
@@ -62,8 +62,6 @@ class BoardListAdapter(
     override fun getItemViewType(position: Int): Int {
         return list[position].type
     }
-
-
 
     fun addItem(item : BoardItem) {
         list.add(item)

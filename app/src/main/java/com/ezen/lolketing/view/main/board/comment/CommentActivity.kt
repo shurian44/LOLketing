@@ -1,20 +1,19 @@
 package com.ezen.lolketing.view.main.board.comment
 
-import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.CommentAdapter
 import com.ezen.lolketing.databinding.ActivityCommentBinding
-import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.model.CommentItem
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.dialog.DialogReport
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,16 +34,22 @@ class CommentActivity : BaseViewModelActivity<ActivityCommentBinding, CommentVie
 
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
+        activity = this@CommentActivity
         intent?.getStringExtra(Constants.DOCUMENT_ID)?.let {
             documentId = it
             viewModel.getCommentList(it)
         } ?: kotlin.run {
             toast(getString(R.string.error_unexpected))
+            finish()
         }
 
+        intent.getStringExtra(Constants.TEAM)?.let { title = it }
         intent.getStringExtra(CATEGORY)?.let { category = it }
         intent.getStringExtra(TITLE)?.let { boardTitle = it }
+
+        layoutTop.btnBack.setOnClickListener { onBackClick(it) }
 
         editComment.setRegisterListener {
             if (it.isEmpty()) {
@@ -61,7 +66,11 @@ class CommentActivity : BaseViewModelActivity<ActivityCommentBinding, CommentVie
     }
 
     private fun eventHandler(event : CommentViewModel.Event) {
+        dismissDialog()
         when(event) {
+            is CommentViewModel.Event.Loading -> {
+                showDialog()
+            }
             is CommentViewModel.Event.CommentListSuccess -> {
                 setAdapter(event.list)
                 viewModel.updateCommentCount(documentId = documentId, count = event.list.size)
@@ -80,14 +89,17 @@ class CommentActivity : BaseViewModelActivity<ActivityCommentBinding, CommentVie
             }
             CommentViewModel.Event.CommentDeleteSuccess -> {
                 viewModel.getCommentList(documentId)
+                setResult(RESULT_OK)
             }
             CommentViewModel.Event.CommentReportSuccess -> {
                 toast(getString(R.string.report_received))
+                setResult(RESULT_OK)
             }
         }
     }
 
-    private fun setAdapter(list: List<Board.Comment>) = with(binding) {
+    /** adapter 설정 **/
+    private fun setAdapter(list: List<CommentItem>) = with(binding) {
 
         val email = pref.getString(Constants.ID, "") ?: ""
 
@@ -102,10 +114,7 @@ class CommentActivity : BaseViewModelActivity<ActivityCommentBinding, CommentVie
             }
 
             it.setReportListener { commentDocumentId, reportList ->
-                val resultList = mutableListOf<String>()
-                reportList?.let {
-                    resultList.addAll(reportList)
-                }
+                val resultList = reportList?.toMutableList() ?: mutableListOf()
 
                 DialogReport { select ->
                     resultList.add(select)
@@ -120,6 +129,7 @@ class CommentActivity : BaseViewModelActivity<ActivityCommentBinding, CommentVie
             }
         }
 
+        txtEmptyComment.isVisible = list.isEmpty()
         recyclerView.adapter = adapter
     }
 

@@ -63,12 +63,16 @@
     <string name="input_contents">내용을 입력해주세요</string>
     <string name="select_image">이미지 선택</string>
     <string name="board_detail_title"><![CDATA[<font color=\"#F7DA6E\"><b>[%s]</b></font> %s]]></string>
-    <string name="comments_detail">댓글 상세보기</string>
+    <string name="comments_detail">더보기 &amp; 댓글 작성</string>
     <string name="add_comment_success">댓글 등록 완료</string>
     <string name="add_comment_failure">댓글 등록 실패</string>
     <string name="error_board_load">게시글을 불러오는 과정에서 오류가 발생하였습니다.</string>
     <string name="board_write_complete">글이 작성 되었습니다.</string>
     <string name="board_modify_complete">글이 수정 되었습니다.</string>
+    <string name="empty_comment">댓글이 없습니다.\n첫번째 댓글을 남겨주세요</string>
+    <string name="guide_search">검색어를 입력해주세요</string>
+    <string name="my_board">내가 쓴 글</string>
+    <string name="team_info">구단 정보</string>
 
     <!-- 이벤트 -->
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>

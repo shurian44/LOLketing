@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".view.main.board.my_board.MyBoardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.main.board.search.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.main.guide.GuideActivity"
             android:exported="false"
             android:label="@string/title_activity_guide"
@@ -86,7 +92,7 @@
         <activity android:name=".view.main.ticket.ReserveActivity" />
         <activity android:name=".view.main.ticket.list.ReserveListActivity" />
         <activity android:name=".view.login.join.JoinDetailActivity" />
-        <activity android:name=".view.main.board.TeamActivity" />
+        <activity android:name=".view.main.board.team.TeamActivity" />
         <activity android:name=".view.main.news.NewsActivity" />
         <activity android:name=".view.main.news.NewsWebViewActivity" />
         <activity android:name=".view.main.manager.ManagerActivity" />
