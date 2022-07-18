@@ -1,6 +1,5 @@
 package com.ezen.lolketing.util
 
-import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.ezen.lolketing.R

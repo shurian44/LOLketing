@@ -61,14 +61,16 @@ class BoardRepository @Inject constructor(
         null
     }
 
-    suspend fun getBoardList(
-        queryList: List<Pair<String, Any>>,
+    suspend fun getSearchBoardList(
+        field: String,
+        data: String,
         successListener : (List<BoardItem.BoardListItem>) -> Unit,
         failureListener : () -> Unit
     ) = try {
-        client.getBasicQuerySnapshot(
+        client.getBasicSearchData(
             collection = Constants.BOARD,
-            queryList = queryList,
+            field = field,
+            startDate = data,
             successListener = { snapshot ->
                 val list = snapshot.mapNotNull {
                     it.toObject(Board::class.java)

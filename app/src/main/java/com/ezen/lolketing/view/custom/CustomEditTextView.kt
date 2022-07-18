@@ -89,7 +89,7 @@ class CustomEditTextView : TextInputEditText {
     @SuppressLint("ClickableViewAccessibility")
     fun setDrawableClickListener(drawablePosition: Int, listener: () -> Unit) {
         setOnTouchListener { _, motionEvent ->
-            if (motionEvent.action == MotionEvent.ACTION_UP) {
+            if (motionEvent.action == MotionEvent.ACTION_UP) {z
                 if (motionEvent.rawX >= (right - compoundDrawables[drawablePosition].bounds.width())) {
                     listener()
                     return@setOnTouchListener true
