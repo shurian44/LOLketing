@@ -11,7 +11,6 @@ import com.ezen.lolketing.util.htmlFormat
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class EventDetailActivity : BaseViewModelActivity<ActivityEventDetailBinding, EventDetailViewModel>(R.layout.activity_event_detail) {
@@ -29,29 +28,38 @@ class EventDetailActivity : BaseViewModelActivity<ActivityEventDetailBinding, Ev
 
     } // onCreate()
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
+        layoutTop.btnBack.setOnClickListener { onBackClick(it) }
+
         val page = intent.getIntExtra(PAGE, 1)
         // 신규 회원가입 페이지의 경우
         if(page == 1) {
-            title = getString(R.string.event_title_new_user)
             setNewUserPage()
         }
 
         // 티켓 구매 이벤트 안내 페이지 일 경우
         if(page == 2){
-            title = getString(R.string.event_title_ticket_reserve)
-            imgMain.setImageResource(R.drawable.banner2)
-            txtEvent.text = getString(R.string.event_ticket_purchase).htmlFormat()
-            btnCoupon.isVisible = false
+            setTicketPurchase()
         }
     }
 
+    /** 신규 가입 이벤트 UI **/
     private fun setNewUserPage() = with(binding){
         activity = this@EventDetailActivity
+        title = getString(R.string.event_title_new_user)
         imgMain.setImageResource(R.drawable.banner1)
         viewModel.getUserNickname()
-        viewModel.getCouponList()
+        viewModel.getNewUserCouponInfo()
     } // setNewUserPage()
+
+    /** 티켓 구입 이벤트 UI **/
+    private fun setTicketPurchase() = with(binding) {
+        title = getString(R.string.event_title_ticket_reserve)
+        imgMain.setImageResource(R.drawable.banner2)
+        txtEvent.text = getString(R.string.event_ticket_purchase).htmlFormat()
+        btnCoupon.isVisible = false
+    }
 
     private fun eventHandler(event: EventDetailViewModel.Event) {
         when(event) {
@@ -71,7 +79,8 @@ class EventDetailActivity : BaseViewModelActivity<ActivityEventDetailBinding, Ev
             }
         }
     }
-    
+
+    /** 신규 가입 쿠폰 사용 **/
     fun userCoupon(view: View) {
         if (isUsed) {
             toast(getString(R.string.already_used_coupon))

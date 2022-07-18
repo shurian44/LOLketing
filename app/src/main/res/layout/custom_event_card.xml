@@ -20,7 +20,7 @@
                 android:id="@+id/image"
                 android:layout_width="0dp"
                 android:layout_height="180dp"
-                app:strokeWidth="1dp"
+                app:strokeWidth="2dp"
                 app:shapeAppearance="@style/topRound10Style"
                 app:strokeColor="@color/white"
                 android:scaleType="fitXY"

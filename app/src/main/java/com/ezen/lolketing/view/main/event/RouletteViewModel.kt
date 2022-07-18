@@ -17,6 +17,7 @@ class RouletteViewModel @Inject constructor(
     private val repository: EventRepository
 ) : BaseViewModel<RouletteViewModel.Event>() {
 
+    /** 룰렛 카운트 조회 **/
     fun getRouletteCount() = viewModelScope.launch {
         repository.getRouletteCount(
             successListener = {
@@ -28,6 +29,7 @@ class RouletteViewModel @Inject constructor(
         )
     }
 
+    /** 룰렛 결과 쿠폰 발급 **/
     fun setCoupon(
         point: Int
     ) = viewModelScope.launch {
@@ -60,6 +62,7 @@ class RouletteViewModel @Inject constructor(
 
     }
 
+    /** 쿠폰 번호 성생 **/
     private fun getCouponNumber(): String {
         var couponNumber = ""
         val chooseNum = arrayOf(

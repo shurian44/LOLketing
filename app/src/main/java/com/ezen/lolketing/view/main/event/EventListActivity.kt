@@ -19,6 +19,7 @@ class EventListActivity : BaseActivity<ActivityEventListBinding>(R.layout.activi
 
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         activity = this@EventListActivity
         title = getString(R.string.event)
@@ -27,6 +28,7 @@ class EventListActivity : BaseActivity<ActivityEventListBinding>(R.layout.activi
 
     }
 
+    /** 페이지 이동 **/
     fun moveActivity(view: View) = with(binding) {
         when(view.id) {
             cardEvent1.id -> {

@@ -103,7 +103,7 @@ class JoinDetailViewModel @Inject constructor(
             it.title = Code.NEW_USER_COUPON.code
             it.use = Code.NOT_USE.code
             it.limit = getCouponValidityPeriod()
-            it.point = 200
+            it.point = 500
             it.timestamp = System.currentTimeMillis()
         }
         repository.setNewUserCoupon(

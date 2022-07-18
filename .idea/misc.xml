@@ -65,7 +65,7 @@
         <entry key="app/src/main/res/layout/activity_comment.xml" value="0.37447916666666664" />
         <entry key="app/src/main/res/layout/activity_coupon.xml" value="0.2930253623188406" />
         <entry key="app/src/main/res/layout/activity_daum_web_view.xml" value="0.2930253623188406" />
-        <entry key="app/src/main/res/layout/activity_event_detail.xml" value="0.40208333333333335" />
+        <entry key="app/src/main/res/layout/activity_event_detail.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_event_list.xml" value="0.20677083333333332" />
         <entry key="app/src/main/res/layout/activity_find_id_pw.xml" value="0.40208333333333335" />
         <entry key="app/src/main/res/layout/activity_gallery.xml" value="0.35144927536231885" />

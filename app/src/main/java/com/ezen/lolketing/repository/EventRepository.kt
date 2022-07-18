@@ -18,12 +18,14 @@ class EventRepository @Inject constructor(
     private val pref: SharedPreferences
 ) {
 
+    /** 유저 닉네임 조회 **/
     suspend fun getUserNickname(): String? {
         return client.getUserNickName()
     }
 
-    suspend fun getCouponList(
-        successListener : (EventDetailViewModel.Event.NewUserCoupon?) -> Unit,
+    /** 신규 가입 쿠폰 정보 조회 **/
+    suspend fun getNewUserCouponInfo(
+        successListener : (String, String) -> Unit,
         failureListener : () -> Unit
     ) {
         val email = pref.getString(Constants.ID, null) ?: kotlin.run {
@@ -37,30 +39,22 @@ class EventRepository @Inject constructor(
             field = "id",
             successListener = { snapshot ->
                 snapshot
-                    .map {
-                        it.toObject(Coupon::class.java).also { coupon ->
-                            coupon.documentId = it.id
-                        }
+                    .mapNotNull {
+                        it.toObject(Coupon::class.java).mapperCouponListInfo(it.id)
                     }
                     .filter {
-                        (it.title ?: "") == Code.NEW_USER_COUPON.code
-                    }
-                    .sortedBy { it.limit }
-                    .reversed()
-                    .firstOrNull { it.use == Code.NOT_USE.code }
+                        it.title == Code.NEW_USER_COUPON.code
+                    }.maxByOrNull { it.limit }
                     ?.let {
-                        it.documentId?.let { documentId ->
-                            successListener(
-                                EventDetailViewModel.Event.NewUserCoupon(documentId = documentId)
-                            )
-                        } ?: successListener(null)
+                        successListener(it.documentId, it.use)
                     }
-                    ?: successListener(null)
+                    ?: failureListener()
             },
             failureListener = failureListener
         )
     }
 
+    /** 쿠폰 업데이트 **/
     suspend fun updateCoupon(
         documentId: String,
         failureListener: () -> Unit
@@ -75,6 +69,7 @@ class EventRepository @Inject constructor(
             )
     }
 
+    /** 포인트 적립 **/
     suspend fun updateUserPoint(
         documentId: String,
         failureListener: () -> Unit
@@ -89,6 +84,7 @@ class EventRepository @Inject constructor(
             )
     }
 
+    /** 룰렛 카운트 조회 **/
     suspend fun getRouletteCount(
         successListener: (Int) -> Unit,
         failureListener: () -> Unit
@@ -114,6 +110,7 @@ class EventRepository @Inject constructor(
             )
     }
 
+    /** 룰렛 사용 업데이트 **/
     suspend fun updateCouponCount(
         successListener: () -> Unit,
         failureListener: () -> Unit
@@ -130,14 +127,14 @@ class EventRepository @Inject constructor(
                 collection = Constants.USERS,
                 documentId = email,
                 updateData = mapOf(
-                    "rouletteCount" to FieldValue.increment(-1),
-                    "point" to FieldValue.increment(-1)
+                    "rouletteCount" to FieldValue.increment(-1)
                 ),
                 successListener= successListener,
                 failureListener = failureListener
             )
     }
 
+    /** 쿠폰 발급 **/
     suspend fun setCoupon(
         coupon: Coupon,
         successListener: () -> Unit,

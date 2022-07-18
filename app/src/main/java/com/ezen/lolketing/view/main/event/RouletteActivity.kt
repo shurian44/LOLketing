@@ -22,11 +22,11 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
 
     override val viewModel: RouletteViewModel by viewModels()
 
-    var startDegree = 0f
-    var endDegree = 0f
-    var degreeRand = 0
-    var rouletteResult = 0
-    var count = 0
+    private var startDegree = 0f
+    private var endDegree = 0f
+    private var degreeRand = 0
+    private var rouletteResult = 0
+    private var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +38,7 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
 
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         // Animator 설정
         activity = this@RouletteActivity
@@ -64,10 +65,10 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
         }
     }
 
-    // 룰렛 이미지 터치 시에 호출되는 메소드
+    /** 룰렛 회전 **/
     fun rotate(v: View?) {
         if (count <= 0) {
-            Toast.makeText(this, "기회를 다 소진하였습니다.", Toast.LENGTH_SHORT).show()
+            toast(R.string.roulette_count_zero)
             return
         }
         // ---------- 회전각도 설정 ----------
@@ -76,6 +77,7 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
         setAnimator()
     }
 
+    /** 룰렛 회전 **/
     private fun setAnimator() {
         // ---------- 애니메이션 실행 ----------
         // 애니메이션 이미지에 대해 초기 각도에서 회전종료 각도까지 회전하는 애니메이션 객체 생성
@@ -88,27 +90,14 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
             start() // 애니메이션 시작
             doOnEnd {
                 rouletteResult = when (degreeRand) {
-                    in 225..269 -> {
-                        250
-                    }
-                    in 45..89 -> {
-                        300
-                    }
-                    in 90..134 -> {
-                        350
-                    }
-                    in 270..314 -> {
-                        450
-                    }
-                    in 315..359 -> {
-                        550
-                    }
-                    in 180..224 -> {
-                        1000
-                    }
-                    else -> {
-                        2000
-                    }
+                    in 0..45 -> 2000
+                    in 46..90 -> 300
+                    in 91..135 -> 350
+                    in 136..180 -> 200
+                    in 181..225 -> 1000
+                    in 226..270 -> 250
+                    in 271..315 -> 450
+                    else -> 250
                 }
                 toast(getString(R.string.roulette_result, rouletteResult))
                 viewModel.setCoupon(rouletteResult)
