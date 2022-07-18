@@ -1,6 +1,6 @@
 package com.ezen.lolketing.repository
 
-import com.ezen.lolketing.model.NewsResult
+import com.ezen.lolketing.model.NewsContents
 import com.ezen.lolketing.network.NaverClient
 import javax.inject.Inject
 
@@ -8,12 +8,13 @@ class NewsRepository @Inject constructor(
     private val client: NaverClient
 ) {
 
+    /** 뉴스 정보 조회 **/
     suspend fun getNews(
         query: String,
         display: Int,
         start: Int,
         sort: String,
-        successListener: (NewsResult) -> Unit,
+        successListener: (List<NewsContents>, Int) -> Unit,
         failureListener: () -> Unit
     ) {
 
@@ -22,7 +23,9 @@ class NewsRepository @Inject constructor(
             display = display,
             sort = sort,
             start = start,
-            successListener = successListener,
+            successListener = {
+                successListener(it.mapper(), it.total)
+            },
             failureListener = failureListener
         )
 

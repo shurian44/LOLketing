@@ -1,6 +1,5 @@
 package com.ezen.lolketing.view.main.news
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.webkit.WebSettings
@@ -15,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NewsWebViewActivity : BaseActivity<ActivityNewsWebViewBinding>(R.layout.activity_news_web_view) {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,7 +21,6 @@ class NewsWebViewActivity : BaseActivity<ActivityNewsWebViewBinding>(R.layout.ac
 
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun initViews() = with(binding) {
         title = getString(R.string.news)
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }

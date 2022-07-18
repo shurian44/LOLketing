@@ -12,7 +12,6 @@ import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class NewsActivity : BaseViewModelActivity<ActivityNewsBinding, NewsViewModel>(R.layout.activity_news) {
@@ -31,6 +30,7 @@ class NewsActivity : BaseViewModelActivity<ActivityNewsBinding, NewsViewModel>(R
         viewModel.getNews()
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         title = getString(R.string.news)
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }

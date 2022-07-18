@@ -19,9 +19,8 @@ class NewsViewModel @Inject constructor(
     val isMore : Boolean
         get() = _isMore
 
-    fun getNews(
-
-    ) = viewModelScope.launch {
+    /** 뉴스 정보 조회 **/
+    fun getNews() = viewModelScope.launch {
         if (_isMore.not()) return@launch
 
         repository.getNews(
@@ -29,12 +28,12 @@ class NewsViewModel @Inject constructor(
             display = display,
             start = start,
             sort = SIMILAR,
-            successListener = { result ->
-                if(result.total > start) {
+            successListener = { list, total ->
+                if(total > start) {
                     _isMore = true
                     start += display
                 }
-                event(Event.Success(result.mapper()))
+                event(Event.Success(list))
             },
             failureListener = {
                 event(Event.Failure)
@@ -50,7 +49,6 @@ class NewsViewModel @Inject constructor(
 
     companion object {
         const val SIMILAR = "sim"
-        const val DATE = "date"
     }
 
 }
