@@ -134,6 +134,7 @@
     <!-- 캐시 -->
     <string name="my_cache">My 캐시</string>
     <string name="charging_cache">캐시 충전</string>
+    <string name="button_charging_cache">충전하기</string>
     <string name="label_guide_charging_cache">충전 시 주의사항</string>
     <string name="guide_charging_cache"><![CDATA[&quot;롤켓팅&quot;의 캐시는 <font color=\"#03DAC5\"><b>가상머니</b></font>입니다.<br>원하시는 충전 금액을 입력하시고 캐시 충전 버튼을 눌러주세요.\n<font color=\"#03DAC5\"><br>최대 보유 캐시는 1억원 입니다.</font>]]></string>
     <string name="retained_cache">보유한 캐시</string>
@@ -156,6 +157,11 @@
     <string name="already_used_coupon">이미 사용한 쿠폰입니다.</string>
     <string name="new_user_coupon_used">500 포인트가 지급되었습니다</string>
     <string name="roulette_count_zero">기회를 다 소진하였습니다.</string>
+    <string name="usable_coupon">사용 가능 쿠폰</string>
+    <string name="move_coupon_box">쿠폰함 가기</string>
+    <string name="coupon_box">쿠폰함</string>
+    <string name="coupon_empty">쿠폰이 없습니다.</string>
+    <string name="coupon_used">쿠폰 사용이 완료되었습니다.</string>
 
     <!-- 신고하기 -->
     <string name="report_type">신고 유형을 선택해주세요</string>
@@ -168,6 +174,15 @@
 
     <!-- 마이페이지 -->
     <string name="purchase_history">구매 내역</string>
+    <string name="my_info_modify">내 정보 수정</string>
+    <string name="withdrawal">회원 탈퇴</string>
+    <string name="label_withdrawal">탈퇴하기</string>
+    <string name="guide_withdrawal">회원 탈퇴를 진행하시려면\n</string>
+    <string name="guide_withdrawal2">라고 작성 후\n버튼을 눌러주세요</string>
+    <string name="error_withdrawal">회원 탈퇴에 실패하였습니다.</string>
+    <string name="purchase_empty">구매 내역이 없습니다.</string>
+    <string name="quantity">수량</string>
+    <string name="price">가격</string>
 
     <!-- 리그 정보 -->
     <string name="info_content">2022 LoL 챔피언스 코리아\n스프링 스플릿 대회 안내</string>

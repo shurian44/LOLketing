@@ -59,7 +59,7 @@ fun WithdrawalContainer(
     ) {
 
         /** 타이틀 바 **/
-        TitleBar(onBackClick = { routeAction.popBackStack() }, title = "회원 탈퇴")
+        TitleBar(onBackClick = { routeAction.popBackStack() }, title = stringResource(id = R.string.withdrawal))
 
         /** 탈퇴하기 컨텐츠 **/
         Column(
@@ -70,17 +70,17 @@ fun WithdrawalContainer(
         ) {
             Text(
                 text = buildAnnotatedString {
-                    append("회원 탈퇴를 진행하시려면\n")
+                    append(stringResource(id = R.string.guide_withdrawal))
 
                     withStyle(
                         style = SpanStyle(
                             color = SubColor
                         )
                     ) {
-                        append("'탈퇴하기'")
+                        append("'${stringResource(id = R.string.label_withdrawal)}'")
                     }
 
-                    append("라고 작성 후\n버튼을 눌러주세요")
+                    append(stringResource(id = R.string.guide_withdrawal2))
                 },
                 style = Typography.labelLarge,
                 textAlign = TextAlign.Center,
@@ -98,7 +98,7 @@ fun WithdrawalContainer(
                     isError = false
                 },
                 maxLines = 1,
-                placeholder = { Text(text = "탈퇴하기") },
+                placeholder = { Text(text = stringResource(id = R.string.label_withdrawal)) },
                 isError = isError,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = SubColor,
@@ -164,7 +164,7 @@ fun WithdrawalContainer(
                     .height(56.dp)
             ) {
                 Text(
-                    text = "회원 탈퇴",
+                    text = stringResource(id = R.string.label_withdrawal),
                     style = Typography.labelLarge
                 )
             }
@@ -193,7 +193,7 @@ fun WithdrawalContainer(
                 }
             }
             MyPageViewModel.Event.Failure -> {
-                activity?.toast("회원 탈퇴에 실패하였습니다.")
+                activity?.toast(stringResource(id = R.string.error_withdrawal))
                 isEnable = true
             }
         }

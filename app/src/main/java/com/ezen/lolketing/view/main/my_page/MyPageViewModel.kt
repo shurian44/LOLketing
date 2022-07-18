@@ -28,6 +28,7 @@ class MyPageViewModel @Inject constructor(
     val deleteUserState = MutableStateFlow<Event>(Event.Init)
     val updateState = MutableStateFlow<Event>(Event.Init)
 
+    /** 유저 정보 조회 **/
     fun getUserInfo() = viewModelScope.launch {
         repository.getUserInfo(
             successListener = {
@@ -40,6 +41,7 @@ class MyPageViewModel @Inject constructor(
         )
     }
 
+    /** 쿠폰 정보 조회 : 사용 가능 쿠폰 카운트 **/
     private fun getCouponInfo(id: String) = viewModelScope.launch {
         repository.getUserCoupon(
             id = id,
@@ -60,11 +62,13 @@ class MyPageViewModel @Inject constructor(
         )
     }
 
+    /** 로그아웃 **/
     fun logout() {
         auth.signOut()
         pref.edit().putString(Constants.ID, null).apply()
     }
 
+    /** 회원탈퇴 **/
     fun deleteUser() = viewModelScope.launch {
         deleteUserState.value = Event.Loading
 
@@ -78,6 +82,7 @@ class MyPageViewModel @Inject constructor(
         )
     }
 
+    /** 쿠폰 리스트 조회 **/
     fun getCouponList() = viewModelScope.launch {
         repository.getCouponList(
             successListener = {
@@ -89,6 +94,7 @@ class MyPageViewModel @Inject constructor(
         )
     }
 
+    /** 쿠폰 업데이트 **/
     fun updateCoupon(
         documentId: String,
         point: Int

@@ -12,7 +12,6 @@ import com.ezen.lolketing.util.removePriceFormat
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class CacheChargingActivity : BaseViewModelActivity<ActivityCacheChargingBinding, CacheChargingViewModel>(R.layout.activity_cache_charging) {
@@ -29,6 +28,7 @@ class CacheChargingActivity : BaseViewModelActivity<ActivityCacheChargingBinding
 
     } // onCreate()
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         activity = this@CacheChargingActivity
         title = getString(R.string.charging_cache)
@@ -54,7 +54,7 @@ class CacheChargingActivity : BaseViewModelActivity<ActivityCacheChargingBinding
         }
     }
 
-    // 각 금액 버튼을 클릭
+    /** 각 금액 버튼을 클릭 ***/
     fun plusCacheClick(view: View) {
         val before = binding.txtCache.text.toString().removePriceFormat()
 
@@ -75,6 +75,7 @@ class CacheChargingActivity : BaseViewModelActivity<ActivityCacheChargingBinding
         binding.txtCache.text = after.priceFormat()
     }
 
+    /** 충전하기 버튼 클릭 **/
     fun chargingClick(view: View){
         viewModel.chargingCache(binding.txtCache.text.toString().removePriceFormat())
     }

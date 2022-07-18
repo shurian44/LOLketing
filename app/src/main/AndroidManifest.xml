@@ -48,7 +48,6 @@
         <activity
             android:name=".view.login.join.AddressActivity"
             android:exported="false" />
-        <activity android:name=".view.main.my_page.MembershipActivity" />
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -59,8 +58,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.main.my_page.WithdrawalActivity" />
-        <activity android:name=".view.main.my_page.CouponActivity" />
         <activity android:name=".view.main.event.EventListActivity" />
         <activity android:name=".view.main.event.EventDetailActivity" />
         <activity android:name=".view.main.shop.ShopEventActivity" />

@@ -14,7 +14,6 @@ data class Users(
 ) {
     fun mapper() = CacheModifyUser(
         grade = grade,
-        accPoint = accPoint,
         point = point,
         cache = cache
     )
@@ -33,7 +32,6 @@ data class Users(
             id = id ?: return null,
             nickname = nickname ?: return null,
             grade = grade ?: return null,
-            accPoint = accPoint ?: return null,
             point = point ?: return null,
             cache = cache ?: return null
         )
@@ -48,7 +46,6 @@ data class UserInfo(
 
 data class CacheModifyUser(
     var grade: String?= null,
-    var accPoint: Long?= 0,
     var point: Long?= 0,
     var cache: Long?= 0
 )
@@ -65,7 +62,6 @@ data class MyPageInfo(
     val id : String,
     val nickname : String,
     val grade : String,
-    val accPoint : Long,
     val point : Long,
     val cache : Long
 )

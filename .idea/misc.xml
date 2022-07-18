@@ -114,6 +114,7 @@
         <entry key="app/src/main/res/layout/dialog_search_menu.xml" value="0.2798913043478261" />
         <entry key="app/src/main/res/layout/dialog_seat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_team.xml" value="0.35144927536231885" />
+        <entry key="app/src/main/res/layout/fragment_coupon.xml" value="0.27445652173913043" />
         <entry key="app/src/main/res/layout/fragment_hall.xml" value="0.38697916666666665" />
         <entry key="app/src/main/res/layout/fragment_hall_a.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_holl_a.xml" value="0.4010416666666667" />

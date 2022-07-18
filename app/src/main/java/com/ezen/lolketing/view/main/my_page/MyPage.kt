@@ -20,10 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.ezen.lolketing.R
 import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.login.LoginActivity
@@ -53,7 +52,7 @@ fun MyPageContainer(
             .fillMaxSize()
             .background(Black)
     ) {
-        TitleBar(onBackClick = { activity?.finish() }, title = "내 정보")
+        TitleBar(onBackClick = { activity?.finish() }, title = stringResource(id = R.string.my_page))
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -68,18 +67,20 @@ fun MyPageContainer(
                 )
             }
             item {
-                Text(
-                    text = "(${userInfo.value?.id ?: ""})",
-                    style = Typography.titleMedium,
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
+                userInfo.value?.id?.let {
+                    Text(
+                        text = "($it)",
+                        style = Typography.titleMedium,
+                        modifier = Modifier.padding(horizontal = 20.dp)
+                    )
+                }
             }
             item { Spacer(modifier = Modifier.height(15.dp)) }
             /** 유저 등급 정보 **/
             item {
                 UserGradeInfo(
                     gradeName = getGradeName(userInfo.value?.grade ?: Code.UNKNOWN.code),
-                    point = userInfo.value?.accPoint ?: 0L
+                    point = userInfo.value?.point ?: 0L
                 )
             }
 
@@ -92,9 +93,9 @@ fun MyPageContainer(
                         .padding(horizontal = 20.dp)
                 ) {
                     UserInfoCard(
-                        title = "보유 캐시",
+                        title = stringResource(id = R.string.retained_cache),
                         content = (userInfo.value?.cache ?: 0).priceFormat(),
-                        buttonText = "충전하기",
+                        buttonText = stringResource(id = R.string.button_charging_cache),
                         modifier = Modifier
                             .weight(1f)
                     ) {
@@ -104,9 +105,9 @@ fun MyPageContainer(
                     Spacer(modifier = Modifier.width(20.dp))
 
                     UserInfoCard(
-                        title = "사용 가능 쿠폰",
+                        title = stringResource(id = R.string.usable_coupon),
                         content = couponInfo.value,
-                        buttonText = "쿠폰함 가기",
+                        buttonText = stringResource(id = R.string.move_coupon_box),
                         modifier = Modifier
                             .weight(1f)
                     ) {
@@ -118,13 +119,13 @@ fun MyPageContainer(
             item { Spacer(modifier = Modifier.height(25.dp)) }
             /** 구매내역 **/
             item {
-                UserInfoRowItem(content = "구매내역", isBlack = false) {
+                UserInfoRowItem(content = stringResource(id = R.string.purchase_history), isBlack = false) {
                     routeAction.navToPurchaseHistory()
                 }
             }
             /** 내 정보 수정 **/
             item {
-                UserInfoRowItem(content = "내 정보 수정", isBlack = true) {
+                UserInfoRowItem(content = stringResource(id = R.string.my_info_modify), isBlack = true) {
                     launcher.launch(
                         activity?.createIntent(JoinDetailActivity::class.java).also { intent ->
                             intent?.putExtra(JoinDetailActivity.MODIFY, true)
@@ -134,7 +135,7 @@ fun MyPageContainer(
             }
             /** 로그아웃 **/
             item {
-                UserInfoRowItem(content = "로그아웃", isBlack = false) {
+                UserInfoRowItem(content = stringResource(id = R.string.logout), isBlack = false) {
                     viewModel.logout()
                     activity?.let {
                         it.finishAffinity()
@@ -144,7 +145,7 @@ fun MyPageContainer(
             }
             /** 회원 탈퇴 **/
             item {
-                UserInfoRowItem(content = "회원 탈퇴", isBlack = true) {
+                UserInfoRowItem(content = stringResource(id = R.string.withdrawal), isBlack = true) {
                     routeAction.navToWithdrawal()
                 }
             }
@@ -154,6 +155,7 @@ fun MyPageContainer(
 
 }
 
+/** 유저 등급 UI - 등급 아이콘, 등급명, 프로그래스바 **/
 @Composable
 fun UserGradeInfo(gradeName: String, point: Long) {
 
@@ -181,12 +183,13 @@ fun UserGradeInfo(gradeName: String, point: Long) {
 
 }
 
+/** 프로그래스바 커스텀 **/
 @Composable
 fun CustomProgressBar(grade: String, point: Long) {
     val max = getMaxProgress(grade)
     var isStart by remember { mutableStateOf(false) }
-    val test by animateFloatAsState(
-        targetValue = if (isStart) point.toFloat() / max else 0f,
+    val widthState by animateFloatAsState(
+        targetValue = if (isStart) maxOf((point.toFloat() / max), 0.05f) else 0f,
         animationSpec = tween(durationMillis = 1500)
     )
     val onClickAction = remember(Unit) {
@@ -204,7 +207,7 @@ fun CustomProgressBar(grade: String, point: Long) {
         Box(
             modifier = Modifier
                 .height(24.dp)
-                .fillMaxWidth(fraction = test)
+                .fillMaxWidth(fraction = widthState)
                 .clip(RoundedCornerShape(24.dp))
                 .background(SubColor)
         )
@@ -231,7 +234,7 @@ fun getMaxProgress(grade: String) = when (grade) {
     else -> 1
 }
 
-
+/** 보유 캐시, 사용 가능 쿠폰 카드 UI **/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserInfoCard(
@@ -272,6 +275,7 @@ fun UserInfoCard(
     }
 }
 
+/** 하단 텝 UI **/
 @Composable
 fun UserInfoRowItem(content: String, isBlack: Boolean, onClick: () -> Unit) {
     val backgroundColor = if (isBlack) Black else LightBlack

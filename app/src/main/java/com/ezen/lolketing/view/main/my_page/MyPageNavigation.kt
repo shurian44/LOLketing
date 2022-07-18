@@ -28,6 +28,7 @@ fun MyPageNavigationGraph() {
         navController = navHostController,
         startDestination = MyPageRouteAction.MyPage
     ) {
+        // 내 정보
         composable(
             route = MyPageRouteAction.MyPage,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
@@ -35,7 +36,7 @@ fun MyPageNavigationGraph() {
         ) {
             MyPageContainer(routeAction = routeAction)
         }
-
+        // 회원 탈퇴
         composable(
             route = MyPageRouteAction.UserWithdrawal,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
@@ -43,7 +44,7 @@ fun MyPageNavigationGraph() {
         ) {
             WithdrawalContainer(routeAction = routeAction)
         }
-
+        // 구매내역
         composable(
             route = MyPageRouteAction.PurchaseHistory,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
@@ -51,7 +52,7 @@ fun MyPageNavigationGraph() {
         ) {
             PurchaseHistoryContainer(routeAction = routeAction)
         }
-
+        // 구매내역 상세
         composable(
             route = "${MyPageRouteAction.PurchaseHistoryDetail}/{documentId}/{amount}",
             arguments = listOf(
@@ -72,7 +73,7 @@ fun MyPageNavigationGraph() {
 
             PurchaseHistoryDetail(routeAction = routeAction, documentId = documentId, amount = amount)
         }
-
+        // 쿠폰함
         composable(
             route = MyPageRouteAction.CouponList,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },

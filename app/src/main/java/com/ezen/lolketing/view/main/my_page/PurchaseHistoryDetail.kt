@@ -1,17 +1,12 @@
 package com.ezen.lolketing.view.main.my_page
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,7 +29,6 @@ fun PurchaseHistoryDetail(
     viewModel: ShopViewModel = hiltViewModel()
 ) {
 
-    val context = LocalContext.current
     val shopItemState = viewModel.shopItemState.collectAsState()
     viewModel.getShopItem(documentId)
 
@@ -60,6 +54,7 @@ fun PurchaseHistoryDetail(
     }
 }
 
+/** 구매 내역 UI **/
 @Composable
 fun ShopItemHistoryInfo(itemInfo: ShopItem, amount: Int) {
     Column(
@@ -72,12 +67,12 @@ fun ShopItemHistoryInfo(itemInfo: ShopItem, amount: Int) {
         Text(text = "[${findCodeName(itemInfo.group)}]", style = Typography.labelMedium)
         Text(text = itemInfo.name, style = Typography.titleLarge)
         Row(modifier = Modifier.fillMaxWidth()) {
-            Text(text = "금액", style = Typography.labelMedium)
+            Text(text = stringResource(id = R.string.price), style = Typography.labelMedium)
             Spacer(modifier = Modifier.weight(1f))
             Text(text = (itemInfo.price * amount).priceFormat(), style = Typography.titleMedium)
         }
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "수량", style = Typography.labelMedium)
+            Text(text = stringResource(id = R.string.quantity), style = Typography.labelMedium)
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = amount.toString(),

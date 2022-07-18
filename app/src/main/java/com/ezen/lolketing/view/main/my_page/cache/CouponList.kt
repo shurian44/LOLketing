@@ -1,6 +1,5 @@
 package com.ezen.lolketing.view.main.my_page.cache
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -55,7 +55,7 @@ fun CouponListContainer(
             if (listState.value.isEmpty()) {
                 item {
                     Box(modifier = Modifier.fillParentMaxSize()) {
-                        Text(text = "쿠폰이 없습니다.", style = Typography.labelMedium)
+                        Text(text = stringResource(id = R.string.coupon_empty), style = Typography.labelMedium)
                     }
                 }
             } else {
@@ -76,18 +76,19 @@ fun CouponListContainer(
                 context.toast(R.string.error_unexpected)
             }
             MyPageViewModel.Event.Success -> {
-                context.toast("쿠폰 사용이 완료되었습니다.")
+                context.toast(stringResource(id = R.string.coupon_used))
             }
         }
 
         TitleBar(
             onBackClick = { routeAction.popBackStack() },
-            title = "쿠폰함"
+            title = stringResource(id = R.string.coupon_box)
         )
 
     }
 }
 
+/** 쿠폰 아이템 UI **/
 @Composable
 fun CouponItem(index: Int, info: CouponInfo, viewModel: MyPageViewModel) {
     val color = if (index % 2 == 0) LightBlack else Black

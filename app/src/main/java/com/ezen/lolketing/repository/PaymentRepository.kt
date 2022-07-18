@@ -133,7 +133,6 @@ class PaymentRepository @Inject constructor(
         addCache: Long,
         point: Long,
         grade: String,
-        accPoint: Long,
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) {
@@ -151,8 +150,7 @@ class PaymentRepository @Inject constructor(
                 updateData = mapOf(
                     CACHE to FieldValue.increment(addCache),
                     POINT to point,
-                    GRADE to grade,
-                    ACC_POINT to accPoint
+                    GRADE to grade
                 ),
                 successListener = successListener,
                 failureListener = failureListener
@@ -163,7 +161,6 @@ class PaymentRepository @Inject constructor(
         const val CACHE = "cache"
         const val POINT = "point"
         const val GRADE = "grade"
-        const val ACC_POINT = "accPoint"
         const val ROULETTE_COUNT = "rouletteCount"
     }
 

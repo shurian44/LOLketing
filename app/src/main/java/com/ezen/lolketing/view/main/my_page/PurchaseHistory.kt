@@ -5,7 +5,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,12 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ezen.lolketing.database.entity.ShopEntity
+import com.ezen.lolketing.R
 import com.ezen.lolketing.model.PurchaseHistory
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.createIntent
@@ -31,7 +30,6 @@ import com.ezen.lolketing.util.findCodeName
 import com.ezen.lolketing.util.priceFormat
 import com.ezen.lolketing.view.main.TitleBar
 import com.ezen.lolketing.view.main.shop.PurchaseViewModel
-import com.ezen.lolketing.view.main.shop.ShopActivity
 import com.ezen.lolketing.view.main.ticket.info.MyTicketInfoActivity
 import com.ezen.lolketing.view.ui.theme.Black
 import com.ezen.lolketing.view.ui.theme.LightBlack
@@ -68,7 +66,7 @@ fun PurchaseHistoryContainer(
                 item {
                     Box(modifier = Modifier.fillParentMaxSize()) {
                         Text(
-                            text = "구매 내역이 없습니다.",
+                            text = stringResource(id = R.string.purchase_empty),
                             style = Typography.labelMedium,
                             modifier = Modifier.align(Alignment.Center)
                         )
@@ -116,11 +114,12 @@ fun PurchaseHistoryContainer(
             onBackClick = {
                 routeAction.popBackStack()
             },
-            title = "구매 내역"
+            title = stringResource(id = R.string.purchase_history)
         )
     }
 }
 
+/** 구매 날짜 UI **/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryDateItem(date: String) {
@@ -162,6 +161,7 @@ fun HistoryDateItem(date: String) {
     }
 }
 
+/** 구매 내역 Item UI **/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryPurchaseItem(item: PurchaseHistory.PurchaseItem, itemClick: (String, String, Int) -> Unit) {
@@ -201,12 +201,12 @@ fun HistoryPurchaseItem(item: PurchaseHistory.PurchaseItem, itemClick: (String, 
                     overflow = TextOverflow.Ellipsis
                 )
                 Row {
-                    Text(text = "수량", style = Typography.labelMedium)
+                    Text(text = stringResource(id = R.string.quantity), style = Typography.labelMedium)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(text = "${item.amount}개", style = Typography.labelMedium)
                 }
                 Row {
-                    Text(text = "가격", style = Typography.labelMedium)
+                    Text(text = stringResource(id = R.string.price), style = Typography.labelMedium)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(text = item.price.priceFormat(), style = Typography.labelMedium)
                 }

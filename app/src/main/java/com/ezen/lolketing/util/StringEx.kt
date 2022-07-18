@@ -20,3 +20,10 @@ fun String.removePriceFormat(): Long = try {
 } catch (e: Exception) {
     0L
 }
+
+fun getGrade(point: Long) = when(point){
+    in 0..2999-> Constants.BRONZE
+    in 3000..29999 -> Constants.SILVER
+    in 30000..299999 -> Constants.GOLD
+    else -> Constants.PLATINUM
+}

@@ -14,6 +14,7 @@ class MyPageRepository @Inject constructor(
     private val client: FirebaseClient
 ) {
 
+    /** 유저 정보 조회 **/
     suspend fun getUserInfo(
         successListener: (MyPageInfo) -> Unit,
         failureListener: () -> Unit
@@ -29,6 +30,7 @@ class MyPageRepository @Inject constructor(
         failureListener()
     }
 
+    /** 쿠폰 조회 : 사용 정보 파악용도 **/
     suspend fun getUserCoupon(
         id: String,
         successListener: (List<MyPageCouponInfo>) -> Unit,
@@ -52,6 +54,7 @@ class MyPageRepository @Inject constructor(
         failureListener()
     }
 
+    /** 회원 탈퇴 **/
     suspend fun deleteUser(
         successListener: () -> Unit,
         failureListener: () -> Unit
@@ -83,15 +86,14 @@ class MyPageRepository @Inject constructor(
                     }
                     successListener(result)
                 },
-                failureListener = {
-
-                }
+                failureListener = failureListener
             )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
     }
 
+    /** 쿠폰 업데이트 **/
     suspend fun updateCoupon(
         documentId: String,
         point: Int,
@@ -115,7 +117,6 @@ class MyPageRepository @Inject constructor(
                 collection = Constants.USERS,
                 documentId = id,
                 updateData = mapOf(
-                    "accPoint" to FieldValue.increment(point.toLong()),
                     "point" to FieldValue.increment(point.toLong())
                 ),
                 successListener = {},
