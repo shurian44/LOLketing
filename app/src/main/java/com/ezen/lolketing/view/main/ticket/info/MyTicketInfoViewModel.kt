@@ -1,6 +1,5 @@
 package com.ezen.lolketing.view.main.ticket.info
 
-
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
@@ -24,6 +23,7 @@ class MyTicketInfoViewModel @Inject constructor(
     fun getTicketInfo(
         documentId: String
     ) = viewModelScope.launch {
+        event(Event.Loading)
         repository.getTicketInfo(
             documentId = documentId,
             successListener = {
@@ -36,13 +36,14 @@ class MyTicketInfoViewModel @Inject constructor(
         )
     }
 
+    /** 티켓 환불 **/
     fun setRefundTicket(
         purchaseDocumentId : String,
         time: String,
         seat: String
     ) = viewModelScope.launch {
-
-        Log.e(TAG, "start")
+        event(Event.Loading)
+        // 구매 내역 삭제
         repository.deletePurchase(
             documentId = purchaseDocumentId,
             successListener = {
@@ -54,7 +55,7 @@ class MyTicketInfoViewModel @Inject constructor(
                 cancel()
             }
         )
-
+        // qr 코드 삭제
         repository.deleteQrCode(
             path = "ticket/${time}_${ticketInfo.gameTitle}_${seat.replace(", ", "_")}.jpg",
             successListener = {
@@ -66,7 +67,7 @@ class MyTicketInfoViewModel @Inject constructor(
                 cancel()
             }
         )
-
+        // 캐시 환불
         repository.updateUserCache(
             refund = refund,
             successListener = {
@@ -78,7 +79,7 @@ class MyTicketInfoViewModel @Inject constructor(
                 cancel()
             }
         )
-
+        // 좌석 복구
         repository.updateSeatInfo(
             time = time,
             documentIdList = ticketInfo.documentList,
@@ -93,11 +94,11 @@ class MyTicketInfoViewModel @Inject constructor(
         )
 
         Log.e(TAG, "전체 완료")
-
+        event(Event.RefundSuccess)
     }
 
+    /** 환불 정보 셋팅 **/
     fun getRefund(time: String, amount: Int) : Boolean {
-        // 2022.06.06 17:00
         val timeFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA)
         val dateFormat = SimpleDateFormat("yyyy.MM.dd")
         val ticketTime = timeFormat.parse(time)?.time ?: 0
@@ -127,6 +128,7 @@ class MyTicketInfoViewModel @Inject constructor(
         data class Success(val info : TicketInfo) : Event()
         object RefundSuccess : Event()
         object Failure : Event()
+        object Loading: Event()
     }
 
     companion object {

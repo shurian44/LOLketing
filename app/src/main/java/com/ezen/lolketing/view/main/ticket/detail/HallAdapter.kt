@@ -37,8 +37,6 @@ class HallAdapter(
         this.list = list
     }
 
-    fun getSeatList() = list
-
     fun setChecked(position: Int, checked: Boolean) {
         list[position].checked = checked
         notifyItemChanged(position)

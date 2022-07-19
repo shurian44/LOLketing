@@ -17,32 +17,33 @@ class ReserveListViewModel @Inject constructor(
     private fun getYesterdayDateTime() : String =
         (System.currentTimeMillis() - (1000 * 60 * 60 * 24)).timestampToString("yyyy.MM.dd")
 
+    /** 경기 일정 조회 **/
     fun getGameList() = viewModelScope.launch {
+        event(Event.Loading)
         repository.getGameList(
             date = getYesterdayDateTime(),
             onSuccessListener = {
-                if (it.isEmpty()) {
-                    event(Event.EmptyList)
-                } else {
-                    event(Event.GameList(it))
-                }
+                event(Event.GameList(it.ifEmpty { emptyList() }))
             },
             onFailureListener = {
-                event(Event.EmptyList)
+                event(Event.GameList(emptyList()))
             }
         )
     }
 
+    /** 유저 등급 조회 : 마스터 등급 여부 확인 **/
     fun isMasterUser() = viewModelScope.launch {
         repository.isMasterUser {
             event(Event.UserGrade(isMaster = it))
         }
     }
 
+    /** 경기 일정 추가 **/
     fun addNewGame(
         date: String,
         time: String
     ) = viewModelScope.launch {
+        event(Event.Loading)
         repository.addNewGame(
             date = date,
             time = time,
@@ -55,6 +56,7 @@ class ReserveListViewModel @Inject constructor(
         )
     }
 
+    /** 좌석 추가 **/
     fun setReservedSeat(
         time: String
     ) = viewModelScope.launch {
@@ -67,7 +69,6 @@ class ReserveListViewModel @Inject constructor(
     }
 
     sealed class Event {
-        object EmptyList : Event()
         data class GameList(
             val list : List<Ticket>
         ) : Event()
@@ -75,6 +76,7 @@ class ReserveListViewModel @Inject constructor(
         data class NewGameAddSuccess(
             val time: String
         ) : Event()
+        object Loading: Event()
         object NewGameAddFailure : Event()
         object ReserveSeatAddSuccess : Event()
     }

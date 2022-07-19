@@ -13,6 +13,7 @@ class HallViewModel @Inject constructor(
     private val repository: TicketingRepository
 ) : BaseViewModel<HallViewModel.Event>() {
 
+    /** 좌석 정보 조회 **/
     fun getSeatList(documentId : String, selectHall: String) = viewModelScope.launch {
         repository.getReservedSeat(
             documentId = documentId,

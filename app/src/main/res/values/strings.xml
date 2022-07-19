@@ -105,6 +105,7 @@
     <string name="personnel">인원</string>
     <string name="seat">좌석</string>
     <string name="guide_select_seat">좌석을 선택해 주세요</string>
+    <string name="overflow_select">선택한 인원수 보다 많이 선택하였습니다.</string>
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="hall_a">A홀</string>

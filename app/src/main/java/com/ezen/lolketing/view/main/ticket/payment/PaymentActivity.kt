@@ -15,7 +15,6 @@ import com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity
 import com.ezen.lolketing.view.main.ticket.ReserveActivity
 import com.ezen.lolketing.view.main.ticket.info.MyTicketInfoActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentViewModel>(R.layout.activity_payment) {
@@ -51,14 +50,19 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
 
     private fun eventHandler(event: PaymentViewModel.Event) {
         when(event) {
+            is PaymentViewModel.Event.Loading -> {
+                showDialog()
+            }
+            // 내 캐시 조회 성공
+            is PaymentViewModel.Event.MyCache -> {
+                dismissDialog()
+                setMyCache(event.cache)
+            }
+            // 좌석 정보 업데이트 성공 -> qr 코드 생성하기
             is PaymentViewModel.Event.SeatSuccess -> {
                 viewModel.generateQRCode(getImageName())
             }
-            is PaymentViewModel.Event.Failure -> {
-                binding.btnChargingCache.isEnabled = true
-                binding.progressBar.isVisible = false
-                toast(getString(R.string.error_unexpected))
-            }
+            // qr 코드 저장 성공 -> 구매 내역 추가하기
             is PaymentViewModel.Event.QrCodeSuccess -> {
                 viewModel.setPurchase(
                     amount = documentedIdList?.size ?: 1,
@@ -69,15 +73,14 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
                     documentList = documentedIdList ?: listOf()
                 )
             }
+            // 구매 내역 저장 성공 -> 캐시 소모 업데이트하기
             is PaymentViewModel.Event.PurchaseSuccess -> {
                 purchaseId = event.documentId
                 viewModel.myCacheDeduction(binding.txtPrice.text.toString().removePriceFormat())
             }
-            is PaymentViewModel.Event.MyCache -> {
-                setMyCache(event.cache)
-            }
+            // 결제하기 성공
             is PaymentViewModel.Event.PaymentSuccess -> {
-                binding.progressBar.isVisible = false
+                dismissDialog()
                 toast(getString(R.string.payment_success))
 
                 startActivity(
@@ -88,27 +91,41 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
                 setResult(Activity.RESULT_OK)
                 finish()
             }
+            // 실패
+            is PaymentViewModel.Event.Failure -> {
+                dismissDialog()
+                binding.btnChargingCache.isEnabled = true
+                toast(getString(R.string.error_unexpected))
+            }
+            // 유저 정보 조회 실패
             is PaymentViewModel.Event.UserInfoFailure -> {
+                dismissDialog()
                 toast(getString(R.string.error_user_info_search))
             }
         }
     }
 
+    /** qr 코드 저장 이름 **/
     private fun getImageName() = "${binding.txtTime.text}_${binding.txtGameTitle.text}_${binding.txtSeat.text.toString().replace(", ", "_")}"
 
+    /** 캐시 정보 셋팅 **/
     private fun setMyCache(cache: Long) = with(binding) {
         txtMyCache.text = cache.priceFormat()
+        // 티켓 값보다 캐시가 적으면 캐시 충전 버튼 활성화
         btnChargingCache.isVisible = (txtPrice.text.toString().removePriceFormat() > txtMyCache.text.toString().removePriceFormat())
     }
 
+    /** 캐시 충전 클릭 **/
     fun onChargingCacheClick(view: View) {
         launcher.launch(createIntent(CacheChargingActivity::class.java))
     }
 
+    /** 티켓 안내 클릭 **/
     fun onTicketInfoClick(view: View) {
         startActivity(ReserveActivity::class.java)
     }
 
+    /** 결제하기 클릭 **/
     fun onPaymentClick(view: View) {
         if (binding.txtPrice.text.toString().removePriceFormat() > binding.txtMyCache.text.toString().removePriceFormat()) {
             toast(getString(R.string.out_of_cache))
@@ -121,7 +138,6 @@ class PaymentActivity : BaseViewModelActivity<ActivityPaymentBinding, PaymentVie
             return
         }
 
-        binding.progressBar.isVisible = true
         view.isEnabled = false
         documentedIdList?.let {
             viewModel.updateSeat(

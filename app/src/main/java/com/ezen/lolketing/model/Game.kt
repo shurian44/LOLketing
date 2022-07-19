@@ -8,12 +8,14 @@ data class Game(
     var status : String ?= null
 ) {
 
-    fun mapper() = Ticket(
-        date = date,
-        time = time,
-        team = team,
-        status = status
-    )
+    fun mapper() : Ticket? {
+        return Ticket(
+            date = date?: return null,
+            time = time?: return null,
+            team = team?: return null,
+            status = status?: return null
+        )
+    }
 
     fun mapperChattingInfo() : ChattingInfo? {
         return ChattingInfo(
@@ -24,10 +26,10 @@ data class Game(
 }
 
 data class Ticket(
-    var date : String ?= null,
-    var time : String ?= null,
-    var team : String ?= null,
-    var status : String ?= null
+    var date : String,
+    var time : String,
+    var team : String,
+    var status : String
 )
 
 data class ChattingInfo(

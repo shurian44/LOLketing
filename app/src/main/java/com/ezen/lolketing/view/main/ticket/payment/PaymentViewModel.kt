@@ -23,7 +23,9 @@ class PaymentViewModel @Inject constructor(
     private val auth: FirebaseAuth
 ): BaseViewModel<PaymentViewModel.Event>() {
 
+    /** 사용자 캐시 조회 **/
     fun getUserCache() = viewModelScope.launch {
+        event(Event.Loading)
         repository
             .getUserCache(
                 successListener = { cache ->
@@ -35,10 +37,12 @@ class PaymentViewModel @Inject constructor(
             )
     }
 
+    /** 좌석 업데이트 **/
     fun updateSeat(
         firstDocumentId: String,
         secondDocumentIdList: List<String>,
     ) = viewModelScope.launch {
+        event(Event.Loading)
         val email = auth.currentUser?.email
         if (email == null) {
             event(Event.Failure)
@@ -60,7 +64,7 @@ class PaymentViewModel @Inject constructor(
         event(Event.SeatSuccess)
     }
 
-    // QR 코드 생성
+    /** QR 코드 생성 **/
     fun generateQRCode(content: String) = viewModelScope.launch {
         val qrCodeWriter = QRCodeWriter()
         try{
@@ -86,7 +90,7 @@ class PaymentViewModel @Inject constructor(
         }
     } // generateQRCode()
 
-    // QR 코드 그리기
+    /** QR 코드 그리기 **/
     private fun toBitmap(matrix: BitMatrix): Bitmap {
         val width = matrix.width
         val height = matrix.height
@@ -102,6 +106,7 @@ class PaymentViewModel @Inject constructor(
         return bmp
     } // toBitmap()
 
+    /** 구매 내역 추가 **/
     fun setPurchase(
         amount: Int,
         downloadUrl: String,
@@ -133,6 +138,7 @@ class PaymentViewModel @Inject constructor(
             )
     }
 
+    /** 캐시 소모하패 **/
     fun myCacheDeduction(
         price: Long
     ) =  viewModelScope.launch {
@@ -160,6 +166,7 @@ class PaymentViewModel @Inject constructor(
         object UserInfoFailure: Event()
         object PaymentSuccess: Event()
         object Failure : Event()
+        object Loading: Event()
     }
 
 }

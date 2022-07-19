@@ -18,6 +18,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
 
     private lateinit var hallFragment: HallFragment
     private var documentIdList = arrayListOf<String>()
+    private val ticketPrice = 11_000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
 
     } // onCreate()
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         activity = this@ReserveDetailActivity
         title = getString(R.string.ticket_reserve)
@@ -42,7 +44,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
 
         txtTime.text = time
         txtGameTitle.text = team
-        txtCurrentAmount.text = 11000L.priceFormat()
+        txtCurrentAmount.text = ticketPrice.priceFormat()
 
         txtSelectHall.text = "A홀"
         setFragment()
@@ -51,7 +53,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
             if(it) {
                 chPersonnelTwo.isChecked = false
                 hallFragment.setSeatCount(1)
-                txtCurrentAmount.text = 11000L.priceFormat()
+                txtCurrentAmount.text = ticketPrice.priceFormat()
             }
         }
 
@@ -59,11 +61,12 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
             if(it) {
                 chPersonnelOne.isChecked = false
                 hallFragment.setSeatCount(2)
-                txtCurrentAmount.text = 22000L.priceFormat()
+                txtCurrentAmount.text = (ticketPrice * 2).priceFormat()
             }
         }
     }
 
+    /** 좌석 선택 Fragment 생성 **/
     private fun setFragment() = with(binding) {
         hallFragment = HallFragment(txtSelectHall.text.toString(), txtTime.text.toString()) { seat, documentIdList ->
             txtSelectSeat.text = seat
@@ -76,6 +79,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
         }
     }
 
+    /** 예매하기 버튼 클릭 **/
     fun onReserveClick(view: View) = with(binding) {
         if (txtSelectSeat.text == getString(R.string.guide_select_seat)){
             toast(getString(R.string.guide_select_seat))
@@ -89,7 +93,6 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
 
         launcher.launch(
             createIntent(PaymentActivity::class.java).also {
-//                날짜, 게임 타이틀, 좌석, 금액
                 it.putExtra(PaymentActivity.TIME, txtTime.text.toString())
                 it.putExtra(PaymentActivity.GAME_TITLE, txtGameTitle.text.toString())
                 it.putExtra(PaymentActivity.SEAT, txtSelectSeat.text.toString())
@@ -99,6 +102,7 @@ class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layou
         )
     }
 
+    /** 티켓 안내 클릭 **/
     fun onTicketInfoClick(view: View) {
         startActivity(ReserveActivity::class.java)
     }

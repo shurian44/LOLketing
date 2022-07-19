@@ -9,12 +9,13 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class TicketingRepository @Inject constructor(
-  private val client: FirebaseClient,
-  private val firestore: FirebaseFirestore
+    private val client: FirebaseClient,
+    private val firestore: FirebaseFirestore
 ) {
 
+    /** 게임 일정 조회 **/
     suspend fun getGameList(
-        date : String,
+        date: String,
         onSuccessListener: (List<Ticket>) -> Unit,
         onFailureListener: () -> Unit
     ) {
@@ -25,12 +26,11 @@ class TicketingRepository @Inject constructor(
                 .whereGreaterThan(DATE, date)
                 .get()
                 .addOnSuccessListener { snapshot ->
-                    val list = mutableListOf<Ticket>()
-                    snapshot.forEach {
-                        val game = updateGame(it.toObject(Game::class.java))
-                        list.add(game.mapper())
-                    }
-                    onSuccessListener(list)
+                    snapshot
+                        .mapNotNull {
+                            it.toObject(Game::class.java).mapper()
+                        }
+                        .let(onSuccessListener)
                 }
                 .addOnFailureListener {
                     it.printStackTrace()
@@ -43,27 +43,10 @@ class TicketingRepository @Inject constructor(
         }
     }
 
-    private fun updateGame(game: Game) : Game {
-        // todo firebase 기능 조사해보기
-//        FirebaseFirestore.getInstance().collection("Game").document("${model.date} ${model.time}").update("status", "종료")
-        val currentDate = getCurrentDateTime().time.timestampToString("yyyy.MM.dd HH:mm")
-        val startTime = "${game.date} ${game.time}"
-        val openTime = ((getSimpleDateFormatMillSec(startTime) ?: 0) - FIVE_DATE).timestampToString("yyyy.MM.dd HH:mm")
-
-        if (currentDate > startTime) {
-            game.status = Code.TICKETING_FINISH.code
-        }
-
-        if (openTime > currentDate) {
-            game.status = Code.TICKETING_SCHEDULE_OPEN.code
-        }
-
-        return game
-    }
-
-    suspend fun  isMasterUser(
+    /** 유저 정보 조회 : 마스터 등급 여부 **/
+    suspend fun isMasterUser(
         listener: (Boolean) -> Unit
-    ) = try{
+    ) = try {
         client
             .getUserInfo(
                 successListener = { user ->
@@ -73,18 +56,18 @@ class TicketingRepository @Inject constructor(
                     listener(false)
                 }
             )
-
     } catch (e: Exception) {
         e.printStackTrace()
         listener(false)
     }
 
+    /** 경기 일정 추가 **/
     suspend fun addNewGame(
         date: String,
         time: String,
-        successListener : () -> Unit,
-        failureListener : () -> Unit,
-    ){
+        successListener: () -> Unit,
+        failureListener: () -> Unit,
+    ) {
         val gameData = Game(
             date = date,
             status = Code.TICKETING_ON.code,
@@ -103,10 +86,11 @@ class TicketingRepository @Inject constructor(
 
     }
 
+    /** 좌석 추가 **/
     suspend fun setReservedSeat(
         documentId: String,
         successListener: () -> Unit
-        ) {
+    ) {
         getSeatList().forEach {
             client
                 .doubleAddData(
@@ -120,9 +104,10 @@ class TicketingRepository @Inject constructor(
         successListener()
     }
 
+    /** 좌석 조회 **/
     suspend fun getReservedSeat(
         documentId: String,
-        hall : String,
+        hall: String,
         onSuccessListener: (List<SeatItem>) -> Unit,
         onFailureListener: () -> Unit
     ) {
@@ -135,31 +120,15 @@ class TicketingRepository @Inject constructor(
                     orderByDirection = Query.Direction.ASCENDING,
                     secondCollection = Constants.SEAT,
                     successListener = { querySnapshot ->
-                        val list = mutableListOf<Seat>()
-
-                        querySnapshot.forEach { snapshot ->
-                            list.add(
-                                snapshot.toObject(Seat::class.java).also { seat ->
-                                    seat.documentId = snapshot.id
-                                }
-                            )
-                        }
-
-                        if (list.isEmpty()){
-                            onFailureListener()
-                            return@getDoubleSnapshot
-                        }
-
-                        list
-                            .filter { it.seatNum.contains(hall) }
+                        querySnapshot
                             .map {
-                                it.seatNum = it.seatNum.replace("$hall ", "")
-                                it
+                                it.toObject(Seat::class.java)
+                                    .also { seat ->
+                                        seat.seatNum = seat.seatNum.replace("$hall ", "")
+                                    }
+                                    .mapper(it.id)
                             }
-                            .map { it.mapper() }
-                            .let {
-                                onSuccessListener(it)
-                            }
+                            .let(onSuccessListener)
                     },
                     failureListener = onFailureListener
                 )
@@ -169,7 +138,8 @@ class TicketingRepository @Inject constructor(
         }
     }
 
-    private fun getSeatList() : List<Seat> {
+    /** 좌석 리스트 생성 **/
+    private fun getSeatList(): List<Seat> {
         val list = mutableListOf<Seat>()
         rowList.forEach {
             for (i in 1..9) {
@@ -182,9 +152,6 @@ class TicketingRepository @Inject constructor(
 
     companion object {
         const val DATE = "date"
-        const val STATUS = "status"
-        const val DOCUMENT_SEAT = "seat"
-        const val FIVE_DATE = 1000 * 60 * 60 * 24 * 5L
         val rowList = listOf("A", "B", "C", "D", "E", "F", "G", "H")
     }
 

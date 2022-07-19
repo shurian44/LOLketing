@@ -29,7 +29,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtTitle"
@@ -73,6 +73,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
+                android:focusable="false"
+                android:onClick="@{dialog::selectDate}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txtDate"
                 app:layout_constraintTop_toBottomOf="@id/txtTitle" />
@@ -94,6 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
+                android:focusable="false"
+                android:onClick="@{dialog::selectTime}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txtDate"
                 app:layout_constraintTop_toBottomOf="@id/editDate" />
@@ -104,8 +108,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:backgroundTint="@android:color/transparent"
-                android:text="@string/cancel"
                 android:onClick="@{dialog::onCancel}"
+                android:text="@string/cancel"
                 app:cornerRadius="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnOk"
@@ -119,8 +123,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="@string/ok"
                 android:onClick="@{dialog::addGameClick}"
+                android:text="@string/ok"
                 app:cornerRadius="3dp"
                 app:layout_constraintBottom_toBottomOf="@id/btnCancel"
                 app:layout_constraintEnd_toEndOf="parent"

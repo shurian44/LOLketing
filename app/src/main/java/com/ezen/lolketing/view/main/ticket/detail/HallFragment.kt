@@ -10,7 +10,6 @@ import com.ezen.lolketing.model.SeatItem
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class HallFragment(
@@ -44,13 +43,14 @@ class HallFragment(
 
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         adapter = HallAdapter { position, seat ->
             when(seat.checked) {
                 true -> {
                     count++
                     if (count > maxCount) {
-                        toast("선택한 인원수 보다 많이 선택하였습니다.")
+                        toast(getString(R.string.overflow_select))
                         adapter.setChecked(position, false)
                         return@HallAdapter
                     }
@@ -83,12 +83,14 @@ class HallFragment(
         }
     }
 
+    /** 리사이클러뷰 설정 **/
     private fun setRecyclerView(list: List<SeatItem>) = with(binding) {
         adapter.setSeatList(list)
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(GridLayoutSpacing())
     }
 
+    /** 인원 수 변경 셋팅 **/
     fun setSeatCount(count : Int) {
         maxCount = count
         // 초기화
@@ -102,6 +104,7 @@ class HallFragment(
         setSeatStr()
     }
 
+    /** 좌석 선택 설정 **/
     private fun setSeatStr() {
         if (selectSeatNumList.isEmpty()){
             selectStr = getString(R.string.guide_select_seat)

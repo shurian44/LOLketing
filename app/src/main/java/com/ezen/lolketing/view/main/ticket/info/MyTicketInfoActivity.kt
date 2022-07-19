@@ -36,6 +36,7 @@ class MyTicketInfoActivity : BaseViewModelActivity<ActivityMyTicketInfoBinding, 
     } // onCreate()
 
     private fun eventHandler(event: MyTicketInfoViewModel.Event) {
+        dismissDialog()
         when(event) {
             is MyTicketInfoViewModel.Event.Success -> {
                 initViews(event.info)
@@ -48,35 +49,45 @@ class MyTicketInfoActivity : BaseViewModelActivity<ActivityMyTicketInfoBinding, 
                 toast(getString(R.string.refund_success))
                 finish()
             }
+            is MyTicketInfoViewModel.Event.Loading -> {
+                showDialog()
+            }
         }
     }
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews(info: TicketInfo) = with(binding) {
 
         activity = this@MyTicketInfoActivity
         layoutTop.btnBack.setOnClickListener { finish() }
         title = getString(R.string.purchase_history)
 
-        val list = info.information.split(", ")
-
-        if (list.isEmpty() || list.size < 2 || info.image.isEmpty()) {
-            toast(getString(R.string.error_unexpected))
-            finish()
-            return@with
-        }
-
         Glide
             .with(this@MyTicketInfoActivity)
             .load(info.image)
             .into(imgQrCode)
 
-        txtGameTitle.text = info.gameTitle
-        txtTime.text = list[0]
-        if (list.size == 2) {
-            txtSeat.text = list[1]
-        } else {
-            val seat = "${list[1]}, ${list[2]}"
-            txtSeat.text = seat
+        try {
+            val list = info.information.split(", ")
+
+            if (list.isEmpty() || list.size < 2 || info.image.isEmpty()) {
+                toast(getString(R.string.error_unexpected))
+                finish()
+                return@with
+            }
+
+            txtGameTitle.text = info.gameTitle
+            txtTime.text = list[0]
+            if (list.size == 2) {
+                txtSeat.text = list[1]
+            } else {
+                val seat = "${list[1]}, ${list[2]}"
+                txtSeat.text = seat
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            toast(getString(R.string.error_unexpected))
+            finish()
         }
 
         val isRefundPossible = viewModel.getRefund(
@@ -91,6 +102,7 @@ class MyTicketInfoActivity : BaseViewModelActivity<ActivityMyTicketInfoBinding, 
 
     }
 
+    /** 환불하기 클릭 **/
     fun refundTicket(view: View)  {
         viewModel.setRefundTicket(
             purchaseDocumentId = documentId,
