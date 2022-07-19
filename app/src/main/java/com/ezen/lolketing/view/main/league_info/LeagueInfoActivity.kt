@@ -20,9 +20,9 @@ class LeagueInfoActivity : BaseActivity<ActivityLeagueInfoBinding>(R.layout.acti
     } // onCreate()
 
     private fun initViews() = with(binding) {
-        title = "리그 정보"
+        title = getString(R.string.league_info)
         layoutTop.btnBack.setOnClickListener { finish() }
-        val list = listOf("개요", "진행 방식", "대회 상금")
+        val list = listOf(getString(R.string.menu_summary), getString(R.string.menu_proceeding), getString(R.string.menu_prize_money))
         val leagueInfoAdapter = LeagueInfoAdapter(this@LeagueInfoActivity).also {
             it.addFragment(OutlineFragment())
             it.addFragment(ProgressFragment())

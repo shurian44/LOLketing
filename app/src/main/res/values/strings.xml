@@ -187,6 +187,9 @@
 
     <!-- 리그 정보 -->
     <string name="info_content">2022 LoL 챔피언스 코리아\n스프링 스플릿 대회 안내</string>
+    <string name="menu_summary">개요</string>
+    <string name="menu_proceeding">진행 방식</string>
+    <string name="menu_prize_money">대회 상금</string>
 
     <!-- 공통 -->
     <string name="cancel">취소</string>
