@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.painterResource
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.airbnb.lottie.compose.*
 import com.ezen.lolketing.R
 import com.ezen.lolketing.view.ui.theme.*
 
@@ -34,7 +36,7 @@ import com.ezen.lolketing.view.ui.theme.*
 fun TitleBar(
     title: String = "",
     onBackClick: () -> Unit,
-    titleColor: Color= SubColor,
+    titleColor: Color = SubColor,
     content: @Composable BoxScope.() -> Unit = {}
 ) {
     Box(
@@ -354,11 +356,23 @@ fun BasicContentsDialog(
 
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    LOLketingTheme {
-        Column(modifier = Modifier.fillMaxSize()) {
-        }
+fun LoadingDialog(
+    isShow: MutableState<Boolean>
+) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        isPlaying = true,
+        iterations = LottieConstants.IterateForever,
+        speed = 0.5f
+    )
+
+    if (isShow.value) {
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+            modifier = Modifier.padding(horizontal = 25.dp)
+        )
     }
 }
