@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.ezen.lolketing.R
+import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.util.toast
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -30,6 +31,7 @@ fun ShopNavigationGraph() {
         navController = navHostController,
         startDestination = RouteAction.Shop,
         ) {
+        /** 쇼핑 메인화면 **/
         composable(
             route = RouteAction.Shop,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
@@ -37,7 +39,7 @@ fun ShopNavigationGraph() {
         ) {
             ShoppingContainer(routeAction)
         }
-
+        /** 쇼핑 아이템 상세화면 **/
         composable(
             route = "${RouteAction.Detail}/{documentId}",
             arguments = listOf(
@@ -60,15 +62,19 @@ fun ShopNavigationGraph() {
                 routeAction = routeAction
             )
         }
-
+        /** 구매하기 화면 (바로 구매) **/
         composable(
-            route = RouteAction.Purchase,
+            route = "${RouteAction.Purchase}/{item}",
+            arguments = listOf(
+                navArgument("item") { type = ShopEntity.NavigationType }
+            ),
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
             exitTransition = { scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMedium)) }
-        ) {
-            PurchaseContainer(navHostController = navHostController, routeAction = routeAction)
+        ) { entry ->
+            val item = entry.arguments?.getParcelable<ShopEntity>("item")
+            PurchaseContainer(navHostController = navHostController, routeAction = routeAction, item = item)
         }
-
+        /** 구매하기 화면 (장바구니 선택 후) **/
         composable(
             route = "${RouteAction.Purchase}?indexList={indexList}",
             arguments = listOf(
@@ -92,7 +98,7 @@ fun ShopNavigationGraph() {
                 indexList = indexList
             )
         }
-
+        /** 장바구니 화면 **/
         composable(
             route = RouteAction.Basket,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
@@ -112,9 +118,14 @@ class RouteAction(navHostController: NavHostController) {
         navHostController.navigate("$Detail/$it")
     }
 
-    val navToRightAwayPurchase: (LongArray) -> Unit = {
+    val navToPurchase: (LongArray) -> Unit = {
         val url = Uri.encode(Gson().toJson(it))
         navHostController.navigate("$Purchase?indexList=$url")
+    }
+
+    val navToRightAwayPurchase: (ShopEntity) -> Unit = {
+        val item = Uri.encode(Gson().toJson(it))
+        navHostController.navigate("$Purchase/$item")
     }
 
     val navToShopBasket: () -> Unit = {

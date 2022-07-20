@@ -60,14 +60,11 @@
         </activity>
         <activity android:name=".view.main.event.EventListActivity" />
         <activity android:name=".view.main.event.EventDetailActivity" />
-        <activity android:name=".view.main.shop.ShopEventActivity" />
         <activity android:name=".view.main.guide.LoLGuideDetailActivity" />
         <activity android:name=".view.main.guide.LoLGuideActivity" />
         <activity
             android:name=".view.main.chatting.ChattingActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".view.main.shop.PurchaseHistoryActivity" />
-        <activity android:name=".view.main.shop.PurchaseResultActivity" />
         <activity android:name=".view.main.event.RouletteActivity" />
         <activity android:name=".view.main.chatting.ChattingListActivity" />
         <activity
@@ -77,13 +74,9 @@
         <activity android:name=".view.gallery.detail.GalleryDetailActivity" />
         <activity android:name=".view.main.board.BoardListActivity" />
         <activity android:name=".view.main.board.detail.BoardDetailActivity" />
-        <activity android:name=".view.main.shop.PurchaseActivity" />
-        <activity android:name=".view.main.shop.ShopDetailActivity" />
-        <activity android:name=".view.main.shop.Shop2Activity" />
         <activity android:name=".view.main.my_page.cache.CacheChargingActivity" />
         <activity android:name=".view.main.ticket.info.MyTicketInfoActivity" />
         <activity android:name=".view.main.ticket.detail.ReserveDetailActivity" />
-        <activity android:name=".view.main.shop.GameScheduleActivity" />
         <activity android:name=".view.main.league_info.LeagueInfoActivity" />
         <activity android:name=".view.main.ticket.ReserveActivity" />
         <activity android:name=".view.main.ticket.list.ReserveListActivity" />

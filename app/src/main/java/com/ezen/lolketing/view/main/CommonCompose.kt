@@ -358,7 +358,7 @@ fun BasicContentsDialog(
 
 @Composable
 fun LoadingDialog(
-    isShow: MutableState<Boolean>
+    isShow: Boolean
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
     val progress by animateLottieCompositionAsState(
@@ -368,7 +368,7 @@ fun LoadingDialog(
         speed = 0.5f
     )
 
-    if (isShow.value) {
+    if (isShow) {
         LottieAnimation(
             composition = composition,
             progress = { progress },

@@ -20,10 +20,10 @@ data class Users(
     fun mapperShippingInfo(): ShippingInfo? {
         return ShippingInfo(
             id = id ?: return null,
-            nickname = nickname ?: return null,
-            phone = phone ?: return null,
-            address = address ?: return null,
-            cache = cache ?: return null
+            nickname = nickname ?: "",
+            phone = phone ?: "",
+            address = address ?: "",
+            cache = cache ?: 0
         )
     }
 

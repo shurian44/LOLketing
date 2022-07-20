@@ -5,6 +5,7 @@ import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.model.CacheModifyUser
 import com.ezen.lolketing.repository.PaymentRepository
 import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.Grade
 import com.ezen.lolketing.util.getGrade
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ class CacheChargingViewModel @Inject constructor(
     fun chargingCache(chargingCache: Long) {
         val myCache = user.cache ?: 0
         var point = user.point ?: 0
-        var grade = user.grade ?: Constants.BRONZE
+        var grade = user.grade ?: Grade.BRONZE.gradeCode
         var charging = 0L
 
         // 캐시가 1억이 넘을 경우 1억으로 고정
@@ -59,7 +60,7 @@ class CacheChargingViewModel @Inject constructor(
         }
 
         // 마스터 등급을 제외하고 누적 포인트에 따라 등급 설정
-        if(grade != Constants.MASTER){
+        if(grade != Grade.MASTER.gradeCode){
             grade = getGrade(point)
         }
 

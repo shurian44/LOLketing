@@ -5,6 +5,7 @@ import android.util.Log
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.Grade
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
@@ -57,7 +58,7 @@ class FirebaseClient @Inject constructor(
             val user = Users().apply {
                 id = email
                 this.uid = uid
-                grade = Code.BRONZE.code
+                grade = Grade.BRONZE.gradeCode
             }
 
             firestore

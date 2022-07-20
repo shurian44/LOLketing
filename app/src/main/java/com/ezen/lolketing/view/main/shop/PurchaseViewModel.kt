@@ -8,6 +8,7 @@ import com.ezen.lolketing.model.PurchaseHistory
 import com.ezen.lolketing.model.ShippingInfo
 import com.ezen.lolketing.repository.PurchaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,6 +25,7 @@ class PurchaseViewModel @Inject constructor(
     var isOutOfCacheDialogState = mutableStateOf(false)
     var isPurchaseDialogState = mutableStateOf(false)
 
+    /** 장바구니 아이템 조회 **/
     fun selectAllShoppingBasket() {
         repository.selectAllShoppingBasket()
             .onStart { purchaseState.value = Event.PurchaseLoading(true) }
@@ -33,6 +35,7 @@ class PurchaseViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    /** 결제 아이템 조회 **/
     fun selectShoppingBasket(list: List<Long>) {
         repository.selectShoppingBasketList(list)
             .onStart { purchaseState.value = Event.PurchaseLoading(true) }

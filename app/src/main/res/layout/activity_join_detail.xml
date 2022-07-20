@@ -117,7 +117,7 @@
                 android:layout_marginBottom="16dp"
                 android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="10dp"
-                android:hint="@string/guide_create_phone"
+                android:hint="@string/guide_input_phone"
                 android:inputType="number"
                 android:maxLines="1"
                 android:text="@={vm.user.phone}"

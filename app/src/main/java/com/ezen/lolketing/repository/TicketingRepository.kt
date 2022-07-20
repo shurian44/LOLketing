@@ -50,7 +50,7 @@ class TicketingRepository @Inject constructor(
         client
             .getUserInfo(
                 successListener = { user ->
-                    listener(user.grade == Code.MASTER.code)
+                    listener(user.grade == Grade.MASTER.gradeCode)
                 },
                 failureListener = {
                     listener(false)

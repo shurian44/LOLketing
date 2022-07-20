@@ -98,10 +98,16 @@ class ShopViewModel @Inject constructor(
 
     fun purchaseCountIncrease() {
         purchaseCount.value = purchaseCount.value + 1
+        changePrice()
     }
 
     fun purchaseCountDecrease() {
         purchaseCount.value = purchaseCount.value - 1
+        changePrice()
+    }
+
+    private fun changePrice() {
+        shopItemState.value?.totalPrice = (shopItemState.value?.price ?: 0) * purchaseCount.value
     }
 
     fun insertShopBasket(

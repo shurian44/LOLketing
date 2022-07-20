@@ -12,14 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.ezen.lolketing.R
 import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.model.ShopItem
+import com.ezen.lolketing.model.mapper
 import com.ezen.lolketing.util.findCodeName
 import com.ezen.lolketing.util.priceFormat
 import com.ezen.lolketing.util.toast
@@ -31,7 +32,6 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
-import kotlinx.coroutines.flow.asStateFlow
 
 @Composable
 fun ShopDetailContainer(
@@ -57,23 +57,29 @@ fun ShopDetailContainer(
                 item { ShopItemInfo(itemInfo = it, viewModel) }
             }
         }
-        ShoppingTitleBar(routeAction = routeAction, viewModel = viewModel) { navHostController.popBackStack() }
+        // 쇼핑 타이틀
+        ShoppingTitleBar(
+            routeAction = routeAction,
+            viewModel = viewModel
+        ) { navHostController.popBackStack() }
+        // 하단 버튼
         ShopPurchaseSelection(
             routeAction = routeAction,
             viewModel = viewModel,
+            shopItem = shopItem.value,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
-
+        // 장바구니 담기 여부 다이얼로그
         BasicContentsDialog(
-            contents = "장바구니에 등록하시겠습니까?",
-            confirmText = "확인",
+            contents = stringResource(id = R.string.guide_insert_basket),
+            confirmText = stringResource(id = R.string.ok),
             isShow = viewModel.dialogIsShow
         ) {
             viewModel.insertShopBasket {
                 if (it == 0L) {
-                    context.toast("장바구니 담기에 실패하였습니다.")
+                    context.toast(R.string.insert_basket_failure)
                 } else {
-                    context.toast("장바구니에 담겼습니다.")
+                    context.toast(R.string.insert_basket_success)
                     navHostController.popBackStack()
                 }
             }
@@ -81,6 +87,7 @@ fun ShopDetailContainer(
     }
 }
 
+/** 이미지 뷰페이저 **/
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ImageViewPager(list: List<String>) {
@@ -93,7 +100,6 @@ fun ImageViewPager(list: List<String>) {
         HorizontalPager(
             count = list.size,
             state = pagerState,
-            // Add 32.dp horizontal padding to 'center' the pages
             contentPadding = PaddingValues(horizontal = 0.dp),
             modifier = Modifier
                 .fillMaxWidth(),
@@ -110,7 +116,7 @@ fun ImageViewPager(list: List<String>) {
                 failure = {
                     Box(modifier = Modifier.fillMaxSize()) {
                         Text(
-                            text = "이미지 로드 실패",
+                            text = stringResource(id = R.string.image_load_failure),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .align(Alignment.Center),
@@ -120,7 +126,7 @@ fun ImageViewPager(list: List<String>) {
                 },
             )
         }
-
+        // 뷰페이저 인디케이터
         HorizontalPagerIndicator(
             pagerState = pagerState,
             activeColor = SubColor,
@@ -131,6 +137,7 @@ fun ImageViewPager(list: List<String>) {
     }
 }
 
+/** 상품 안내 **/
 @Composable
 fun ShopItemInfo(itemInfo: ShopItem, viewModel: ShopViewModel) {
     val count by viewModel.purchaseCount.collectAsState()
@@ -145,12 +152,12 @@ fun ShopItemInfo(itemInfo: ShopItem, viewModel: ShopViewModel) {
         Text(text = "[${findCodeName(itemInfo.group)}]", style = Typography.labelMedium)
         Text(text = itemInfo.name, style = Typography.titleLarge)
         Row(modifier = Modifier.fillMaxWidth()) {
-            Text(text = "금액", style = Typography.labelMedium)
+            Text(text = stringResource(id = R.string.price), style = Typography.labelMedium)
             Spacer(modifier = Modifier.weight(1f))
             Text(text = (itemInfo.price * count).priceFormat(), style = Typography.titleMedium)
         }
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "수량", style = Typography.labelMedium)
+            Text(text = stringResource(id = R.string.quantity), style = Typography.labelMedium)
             Spacer(modifier = Modifier.weight(1f))
 
             Image(
@@ -176,13 +183,14 @@ fun ShopItemInfo(itemInfo: ShopItem, viewModel: ShopViewModel) {
     }
 }
 
+/** 하단 버튼 UI **/
 @Composable
 fun ShopPurchaseSelection(
     routeAction: RouteAction,
     viewModel: ShopViewModel,
+    shopItem: ShopItem?,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     Row(modifier = modifier.fillMaxWidth()) {
         Button(
             onClick = { viewModel.dialogIsShow.value = true },
@@ -195,7 +203,7 @@ fun ShopPurchaseSelection(
                 .weight(1f)
         ) {
             Text(
-                text = "장바구니 담기",
+                text = stringResource(id = R.string.insert_basket),
                 style = Typography.labelLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterVertically)
@@ -204,12 +212,9 @@ fun ShopPurchaseSelection(
 
         Button(
             onClick = {
-                viewModel.insertShopBasket {
-                    if (it == 0L) {
-                        context.toast(context.getString(R.string.error_unexpected))
-                    } else {
-                        routeAction.navToRightAwayPurchase(longArrayOf(it))
-                    }
+                val count = viewModel.purchaseCount.value
+                shopItem?.let {
+                    routeAction.navToRightAwayPurchase(it.mapper(count = count))
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -221,7 +226,7 @@ fun ShopPurchaseSelection(
                 .weight(1f)
         ) {
             Text(
-                text = "바로 구매",
+                text = stringResource(id = R.string.right_away_purchase),
                 style = Typography.labelLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterVertically)

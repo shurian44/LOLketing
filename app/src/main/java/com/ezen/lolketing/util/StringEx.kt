@@ -22,8 +22,8 @@ fun String.removePriceFormat(): Long = try {
 }
 
 fun getGrade(point: Long) = when(point){
-    in 0..2999-> Constants.BRONZE
-    in 3000..29999 -> Constants.SILVER
-    in 30000..299999 -> Constants.GOLD
-    else -> Constants.PLATINUM
+    in 0..2999-> Grade.BRONZE.gradeCode
+    in 3000..29999 -> Grade.SILVER.gradeCode
+    in 30000..299999 -> Grade.GOLD.gradeCode
+    else -> Grade.PLATINUM.gradeCode
 }

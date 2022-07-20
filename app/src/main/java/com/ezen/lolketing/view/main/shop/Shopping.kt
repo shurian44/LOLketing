@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,10 +52,11 @@ fun ShoppingContainer(
 
         ShoppingTitleBar(routeAction = routeAction, viewModel = viewModel) { activity?.finish() }
         TabBar(tabIndex)
-        ShopListItem(tabIndex, routeAction, Modifier.weight(1f))
+        ShoppingItemGrid(tabIndex, routeAction, Modifier.weight(1f))
     }
 }
 
+/** 쇼핑 타이틀바 **/
 @Composable
 fun ShoppingTitleBar(
     routeAction: RouteAction? = null,
@@ -64,7 +66,7 @@ fun ShoppingTitleBar(
     val basketCount = viewModel.basketCount.collectAsState()
     viewModel.getShopBasketList()
 
-    TitleBar("굿즈 쇼핑", onBackClick = {
+    TitleBar(stringResource(id = R.string.goods_shopping), onBackClick = {
         onBackListener()
     }) {
         Box(modifier = Modifier.align(Alignment.CenterEnd)) {
@@ -80,6 +82,7 @@ fun ShoppingTitleBar(
     }
 }
 
+/** 텝바 **/
 @Composable
 fun TabBar(tabIndex: MutableState<Int>, modifier: Modifier = Modifier) {
     val tabTitles = getShoppingCategoryList()
@@ -94,8 +97,9 @@ fun TabBar(tabIndex: MutableState<Int>, modifier: Modifier = Modifier) {
     }
 }
 
+/** 쇼핑 아이템 그리드  **/
 @Composable
-fun ShopListItem(
+fun ShoppingItemGrid(
     tabIndex: MutableState<Int>,
     routeAction: RouteAction,
     modifier: Modifier = Modifier,
@@ -107,7 +111,7 @@ fun ShopListItem(
     if (list.isEmpty()) {
         Column(modifier = modifier, verticalArrangement = Arrangement.Center) {
             Text(
-                text = "상품 준비중입니다.",
+                text = stringResource(id = R.string.shopping_item_ready),
                 color = White,
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
@@ -134,6 +138,7 @@ fun ShopListItem(
 
 }
 
+/** 쇼핑 아이템 **/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopItem(shopListItem: ShopListItem, onClickListener: () -> Unit) {
@@ -166,7 +171,7 @@ fun ShopItem(shopListItem: ShopListItem, onClickListener: () -> Unit) {
             failure = {
                 Column(modifier = modifier, verticalArrangement = Arrangement.Center) {
                     Text(
-                        text = "이미지 로드 실패",
+                        text = stringResource(id = R.string.image_load_failure),
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
@@ -209,12 +214,4 @@ fun ShopItem(shopListItem: ShopListItem, onClickListener: () -> Unit) {
             )
         }
     }
-}
-
-@Composable
-fun ShoppingTopImage() {
-    Image(
-        painter = painterResource(id = R.drawable.img_shopping),
-        contentDescription = "shopping"
-    )
 }

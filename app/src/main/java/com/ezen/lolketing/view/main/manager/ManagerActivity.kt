@@ -15,7 +15,6 @@ import com.ezen.lolketing.databinding.ActivityManagerBinding
 import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.model.TeamDTO
 import com.ezen.lolketing.view.login.LoginActivity
-import com.ezen.lolketing.view.main.shop.ShopEventActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import org.jsoup.Jsoup
@@ -28,10 +27,6 @@ class ManagerActivity : BaseActivity<ActivityManagerBinding>(R.layout.activity_m
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 샵 이벤트 추가 버튼 클릭
-        binding.addShopEvent.setOnClickListener {
-            startActivity(Intent(this, ShopEventActivity::class.java))
-        }
     }
 
     // 팀 정보 수정 버튼 클릭 > 사이트에 올려둔 JSON 파싱해서 데이터베이스에 저장

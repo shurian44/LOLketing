@@ -5,6 +5,7 @@ import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.model.ShopDTO
 import com.ezen.lolketing.model.ShopItem
 import com.ezen.lolketing.model.ShopListItem
+import com.ezen.lolketing.model.mapper
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
 import kotlinx.coroutines.flow.Flow
@@ -89,15 +90,7 @@ class ShopRepository @Inject constructor(
         listener: (Long) -> Unit
     ) {
         val result = db.insertShoppingBasket(
-            shopEntity = ShopEntity(
-                group = item.group,
-                name = item.name,
-                price = item.price,
-                image = item.images[0],
-                count = count,
-                documentId = item.documentId,
-                timestamp = timestamp
-            )
+            item.mapper(count)
         )
         listener(result)
     }
