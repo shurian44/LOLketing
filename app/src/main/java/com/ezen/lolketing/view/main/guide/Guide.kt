@@ -22,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ezen.lolketing.R
 import com.ezen.lolketing.util.createIntent
-import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.main.TitleBar
 import com.ezen.lolketing.view.ui.theme.Black
 import com.ezen.lolketing.view.ui.theme.Typography
@@ -39,7 +38,7 @@ fun GuideContainer(routeAction: GuideRouteAction) {
             .background(Black)
     ) {
 
-        Column() {
+        Column {
 
             /** 타이틀 이미지 **/
             Box(

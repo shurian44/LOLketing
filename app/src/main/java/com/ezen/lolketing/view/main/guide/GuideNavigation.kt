@@ -8,8 +8,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -28,6 +26,7 @@ fun GuideNavigationGraph() {
         startDestination = GuideRouteAction.Guide,
     ) {
 
+        /** 가이드 메인 화면 **/
         composable(
             route = GuideRouteAction.Guide,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
@@ -35,7 +34,7 @@ fun GuideNavigationGraph() {
         ) {
             GuideContainer(routeAction)
         }
-
+        /** 게임 용어 화면 **/
         composable(
             route = GuideRouteAction.TermsDetail,
             enterTransition = { scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMedium)) },
