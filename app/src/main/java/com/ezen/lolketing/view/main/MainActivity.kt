@@ -75,9 +75,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         setSliderAdapter(EventSliderAdapter(list))
         setIndicatorAnimation(IndicatorAnimations.WORM)
         setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
-        autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
-        indicatorSelectedColor = Color.WHITE
-        indicatorUnselectedColor = Color.GRAY
+        autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_RIGHT
         scrollTimeInSec = 4
         startAutoCycle()
     }
