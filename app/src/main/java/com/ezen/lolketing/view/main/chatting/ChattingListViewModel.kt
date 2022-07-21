@@ -11,15 +11,19 @@ import javax.inject.Inject
 @HiltViewModel
 class ChattingListViewModel @Inject constructor(
     private val repository: ChattingRepository
-): BaseViewModel<ChattingListViewModel.Event>() {
+) : BaseViewModel<ChattingListViewModel.Event>() {
 
+    var nickName: String?= null
+
+    /** 유저 닉네임 조회 **/
     fun getUserNickName() = viewModelScope.launch {
         repository.getUserNickName()?.let {
-            event(Event.UserNickName(it))
-        } ?: error("유저 정보 조회에 실패하였습니다")
+            nickName = it
+        } ?: event(Event.UserNickNameError)
     }
 
-    fun getGameData(startDate: String = "2020.02.05") = viewModelScope.launch {
+    /** 경기 정보 조회 **/
+    fun getGameData(startDate: String = "2022.01.01") = viewModelScope.launch {
         repository.getGameData(
             startDate = startDate,
             successListener = { list ->
@@ -31,14 +35,10 @@ class ChattingListViewModel @Inject constructor(
         )
     }
 
-    private fun error(msg: String) {
-        event(Event.Error(msg))
-    }
-
     sealed class Event {
-        data class UserNickName(val nickName: String) : Event()
         data class GameData(val list: List<ChattingInfo>) : Event()
-        data class Error(val msg: String) : Event()
+        object UserNickNameError : Event()
+        object Error : Event()
     }
 
 }

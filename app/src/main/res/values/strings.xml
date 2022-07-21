@@ -192,6 +192,13 @@
     <string name="menu_proceeding">진행 방식</string>
     <string name="menu_prize_money">대회 상금</string>
 
+    <!-- 채팅 -->
+    <string name="error_game_info">경기 정보 조회를 실패하였습니다.</string>
+    <string name="empty_game">게임이 없는 날입니다.</string>
+    <string name="guide_chatting_info">채팅 응원 이용 안내</string>
+    <string name="guide_chatting_info_content">원하는 팀의 이미지를 터치하여 팀을 응원해주세요\n채팅 오픈은 경기 시작 30분 전에 오픈됩니다.\n욕설 및 비방등 부적절한 채팅을 입력 시에 재재 당할 수 있습니다.</string>
+    <string name="guide_write_current_day">당일에만 작성 가능합니다.</string>
+
     <!-- 공통 -->
     <string name="cancel">취소</string>
     <string name="ok">확인</string>

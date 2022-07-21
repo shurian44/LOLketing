@@ -106,6 +106,7 @@
         <entry key="app/src/main/res/layout/activity_team.xml" value="0.22146739130434784" />
         <entry key="app/src/main/res/layout/activity_ticketing.xml" value="0.35144927536231885" />
         <entry key="app/src/main/res/layout/activity_withdrawal.xml" value="0.35144927536231885" />
+        <entry key="app/src/main/res/layout/custom_chatting_item.xml" value="0.3734375" />
         <entry key="app/src/main/res/layout/custom_check_box.xml" value="0.4010416666666667" />
         <entry key="app/src/main/res/layout/custom_event_card.xml" value="0.38697916666666665" />
         <entry key="app/src/main/res/layout/custom_limited_edit_text_view.xml" value="0.33" />

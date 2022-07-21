@@ -1,35 +1,25 @@
 package com.ezen.lolketing.view.main.chatting
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.View
 import androidx.activity.viewModels
-import androidx.core.view.isVisible
 import com.ezen.lolketing.BaseViewModelActivity
-import com.ezen.lolketing.view.main.MainActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ActivityChattinglistBinding
 import com.ezen.lolketing.model.ChattingInfo
-import com.ezen.lolketing.model.Game
-import com.ezen.lolketing.util.*
-import com.ezen.lolketing.view.login.LoginActivity
-import com.google.firebase.auth.FirebaseAuth
+import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.repeatOnStarted
+import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.custom.CustomChattingItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, ChattingListViewModel>(R.layout.activity_chattinglist) {
 
     override val viewModel: ChattingListViewModel by viewModels()
-
-    private var teamA : String?= null // 17:00 게임 팀
-    private var teamB : String?= null // 20:00 게임 팀
-    private var nickName : String?= null
 
     private var year = 2022
     private var month = 1
@@ -46,23 +36,37 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
 
     } // onCreate()
 
+    /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding){
 
         activity = this@ChattingListActivity
         layoutTop.btnBack.setOnClickListener { finish() }
 
-        val today = getCurrentDateTime().time.timestampToString("yyyy.MM.dd")
-        viewModel.getGameData(today)
         viewModel.getUserNickName()
-
-        txtDate.text = today
-        today.split(".").apply {
-            year = get(0).toInt()
-            month = get(1).toInt()
-            date = get(2).toInt()
-        }
+        dateCalculation(isInit = true)
     }
 
+    /** 날짜 계산 후 UI 셋팅 및 경기 일정 조회 **/
+    private fun dateCalculation(addDate : Int = 0, isInit: Boolean = false) = with(binding) {
+        val cal = Calendar.getInstance().also {
+            if (isInit.not()) {
+                it.set(year, month, date)
+                it.add(Calendar.DATE, addDate)
+            } else {
+                //
+                it.add(Calendar.MONTH, 1)
+            }
+        }
+
+        year = cal.get(Calendar.YEAR)
+        month = cal.get(Calendar.MONTH)
+        date = cal.get(Calendar.DATE)
+
+        txtDate.text = "$year.${month.toString().padStart(2, '0')}.${date.toString().padStart(2, '0')}"
+        viewModel.getGameData(txtDate.text.toString())
+    }
+
+    /** 날짜 선택 다이얼로그 **/
     fun showDatePickerDialog(view : View) {
         DatePickerDialog(
             this,
@@ -71,7 +75,7 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
                 this.month = month + 1
                 this.date = dayOfMonth
 
-                setDate()
+                dateCalculation()
             },
             year,
             month-1,
@@ -79,145 +83,78 @@ class ChattingListActivity : BaseViewModelActivity<ActivityChattinglistBinding, 
         ).show()
     }
 
+    /** 이전 날짜 **/
     fun previousDay(view: View) {
         dateCalculation(-1)
-        setDate()
     }
 
+    /** 다음 날짜 **/
     fun nextDay(view: View) {
         dateCalculation(1)
-        setDate()
-    }
-
-    private fun dateCalculation(addDate : Int) {
-        val cal = Calendar.getInstance().also {
-            it.set(year, month, date)
-            it.add(Calendar.DATE, addDate)
-        }
-
-        year = cal.get(Calendar.YEAR)
-        month = cal.get(Calendar.MONTH)
-        date = cal.get(Calendar.DATE)
-    }
-
-    private fun setDate() {
-        binding.txtDate.text = "$year.${this.month.toString().padStart(2, '0')}.${date.toString().padStart(2, '0')}"
-        viewModel.getGameData(binding.txtDate.text.toString())
     }
 
     private fun eventHandler(event: ChattingListViewModel.Event) {
         when(event) {
-            is ChattingListViewModel.Event.UserNickName -> {
-                nickName = event.nickName
-            }
+            // 경기 일정 조회
             is ChattingListViewModel.Event.GameData -> {
                 setGameData(event.list)
             }
+            // 경기 일정 조회 실패
             is ChattingListViewModel.Event.Error -> {
-                toast(event.msg)
+                toast(R.string.error_game_info)
+            }
+            // 유저 닉네임 조회 실패
+            is ChattingListViewModel.Event.UserNickNameError -> {
+                toast(R.string.error_user_info_search)
+                Handler(mainLooper).postDelayed({ finish() }, 1000)
             }
         }
     }
 
+    /** 게임 데이터 설정 **/
     private fun setGameData(list: List<ChattingInfo>) = with(binding) {
-        isNoGame = true
-        if (list.isEmpty()) return@with
+        layoutGame.removeAllViews()
+        isNoGame = list.isEmpty()
 
-        try {
-            teamA = list[0].team
-            val firstGameList = teamA?.split(":")
-            setTeamLogoImageView(imgTeam1, firstGameList?.get(0) ?: Team.T1.name)
-            setTeamLogoImageView(imgTeam2, firstGameList?.get(1) ?: Team.T1.name)
+        list.forEach {
+            val team = it.team.split(":")
+            if (team.isEmpty() || team.size < 2) {
+                return@forEach
+            }
 
-            firstGame.isVisible = true
-            isNoGame = false
-        } catch (e: Exception) {
-            e.printStackTrace()
-            firstGame.isVisible = false
-        }
-
-        try {
-            teamB = list[1].team
-            val secondGameList = teamB?.split(":")
-            setTeamLogoImageView(imgTeam3, secondGameList?.get(0) ?: Team.T1.name)
-            setTeamLogoImageView(imgTeam4, secondGameList?.get(1) ?: Team.T1.name)
-
-            secondGame.isVisible = true
-            isNoGame = false
-        } catch (e: Exception) {
-            e.printStackTrace()
-            secondGame.isVisible = false
+            layoutGame.addView(
+                CustomChattingItem(this@ChattingListActivity).also { item ->
+                    item.setChattingItem(
+                        leftTeam = team[0],
+                        rightTeam = team[1],
+                        time = it.time
+                    ) { select ->
+                        val time = "${binding.txtDate.text.toString().replace(".", "")} ${it.time}"
+                        enterChatting(it.team, select, time)
+                    }
+                }
+            )
         }
     }
 
-    // 원하는 팀을 선택해서 채팅방 입장
-    fun enterChatting(view: View) {
-        if (nickName == null) {
-            toast("유저 정보에 오류가 발생하였습니다.")
+    /** 원하는 팀을 선택해서 채팅방 입장 **/
+    private fun enterChatting(
+        team: String,
+        selectTeam: String,
+        time: String
+    ) {
+        if (viewModel.nickName == null) {
+            toast(R.string.error_user_info_search)
             return
         }
 
-        val intent = createIntent(ChattingActivity::class.java)
-        var selectTeam = "" // 선택한 팀의 위치 저장 L or R : DB에 입장한 유저 따로 저장하기 위함
-        // ex) 2020.02.05 -> 20200205 수정 : realtimeDatabase 에서 .은 하위 노드로 판단하기 때문에 제거
-        var time = binding.txtDate.text.toString().replace(".", "")
-
-        when(view.id){
-            R.id.img_team1 ->{
-                time += " 17:00"
-                selectTeam = "L"
-                intent.putExtra(ChattingActivity.TEAM, teamA)
+        startActivity(
+            createIntent(ChattingActivity::class.java).also {
+                it.putExtra(ChattingActivity.TEAM, team)
+                it.putExtra(ChattingActivity.SELECT_TEAM, selectTeam)
+                it.putExtra(ChattingActivity.TIME, time)
+                it.putExtra(ChattingActivity.NICKNAME, viewModel.nickName)
             }
-            R.id.img_team2 ->{
-                time += " 17:00"
-                selectTeam = "R"
-                intent.putExtra(ChattingActivity.TEAM, teamA)
-            }
-            R.id.img_team3 ->{
-                time += " 20:00"
-                selectTeam = "L"
-                intent.putExtra(ChattingActivity.TEAM, teamB)
-            }
-            R.id.img_team4 ->{
-                time += " 20:00"
-                selectTeam = "R"
-                intent.putExtra(ChattingActivity.TEAM, teamB)
-            }
-        }
-
-        // 경기 시작 30분 전 까지는 채팅방 입장 불가
-        val dateFormat = SimpleDateFormat("yyyyMMdd HH:mm")
-        val currentTime = System.currentTimeMillis()
-        val gameStartTime = dateFormat.parse(time)?.time
-
-        if (gameStartTime == null) {
-            toast("아직 입장하실수 없습니다.")
-            return
-        }
-
-//        if ((currentTime / DATE) != (gameStartTime / DATE)){
-//            toast("당일만 입장 가능합니다.")
-//            return
-//        }
-
-        val standardTime = gameStartTime - (30 * MINUTE)
-
-        if ( standardTime > currentTime ) {
-            toast("아직 입장하실수 없습니다.")
-            return
-        }
-
-        intent.apply {
-            putExtra(ChattingActivity.SELECT_TEAM, selectTeam)
-            putExtra(ChattingActivity.TIME, time)
-            putExtra(ChattingActivity.NICKNAME, nickName)
-        }
-
-        startActivity(intent)
-    } // enterChatting()
-
-    companion object {
-        const val MINUTE = 1000 * 60
+        )
     }
-
 }

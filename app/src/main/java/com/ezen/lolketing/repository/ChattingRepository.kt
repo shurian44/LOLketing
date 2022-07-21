@@ -12,9 +12,11 @@ class ChattingRepository @Inject constructor(
     private val client: FirebaseClient
 ) {
 
+    /** 유저 닉네임 조회1 **/
     suspend fun getUserNickName(): String? =
         client.getUserNickName()
 
+    /** 게임 데이터 조회 **/
     suspend fun getGameData(
         startDate: String,
         successListener: (List<ChattingInfo>) -> Unit,
