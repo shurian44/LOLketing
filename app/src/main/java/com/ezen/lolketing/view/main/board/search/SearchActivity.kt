@@ -12,6 +12,7 @@ import com.ezen.lolketing.databinding.ActivitySearchBinding
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.custom.CustomEditTextView
+import com.ezen.lolketing.view.dialog.SearchBottomSheetDialog
 import com.ezen.lolketing.view.dialog.SearchMenuPopup
 import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
 import com.ezen.lolketing.view.main.board.detail.BoardDetailActivity
@@ -55,38 +56,13 @@ class SearchActivity : BaseViewModelActivity<ActivitySearchBinding, SearchViewMo
 
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
 
-        editSearch.setOnKeyListener { _, keyCode, keyEvent ->
-            // 엔터 키를 이용한 검색
-            if (keyEvent.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
-                searchBoard()
-                return@setOnKeyListener false
-            }
-            false
+        layoutBottom.setOnClickListener {
+            SearchBottomSheetDialog(viewModel.searchText, viewModel.field) { query, searchText ->
+                viewModel.setSearchData(query, searchText, team)
+                viewModel.getSearchBoardList()
+            }.show(supportFragmentManager, null)
         }
 
-//        editSearch.setDrawableClickListener(CustomEditTextView.DRAWABLE_END) {
-//            searchBoard()
-//        }
-
-        editSearch.setDrawableClickListener(CustomEditTextView.DRAWABLE_START) {
-//            editSearch.hideKeyboard()
-            SearchMenuPopup(layoutInflater).also {
-                it.createPopup()
-                it.setListener(
-                    writerClickListener = {
-                        viewModel.setChangeField(SearchViewModel.WRITER)
-                    },
-                    boardTitleClickListener = {
-                        viewModel.setChangeField(SearchViewModel.BOARD_TITLE)
-                    }
-                )
-                it.showPopup(editSearch)
-            }
-        }
-    }
-
-    private fun searchBoard() {
-        viewModel.getSearchBoardList(binding.editSearch.text.toString())
     }
 
     private fun setAdapter(list: List<BoardItem.BoardListItem>) = with(binding) {
@@ -110,7 +86,12 @@ class SearchActivity : BaseViewModelActivity<ActivitySearchBinding, SearchViewMo
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         setResult(Activity.RESULT_OK)
-        searchBoard()
+        viewModel.getSearchBoardList()
+    }
+
+    companion object {
+        const val NICKNAME = "nickname"
+        const val TITLE = "title"
     }
 
 }

@@ -13,13 +13,17 @@ class SearchViewModel @Inject constructor(
     private val repository: BoardRepository
 ) : BaseViewModel<SearchViewModel.Event>() {
 
-    private var field: String = BOARD_TITLE
+    var field: String = SearchActivity.TITLE
+    var searchText: String = ""
+    private var team: String = ""
 
-    fun getSearchBoardList(data: String) = viewModelScope.launch {
+    /** 검색 내용 조회 **/
+    fun getSearchBoardList() = viewModelScope.launch {
         event(Event.Loading)
         repository.getSearchBoardList(
             field = field,
-            data = data,
+            data = searchText,
+            team = team,
             successListener = {
                 event(Event.Success(it))
             },
@@ -29,8 +33,11 @@ class SearchViewModel @Inject constructor(
         )
     }
 
-    fun setChangeField(field: String) {
+    /** 검색 조건 세팅 **/
+    fun setSearchData(field: String, searchText: String, team: String) {
         this.field = field
+        this.searchText = searchText
+        this.team = team
     }
 
     sealed class Event {
@@ -39,11 +46,6 @@ class SearchViewModel @Inject constructor(
         data class Success(
             val list : List<BoardItem.BoardListItem>
         ): Event()
-    }
-
-    companion object {
-        const val BOARD_TITLE = "title"
-        const val WRITER = "nickname"
     }
 
 }

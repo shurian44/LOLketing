@@ -76,6 +76,7 @@
     <string name="team_info">구단 정보</string>
     <string name="writer">작성자</string>
     <string name="board_title">글 제목</string>
+    <string name="search">검색하기</string>
 
     <!-- 이벤트 -->
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>

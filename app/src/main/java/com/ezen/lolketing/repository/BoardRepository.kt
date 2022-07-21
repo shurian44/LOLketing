@@ -4,6 +4,7 @@ import android.net.Uri
 import com.ezen.lolketing.model.*
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.view.main.board.search.SearchActivity
 import com.google.firebase.firestore.FieldValue
 import javax.inject.Inject
 
@@ -64,17 +65,24 @@ class BoardRepository @Inject constructor(
     suspend fun getSearchBoardList(
         field: String,
         data: String,
+        team: String,
         successListener : (List<BoardItem.BoardListItem>) -> Unit,
         failureListener : () -> Unit
     ) = try {
-        client.getBasicSearchData(
+        client.getBasicQuerySnapshot(
             collection = Constants.BOARD,
-            field = field,
-            startDate = data,
+            field = Constants.TEAM,
+            query = team,
             successListener = { snapshot ->
                 val list = snapshot.mapNotNull {
                     it.toObject(Board::class.java)
                         .boardListItemMapper(it.id)
+                }.filter {
+                    if (field == SearchActivity.TITLE) {
+                        it.title.contains(data)
+                    } else {
+                        it.nickname.contains(data)
+                    }
                 }
                 successListener(list)
             },
