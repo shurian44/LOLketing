@@ -42,7 +42,7 @@ class RouletteActivity : BaseViewModelActivity<ActivityRouletteBinding, Roulette
     private fun initViews() = with(binding) {
         // Animator 설정
         activity = this@RouletteActivity
-        title = getString(R.string.roulette_title)
+        title = getString(R.string.event_title_roulette)
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
 
         // 룰렛 카운트 조회
