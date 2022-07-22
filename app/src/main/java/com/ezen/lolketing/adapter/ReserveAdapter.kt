@@ -1,6 +1,5 @@
 package com.ezen.lolketing.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,6 +10,7 @@ import com.ezen.lolketing.databinding.ItemReserveTicketBinding
 import com.ezen.lolketing.model.Ticket
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.setTeamLogoImageView
+
 class ReserveAdapter(
     val onclickListener: (Ticket) -> Unit
 ) : ListAdapter<Ticket, ReserveAdapter.ReserveHolder>(diffUtil) {
@@ -19,8 +19,8 @@ class ReserveAdapter(
         fun bind(ticket: Ticket) = with(binding) {
 
             // item 세팅
-            val teams = ticket.team?.split(":")
-            if (teams.isNullOrEmpty() || teams.size < 2) {
+            val teams = ticket.team.split(":")
+            if (teams.isEmpty() || teams.size < 2) {
                 currentList.removeAt(adapterPosition)
                 return@with
             }
