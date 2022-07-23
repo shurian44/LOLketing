@@ -21,9 +21,8 @@ fun String.removePriceFormat(): Long = try {
     0L
 }
 
-fun getGrade(point: Long) = when(point){
-    in 0..2999-> Grade.BRONZE.gradeCode
-    in 3000..29999 -> Grade.SILVER.gradeCode
-    in 30000..299999 -> Grade.GOLD.gradeCode
-    else -> Grade.PLATINUM.gradeCode
+// 쿠폰 유효기간 계산 : 60일
+fun getCouponValidityPeriod() : String {
+    val lateDay60 = System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 60L)
+    return lateDay60.timestampToString()
 }

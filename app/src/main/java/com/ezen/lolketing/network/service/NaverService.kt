@@ -19,6 +19,6 @@ interface NaverService {
         @Query("display") display : Int, // 검색 결과 출력 건수 지정, 기본값 10 최대값 100
         @Query("start") start : Int, // 검색 시작 위치 기본값 1, 최대값 1000까지 가능
         @Query("sort") sort : String // 정렬 옵션: sim (유사도순), date (날짜순)
-    ) : Response<NewsResult>
+    ) : NewsResult
 
 }

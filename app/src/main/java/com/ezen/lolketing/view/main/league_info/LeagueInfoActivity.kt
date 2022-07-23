@@ -5,9 +5,6 @@ import com.ezen.lolketing.BaseActivity
 import com.ezen.lolketing.R
 import com.ezen.lolketing.adapter.LeagueInfoAdapter
 import com.ezen.lolketing.databinding.ActivityLeagueInfoBinding
-import com.ezen.lolketing.fragment.OutlineFragment
-import com.ezen.lolketing.fragment.PrizeFragment
-import com.ezen.lolketing.fragment.ProgressFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class LeagueInfoActivity : BaseActivity<ActivityLeagueInfoBinding>(R.layout.activity_league_info) {

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -12,18 +11,13 @@ import android.os.Build
 import android.text.Html
 import android.text.InputFilter
 import android.text.Spanned
-import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import okhttp3.internal.format
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.math.roundToInt
 
 fun <T> Activity.startActivity(clazz: Class<T>) {
     startActivity(Intent(this, clazz))
@@ -56,10 +50,6 @@ fun <T> Activity.createIntent(clazz: Class<T>, vararg flags : Int) =
         }
     }
 
-fun <T> View.startActivityWithButton(clazz: Class<T>, activity: Activity) {
-    activity.startActivity(clazz)
-}
-
 fun Activity.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
@@ -86,14 +76,6 @@ fun Fragment.toast(msg: String) {
     requireActivity().toast(msg)
 }
 
-inline fun <reified T>listToArrayList(list : List<T>?) : ArrayList<T>{
-    val arrayList : ArrayList<T> = arrayListOf()
-    list?.toTypedArray()?.let {
-        arrayList.addAll(it)
-    }
-    return arrayList
-}
-
 fun setGlide(view: ImageView, uri: String) {
     Glide.with(view.context).load(uri).fitCenter().into(view)
 }
@@ -112,22 +94,6 @@ fun String.htmlFormat() : Spanned =
 fun getCurrentDateTime(): Date =
     Calendar.getInstance().time
 
-fun getSimpleDateFormatMillSec(date: String, format : String = "yyyy.MM.dd HH:mm") : Long? {
-    val timeFormat = SimpleDateFormat(format, Locale.KOREA)
-    return timeFormat.parse(date)?.time
-}
-
-fun densityDp(context: Context, size: Int) : Int {
-    val dm = context.resources.displayMetrics
-    return (size * dm.density).roundToInt()
-}
-
-fun dpToPx(context: Context, size: Int) : Int {
-    return TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP, size.toFloat(), context.resources.displayMetrics
-    ).roundToInt()
-}
-
 fun setSpecialCharacterRestrictions() = InputFilter { source, _, _, _, _, _ ->
     source.forEach {
         if (!Character.isLetterOrDigit(it)) {
@@ -139,12 +105,6 @@ fun setSpecialCharacterRestrictions() = InputFilter { source, _, _, _, _, _ ->
 
 fun Dialog.backgroundTransparent() {
     window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-}
-
-// 쿠폰 유효기간 계산 : 60일
-fun getCouponValidityPeriod() : String {
-    val lateDay60 = System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 60L)
-    return lateDay60.timestampToString()
 }
 
 fun getShoppingCategoryList() = listOf(

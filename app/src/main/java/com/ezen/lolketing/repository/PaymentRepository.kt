@@ -49,20 +49,20 @@ class PaymentRepository @Inject constructor(
         onSuccessListener: () -> Unit,
         onFailureListener: () -> Unit
     ) {
-        client
-            .getFirestore(Constants.GAME)
-            .document(firstDocumentId)
-            .collection(Constants.SEAT)
-            .document(secondDocumentId)
-            .update("reserveId", data)
-            .addOnSuccessListener{
-                onSuccessListener()
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                onFailureListener()
-            }
-            .await()
+        try {
+            client
+                .getFirestore(Constants.GAME)
+                .document(firstDocumentId)
+                .collection(Constants.SEAT)
+                .document(secondDocumentId)
+                .update("reserveId", data)
+                .await()
+
+            onSuccessListener()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            onFailureListener()
+        }
     }
 
     suspend fun generateQrCode(

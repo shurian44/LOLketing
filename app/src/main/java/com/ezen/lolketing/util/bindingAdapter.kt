@@ -32,7 +32,7 @@ fun setBoardTitle(textView: TextView, boardTitle: String, boardCategory: String)
 
 @BindingAdapter("boardWriter")
 fun setBoardWriter(textView: TextView, boardItem: BoardItem.BoardListItem) {
-    val writer = "${boardItem.nickname} ${boardItem.timestamp?.timestampToString("yyyy.MM.dd")} 조회 ${boardItem.views}"
+    val writer = "${boardItem.nickname} ${boardItem.timestamp.timestampToString("yyyy.MM.dd")} 조회 ${boardItem.views}"
     textView.text = writer
 }
 

@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.model.CacheModifyUser
 import com.ezen.lolketing.repository.PaymentRepository
-import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.Grade
 import com.ezen.lolketing.util.getGrade
 import dagger.hilt.android.lifecycle.HiltViewModel

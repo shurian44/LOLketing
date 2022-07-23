@@ -23,12 +23,7 @@ class NaverClient @Inject constructor(
             sort = sort
         )
 
-        if (result.isSuccessful) {
-            result.body()?.let(successListener) ?: failureListener
-        } else {
-            failureListener()
-        }
-
+        successListener(result)
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()

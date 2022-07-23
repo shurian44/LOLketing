@@ -18,7 +18,7 @@ class FirebaseClient @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
 
-    fun getCurrentUser() = auth.currentUser
+    private fun getCurrentUser() = auth.currentUser
 
     fun getUserEmail() = getCurrentUser()?.email
 
@@ -33,15 +33,8 @@ class FirebaseClient @Inject constructor(
         failureListener: () -> Unit
     ) {
         try {
-            auth
-                .createUserWithEmailAndPassword(email, pw)
-                .addOnSuccessListener {
-                    successListener(it.user?.uid)
-                }
-                .addOnFailureListener {
-                    failureListener()
-                }
-                .await()
+            val result = auth.createUserWithEmailAndPassword(email, pw).await()
+            successListener(result.user?.uid)
         } catch (e: Exception) {
             failureListener()
             e.printStackTrace()
@@ -65,42 +58,10 @@ class FirebaseClient @Inject constructor(
                 .collection(Constants.USERS)
                 .document(email)
                 .set(user)
-                .addOnSuccessListener {
-                    successListener()
-                }
-                .addOnFailureListener {
-                    failureListener()
-                }
                 .await()
-        } catch (e: Exception) {
-            failureListener()
-            e.printStackTrace()
-        }
-    }
 
-    suspend fun registerUser(
-        user: Users,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) {
-        try {
-            val id = user.id
-            if (id == null) {
-                failureListener()
-                return
-            }
+            successListener()
 
-            firestore
-                .collection(Constants.USERS)
-                .document(id)
-                .set(user)
-                .addOnSuccessListener {
-                    successListener()
-                }
-                .addOnFailureListener {
-                    failureListener()
-                }
-                .await()
         } catch (e: Exception) {
             failureListener()
             e.printStackTrace()
@@ -114,9 +75,10 @@ class FirebaseClient @Inject constructor(
         try {
             getCurrentUser()
                 ?.delete()
-                ?.addOnSuccessListener { successListener() }
-                ?.addOnFailureListener { failureListener?.invoke() }
                 ?.await()
+                ?: failureListener?.invoke()
+
+            successListener()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -133,20 +95,16 @@ class FirebaseClient @Inject constructor(
                 return
             }
 
-            firestore
+           val result =  firestore
                 .collection(Constants.USERS)
                 .document(email)
                 .get()
-                .addOnSuccessListener {
-                    it.toObject(Users::class.java)
-                        ?.let(successListener)
-                        ?: failureListener()
-                }
-                .addOnFailureListener {
-                    it.printStackTrace()
-                    failureListener()
-                }
                 .await()
+
+            result.toObject(Users::class.java)
+                ?.let(successListener)
+                ?: failureListener()
+
         } catch (e: Exception) {
             e.printStackTrace()
             failureListener()
@@ -155,8 +113,14 @@ class FirebaseClient @Inject constructor(
 
     suspend fun getUserNickName(): String? = try {
         val email = getCurrentUser()?.email ?: throw Exception("회원 정보를 찾지 못했습니다.")
-        firestore.collection(Constants.USERS).document(email).get().await()
-            .toObject(Users::class.java)?.nickname
+
+        firestore
+            .collection(Constants.USERS)
+            .document(email)
+            .get()
+            .await()
+            .toObject(Users::class.java)
+            ?.nickname
     } catch (e: Exception) {
         e.printStackTrace()
         null
@@ -167,41 +131,37 @@ class FirebaseClient @Inject constructor(
         document: String,
         successListener: (DocumentSnapshot) -> Unit,
         failureListener: () -> Unit
-    ) = try {
-        firestore
-            .collection(collection)
-            .document(document)
-            .get()
-            .addOnSuccessListener {
-                successListener(it)
-            }
-            .addOnFailureListener {
-                failureListener()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+    ) {
+        try {
+            val result = firestore
+                .collection(collection)
+                .document(document)
+                .get()
+                .await()
+
+            successListener(result)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun getBasicSnapshot(
         collection: String,
         successListener: (QuerySnapshot) -> Unit,
         failureListener: () -> Unit
-    ) = try {
-        firestore
-            .collection(collection)
-            .get()
-            .addOnSuccessListener {
-                successListener(it)
-            }
-            .addOnFailureListener {
-                failureListener()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+    ) {
+        try {
+            val result = firestore
+                .collection(collection)
+                .get()
+                .await()
+
+            successListener(result)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun getBasicQuerySnapshot(
@@ -212,51 +172,20 @@ class FirebaseClient @Inject constructor(
         orderByDirection: Query.Direction = Query.Direction.DESCENDING,
         successListener: (QuerySnapshot) -> Unit,
         failureListener: () -> Unit
-    ): QuerySnapshot? = try {
-        firestore
-            .collection(collection)
-            .whereEqualTo(field, query)
-            .orderBy(orderByField, orderByDirection)
-            .get()
-            .addOnSuccessListener {
-                successListener(it)
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
-    }
+    ) {
+        try {
+            val result = firestore
+                .collection(collection)
+                .whereEqualTo(field, query)
+                .orderBy(orderByField, orderByDirection)
+                .get()
+                .await()
 
-    suspend fun getBasicQuerySnapshot(
-        collection: String,
-        queryList: List<Pair<String, Any>>,
-        orderByField: String = TIME_STAMP,
-        orderByDirection: Query.Direction = Query.Direction.DESCENDING,
-        successListener: (QuerySnapshot) -> Unit,
-        failureListener: () -> Unit
-    ): QuerySnapshot? = try {
-        val reference = firestore.collection(collection)
-        queryList.forEach {
-            reference.whereEqualTo(it.first, it.second)
+            successListener(result)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
         }
-        reference
-            .orderBy(orderByField, orderByDirection)
-            .get()
-            .addOnSuccessListener {
-                successListener(it)
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
     }
 
     suspend fun basicAddData(
@@ -264,21 +193,18 @@ class FirebaseClient @Inject constructor(
         data: Any,
         successListener: ((DocumentReference) -> Unit)? = null,
         failureListener: (() -> Unit)? = null
-    ) = try {
-        firestore
-            .collection(collection)
-            .add(data)
-            .addOnSuccessListener {
-                successListener?.invoke(it)
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener?.invoke()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+    ) {
+        try {
+            val result = firestore
+                .collection(collection)
+                .add(data)
+                .await()
+
+            successListener?.invoke(result)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener?.invoke()
+        }
     }
 
     suspend fun basicAddData(
@@ -287,22 +213,19 @@ class FirebaseClient @Inject constructor(
         data: Any,
         successListener: (() -> Unit)? = null,
         failureListener: (() -> Unit)? = null
-    ) = try {
-        firestore
-            .collection(collection)
-            .document(document)
-            .set(data)
-            .addOnSuccessListener {
-                successListener?.invoke()
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener?.invoke()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+    ) {
+        try {
+            firestore
+                .collection(collection)
+                .document(document)
+                .set(data)
+                .await()
+
+            successListener?.invoke()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener?.invoke()
+        }
     }
 
     suspend fun basicUpdateData(
@@ -311,22 +234,19 @@ class FirebaseClient @Inject constructor(
         updateData: Map<String, Any?>,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) = try {
-        firestore
-            .collection(collection)
-            .document(documentId)
-            .update(updateData)
-            .addOnSuccessListener {
-                successListener()
-            }
-            .addOnFailureListener {
-                failureListener()
-                it.printStackTrace()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+    ) {
+        try {
+            firestore
+                .collection(collection)
+                .document(documentId)
+                .update(updateData)
+                .await()
+
+            successListener()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun basicDeleteData(
@@ -334,21 +254,19 @@ class FirebaseClient @Inject constructor(
         documentId: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) = try {
-        firestore
-            .collection(collection)
-            .document(documentId)
-            .delete()
-            .addOnSuccessListener {
-                successListener()
-            }
-            .addOnFailureListener {
-                failureListener()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+    ) {
+        try {
+            firestore
+                .collection(collection)
+                .document(documentId)
+                .delete()
+                .await()
+
+            successListener()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun getBasicSearchData(
@@ -358,46 +276,20 @@ class FirebaseClient @Inject constructor(
         successListener: (QuerySnapshot) -> Unit,
         failureListener: () -> Unit
     ) {
-        firestore
-            .collection(collection)
-            .orderBy(field)
-            .startAt(startDate)
-            .endAt("$startDate\\uf8ff")
-            .get()
-            .addOnSuccessListener {
-                successListener(it)
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
-    }
+        try {
+            val result = firestore
+                .collection(collection)
+                .orderBy(field)
+                .startAt(startDate)
+                .endAt("$startDate\\uf8ff")
+                .get()
+                .await()
 
-    suspend fun getBasicSearchData(
-        collection: String,
-        queryField: String,
-        queryData: Any,
-        orderByField: String,
-        startDate: String,
-        successListener: (QuerySnapshot) -> Unit,
-        failureListener: () -> Unit
-    ) {
-        firestore
-            .collection(collection)
-            .whereEqualTo(queryField, queryData)
-            .orderBy(orderByField)
-            .startAt(startDate)
-            .endAt("$startDate\\uf8ff")
-            .get()
-            .addOnSuccessListener {
-                successListener(it)
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
+            successListener(result)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun basicDelete(
@@ -406,18 +298,18 @@ class FirebaseClient @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) {
-        firestore
-            .collection(collection)
-            .document(documentId)
-            .delete()
-            .addOnSuccessListener {
-                successListener()
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
+        try {
+            firestore
+                .collection(collection)
+                .document(documentId)
+                .delete()
+                .await()
+
+            successListener()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun getDoubleSnapshot(
@@ -429,46 +321,20 @@ class FirebaseClient @Inject constructor(
         successListener: (QuerySnapshot) -> Unit,
         failureListener: () -> Unit
     ) {
-        firestore
-            .collection(firstCollection)
-            .document(firstDocument)
-            .collection(secondCollection)
-            .orderBy(orderByField, orderByDirection)
-            .get()
-            .addOnSuccessListener(successListener)
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
-    }
+        try {
+            val result = firestore
+                .collection(firstCollection)
+                .document(firstDocument)
+                .collection(secondCollection)
+                .orderBy(orderByField, orderByDirection)
+                .get()
+                .await()
 
-    suspend fun doubleAddData(
-        firstCollection: String,
-        firstDocument: String,
-        secondCollection: String,
-        secondDocument: String,
-        data: Any,
-        successListener: (() -> Unit)? = null,
-        failureListener: (() -> Unit)? = null
-    ) = try {
-        firestore
-            .collection(firstCollection)
-            .document(firstDocument)
-            .collection(secondCollection)
-            .document(secondDocument)
-            .set(data)
-            .addOnSuccessListener {
-                successListener?.invoke()
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener?.invoke()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+            successListener(result)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun doubleAddData(
@@ -478,24 +344,21 @@ class FirebaseClient @Inject constructor(
         data: Any,
         successListener: (() -> Unit)? = null,
         failureListener: (() -> Unit)? = null
-    ) = try {
-        firestore
-            .collection(firstCollection)
-            .document(firstDocument)
-            .collection(secondCollection)
-            .document()
-            .set(data)
-            .addOnSuccessListener {
-                successListener?.invoke()
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener?.invoke()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+    ) {
+        try {
+            firestore
+                .collection(firstCollection)
+                .document(firstDocument)
+                .collection(secondCollection)
+                .document()
+                .set(data)
+                .await()
+
+            successListener?.invoke()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener?.invoke()
+        }
     }
 
     suspend fun doubleUpdateData(
@@ -506,24 +369,21 @@ class FirebaseClient @Inject constructor(
         updateData: Map<String, Any?>,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ) = try {
-        firestore
-            .collection(firstCollection)
-            .document(firstDocument)
-            .collection(secondCollection)
-            .document(secondDocument)
-            .update(updateData)
-            .addOnSuccessListener {
-                successListener()
-            }
-            .addOnFailureListener {
-                failureListener()
-                it.printStackTrace()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+    ) {
+        try {
+            firestore
+                .collection(firstCollection)
+                .document(firstDocument)
+                .collection(secondCollection)
+                .document(secondDocument)
+                .update(updateData)
+                .await()
+
+            successListener()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun doubleDelete(
@@ -533,46 +393,40 @@ class FirebaseClient @Inject constructor(
         secondDocument: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ): Any? = try {
-        firestore
-            .collection(firstCollection)
-            .document(firstDocument)
-            .collection(secondCollection)
-            .document(secondDocument)
-            .delete()
-            .addOnSuccessListener {
-                successListener()
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+    ) {
+        try {
+            firestore
+                .collection(firstCollection)
+                .document(firstDocument)
+                .collection(secondCollection)
+                .document(secondDocument)
+                .delete()
+                .await()
+
+            successListener()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun storageDelete(
         path: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-    ): Any? = try {
-        storage
-            .reference
-            .child(path)
-            .delete()
-            .addOnSuccessListener {
-                successListener()
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+    ) {
+        try {
+            storage
+                .reference
+                .child(path)
+                .delete()
+                .await()
+
+            successListener()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     suspend fun basicFileUpload(
@@ -580,33 +434,23 @@ class FirebaseClient @Inject constructor(
         uri: Uri,
         successListener: (String) -> Unit,
         failureListener: () -> Unit
-    ): Any? = try {
-        val storageRef = getStorageReference(fileName)
+    ) {
+        try {
+            val storageRef = getStorageReference(fileName)
 
-        storageRef.putFile(uri)
-            .addOnProgressListener {
-                val progress = (100 * it.bytesTransferred / it.totalByteCount)
-            }
-            .addOnSuccessListener {
-                storageRef
-                    .downloadUrl
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            successListener(task.result.toString())
-                        } else {
-                            Log.e("basicFileUpload", "downloadUrl error")
-                            failureListener()
-                        }
-                    }
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                failureListener()
-            }
-            .await()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+            storageRef
+                .putFile(uri)
+                .await()
+
+            val result = storageRef
+                .downloadUrl
+                .await()
+
+            successListener(result.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failureListener()
+        }
     }
 
     companion object {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".fragment.ProgressFragment">
+    tools:context=".view.main.league_info.ProgressFragment">
 
     <ScrollView
         android:layout_width="match_parent"

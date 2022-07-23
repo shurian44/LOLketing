@@ -1,4 +1,4 @@
-package com.ezen.lolketing.fragment
+package com.ezen.lolketing.view.main.league_info
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
