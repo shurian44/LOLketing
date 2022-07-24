@@ -29,6 +29,7 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.LoginActivity
+import com.ezen.lolketing.view.main.LoadingDialog
 import com.ezen.lolketing.view.main.TitleBar
 import com.ezen.lolketing.view.ui.theme.*
 
@@ -48,6 +49,9 @@ fun WithdrawalContainer(
     }
     var isEnable by remember {
         mutableStateOf(true)
+    }
+    var isLoading by remember {
+        mutableStateOf(false)
     }
     val keyboardController = LocalSoftwareKeyboardController.current
     val deleteState = viewModel.deleteUserState.collectAsState()
@@ -174,18 +178,10 @@ fun WithdrawalContainer(
             MyPageViewModel.Event.Init -> {}
             /** 로딩 프로그레스 **/
             is MyPageViewModel.Event.Loading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(0xB3000000))
-                        .clickable { }
-                )
-                CircularProgressIndicator(
-                    color = SubColor,
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                isLoading = true
             }
             MyPageViewModel.Event.Success -> {
+                isLoading = false
                 viewModel.logout()
                 activity?.let {
                     it.finishAffinity()
@@ -193,10 +189,13 @@ fun WithdrawalContainer(
                 }
             }
             MyPageViewModel.Event.Failure -> {
+                isLoading = false
                 activity?.toast(stringResource(id = R.string.error_withdrawal))
                 isEnable = true
             }
         }
+
+        LoadingDialog(isShow = isLoading)
 
     }
 

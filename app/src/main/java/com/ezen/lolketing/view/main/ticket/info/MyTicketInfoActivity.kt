@@ -1,5 +1,7 @@
 package com.ezen.lolketing.view.main.ticket.info
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -65,6 +67,7 @@ class MyTicketInfoActivity : BaseViewModelActivity<ActivityMyTicketInfoBinding, 
         Glide
             .with(this@MyTicketInfoActivity)
             .load(info.image)
+            .placeholder(ColorDrawable(Color.WHITE))
             .into(imgQrCode)
 
         try {

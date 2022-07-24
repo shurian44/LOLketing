@@ -63,7 +63,7 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(R.layout.activity
 
         editChat.setRegisterListener {
             // 이전 날의 채팅방 입장은 가능하지만 당일 제외하고 채팅 입력 불가
-            if (isCurrentDate(time)) {
+            if (isCurrentDate(time).not()) {
                 toast(R.string.guide_write_current_day)
                 return@setRegisterListener
             }

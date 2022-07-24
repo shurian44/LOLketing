@@ -20,23 +20,18 @@ class TicketingRepository @Inject constructor(
         onFailureListener: () -> Unit
     ) {
         try {
-            firestore
+            val result = firestore
                 .collection(Constants.GAME)
                 .orderBy(DATE)
                 .whereGreaterThan(DATE, date)
                 .get()
-                .addOnSuccessListener { snapshot ->
-                    snapshot
-                        .mapNotNull {
-                            it.toObject(Game::class.java).mapper()
-                        }
-                        .let(onSuccessListener)
-                }
-                .addOnFailureListener {
-                    it.printStackTrace()
-                    onFailureListener()
-                }
                 .await()
+
+            result
+                .mapNotNull {
+                    it.toObject(Game::class.java).mapper()
+                }
+                .let(onSuccessListener)
         } catch (e: Exception) {
             e.printStackTrace()
             onFailureListener()

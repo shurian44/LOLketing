@@ -2,6 +2,7 @@ package com.ezen.lolketing.model
 
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.isCurrentDate
+import com.ezen.lolketing.util.isPassedDate
 import com.ezen.lolketing.util.isPassedTime
 
 data class Game(
@@ -17,16 +18,19 @@ data class Game(
         val status = status ?: return null
         val time = time?: return null
         val isCurrentDate = isCurrentDate(date, "yyyy.MM.dd")
+        val isPassedDate = isPassedDate(date, 2, "yyyy.MM.dd")
         val currentStatus = if (isCurrentDate) {
             when(isPassedTime(time)) {
                 true -> Code.TICKETING_FINISH.code
                 false -> status
             }
-        } else {
+        } else if(isPassedDate) {
             when(status){
                 Code.TICKETING_ON.code -> Code.TICKETING_SCHEDULE_OPEN.code
                 else -> status
             }
+        }else {
+            status
         }
 
         return Ticket(
