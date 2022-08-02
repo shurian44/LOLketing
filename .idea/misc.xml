@@ -20,10 +20,14 @@
         <entry key="../../../../layout/compose-model-1658199862105.xml" value="0.3260135135135135" />
         <entry key="../../../../layout/compose-model-1658200213972.xml" value="0.3251689189189189" />
         <entry key="../../../../layout/compose-model-1658201342343.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1659081633085.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1659085001981.xml" value="0.1" />
         <entry key="../../../../layout/custom_preview.xml" value="0.2427536231884058" />
         <entry key="app/src/main/res/drawable-v24/bg_check_box.xml" value="0.235" />
+        <entry key="app/src/main/res/drawable-v24/ic_baseline_clear_24.xml" value="0.201" />
         <entry key="app/src/main/res/drawable-v24/ic_check_circle_on.xml" value="0.235" />
-        <entry key="app/src/main/res/drawable/avd_anim.xml" value="0.268" />
+        <entry key="app/src/main/res/drawable-v24/id_check_circle_off.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/avd_anim.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/bg_check_box.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/bg_check_box_seat.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/bg_custom_edit_text.xml" value="0.268" />
@@ -34,29 +38,74 @@
         <entry key="app/src/main/res/drawable/bg_round_outline_3_gray.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/bg_round_outline_3_main.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/bg_round_outline_3_red.xml" value="0.268" />
+        <entry key="app/src/main/res/drawable/bg_round_outline_3_sub_color.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/bg_round_outline_3_white.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/bg_top_round_20_black.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/btn_round_fill.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/btn_round_fill2.xml" value="0.2235" />
+        <entry key="app/src/main/res/drawable/button_selector.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/checkbox_state.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/checkbox_state_light_black.xml" value="0.256" />
         <entry key="app/src/main/res/drawable/fragment_holl_a.xml" value="0.275" />
+        <entry key="app/src/main/res/drawable/heart_toggle.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_address.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_arrow_drop_down_black_24dp.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.268" />
+        <entry key="app/src/main/res/drawable/ic_board.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_btn_minus.xml" value="0.131" />
+        <entry key="app/src/main/res/drawable/ic_btn_plus.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_cancel.xml" value="0.275" />
+        <entry key="app/src/main/res/drawable/ic_cart.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_cart_fill.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_chatting.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_check_box_checked.xml" value="0.268" />
         <entry key="app/src/main/res/drawable/ic_check_box_unchecked.xml" value="0.268" />
+        <entry key="app/src/main/res/drawable/ic_collections_bookmark_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_comment.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_event.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_event_available_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_event_seat_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_favorite_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_favorite_border_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_heart.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_heart_fill.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_lol_guide.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_menu_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_message.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_minus.xml" value="0.131" />
+        <entry key="app/src/main/res/drawable/ic_more.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_more_vert_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_news.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_next.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_person_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_person_outline_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_phone.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_plus.xml" value="0.131" />
         <entry key="app/src/main/res/drawable/ic_position.xml" value="0.2805" />
+        <entry key="app/src/main/res/drawable/ic_prev.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.275" />
         <entry key="app/src/main/res/drawable/ic_pw.xml" value="0.3375" />
+        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_setting.xml" value="0.1225" />
+        <entry key="app/src/main/res/drawable/ic_shopping.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_shopping_basket_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_shopping_cart_black_24dp.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_ticket.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_trash.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_trophy.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/ic_up.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_user.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/ic_write.xml" value="0.2565" />
+        <entry key="app/src/main/res/drawable/radiobutton_state.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/round.xml" value="0.2565" />
         <entry key="app/src/main/res/drawable/solid.xml" value="0.3375" />
         <entry key="app/src/main/res/drawable/splash.xml" value="0.268" />
+        <entry key="app/src/main/res/drawable/stroke_outline.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/stroke_outline2.xml" value="0.201" />
+        <entry key="app/src/main/res/drawable/stroke_outline3.xml" value="0.201" />
         <entry key="app/src/main/res/font/noto_serif.xml" value="0.21875" />
         <entry key="app/src/main/res/layout-v23/activity_board_list.xml" value="0.3734375" />
         <entry key="app/src/main/res/layout/activity_address.xml" value="0.38697916666666665" />

@@ -61,7 +61,6 @@
         <activity android:name=".view.main.event.EventListActivity" />
         <activity android:name=".view.main.event.EventDetailActivity" />
         <activity android:name=".view.main.guide.LoLGuideDetailActivity" />
-        <activity android:name=".view.main.guide.LoLGuideActivity" />
         <activity
             android:name=".view.main.chatting.ChattingActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -84,7 +83,6 @@
         <activity android:name=".view.main.board.team.TeamActivity" />
         <activity android:name=".view.main.news.NewsActivity" />
         <activity android:name=".view.main.news.NewsWebViewActivity" />
-        <activity android:name=".view.main.manager.ManagerActivity" />
         <activity android:name=".view.login.LoginActivity" />
         <activity android:name=".view.login.join.JoinActivity" />
         <activity android:name=".view.main.MainActivity" />

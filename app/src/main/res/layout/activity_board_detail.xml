@@ -142,7 +142,7 @@
                     app:layout_constraintStart_toStartOf="@id/viewLine"
                     app:layout_constraintTop_toBottomOf="@id/viewLine"
                     app:urlImage="@{board.image}"
-                    tools:src="@drawable/img_reserve" />
+                    tools:src="@drawable/img_chatting" />
 
                 <View
                     android:id="@+id/viewImageLine"

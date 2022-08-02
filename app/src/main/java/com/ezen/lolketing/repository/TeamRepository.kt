@@ -1,6 +1,5 @@
 package com.ezen.lolketing.repository
 
-import android.util.Log
 import com.ezen.lolketing.model.PlayerInfo
 import com.ezen.lolketing.model.TeamDTO
 import com.ezen.lolketing.model.TeamInfo
