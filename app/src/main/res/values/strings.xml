@@ -4,8 +4,6 @@
     <!-- 로그인 -->
     <string name="login">로그인</string>
     <string name="google_login">구글 로그인</string>
-    <string name="login_id">아이디</string>
-    <string name="login_pw">비밀번호</string>
     <string name="hint_id">아이디를 입력해주세요</string>
     <string name="hint_pw">비밀번호를 입력해주세요</string>
     <string name="find_id_pw">id/pw 찾기</string>
@@ -23,7 +21,6 @@
     <string name="hint_pw_check">비밀번호를 다시 입력해주세요</string>
     <string name="already_join">회원가입된 아이디입니다.</string>
     <string name="join_failure">회원가입에 실패하였습니다.</string>
-    <string name="join_success">회원가입 완료</string>
     <string name="user_register_success">유저 등록을 성공하였습니다.</string>
     <string name="user_register_failure">유저 등록을 실패하였습니다.</string>
     <string name="guide_input_check">입력한 내용을 확인해주세요</string>

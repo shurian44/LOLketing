@@ -1,6 +1,5 @@
 package com.ezen.lolketing.view.main
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -42,6 +41,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
 
     /** 각종 뷰들 초기화 **/
     private fun initViews() {
+        showDialog()
         viewModel.getUserInfo()
         viewModel.getEventBannerList()
         binding.activity = this
@@ -64,6 +64,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
 
     /** 상세 회원가입 여부 조회 **/
     private fun checkDetailJoin(event : MainViewModel.MainEvent.CheckDetailJoin){
+        dismissDialog()
         if (event.isNotJoinComplete){
             startActivity(JoinDetailActivity::class.java)
         }
