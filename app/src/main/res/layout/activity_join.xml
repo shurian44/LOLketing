@@ -116,7 +116,6 @@
             android:layout_height="56dp"
             android:layout_marginBottom="20dp"
             android:backgroundTint="@color/main_color"
-            android:onClick="@{activity::emailJoin}"
             android:text="@string/next"
             android:textColor="#fff"
             android:textSize="20sp"

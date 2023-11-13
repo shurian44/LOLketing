@@ -5,7 +5,9 @@ import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.model.SearchAddressResult
 import com.ezen.lolketing.repository.AddressRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,28 +21,29 @@ class AddressViewModel @Inject constructor(
     val isMoreData : Boolean
         get() = _isMoreData
 
-    fun selectAddress(keyword: String, isSearch: Boolean) = viewModelScope.launch {
+    fun selectAddress(keyword: String, isSearch: Boolean) {
         if (isSearch) {
             currentPage = 1
             currentKeyword = keyword
         }
 
-        repository.selectAddress(
-            keyword = currentKeyword,
-            currentPage = currentPage,
-            successListener = {
-                if (it.list == null || it.list.isEmpty()) {
+        repository
+            .fetchAddress(keyword = currentKeyword, currentPage = currentPage)
+            .onEach {
+                if (it.list.isNullOrEmpty()) {
                     event(Event.Error("입력한 주소를 확인해주세요"))
                 } else {
                     event(Event.AddressSearchSuccess(it.list))
                     currentPage++
                     _isMoreData = it.isMoreData
                 }
-            },
-            failureListener = {
-
             }
-        )
+            .catch {
+                it.printStackTrace()
+                event(Event.Error("입력한 주소를 확인해주세요"))
+            }
+            .launchIn(viewModelScope)
+
     }
 
     sealed class Event {

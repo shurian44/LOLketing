@@ -176,7 +176,7 @@ fun PurchaseContainer(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = SubColor,
                         unfocusedBorderColor = White,
-                        placeholderColor = Gray,
+//                        placeholderColor = Gray,
                         disabledPlaceholderColor = Gray
                     )
                 )
@@ -213,7 +213,7 @@ fun PurchaseContainer(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = SubColor,
                         unfocusedBorderColor = White,
-                        placeholderColor = Gray,
+//                        placeholderColor = Gray,
                         disabledPlaceholderColor = Gray
                     )
                 )
@@ -248,7 +248,7 @@ fun PurchaseContainer(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = SubColor,
                         unfocusedBorderColor = White,
-                        placeholderColor = Gray,
+//                        placeholderColor = Gray,
                         disabledPlaceholderColor = Gray
                     )
                 )
@@ -284,7 +284,7 @@ fun PurchaseContainer(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = SubColor,
                         unfocusedBorderColor = White,
-                        placeholderColor = Gray,
+//                        placeholderColor = Gray,
                         disabledPlaceholderColor = Gray
                     )
                 )

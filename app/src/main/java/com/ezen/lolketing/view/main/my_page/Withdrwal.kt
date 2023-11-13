@@ -104,13 +104,13 @@ fun WithdrawalContainer(
                 maxLines = 1,
                 placeholder = { Text(text = stringResource(id = R.string.label_withdrawal)) },
                 isError = isError,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = SubColor,
-                    unfocusedBorderColor = White,
-                    errorBorderColor = Red,
-                    cursorColor = SubColor,
-                    textColor = White
-                ),
+//                colors = TextFieldDefaults.outlinedTextFieldColors(
+//                    focusedBorderColor = SubColor,
+//                    unfocusedBorderColor = White,
+//                    errorBorderColor = Red,
+//                    cursorColor = SubColor,
+//                    textColor = White
+//                ),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Done

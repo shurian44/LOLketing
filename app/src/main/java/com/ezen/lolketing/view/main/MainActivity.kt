@@ -5,7 +5,6 @@ import android.view.View
 import androidx.activity.viewModels
 import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
-import com.ezen.lolketing.adapter.EventSliderAdapter
 import com.ezen.lolketing.databinding.ActivityMainBinding
 import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.dialog.TeamSelectDialog
@@ -18,9 +17,6 @@ import com.ezen.lolketing.view.main.my_page.MyPageActivity
 import com.ezen.lolketing.view.main.news.NewsActivity
 import com.ezen.lolketing.view.main.shop.ShopActivity
 import com.ezen.lolketing.view.main.ticket.list.ReserveListActivity
-import com.smarteist.autoimageslider.IndicatorAnimations
-import com.smarteist.autoimageslider.SliderAnimations
-import com.smarteist.autoimageslider.SliderView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,7 +50,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
                 checkDetailJoin(event)
             }
             is MainViewModel.MainEvent.EventBannerList -> {
-                eventSlide(event.list)
+//                eventSlide(event.list)
             }
             is MainViewModel.MainEvent.Error -> {
                 toast(event.msg)
@@ -71,15 +67,15 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
     }
 
     /** 이벤트 베너 등록 **/
-    private fun eventSlide(list : List<Int>) = with(binding.viewPagerAd) {
-        // AUTO Slider
-        setSliderAdapter(EventSliderAdapter(list))
-        setIndicatorAnimation(IndicatorAnimations.WORM)
-        setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
-        autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_RIGHT
-        scrollTimeInSec = 4
-        startAutoCycle()
-    }
+//    private fun eventSlide(list : List<Int>) = with(binding.viewPagerAd) {
+//        // AUTO Slider
+//        setSliderAdapter(EventSliderAdapter(list))
+//        setIndicatorAnimation(IndicatorAnimations.WORM)
+//        setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+//        autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_RIGHT
+//        scrollTimeInSec = 4
+//        startAutoCycle()
+//    }
 
     /** 각 버튼별 페이지 이동 **/
     fun moveActivity(view: View) = with(binding) {

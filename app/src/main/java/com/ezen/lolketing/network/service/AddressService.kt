@@ -1,16 +1,14 @@
 package com.ezen.lolketing.network.service
 
 import com.ezen.lolketing.BuildConfig
-import com.ezen.lolketing.model.AddressParam
 import com.ezen.lolketing.model.AddressResult
-import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.*
 
 interface AddressService {
 
+    /** 주소 조회 **/
     @GET("addrlink/addrLinkApi.do")
-    suspend fun getAddress(
+    suspend fun fetchAddress(
         @Query("confmKey") confmKey : String? = BuildConfig.ADDRESS_API_KEY,
         @Query("currentPage") currentPage : Int? = 1,
         @Query("countPerPage") countPerPage : Int? = 10,

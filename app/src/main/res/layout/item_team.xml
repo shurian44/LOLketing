@@ -9,41 +9,41 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
 
-        <com.github.florent37.shapeofview.shapes.CutCornerView
-            android:layout_width="0dp"
-            android:layout_height="220dp"
-            android:elevation="3dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shape_cutCorner_topRightSize="20dp">
+<!--        <com.github.florent37.shapeofview.shapes.CutCornerView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="220dp"-->
+<!--            android:elevation="3dp"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:shape_cutCorner_topRightSize="20dp">-->
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimaryDark">
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@color/colorPrimaryDark">-->
 
-                <ImageView
-                    android:id="@+id/player_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:src="@drawable/captain" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/player_img"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    tools:src="@drawable/captain" />-->
 
-                <TextView
-                    android:id="@+id/player_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#99000000"
-                    android:padding="5dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="23sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    tools:text="30sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/player_name"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#99000000"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:textColor="#FFFFFF"-->
+<!--                    android:textSize="23sp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                    tools:text="30sp" />-->
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-        </com.github.florent37.shapeofview.shapes.CutCornerView>
+<!--        </com.github.florent37.shapeofview.shapes.CutCornerView>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

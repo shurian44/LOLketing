@@ -15,19 +15,19 @@ class TeamAdapter : RecyclerView.Adapter<TeamAdapter.TeamHolder>(){
         fun bind() = with(binding) {
             val item = list[adapterPosition]
             if(item.img.isNotEmpty()){
-                Glide.with(binding.root.context).load(item.img).into(binding.playerImg)
+//                Glide.with(binding.root.context).load(item.img).into(binding.playerImg)
             }
             val text = "${item.nickname}\n${item.name}\n${item.position}"
-            binding.playerName.text = text
-            binding.playerName.maxLines = 1
-
-            binding.root.setOnClickListener {
-                if(binding.playerName.maxLines == 1){
-                    binding.playerName.maxLines = 3
-                }else{
-                    binding.playerName.maxLines = 1
-                }
-            }
+//            binding.playerName.text = text
+//            binding.playerName.maxLines = 1
+//
+//            binding.root.setOnClickListener {
+//                if(binding.playerName.maxLines == 1){
+//                    binding.playerName.maxLines = 3
+//                }else{
+//                    binding.playerName.maxLines = 1
+//                }
+//            }
         }
     }
 

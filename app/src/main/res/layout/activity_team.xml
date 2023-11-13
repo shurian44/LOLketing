@@ -20,25 +20,25 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.github.florent37.shapeofview.shapes.CircleView
-            android:id="@+id/team_logo_layout"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="15dp"
-            app:layout_constraintBottom_toBottomOf="@id/top_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/top_view"
-            app:shape_circle_borderColor="#fff"
-            app:shape_circle_borderWidth="2dp">
+<!--        <com.github.florent37.shapeofview.shapes.CircleView-->
+<!--            android:id="@+id/team_logo_layout"-->
+<!--            android:layout_width="70dp"-->
+<!--            android:layout_height="70dp"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/top_view"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/top_view"-->
+<!--            app:shape_circle_borderColor="#fff"-->
+<!--            app:shape_circle_borderWidth="2dp">-->
 
-            <ImageView
-                android:id="@+id/team_logo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:src="@drawable/logo_t1" />
+<!--            <ImageView-->
+<!--                android:id="@+id/team_logo"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@color/white"-->
+<!--                android:src="@drawable/logo_t1" />-->
 
-        </com.github.florent37.shapeofview.shapes.CircleView>
+<!--        </com.github.florent37.shapeofview.shapes.CircleView>-->
 
         <TextView
             android:id="@+id/team_name"

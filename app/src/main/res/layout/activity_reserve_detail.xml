@@ -75,7 +75,6 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="15dp"
                 android:text="@string/ticket_guide_button"
-                android:onClick="@{activity::onTicketInfoClick}"
                 android:textColor="@color/light_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -201,7 +200,6 @@
             android:layout_height="56dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:onClick="@{activity::onReserveClick}"
             android:text="@string/make_reservation"
             android:textColor="@color/white"
             android:textSize="20sp"
