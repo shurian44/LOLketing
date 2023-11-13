@@ -85,11 +85,7 @@ fun setGlide(view: ImageView, uri: Uri) {
 }
 
 fun String.htmlFormat() : Spanned =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        Html.fromHtml(this)
-    }
+    Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
 
 fun getCurrentDateTime(): Date =
     Calendar.getInstance().time

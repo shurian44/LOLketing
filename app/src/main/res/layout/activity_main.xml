@@ -18,214 +18,134 @@
         android:background="@color/black"
         tools:context=".view.main.MainActivity">
 
-<!--        <com.smarteist.autoimageslider.SliderView-->
-<!--            android:id="@+id/viewPagerAd"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="250dp"-->
-<!--            android:scaleType="fitXY"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:sliderAnimationDuration="600"-->
-<!--            app:sliderAutoCycleEnabled="true"-->
-<!--            app:sliderIndicatorAnimationDuration="600"-->
-<!--            app:sliderIndicatorGravity="center_horizontal|bottom"-->
-<!--            app:sliderIndicatorMargin="15dp"-->
-<!--            app:sliderIndicatorOrientation="horizontal"-->
-<!--            app:sliderIndicatorPadding="3dp"-->
-<!--            app:sliderIndicatorRadius="2dp"-->
-<!--            app:sliderIndicatorSelectedColor="@color/sub_color"-->
-<!--            app:sliderIndicatorUnselectedColor="#B3239A8E"-->
-<!--            app:sliderStartAutoCycle="true" />-->
-
-        <ImageView
-            android:id="@+id/btnBoard"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginEnd="40dp"
-            android:src="@drawable/ic_board"
-            app:layout_constraintEnd_toStartOf="@id/btnEvent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintVertical_chainStyle="packed"
+        <com.ezen.lolketing.view.custom.ImageSlider
+            android:id="@+id/imageSlider"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/txtBoard"/>
+            tools:background="@color/main_color" />
 
         <TextView
             android:id="@+id/txtBoard"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/board"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnBoard"
-            app:layout_constraintStart_toStartOf="@id/btnBoard"
-            app:layout_constraintTop_toBottomOf="@id/btnBoard"
-            app:layout_constraintBottom_toTopOf="@id/btnInfo"/>
-
-        <!-- 1번째 줄 -->
-        <ImageView
-            android:id="@+id/btnEvent"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginEnd="40dp"
-            android:src="@drawable/ic_event"
-            app:layout_constraintEnd_toStartOf="@id/btnMyPage"
-            app:layout_constraintStart_toEndOf="@id/btnBoard"
-            app:layout_constraintTop_toTopOf="@id/btnBoard" />
+            app:drawableTopCompat="@drawable/ic_board"
+            app:layout_constraintBottom_toTopOf="@id/txtInfo"
+            app:layout_constraintEnd_toStartOf="@id/txtEvent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageSlider"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/txtEvent"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/event"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnEvent"
-            app:layout_constraintStart_toStartOf="@id/btnEvent"
-            app:layout_constraintTop_toBottomOf="@id/btnEvent" />
-
-        <ImageView
-            android:id="@+id/btnMyPage"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_profile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnEvent"
-            app:layout_constraintTop_toTopOf="@id/btnBoard" />
+            app:drawableTopCompat="@drawable/ic_event"
+            app:layout_constraintEnd_toStartOf="@id/txtMyPage"
+            app:layout_constraintStart_toEndOf="@id/txtBoard"
+            app:layout_constraintTop_toTopOf="@id/txtBoard" />
 
         <TextView
             android:id="@+id/txtMyPage"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/my_page"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnMyPage"
-            app:layout_constraintStart_toStartOf="@id/btnMyPage"
-            app:layout_constraintTop_toBottomOf="@id/btnMyPage" />
-
-        <!-- 2번째 줄  -->
-        <ImageView
-            android:id="@+id/btnInfo"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/ic_trophy"
-            app:layout_constraintStart_toStartOf="@id/btnBoard"
-            app:layout_constraintTop_toBottomOf="@id/txtBoard"
-            app:layout_constraintBottom_toTopOf="@id/txtInfo"/>
+            app:drawableTopCompat="@drawable/ic_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtEvent"
+            app:layout_constraintTop_toTopOf="@id/txtBoard" />
 
         <TextView
             android:id="@+id/txtInfo"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/league_info"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnInfo"
-            app:layout_constraintStart_toStartOf="@id/btnInfo"
-            app:layout_constraintTop_toBottomOf="@id/btnInfo"
-            app:layout_constraintBottom_toTopOf="@id/btnGuid"/>
-
-        <ImageView
-            android:id="@+id/btnReserve"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_ticket"
-            app:layout_constraintStart_toStartOf="@id/btnEvent"
-            app:layout_constraintTop_toTopOf="@id/btnInfo" />
+            app:drawableTopCompat="@drawable/ic_trophy"
+            app:layout_constraintBottom_toTopOf="@id/txtGuid"
+            app:layout_constraintStart_toStartOf="@id/txtBoard"
+            app:layout_constraintTop_toBottomOf="@id/txtBoard" />
 
         <TextView
             android:id="@+id/txtReserve"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/ticket_reserve"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnReserve"
-            app:layout_constraintStart_toStartOf="@id/btnReserve"
-            app:layout_constraintTop_toBottomOf="@id/btnReserve" />
-
-        <ImageView
-            android:id="@+id/btnShop"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_shopping"
-            app:layout_constraintStart_toStartOf="@id/btnMyPage"
-            app:layout_constraintTop_toTopOf="@id/btnInfo" />
+            app:drawableTopCompat="@drawable/ic_ticket"
+            app:layout_constraintStart_toStartOf="@id/txtEvent"
+            app:layout_constraintTop_toTopOf="@id/txtInfo" />
 
         <TextView
             android:id="@+id/txt_shop"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/shopping"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnShop"
-            app:layout_constraintStart_toStartOf="@id/btnShop"
-            app:layout_constraintTop_toBottomOf="@id/btnShop" />
-
-        <!-- 3번째 줄 -->
-        <ImageView
-            android:id="@+id/btnGuid"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/ic_lol_guide"
-            app:layout_constraintStart_toStartOf="@id/btnBoard"
-            app:layout_constraintTop_toBottomOf="@id/txtInfo"
-            app:layout_constraintBottom_toTopOf="@id/txtGuid"/>
+            app:drawableTopCompat="@drawable/ic_shopping"
+            app:layout_constraintStart_toStartOf="@id/txtMyPage"
+            app:layout_constraintTop_toTopOf="@id/txtInfo" />
 
         <TextView
             android:id="@+id/txtGuid"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/lol_guide"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnGuid"
-            app:layout_constraintStart_toStartOf="@id/btnGuid"
-            app:layout_constraintTop_toBottomOf="@id/btnGuid"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <ImageView
-            android:id="@+id/btnNews"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_news"
-            app:layout_constraintStart_toStartOf="@id/btnEvent"
-            app:layout_constraintTop_toTopOf="@id/btnGuid" />
+            app:drawableTopCompat="@drawable/ic_lol_guide"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/txtInfo"
+            app:layout_constraintTop_toBottomOf="@id/txtInfo" />
 
         <TextView
             android:id="@+id/txtNews"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/news"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnNews"
-            app:layout_constraintStart_toStartOf="@id/btnNews"
-            app:layout_constraintTop_toBottomOf="@id/btnNews" />
-
-        <ImageView
-            android:id="@+id/btnChatting"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_chatting"
-            app:layout_constraintStart_toStartOf="@id/btnMyPage"
-            app:layout_constraintTop_toTopOf="@id/btnGuid" />
+            app:drawableTopCompat="@drawable/ic_news"
+            app:layout_constraintStart_toStartOf="@id/txtEvent"
+            app:layout_constraintTop_toTopOf="@id/txtGuid" />
 
         <TextView
             android:id="@+id/txtChatting"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{activity::moveActivity}"
             android:text="@string/chatting"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/btnChatting"
-            app:layout_constraintStart_toStartOf="@id/btnChatting"
-            app:layout_constraintTop_toBottomOf="@id/btnChatting" />
+            app:drawableTopCompat="@drawable/ic_chatting"
+            app:layout_constraintStart_toStartOf="@id/txtMyPage"
+            app:layout_constraintTop_toTopOf="@id/txtGuid" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

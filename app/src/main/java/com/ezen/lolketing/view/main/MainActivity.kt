@@ -13,6 +13,7 @@ import com.ezen.lolketing.view.main.board.BoardListActivity
 import com.ezen.lolketing.view.main.chatting.ChattingListActivity
 import com.ezen.lolketing.view.main.event.EventListActivity
 import com.ezen.lolketing.view.main.guide.GuideActivity
+import com.ezen.lolketing.view.main.league_info.LeagueInfoActivity
 import com.ezen.lolketing.view.main.my_page.MyPageActivity
 import com.ezen.lolketing.view.main.news.NewsActivity
 import com.ezen.lolketing.view.main.shop.ShopActivity
@@ -50,7 +51,7 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
                 checkDetailJoin(event)
             }
             is MainViewModel.MainEvent.EventBannerList -> {
-//                eventSlide(event.list)
+                binding.imageSlider.setImageList(event.list)
             }
             is MainViewModel.MainEvent.Error -> {
                 toast(event.msg)
@@ -66,29 +67,18 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>(R
         }
     }
 
-    /** 이벤트 베너 등록 **/
-//    private fun eventSlide(list : List<Int>) = with(binding.viewPagerAd) {
-//        // AUTO Slider
-//        setSliderAdapter(EventSliderAdapter(list))
-//        setIndicatorAnimation(IndicatorAnimations.WORM)
-//        setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
-//        autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_RIGHT
-//        scrollTimeInSec = 4
-//        startAutoCycle()
-//    }
-
     /** 각 버튼별 페이지 이동 **/
     fun moveActivity(view: View) = with(binding) {
         when(view.id){
-            btnEvent.id, txtEvent.id -> startActivity(EventListActivity::class.java)
-            btnMyPage.id, txtMyPage.id -> startActivity(MyPageActivity::class.java)
-            btnInfo.id, txtInfo.id -> startActivity(com.ezen.lolketing.view.main.league_info.LeagueInfoActivity::class.java)
-            btnReserve.id, txtReserve.id -> startActivity(ReserveListActivity::class.java)
-            btnShop.id, txtShop.id -> startActivity(ShopActivity::class.java)
-            btnGuid.id, txtGuid.id -> startActivity(GuideActivity::class.java)
-            btnNews.id, txtNews.id -> startActivity(NewsActivity::class.java)
-            btnChatting.id, txtChatting.id -> startActivity(ChattingListActivity::class.java)
-            btnBoard.id, txtBoard.id -> {
+            txtEvent.id -> startActivity(EventListActivity::class.java)
+            txtMyPage.id -> startActivity(MyPageActivity::class.java)
+            txtInfo.id -> startActivity(LeagueInfoActivity::class.java)
+            txtReserve.id -> startActivity(ReserveListActivity::class.java)
+            txtShop.id -> startActivity(ShopActivity::class.java)
+            txtGuid.id -> startActivity(GuideActivity::class.java)
+            txtNews.id -> startActivity(NewsActivity::class.java)
+            txtChatting.id -> startActivity(ChattingListActivity::class.java)
+            txtBoard.id -> {
                 TeamSelectDialog{ team ->
                     startActivity(
                         createIntent(BoardListActivity::class.java).also { intent ->
