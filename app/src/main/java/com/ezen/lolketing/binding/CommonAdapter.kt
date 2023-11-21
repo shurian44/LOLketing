@@ -5,6 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ezen.lolketing.view.custom.ImageSlider
 
 @BindingAdapter("adapter")
 fun bindAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
@@ -21,4 +22,10 @@ fun bindSubmitList(view: RecyclerView, itemList: List<Any>?) {
 @BindingAdapter("imageRes")
 fun imageLoad(imageView: ImageView, @DrawableRes resId: Int) {
     imageView.setImageResource(resId)
+}
+
+@BindingAdapter("sliderImage")
+fun imageListLoad(slider: ImageSlider, list: List<Int>) {
+    print("+++++ $list")
+    slider.setImageList(list)
 }

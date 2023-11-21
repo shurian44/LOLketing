@@ -18,17 +18,17 @@ class PurchaseRepository @Inject constructor(
         successListener: (TicketInfo) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .getBasicSnapshot(
-                collection = Constants.PURCHASE,
-                document = documentId,
-                successListener = {
-                    it.toObject(PurchaseDTO::class.java)?.let { purchase ->
-                        successListener(purchase.ticketMapper())
-                    } ?: failureListener()
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicSnapshot(
+//                collection = Constants.PURCHASE,
+//                document = documentId,
+//                successListener = {
+//                    it.toObject(PurchaseDTO::class.java)?.let { purchase ->
+//                        successListener(purchase.ticketMapper())
+//                    } ?: failureListener()
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -39,16 +39,16 @@ class PurchaseRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        val email = client.getUserEmail() ?: throw Exception("email is null")
-
-        client
-            .basicUpdateData(
-                collection = Constants.USERS,
-                documentId = email,
-                updateData = mapOf(CACHE to FieldValue.increment(refund)),
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        val email = client.getUserEmail() ?: throw Exception("email is null")
+//
+//        client
+//            .basicUpdateData(
+//                collection = Constants.USERS,
+//                documentId = email,
+//                updateData = mapOf(CACHE to FieldValue.increment(refund)),
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -60,19 +60,19 @@ class PurchaseRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        documentIdList.forEach {
-            client
-                .doubleUpdateData(
-                    firstCollection = Constants.GAME,
-                    firstDocument = time,
-                    secondCollection = Constants.SEAT,
-                    secondDocument = it,
-                    updateData = mapOf(DOCUMENT_ID to "", RESERVE_ID to ""),
-                    successListener = {},
-                    failureListener = failureListener
-                )
-        }
-        successListener()
+//        documentIdList.forEach {
+//            client
+//                .doubleUpdateData(
+//                    firstCollection = Constants.GAME,
+//                    firstDocument = time,
+//                    secondCollection = Constants.SEAT,
+//                    secondDocument = it,
+//                    updateData = mapOf(DOCUMENT_ID to "", RESERVE_ID to ""),
+//                    successListener = {},
+//                    failureListener = failureListener
+//                )
+//        }
+//        successListener()
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -83,13 +83,13 @@ class PurchaseRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .basicDelete(
-                collection = Constants.PURCHASE,
-                documentId = documentId,
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .basicDelete(
+//                collection = Constants.PURCHASE,
+//                documentId = documentId,
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -100,12 +100,12 @@ class PurchaseRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ): Any? = try {
-        client
-            .storageDelete(
-                path = path,
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .storageDelete(
+//                path = path,
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -127,12 +127,12 @@ class PurchaseRepository @Inject constructor(
         successListener: (ShippingInfo) -> Unit,
         failureListener: () -> Unit
     ) {
-        client.getUserInfo(
-            successListener = {
-                it.mapperShippingInfo()?.let(successListener) ?: failureListener()
-            },
-            failureListener = failureListener
-        )
+//        client.getUserInfo(
+//            successListener = {
+//                it.mapperShippingInfo()?.let(successListener) ?: failureListener()
+//            },
+//            failureListener = failureListener
+//        )
     }
 
     suspend fun setPurchaseItems(
@@ -157,27 +157,27 @@ class PurchaseRepository @Inject constructor(
                 timestamp = System.currentTimeMillis()
             )
 
-            client
-                .basicAddData(
-                    collection = Constants.PURCHASE,
-                    data = item,
-                    failureListener = {
-                        failureListener()
-                        return@basicAddData
-                    }
-                )
+//            client
+//                .basicAddData(
+//                    collection = Constants.PURCHASE,
+//                    data = item,
+//                    failureListener = {
+//                        failureListener()
+//                        return@basicAddData
+//                    }
+//                )
 
         }
 
         val result = list.sumOf { it.price }
-        client
-            .basicUpdateData(
-                collection = Constants.USERS,
-                documentId = userInfo.id,
-                updateData = mapOf("cache" to FieldValue.increment(result * -1)),
-                successListener = {},
-                failureListener = failureListener
-            )
+//        client
+//            .basicUpdateData(
+//                collection = Constants.USERS,
+//                documentId = userInfo.id,
+//                updateData = mapOf("cache" to FieldValue.increment(result * -1)),
+//                successListener = {},
+//                failureListener = failureListener
+//            )
 
         successListener()
 
@@ -192,20 +192,20 @@ class PurchaseRepository @Inject constructor(
     ) = try {
         val id = client.getUserEmail() ?: throw Exception("email is null")
 
-        client
-            .getBasicQuerySnapshot(
-                collection = Constants.PURCHASE,
-                field = "id",
-                query = id,
-                successListener = { snapshot ->
-                    val result = snapshot.mapNotNull {
-                        it.toObject(PurchaseDTO::class.java)
-                            .historyMapper(it.id)
-                    }
-                    successListener(result.mapper())
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicQuerySnapshot(
+//                collection = Constants.PURCHASE,
+//                field = "id",
+//                query = id,
+//                successListener = { snapshot ->
+//                    val result = snapshot.mapNotNull {
+//                        it.toObject(PurchaseDTO::class.java)
+//                            .historyMapper(it.id)
+//                    }
+//                    successListener(result.mapper())
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()

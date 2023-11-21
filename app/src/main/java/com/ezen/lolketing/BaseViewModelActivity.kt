@@ -37,7 +37,7 @@ abstract class BaseViewModelActivity<B : ViewDataBinding, VM : ViewModel>(
     }
 
     protected fun showDialog() {
-        dialog = LoadingDialog().also {
+        dialog = LoadingDialog.newInstance().also {
             it.show(supportFragmentManager, null)
         }
     }

@@ -42,15 +42,15 @@ class TicketingRepository @Inject constructor(
     suspend fun isMasterUser(
         listener: (Boolean) -> Unit
     ) = try {
-        client
-            .getUserInfo(
-                successListener = { user ->
-                    listener(user.grade == Grade.MASTER.gradeCode)
-                },
-                failureListener = {
-                    listener(false)
-                }
-            )
+//        client
+//            .getUserInfo(
+//                successListener = { user ->
+//                    listener(user.grade == Grade.MASTER.gradeCode)
+//                },
+//                failureListener = {
+//                    listener(false)
+//                }
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         listener(false)
@@ -70,14 +70,14 @@ class TicketingRepository @Inject constructor(
             time = time
         )
 
-        client
-            .basicAddData(
-                collection = Constants.GAME,
-                document = "$date $time",
-                data = gameData,
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .basicAddData(
+//                collection = Constants.GAME,
+//                document = "$date $time",
+//                data = gameData,
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
 
     }
 
@@ -87,14 +87,14 @@ class TicketingRepository @Inject constructor(
         successListener: () -> Unit
     ) {
         getSeatList().forEach {
-            client
-                .doubleAddData(
-                    firstCollection = Constants.GAME,
-                    firstDocument = documentId,
-                    secondCollection = Constants.SEAT,
-                    data = it,
-                    successListener = {}
-                )
+//            client
+//                .doubleAddData(
+//                    firstCollection = Constants.GAME,
+//                    firstDocument = documentId,
+//                    secondCollection = Constants.SEAT,
+//                    data = it,
+//                    successListener = {}
+//                )
         }
         successListener()
     }
@@ -107,26 +107,26 @@ class TicketingRepository @Inject constructor(
         onFailureListener: () -> Unit
     ) {
         try {
-            client
-                .getDoubleSnapshot(
-                    firstCollection = Constants.GAME,
-                    firstDocument = documentId,
-                    orderByField = "seatNum",
-                    orderByDirection = Query.Direction.ASCENDING,
-                    secondCollection = Constants.SEAT,
-                    successListener = { querySnapshot ->
-                        querySnapshot
-                            .map {
-                                it.toObject(Seat::class.java)
-                                    .also { seat ->
-                                        seat.seatNum = seat.seatNum.replace("$hall ", "")
-                                    }
-                                    .mapper(it.id)
-                            }
-                            .let(onSuccessListener)
-                    },
-                    failureListener = onFailureListener
-                )
+//            client
+//                .getDoubleSnapshot(
+//                    firstCollection = Constants.GAME,
+//                    firstDocument = documentId,
+//                    orderByField = "seatNum",
+//                    orderByDirection = Query.Direction.ASCENDING,
+//                    secondCollection = Constants.SEAT,
+//                    successListener = { querySnapshot ->
+//                        querySnapshot
+//                            .map {
+//                                it.toObject(Seat::class.java)
+//                                    .also { seat ->
+//                                        seat.seatNum = seat.seatNum.replace("$hall ", "")
+//                                    }
+//                                    .mapper(it.id)
+//                            }
+//                            .let(onSuccessListener)
+//                    },
+//                    failureListener = onFailureListener
+//                )
         } catch (e: Exception) {
             e.printStackTrace()
             onFailureListener()

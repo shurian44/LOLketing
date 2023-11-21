@@ -13,19 +13,19 @@ class FindRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.getBasicSearchData(
-            collection = Constants.USERS,
-            field = Constants.ID,
-            startDate = email,
-            successListener = {
-                if(it.documents.isEmpty()){
-                    failureListener()
-                } else {
-                    successListener()
-                }
-            },
-            failureListener = failureListener
-        )
+//        client.getBasicSearchData(
+//            collection = Constants.USERS,
+//            field = Constants.ID,
+//            startDate = email,
+//            successListener = {
+//                if(it.documents.isEmpty()){
+//                    failureListener()
+//                } else {
+//                    successListener()
+//                }
+//            },
+//            failureListener = failureListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()

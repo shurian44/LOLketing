@@ -9,6 +9,10 @@
             name="activity"
             type="com.ezen.lolketing.view.main.MainActivity" />
 
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.MainViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

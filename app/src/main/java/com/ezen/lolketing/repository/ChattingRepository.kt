@@ -14,7 +14,7 @@ class ChattingRepository @Inject constructor(
 
     /** 유저 닉네임 조회1 **/
     suspend fun getUserNickName(): String? =
-        client.getUserNickName()
+        client.getUserNickName().getOrNull()
 
     /** 게임 데이터 조회 **/
     suspend fun getGameData(
@@ -22,18 +22,18 @@ class ChattingRepository @Inject constructor(
         successListener: (List<ChattingInfo>) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .getBasicSearchData(
-                collection = Constants.GAME,
-                field = "date",
-                startDate = startDate,
-                successListener = { snapshot ->
-                    snapshot
-                        .mapNotNull { it.toObject(Game::class.java).mapperChattingInfo() }
-                        .let(successListener)
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicSearchData(
+//                collection = Constants.GAME,
+//                field = "date",
+//                startDate = startDate,
+//                successListener = { snapshot ->
+//                    snapshot
+//                        .mapNotNull { it.toObject(Game::class.java).mapperChattingInfo() }
+//                        .let(successListener)
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()

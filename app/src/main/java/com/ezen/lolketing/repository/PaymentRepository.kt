@@ -16,30 +16,30 @@ class PaymentRepository @Inject constructor(
         successListener: (Long) -> Unit,
         failureListener: () -> Unit
     ) {
-        client
-            .getUserInfo(
-                successListener = {
-                    it.cache?.let(successListener)?:failureListener()
-                },
-                failureListener = {
-                    failureListener()
-                }
-            )
+//        client
+//            .getUserInfo(
+//                successListener = {
+//                    it.cache?.let(successListener)?:failureListener()
+//                },
+//                failureListener = {
+//                    failureListener()
+//                }
+//            )
     }
 
     suspend fun getUserInfo(
         successListener: (CacheModifyUser) -> Unit,
         failureListener: () -> Unit
     ) {
-        client
-            .getUserInfo(
-                successListener = {
-                    successListener(it.mapper())
-                },
-                failureListener = {
-                    failureListener()
-                }
-            )
+//        client
+//            .getUserInfo(
+//                successListener = {
+//                    successListener(it.mapper())
+//                },
+//                failureListener = {
+//                    failureListener()
+//                }
+//            )
     }
 
     suspend fun updateSeat(
@@ -51,7 +51,7 @@ class PaymentRepository @Inject constructor(
     ) {
         try {
             client
-                .getFirestore(Constants.GAME)
+                .getFireStore(Constants.GAME)
                 .document(firstDocumentId)
                 .collection(Constants.SEAT)
                 .document(secondDocumentId)
@@ -93,15 +93,15 @@ class PaymentRepository @Inject constructor(
         successListener : (String) -> Unit,
         failureListener : () -> Unit
     ) {
-        client
-            .basicAddData(
-                collection = Constants.PURCHASE,
-                data = data,
-                successListener = {
-                    successListener(it.id)
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .basicAddData(
+//                collection = Constants.PURCHASE,
+//                data = data,
+//                successListener = {
+//                    successListener(it.id)
+//                },
+//                failureListener = failureListener
+//            )
     }
 
     suspend fun myCacheDeduction(
@@ -116,17 +116,17 @@ class PaymentRepository @Inject constructor(
             return
         }
 
-        client
-            .basicUpdateData(
-                collection = Constants.USERS,
-                documentId = email,
-                updateData = mapOf(
-                    CACHE to FieldValue.increment(-deductionCache),
-                    ROULETTE_COUNT to FieldValue.increment(if (deductionCache > 11_000) 2 else 1)
-                ),
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .basicUpdateData(
+//                collection = Constants.USERS,
+//                documentId = email,
+//                updateData = mapOf(
+//                    CACHE to FieldValue.increment(-deductionCache),
+//                    ROULETTE_COUNT to FieldValue.increment(if (deductionCache > 11_000) 2 else 1)
+//                ),
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     }
 
     suspend fun updateChargingCache(
@@ -143,18 +143,18 @@ class PaymentRepository @Inject constructor(
             return
         }
 
-        client
-            .basicUpdateData(
-                collection = Constants.USERS,
-                documentId = email,
-                updateData = mapOf(
-                    CACHE to FieldValue.increment(addCache),
-                    POINT to point,
-                    GRADE to grade
-                ),
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .basicUpdateData(
+//                collection = Constants.USERS,
+//                documentId = email,
+//                updateData = mapOf(
+//                    CACHE to FieldValue.increment(addCache),
+//                    POINT to point,
+//                    GRADE to grade
+//                ),
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     }
 
     companion object {

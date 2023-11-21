@@ -17,12 +17,12 @@ class LoginRepository @Inject constructor(
         successListener: (String?) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.joinUser(
-            email= email,
-            pw= pw,
-            successListener = successListener,
-            failureListener = failureListener
-        )
+//        client.joinUser(
+//            email= email,
+//            pw= pw,
+//            successListener = successListener,
+//            failureListener = failureListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -34,12 +34,12 @@ class LoginRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.registerUser(
-            email = email,
-            uid = uid,
-            successListener= successListener,
-            failureListener = failureListener
-        )
+//        client.registerUser(
+//            email = email,
+//            uid = uid,
+//            successListener= successListener,
+//            failureListener = failureListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -48,9 +48,9 @@ class LoginRepository @Inject constructor(
     suspend fun deleteUser(
         successListener: () -> Unit,
     ) = try {
-        client.deleteUser(
-            successListener= successListener
-        )
+//        client.deleteUser(
+//            successListener= successListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -60,19 +60,19 @@ class LoginRepository @Inject constructor(
         successListener: (UserInfo) -> Unit,
         failureListener: (String) -> Unit
     ) = try {
-        client.getBasicSnapshot(
-            collection = Constants.USERS,
-            document = email,
-            successListener= { snapshot ->
-                snapshot.toObject(Users::class.java)
-                    ?.toUserInfo()
-                    ?.let(successListener)
-                    ?:failureListener(email)
-            },
-            failureListener= {
-                failureListener(email)
-            }
-        )
+//        client.getBasicSnapshot(
+//            collection = Constants.USERS,
+//            document = email,
+//            successListener= { snapshot ->
+//                snapshot.toObject(Users::class.java)
+//                    ?.toUserInfo()
+//                    ?.let(successListener)
+//                    ?:failureListener(email)
+//            },
+//            failureListener= {
+//                failureListener(email)
+//            }
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener(email)
@@ -84,19 +84,19 @@ class LoginRepository @Inject constructor(
         failureListener: () -> Unit
     ) {
         try {
-            val id = user.id
-            if (id == null) {
-                failureListener()
-                return
-            }
-
-            client.basicUpdateData(
-                collection = Constants.USERS,
-                documentId = id,
-                updateData = mapOf("nickname" to user.nickname, "phone" to user.phone, "address" to user.address),
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//            val id = user.id
+//            if (id == null) {
+//                failureListener()
+//                return
+//            }
+//
+//            client.basicUpdateData(
+//                collection = Constants.USERS,
+//                documentId = id,
+//                updateData = mapOf("nickname" to user.nickname, "phone" to user.phone, "address" to user.address),
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
         } catch (e: Exception) {
             e.printStackTrace()
             failureListener()
@@ -115,14 +115,14 @@ class LoginRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.basicAddData(
-            collection = Constants.COUPON,
-            data = coupon,
-            successListener = {
-                successListener()
-            },
-            failureListener = failureListener
-        )
+//        client.basicAddData(
+//            collection = Constants.COUPON,
+//            data = coupon,
+//            successListener = {
+//                successListener()
+//            },
+//            failureListener = failureListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()

@@ -22,12 +22,12 @@ class NewsRepository @Inject constructor(
             query = query,
             display = display,
             sort = sort,
-            start = start,
-            successListener = {
-                successListener(it.mapper(), it.total)
-            },
-            failureListener = failureListener
-        )
+            start = start
+        ).onSuccess {
+            successListener(it.mapper(), it.total)
+        }.onFailure {
+            failureListener()
+        }
 
     }
 

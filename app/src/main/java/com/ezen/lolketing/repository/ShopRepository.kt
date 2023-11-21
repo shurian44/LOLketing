@@ -20,18 +20,18 @@ class ShopRepository @Inject constructor(
         successListener: (List<ShopListItem>) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.getBasicSnapshot(
-            collection = Constants.SHOP,
-            successListener = { snapshot ->
-                val list = snapshot.mapNotNull {
-                    it.toObject(ShopDTO::class.java).mapper().also { item ->
-                        item?.documentId = it.id
-                    }
-                }
-                successListener(list)
-            },
-            failureListener = failureListener
-        )
+//        client.getBasicSnapshot(
+//            collection = Constants.SHOP,
+//            successListener = { snapshot ->
+//                val list = snapshot.mapNotNull {
+//                    it.toObject(ShopDTO::class.java).mapper().also { item ->
+//                        item?.documentId = it.id
+//                    }
+//                }
+//                successListener(list)
+//            },
+//            failureListener = failureListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -42,21 +42,21 @@ class ShopRepository @Inject constructor(
         successListener: (List<ShopListItem>) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.getBasicQuerySnapshot(
-            collection = Constants.SHOP,
-            field = "group",
-            query = query,
-            orderByField = "name",
-            successListener = { snapshot ->
-                val list = snapshot.mapNotNull {
-                    it.toObject(ShopDTO::class.java).mapper().also { item ->
-                        item?.documentId = it.id
-                    }
-                }
-                successListener(list)
-            },
-            failureListener = failureListener
-        )
+//        client.getBasicQuerySnapshot(
+//            collection = Constants.SHOP,
+//            field = "group",
+//            query = query,
+//            orderByField = "name",
+//            successListener = { snapshot ->
+//                val list = snapshot.mapNotNull {
+//                    it.toObject(ShopDTO::class.java).mapper().also { item ->
+//                        item?.documentId = it.id
+//                    }
+//                }
+//                successListener(list)
+//            },
+//            failureListener = failureListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -67,17 +67,17 @@ class ShopRepository @Inject constructor(
         successListener: (ShopItem) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.getBasicSnapshot(
-            collection = Constants.SHOP,
-            document = documentId,
-            successListener = {
-                it.toObject(ShopDTO::class.java)
-                    ?.itemMapper(it.id)
-                    ?.let(successListener)
-                    ?: failureListener()
-            },
-            failureListener = failureListener
-        )
+//        client.getBasicSnapshot(
+//            collection = Constants.SHOP,
+//            document = documentId,
+//            successListener = {
+//                it.toObject(ShopDTO::class.java)
+//                    ?.itemMapper(it.id)
+//                    ?.let(successListener)
+//                    ?: failureListener()
+//            },
+//            failureListener = failureListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()

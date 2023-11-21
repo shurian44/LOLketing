@@ -13,24 +13,24 @@ class BoardRepository @Inject constructor(
 ){
 
     suspend fun getUserNickname() : String? =
-        client.getUserNickName()
+        client.getUserNickName().getOrNull()
 
     suspend fun getUserGrade(
         email : String,
         successListener: (String) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .getBasicSnapshot(
-                collection = Constants.USERS,
-                document = email,
-                successListener = {
-                    it.toObject(Users::class.java)?.let { userInfo ->
-                        userInfo.grade?.let(successListener) ?: failureListener()
-                    }
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicSnapshot(
+//                collection = Constants.USERS,
+//                document = email,
+//                successListener = {
+//                    it.toObject(Users::class.java)?.let { userInfo ->
+//                        userInfo.grade?.let(successListener) ?: failureListener()
+//                    }
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -42,21 +42,21 @@ class BoardRepository @Inject constructor(
         successListener : (List<BoardItem.BoardListItem>) -> Unit,
         failureListener : () -> Unit
     ) = try {
-        client.getBasicQuerySnapshot(
-            collection = Constants.BOARD,
-            field = field,
-            query = query,
-            successListener = { snapshot ->
-                val list = snapshot.mapNotNull {
-                    it.toObject(Board::class.java)
-                        .boardListItemMapper(it.id)
-                }
-                successListener(list)
-            },
-            failureListener = {
-                failureListener()
-            }
-        )
+//        client.getBasicQuerySnapshot(
+//            collection = Constants.BOARD,
+//            field = field,
+//            query = query,
+//            successListener = { snapshot ->
+//                val list = snapshot.mapNotNull {
+//                    it.toObject(Board::class.java)
+//                        .boardListItemMapper(it.id)
+//                }
+//                successListener(list)
+//            },
+//            failureListener = {
+//                failureListener()
+//            }
+//        )
     } catch (e : Exception) {
         e.printStackTrace()
         null
@@ -69,27 +69,27 @@ class BoardRepository @Inject constructor(
         successListener : (List<BoardItem.BoardListItem>) -> Unit,
         failureListener : () -> Unit
     ) = try {
-        client.getBasicQuerySnapshot(
-            collection = Constants.BOARD,
-            field = Constants.TEAM,
-            query = team,
-            successListener = { snapshot ->
-                val list = snapshot.mapNotNull {
-                    it.toObject(Board::class.java)
-                        .boardListItemMapper(it.id)
-                }.filter {
-                    if (field == SearchActivity.TITLE) {
-                        it.title.contains(data)
-                    } else {
-                        it.nickname.contains(data)
-                    }
-                }
-                successListener(list)
-            },
-            failureListener = {
-                failureListener()
-            }
-        )
+//        client.getBasicQuerySnapshot(
+//            collection = Constants.BOARD,
+//            field = Constants.TEAM,
+//            query = team,
+//            successListener = { snapshot ->
+//                val list = snapshot.mapNotNull {
+//                    it.toObject(Board::class.java)
+//                        .boardListItemMapper(it.id)
+//                }.filter {
+//                    if (field == SearchActivity.TITLE) {
+//                        it.title.contains(data)
+//                    } else {
+//                        it.nickname.contains(data)
+//                    }
+//                }
+//                successListener(list)
+//            },
+//            failureListener = {
+//                failureListener()
+//            }
+//        )
     } catch (e : Exception) {
         e.printStackTrace()
         null
@@ -101,18 +101,18 @@ class BoardRepository @Inject constructor(
         successListener: (BoardWriteInfo) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .getBasicSnapshot(
-                collection = Constants.BOARD,
-                document = documentId,
-                successListener = { snapshot ->
-                    snapshot.toObject(Board::class.java)
-                        ?.boardWriteInfoMapper()
-                        ?.let(successListener)
-                        ?: failureListener()
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicSnapshot(
+//                collection = Constants.BOARD,
+//                document = documentId,
+//                successListener = { snapshot ->
+//                    snapshot.toObject(Board::class.java)
+//                        ?.boardWriteInfoMapper()
+//                        ?.let(successListener)
+//                        ?: failureListener()
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -124,17 +124,17 @@ class BoardRepository @Inject constructor(
         successListener: (Board) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .getBasicSnapshot(
-                collection = Constants.BOARD,
-                document = documentId,
-                successListener = { snapshot ->
-                    snapshot.toObject(Board::class.java)
-                        ?.let(successListener)
-                        ?:failureListener()
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicSnapshot(
+//                collection = Constants.BOARD,
+//                document = documentId,
+//                successListener = { snapshot ->
+//                    snapshot.toObject(Board::class.java)
+//                        ?.let(successListener)
+//                        ?:failureListener()
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -145,22 +145,22 @@ class BoardRepository @Inject constructor(
         successListener: (List<Board.Comment>) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .getDoubleSnapshot(
-                firstCollection = Constants.BOARD,
-                firstDocument = documentId,
-                secondCollection = Constants.COMMENTS,
-                successListener = { querySnapshot ->
-                    val list = mutableListOf<Board.Comment>()
-                    querySnapshot.forEach {
-                        it.toObject(Board.Comment::class.java).let { comment ->
-                            list.add(comment)
-                        }
-                    }
-                    successListener(list)
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getDoubleSnapshot(
+//                firstCollection = Constants.BOARD,
+//                firstDocument = documentId,
+//                secondCollection = Constants.COMMENTS,
+//                successListener = { querySnapshot ->
+//                    val list = mutableListOf<Board.Comment>()
+//                    querySnapshot.forEach {
+//                        it.toObject(Board.Comment::class.java).let { comment ->
+//                            list.add(comment)
+//                        }
+//                    }
+//                    successListener(list)
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -172,13 +172,13 @@ class BoardRepository @Inject constructor(
         successListener: (String) -> Unit,
         failureListener: () -> Unit
     ): Any? = try {
-        client
-            .basicFileUpload(
-                fileName = "board/${System.currentTimeMillis()}.png",
-                uri = uri,
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .basicFileUpload(
+//                fileName = "board/${System.currentTimeMillis()}.png",
+//                uri = uri,
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -188,14 +188,14 @@ class BoardRepository @Inject constructor(
     suspend fun updateViews(
         documentId: String
     ) = try {
-        client
-            .basicUpdateData(
-                collection = Constants.BOARD,
-                documentId = documentId,
-                updateData = mapOf("views" to FieldValue.increment(1)),
-                successListener = {},
-                failureListener = {}
-            )
+//        client
+//            .basicUpdateData(
+//                collection = Constants.BOARD,
+//                documentId = documentId,
+//                updateData = mapOf("views" to FieldValue.increment(1)),
+//                successListener = {},
+//                failureListener = {}
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -208,14 +208,14 @@ class BoardRepository @Inject constructor(
         failureListener: () -> Unit
     ) = try {
         // firebase update 사용 불가, like - key 의 값에 넣은 이메일의 . 때문에 오류 발생
-        client
-            .basicAddData(
-                collection = Constants.BOARD,
-                document = documentId,
-                data = board,
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .basicAddData(
+//                collection = Constants.BOARD,
+//                document = documentId,
+//                data = board,
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -227,17 +227,17 @@ class BoardRepository @Inject constructor(
         successListener : (String) -> Unit,
         errorListener : () -> Unit
     ) = try {
-        client
-            .basicAddData(
-                collection = Constants.BOARD,
-                data = data,
-                successListener = {
-                    successListener(it.id)
-                },
-                failureListener = {
-                    errorListener()
-                }
-            )
+//        client
+//            .basicAddData(
+//                collection = Constants.BOARD,
+//                data = data,
+//                successListener = {
+//                    successListener(it.id)
+//                },
+//                failureListener = {
+//                    errorListener()
+//                }
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         errorListener()
@@ -250,13 +250,13 @@ class BoardRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener : () -> Unit
     ) = try {
-        client.basicUpdateData(
-            collection = Constants.BOARD,
-            documentId = documentId,
-            updateData = updateData,
-            successListener = successListener,
-            failureListener = failureListener
-        )
+//        client.basicUpdateData(
+//            collection = Constants.BOARD,
+//            documentId = documentId,
+//            updateData = updateData,
+//            successListener = successListener,
+//            failureListener = failureListener
+//        )
     } catch (e : Exception) {
         e.printStackTrace()
     }
@@ -267,20 +267,20 @@ class BoardRepository @Inject constructor(
         successListener: (List<CommentItem>) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .getDoubleSnapshot(
-                firstCollection = Constants.BOARD,
-                firstDocument = documentId,
-                secondCollection = Constants.COMMENTS,
-                successListener = { snapshot ->
-                    val result = snapshot.mapNotNull {
-                        it.toObject(Board.Comment::class.java)
-                            .mapper(it.id)
-                    }
-                    successListener(result)
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getDoubleSnapshot(
+//                firstCollection = Constants.BOARD,
+//                firstDocument = documentId,
+//                secondCollection = Constants.COMMENTS,
+//                successListener = { snapshot ->
+//                    val result = snapshot.mapNotNull {
+//                        it.toObject(Board.Comment::class.java)
+//                            .mapper(it.id)
+//                    }
+//                    successListener(result)
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -292,16 +292,16 @@ class BoardRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener : () -> Unit
     ) = try {
-        client.basicDeleteData(
-            collection = Constants.BOARD,
-            documentId = documentId,
-            successListener = {
-                successListener()
-            },
-            failureListener = {
-                failureListener()
-            }
-        )
+//        client.basicDeleteData(
+//            collection = Constants.BOARD,
+//            documentId = documentId,
+//            successListener = {
+//                successListener()
+//            },
+//            failureListener = {
+//                failureListener()
+//            }
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -313,14 +313,14 @@ class BoardRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .basicUpdateData(
-                collection = Constants.BOARD,
-                documentId = documentId,
-                updateData = mapOf("reportList" to reportList),
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .basicUpdateData(
+//                collection = Constants.BOARD,
+//                documentId = documentId,
+//                updateData = mapOf("reportList" to reportList),
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -333,25 +333,25 @@ class BoardRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        val email = client.getUserEmail() ?: throw Exception("email is null")
-        val nickname = getUserNickname() ?: throw Exception("nickname is null")
-
-        val commentItem = Board.Comment(
-            email = email,
-            nickname = nickname,
-            timestamp = System.currentTimeMillis(),
-            comment = comment
-        )
-
-        client
-            .doubleAddData(
-                firstCollection = Constants.BOARD,
-                firstDocument = documentId,
-                secondCollection = Constants.COMMENTS,
-                data = commentItem,
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        val email = client.getUserEmail() ?: throw Exception("email is null")
+//        val nickname = getUserNickname() ?: throw Exception("nickname is null")
+//
+//        val commentItem = Board.Comment(
+//            email = email,
+//            nickname = nickname,
+//            timestamp = System.currentTimeMillis(),
+//            comment = comment
+//        )
+//
+//        client
+//            .doubleAddData(
+//                firstCollection = Constants.BOARD,
+//                firstDocument = documentId,
+//                secondCollection = Constants.COMMENTS,
+//                data = commentItem,
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -362,14 +362,14 @@ class BoardRepository @Inject constructor(
         documentId: String,
         count: Int
     ) = try {
-        client
-            .basicUpdateData(
-                collection = Constants.BOARD,
-                documentId = documentId,
-                updateData = mapOf("commentCounts" to count),
-                successListener = {},
-                failureListener = {}
-            )
+//        client
+//            .basicUpdateData(
+//                collection = Constants.BOARD,
+//                documentId = documentId,
+//                updateData = mapOf("commentCounts" to count),
+//                successListener = {},
+//                failureListener = {}
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -381,16 +381,16 @@ class BoardRepository @Inject constructor(
         reportList: List<String>,
         successListener: () -> Unit
     ) = try {
-        client
-            .doubleUpdateData(
-                firstCollection = Constants.BOARD,
-                firstDocument = boardDocumentId,
-                secondCollection = Constants.COMMENTS,
-                secondDocument = commentDocumentId,
-                updateData = mapOf("reportList" to reportList),
-                successListener = successListener,
-                failureListener = {}
-            )
+//        client
+//            .doubleUpdateData(
+//                firstCollection = Constants.BOARD,
+//                firstDocument = boardDocumentId,
+//                secondCollection = Constants.COMMENTS,
+//                secondDocument = commentDocumentId,
+//                updateData = mapOf("reportList" to reportList),
+//                successListener = successListener,
+//                failureListener = {}
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -402,15 +402,15 @@ class BoardRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
      ) = try {
-        client
-            .doubleDelete(
-                firstCollection = Constants.BOARD,
-                firstDocument = boardDocumentId,
-                secondCollection = Constants.COMMENTS,
-                secondDocument = commentDocumentId,
-                successListener = successListener,
-                failureListener = failureListener
-            )
+//        client
+//            .doubleDelete(
+//                firstCollection = Constants.BOARD,
+//                firstDocument = boardDocumentId,
+//                secondCollection = Constants.COMMENTS,
+//                secondDocument = commentDocumentId,
+//                successListener = successListener,
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()

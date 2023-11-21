@@ -18,18 +18,18 @@ class TeamRepository @Inject constructor(
         successListener: (TeamInfo) -> Unit,
         failureListener: () -> Unit
     ) {
-        client
-            .getBasicSnapshot(
-                collection = Constants.TeamCollection,
-                document = team,
-                successListener = { snapshot ->
-                    snapshot.toObject(TeamDTO::class.java)
-                        ?.mapper()
-                        ?.let(successListener)
-                        ?: failureListener()
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicSnapshot(
+//                collection = Constants.TeamCollection,
+//                document = team,
+//                successListener = { snapshot ->
+//                    snapshot.toObject(TeamDTO::class.java)
+//                        ?.mapper()
+//                        ?.let(successListener)
+//                        ?: failureListener()
+//                },
+//                failureListener = failureListener
+//            )
     }
 
     /** 선수 정보 조회 **/
@@ -38,20 +38,20 @@ class TeamRepository @Inject constructor(
         successListener: (List<PlayerInfo>) -> Unit,
         failureListener: () -> Unit
     ) {
-        client
-            .getDoubleSnapshot(
-                firstCollection = Constants.TeamCollection,
-                firstDocument = team,
-                secondCollection = Constants.PLAYER,
-                orderByField = "name",
-                successListener = { snapshot ->
-                    snapshot.mapNotNull {
-                        it.toObject(TeamDTO.PlayerDTO::class.java)
-                            .mapper()
-                    }.let(successListener)
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getDoubleSnapshot(
+//                firstCollection = Constants.TeamCollection,
+//                firstDocument = team,
+//                secondCollection = Constants.PLAYER,
+//                orderByField = "name",
+//                successListener = { snapshot ->
+//                    snapshot.mapNotNull {
+//                        it.toObject(TeamDTO.PlayerDTO::class.java)
+//                            .mapper()
+//                    }.let(successListener)
+//                },
+//                failureListener = failureListener
+//            )
     }
 
 }

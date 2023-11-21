@@ -8,7 +8,7 @@ import androidx.fragment.app.DialogFragment
 import com.ezen.lolketing.databinding.DialogLoadingBinding
 import com.ezen.lolketing.util.backgroundTransparent
 
-class LoadingDialog() : DialogFragment() {
+class LoadingDialog : DialogFragment() {
     private val binding : DialogLoadingBinding by lazy { DialogLoadingBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
@@ -29,6 +29,10 @@ class LoadingDialog() : DialogFragment() {
         if (dialog?.isShowing == true) {
             dismiss()
         }
+    }
+
+    companion object {
+        fun newInstance(): LoadingDialog = LoadingDialog()
     }
 
 }

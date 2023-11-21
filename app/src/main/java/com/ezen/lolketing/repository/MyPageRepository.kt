@@ -19,12 +19,12 @@ class MyPageRepository @Inject constructor(
         successListener: (MyPageInfo) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.getUserInfo(
-            successListener = {
-                it.mapperMyPageInfo()?.let(successListener) ?: failureListener()
-            },
-            failureListener = failureListener
-        )
+//        client.getUserInfo(
+//            successListener = {
+//                it.mapperMyPageInfo()?.let(successListener) ?: failureListener()
+//            },
+//            failureListener = failureListener
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -36,19 +36,19 @@ class MyPageRepository @Inject constructor(
         successListener: (List<MyPageCouponInfo>) -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client
-            .getBasicQuerySnapshot(
-                collection = Constants.COUPON,
-                field = "id",
-                query = id,
-                successListener = { querySnapshot ->
-                    val result = querySnapshot.mapNotNull {
-                        it.toObject(Coupon::class.java).mapperMyPageCouponInfo()
-                    }
-                    successListener(result)
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicQuerySnapshot(
+//                collection = Constants.COUPON,
+//                field = "id",
+//                query = id,
+//                successListener = { querySnapshot ->
+//                    val result = querySnapshot.mapNotNull {
+//                        it.toObject(Coupon::class.java).mapperMyPageCouponInfo()
+//                    }
+//                    successListener(result)
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -59,10 +59,10 @@ class MyPageRepository @Inject constructor(
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) = try {
-        client.deleteUser(
-            successListener = successListener,
-            failureListener = failureListener,
-        )
+//        client.deleteUser(
+//            successListener = successListener,
+//            failureListener = failureListener,
+//        )
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -74,20 +74,20 @@ class MyPageRepository @Inject constructor(
 
         val id = client.getUserEmail() ?: throw Exception("email is null")
 
-        client
-            .getBasicQuerySnapshot(
-                collection = Constants.COUPON,
-                field = "id",
-                query = id,
-                successListener = { snapshot ->
-                    val result = snapshot.mapNotNull {
-                        it.toObject(Coupon::class.java)
-                            .mapperCouponListInfo(it.id)
-                    }
-                    successListener(result)
-                },
-                failureListener = failureListener
-            )
+//        client
+//            .getBasicQuerySnapshot(
+//                collection = Constants.COUPON,
+//                field = "id",
+//                query = id,
+//                successListener = { snapshot ->
+//                    val result = snapshot.mapNotNull {
+//                        it.toObject(Coupon::class.java)
+//                            .mapperCouponListInfo(it.id)
+//                    }
+//                    successListener(result)
+//                },
+//                failureListener = failureListener
+//            )
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
@@ -101,29 +101,29 @@ class MyPageRepository @Inject constructor(
         failureListener: () -> Unit
     ) = try {
 
-        val id = client.getUserEmail() ?: throw Exception("email is null")
-
-        client
-            .basicUpdateData(
-                collection = Constants.COUPON,
-                documentId = documentId,
-                updateData = mapOf("use" to Code.USED.code),
-                successListener = {},
-                failureListener = failureListener
-            )
-
-        client
-            .basicUpdateData(
-                collection = Constants.USERS,
-                documentId = id,
-                updateData = mapOf(
-                    "point" to FieldValue.increment(point.toLong())
-                ),
-                successListener = {},
-                failureListener = failureListener
-            )
-
-        successListener()
+//        val id = client.getUserEmail() ?: throw Exception("email is null")
+//
+//        client
+//            .basicUpdateData(
+//                collection = Constants.COUPON,
+//                documentId = documentId,
+//                updateData = mapOf("use" to Code.USED.code),
+//                successListener = {},
+//                failureListener = failureListener
+//            )
+//
+//        client
+//            .basicUpdateData(
+//                collection = Constants.USERS,
+//                documentId = id,
+//                updateData = mapOf(
+//                    "point" to FieldValue.increment(point.toLong())
+//                ),
+//                successListener = {},
+//                failureListener = failureListener
+//            )
+//
+//        successListener()
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
