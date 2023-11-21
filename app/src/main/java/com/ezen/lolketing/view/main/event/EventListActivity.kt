@@ -16,7 +16,6 @@ class EventListActivity : BaseActivity<ActivityEventListBinding>(R.layout.activi
         super.onCreate(savedInstanceState)
 
         initViews()
-
     }
 
     /** 각종 뷰들 초기화 **/
@@ -25,7 +24,6 @@ class EventListActivity : BaseActivity<ActivityEventListBinding>(R.layout.activi
         title = getString(R.string.event)
 
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
-
     }
 
     /** 페이지 이동 **/
