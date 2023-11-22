@@ -9,4 +9,6 @@ sealed class LoginException : Throwable() {
     object DeleteUserError: LoginException()
     // 유저 정보 없음
     object EmptyUser: LoginException()
+    // 정보 없음
+    object EmptyInfo: LoginException()
 }

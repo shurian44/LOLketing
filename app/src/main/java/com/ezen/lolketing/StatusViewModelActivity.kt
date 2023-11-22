@@ -11,12 +11,12 @@ import com.ezen.lolketing.view.dialog.LoadingDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
-abstract class StatusViewModelActivity<B: ViewDataBinding, VM: StatusViewModel>(
+abstract class StatusViewModelActivity<B : ViewDataBinding, VM : StatusViewModel>(
     @LayoutRes private val layoutId: Int
-): AppCompatActivity() {
+) : AppCompatActivity() {
     protected lateinit var binding: B
     abstract val viewModel: VM
-    protected val loadingDialog = LoadingDialog.newInstance()
+    private var loadingDialog: LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +49,13 @@ abstract class StatusViewModelActivity<B: ViewDataBinding, VM: StatusViewModel>(
     }
 
     private fun showDialog() = runCatching {
-        val transition = supportFragmentManager.beginTransaction()
-        transition.remove(loadingDialog)
-        transition.add(loadingDialog, "loading").commit()
+        loadingDialog = LoadingDialog.newInstance().also {
+            it.show(supportFragmentManager, "loading")
+        }
     }
 
     private fun dismissDialog() {
-        loadingDialog.dismissDialog()
+        loadingDialog?.dismissDialog()
+        loadingDialog = null
     }
 }

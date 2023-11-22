@@ -32,13 +32,13 @@ class EventListActivity : BaseActivity<ActivityEventListBinding>(R.layout.activi
             cardEvent1.id -> {
                 // 신규 회원 이벤트 페이지
                 startActivity(createIntent(EventDetailActivity::class.java).also {
-                    it.putExtra(EventDetailActivity.PAGE, 1)
+                    it.putExtra(EventDetailActivity.PAGE, EventDetailActivity.NewUser)
                 })
             }
             cardEvent2.id -> {
                 // 티켓 구입 이벤트 안내 페이지
                 startActivity(createIntent(EventDetailActivity::class.java).also {
-                    it.putExtra(EventDetailActivity.PAGE, 2)
+                    it.putExtra(EventDetailActivity.PAGE, EventDetailActivity.TicketPurchase)
                 })
             }
             cardEvent3.id -> {

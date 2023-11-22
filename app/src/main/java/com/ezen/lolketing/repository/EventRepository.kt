@@ -1,87 +1,67 @@
 package com.ezen.lolketing.repository
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.ezen.lolketing.model.Coupon
-import com.ezen.lolketing.model.Users
+import com.ezen.lolketing.model.EventDetailItem
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.view.main.event.EventDetailViewModel
+import com.ezen.lolketing.util.LoginException
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class EventRepository @Inject constructor(
     private val client: FirebaseClient,
     private val pref: SharedPreferences
 ) {
+    /** 신규 회원 화면 정보 조회 **/
+    fun fetchNewUserInfo() = flow {
+        val nickname = client.getUserNickName().getOrThrow()
+        val email = pref.getString(Constants.ID, null) ?: throw LoginException.EmptyUser
 
-    /** 유저 닉네임 조회 **/
-    suspend fun getUserNickname(): String? {
-        return client.getUserNickName().getOrNull()
+        val info = client
+            .getBasicSearchData(
+                collection = Constants.COUPON,
+                startDate = email,
+                field = "id"
+            )
+            .getOrThrow()
+            .mapNotNull { it.toObject(Coupon::class.java).mapperCouponListInfo(it.id) }
+            .filter { it.title == Code.NEW_USER_COUPON.code }
+            .maxByOrNull { it.limit }
+            ?: throw LoginException.EmptyInfo
+
+        emit(
+            EventDetailItem(
+                nickname = nickname,
+                isUsed = info.use == Code.NOT_USE.code,
+                documentId = info.documentId
+            )
+        )
     }
 
-    /** 신규 가입 쿠폰 정보 조회 **/
-    suspend fun getNewUserCouponInfo(
-        successListener : (String, String) -> Unit,
-        failureListener : () -> Unit
-    ) {
-//        val email = pref.getString(Constants.ID, null) ?: kotlin.run {
-//            failureListener()
-//            return
-//        }
-//
-//        client.getBasicSearchData(
-//            collection = Constants.COUPON,
-//            startDate = email,
-//            field = "id",
-//            successListener = { snapshot ->
-//                snapshot
-//                    .mapNotNull {
-//                        it.toObject(Coupon::class.java).mapperCouponListInfo(it.id)
-//                    }
-//                    .filter {
-//                        it.title == Code.NEW_USER_COUPON.code
-//                    }.maxByOrNull { it.limit }
-//                    ?.let {
-//                        successListener(it.documentId, it.use)
-//                    }
-//                    ?: failureListener()
-//            },
-//            failureListener = failureListener
-//        )
-    }
+    /** 신규 쿠폰 사용 및 포인트 적립 **/
+    fun updateUseNewUserCoupon(documentId: String) = flow {
+        val email = pref.getString(Constants.ID, null) ?: throw LoginException.EmptyUser
 
-    /** 쿠폰 업데이트 **/
-    suspend fun updateCoupon(
-        documentId: String,
-        failureListener: () -> Unit
-    ) {
-//        client
-//            .basicUpdateData(
-//                collection = Constants.COUPON,
-//                documentId = documentId,
-//                updateData = mapOf("use" to Code.USED.code),
-//                successListener = { },
-//                failureListener = failureListener
-//            )
-    }
+        client
+            .basicUpdateData(
+                collection = Constants.COUPON,
+                documentId = documentId,
+                updateData = mapOf("use" to Code.USED.code)
+            )
+            .onFailure { throw Exception("업데이트를 실패하였습니다") }
 
-    /** 포인트 적립 **/
-    suspend fun updateUserPoint(
-        documentId: String,
-        failureListener: () -> Unit
-    ) {
-//        client
-//            .basicUpdateData(
-//                collection = Constants.USERS,
-//                documentId = documentId,
-//                updateData = mapOf("point" to FieldValue.increment(500)),
-//                successListener = { },
-//                failureListener = failureListener
-//            )
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = email,
+                updateData = mapOf("point" to FieldValue.increment(500)),
+            )
+            .onFailure { throw Exception("업데이트를 실패하였습니다") }
+
+        emit("500 포인트가 지급되었습니다.")
     }
 
     /** 룰렛 카운트 조회 **/

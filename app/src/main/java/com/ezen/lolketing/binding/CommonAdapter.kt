@@ -1,7 +1,9 @@
 package com.ezen.lolketing.binding
 
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +28,10 @@ fun imageLoad(imageView: ImageView, @DrawableRes resId: Int) {
 
 @BindingAdapter("sliderImage")
 fun imageListLoad(slider: ImageSlider, list: List<Int>) {
-    print("+++++ $list")
     slider.setImageList(list)
+}
+
+@BindingAdapter("isVisible")
+fun bindIsVisible(view: View, isVisible: Boolean) {
+    view.isVisible = isVisible
 }
