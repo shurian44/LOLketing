@@ -3,12 +3,15 @@ package com.ezen.lolketing.repository
 import android.content.SharedPreferences
 import com.ezen.lolketing.model.Coupon
 import com.ezen.lolketing.model.EventDetailItem
+import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.LoginException
+import com.ezen.lolketing.util.getCouponValidityPeriod
 import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.flow.flow
+import java.util.Random
 import javax.inject.Inject
 
 class EventRepository @Inject constructor(
@@ -65,78 +68,73 @@ class EventRepository @Inject constructor(
     }
 
     /** 룰렛 카운트 조회 **/
-    suspend fun getRouletteCount(
-        successListener: (Int) -> Unit,
-        failureListener: () -> Unit
-    ) {
-        val email = client.getUserEmail()
+    fun getRouletteCount() = flow {
+        val email = client.getUserEmail()?: throw LoginException.EmptyInfo
 
-        if (email == null) {
-            failureListener()
-            return
-        }
-
-//        client
-//            .getBasicSnapshot(
-//                collection = Constants.USERS,
-//                document = email,
-//                successListener = {
-//                    it.toObject(Users::class.java)
-//                        ?.rouletteCount
-//                        ?.let(successListener)
-//                        ?: failureListener()
-//                },
-//                failureListener = failureListener
-//            )
-    }
-
-    /** 룰렛 사용 업데이트 **/
-    suspend fun updateCouponCount(
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) {
-
-        val email = client.getUserEmail()
-        if (email == null){
-            failureListener()
-            return
-        }
-
-//        client
-//            .basicUpdateData(
-//                collection = Constants.USERS,
-//                documentId = email,
-//                updateData = mapOf(
-//                    "rouletteCount" to FieldValue.increment(-1)
-//                ),
-//                successListener= successListener,
-//                failureListener = failureListener
-//            )
+        client
+            .getBasicSnapshot(
+                collection = Constants.USERS,
+                document = email
+            )
+            .getOrThrow()
+            .toObject(Users::class.java)
+            ?.rouletteCount
+            ?.let {
+                emit(it)
+            }
+            ?: throw Exception("쿠폰 조회에 실패하였습니다.")
     }
 
     /** 쿠폰 발급 **/
-    suspend fun setCoupon(
-        coupon: Coupon,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) {
-        val email = client.getUserEmail()
-        if (email == null){
-            failureListener()
-            return
+    fun couponIssuance(point: Int) = flow {
+        val email = client.getUserEmail() ?: throw LoginException.EmptyUser
+        val coupon = Coupon(
+            id = email,
+            limit = getCouponValidityPeriod(),
+            title = Code.ROULETTE_COUPON.code,
+            use = Code.NOT_USE.code,
+            point = point,
+            couponNumber = createCouponNumber(),
+            timestamp = System.currentTimeMillis()
+        )
+
+        client
+            .basicAddData(
+                collection = Constants.COUPON,
+                data = coupon
+            )
+            .getOrThrow()
+
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = email,
+                updateData = mapOf("rouletteCount" to FieldValue.increment(-1))
+            )
+            .getOrThrow()
+
+        emit("축하합니다! ${point}RP에 당첨되셨습니다!!")
+    }
+
+    /** 쿠폰 번호 성생 **/
+    private fun createCouponNumber(): String {
+        var couponNumber = ""
+        val chooseNum = arrayOf(
+            "A", "B", "C", "D", "E", "F",
+            "G", "H", "I", "J", "K", "L",
+            "M", "N", "O", "P", "Q", "R",
+            "S", "T", "U", "V", "W", "X",
+            "Y", "Z", "0", "1", "2", "3",
+            "4", "5", "6", "7", "8", "9"
+        )
+        val random = Random()
+        for (i in 0..15) {
+            couponNumber += chooseNum[random.nextInt(36)]
+            if (i % 4 == 3 && i != 15) {
+                couponNumber += "-"
+            }
         }
-
-        coupon.id = email
-
-//        client
-//            .basicAddData(
-//                collection = Constants.COUPON,
-//                data = coupon,
-//                successListener = {
-//                    successListener()
-//                },
-//                failureListener = failureListener
-//            )
+        return couponNumber
     }
 
 }

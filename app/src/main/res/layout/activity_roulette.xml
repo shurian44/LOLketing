@@ -1,15 +1,20 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="activity"
             type="com.ezen.lolketing.view.main.event.RouletteActivity" />
+
         <variable
             name="title"
             type="String" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.event.RouletteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,60 +23,63 @@
         android:background="@color/black"
         tools:context=".view.main.event.RouletteActivity">
 
-       <include
-           android:id="@+id/layoutTop"
-           layout="@layout/layout_top"
-           app:title="@{title}"
-           app:isBackVisible="@{true}"/>
+        <include
+            android:id="@+id/layoutTop"
+            layout="@layout/layout_top"
+            app:isBackVisible="@{true}"
+            app:title="@{@string/event_title_roulette}" />
 
         <ImageView
             android:id="@+id/imgRoulette"
             android:layout_width="320dp"
             android:layout_height="320dp"
-            android:src="@drawable/img_roulette"
             android:adjustViewBounds="true"
-            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/imageContentDescription"
+            android:src="@drawable/img_roulette"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imgRoulettePosition"
             android:layout_width="39dp"
             android:layout_height="58dp"
             android:layout_marginBottom="-30dp"
+            android:contentDescription="@string/imageContentDescription"
             android:src="@drawable/img_position"
             app:layout_constraintBottom_toTopOf="@id/imgRoulette"
-            app:layout_constraintStart_toStartOf="@id/imgRoulette"
-            app:layout_constraintEnd_toEndOf="@id/imgRoulette"/>
+            app:layout_constraintEnd_toEndOf="@id/imgRoulette"
+            app:layout_constraintStart_toStartOf="@id/imgRoulette" />
 
         <TextView
             android:id="@+id/btnSpinning"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:gravity="center"
-            android:text="Start"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:onClick="@{activity::rotate}"
             android:backgroundTint="@android:color/transparent"
-            app:layout_constraintTop_toTopOf="@id/imgRoulette"
+            android:gravity="center"
+            android:onClick="@{() -> vm.startRoulette()}"
+            android:text="@string/start"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/imgRoulette"
+            app:layout_constraintEnd_toEndOf="@id/imgRoulette"
             app:layout_constraintStart_toStartOf="@id/imgRoulette"
-            app:layout_constraintEnd_toEndOf="@id/imgRoulette"/>
+            app:layout_constraintTop_toTopOf="@id/imgRoulette" />
 
         <TextView
             android:id="@+id/txtCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
+            android:text="@{@string/roulette_count(vm.count)}"
             android:textColor="@color/sub_color"
-            tools:text="남은 횟수 : 0 번"
-            app:layout_constraintTop_toBottomOf="@id/imgRoulette"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/imgRoulette"
+            tools:text="남은 횟수 : 0 번" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
