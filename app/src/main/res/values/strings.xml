@@ -157,7 +157,7 @@
     <!-- 쿠폰 -->
     <string name="already_used_coupon">이미 사용한 쿠폰입니다.</string>
     <string name="new_user_coupon_used">500 포인트가 지급되었습니다</string>
-    <string name="roulette_count_zero">기회를 다 소진하였습니다.</string>
+    <string name="roulette_count_zero">폰</string>
     <string name="usable_coupon">사용 가능 쿠폰</string>
     <string name="move_coupon_box">쿠폰함 가기</string>
     <string name="coupon_box">쿠폰함</string>
@@ -422,5 +422,6 @@
     <string name="title_activity_my_page">MyPageActivity</string>
     <string name="title_activity_guide">GuideActivity</string>
     <string name="title_activity_league_info">LeagueInfoActivity</string>
+    <string name="start">Start</string>
 
 </resources>

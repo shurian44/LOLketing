@@ -7,7 +7,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Build
 import android.text.Html
 import android.text.InputFilter
 import android.text.Spanned
@@ -16,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import java.util.*
 
@@ -108,3 +108,12 @@ fun getShoppingCategoryList() = listOf(
     Code.ACCESSORY.codeName, Code.DOLL.codeName, Code.T_SHIRT.codeName,
     Code.JACKET.codeName, Code.PAJAMAS.codeName, Code.ART.codeName, Code.BOARD_GAME.codeName
 )
+
+fun RecyclerView.addOnScrollListener(onScrolled: (RecyclerView) -> Unit) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            onScrolled(recyclerView)
+        }
+    })
+}

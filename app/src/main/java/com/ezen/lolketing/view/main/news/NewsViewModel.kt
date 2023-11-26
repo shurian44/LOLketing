@@ -1,17 +1,24 @@
 package com.ezen.lolketing.view.main.news
 
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
+import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.NewsContents
 import com.ezen.lolketing.repository.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val repository: NewsRepository
-) : BaseViewModel<NewsViewModel.Event>() {
+) : StatusViewModel() {
+
+    private val _list = MutableStateFlow(listOf<NewsContents>())
+    val list: StateFlow<List<NewsContents>> = _list
 
     private var start = 1
     private val display = 20
@@ -19,36 +26,32 @@ class NewsViewModel @Inject constructor(
     val isMore : Boolean
         get() = _isMore
 
-    /** 뉴스 정보 조회 **/
-    fun getNews() = viewModelScope.launch {
-        if (_isMore.not()) return@launch
+    init {
+        fetchNews()
+    }
 
-        repository.getNews(
-            query = "LCK",
-            display = display,
-            start = start,
-            sort = SIMILAR,
-            successListener = { list, total ->
-                if(total > start) {
-                    _isMore = true
+    /** 뉴스 정보 조회 **/
+    fun fetchNews() {
+        if (_isMore.not()) return
+
+        repository
+            .fetchNews(
+                display = display,
+                start = start
+            )
+            .setLoadingState()
+            .onEach {
+                val temp = _list.value.toMutableList()
+                temp.addAll(it.mapper())
+                _list.value = temp
+
+                if (it.total <= start * display || start * display >= 1000) {
+                    _isMore = false
+                } else {
                     start += display
                 }
-                event(Event.Success(list))
-            },
-            failureListener = {
-                event(Event.Failure)
             }
-        )
-
+            .catch { updateMessage(it.message ?: "뉴스 조회에 실패하였습니다.") }
+            .launchIn(viewModelScope)
     }
-
-    sealed class Event {
-        data class Success(val result: List<NewsContents>): Event()
-        object Failure : Event()
-    }
-
-    companion object {
-        const val SIMILAR = "sim"
-    }
-
 }

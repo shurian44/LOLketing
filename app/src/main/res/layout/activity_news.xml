@@ -6,12 +6,12 @@
     <data>
 
         <variable
-            name="activity"
-            type="com.ezen.lolketing.view.main.news.NewsActivity" />
+            name="adapter"
+            type="com.ezen.lolketing.adapter.NewsAdapter" />
 
         <variable
-            name="title"
-            type="String" />
+            name="vm"
+            type="com.ezen.lolketing.view.main.news.NewsViewModel" />
 
     </data>
 
@@ -25,21 +25,22 @@
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
-            app:title="@{title}" />
+            app:title="@{@string/news}" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:orientation="vertical"
+            app:adapter="@{adapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            app:submitList="@{vm.list}"
             tools:listitem="@layout/item_news" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </layout>
