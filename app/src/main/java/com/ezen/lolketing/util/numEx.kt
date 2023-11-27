@@ -12,9 +12,9 @@ fun getGrade(point: Long) = when(point){
     else -> Grade.PLATINUM.gradeCode
 }
 
-fun getSimpleDateFormatMillSec(date: String, format : String = "yyyy.MM.dd HH:mm") : Long? {
+fun getSimpleDateFormatMillSec(date: String, format : String = "yyyy.MM.dd HH:mm") : Long {
     val timeFormat = SimpleDateFormat(format, Locale.KOREA)
-    return timeFormat.parse(date)?.time
+    return timeFormat.parse(date)?.time ?: 0
 }
 
 fun densityDp(context: Context, size: Int) : Int {

@@ -27,10 +27,13 @@ class EventRepository @Inject constructor(
             .getBasicSearchData(
                 collection = Constants.COUPON,
                 startDate = email,
-                field = "id"
+                field = "id",
+                valueType = Coupon::class.java
             )
             .getOrThrow()
-            .mapNotNull { it.toObject(Coupon::class.java).mapperCouponListInfo(it.id) }
+            .mapNotNull { (coupon, documentId) ->
+                coupon.mapperCouponListInfo(documentId)
+            }
             .filter { it.title == Code.NEW_USER_COUPON.code }
             .maxByOrNull { it.limit }
             ?: throw LoginException.EmptyInfo

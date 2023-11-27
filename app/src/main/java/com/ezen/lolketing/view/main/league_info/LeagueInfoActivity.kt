@@ -17,7 +17,6 @@ class LeagueInfoActivity : BaseActivity<ActivityLeagueInfoBinding>(R.layout.acti
     } // onCreate()
 
     private fun initViews() = with(binding) {
-        title = getString(R.string.league_info)
         layoutTop.btnBack.setOnClickListener { finish() }
         val list = listOf(getString(R.string.menu_summary), getString(R.string.menu_proceeding), getString(R.string.menu_prize_money))
         val leagueInfoAdapter = LeagueInfoAdapter(this@LeagueInfoActivity).also {

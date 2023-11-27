@@ -83,6 +83,8 @@ class FirebaseClient @Inject constructor(
             ?: throw LoginException.EmptyUser
     }
 
+    fun signOut() = auth.signOut()
+
     suspend fun getBasicSnapshot(
         collection: String,
         document: String
@@ -94,19 +96,24 @@ class FirebaseClient @Inject constructor(
             .await()
     }
 
-    suspend fun getBasicSnapshot(collection: String) = runCatching {
+    suspend fun <T> getBasicSnapshot(
+        collection: String,
+        valueType: Class<T>
+    ) = runCatching {
         fireStore
             .collection(collection)
             .get()
             .await()
+            .toObjects(valueType)
     }
 
-    suspend fun getBasicQuerySnapshot(
+    suspend fun <T> getBasicQuerySnapshot(
         collection: String,
         field: String,
         query: Any,
         orderByField: String = TIME_STAMP,
-        orderByDirection: Query.Direction = Query.Direction.DESCENDING
+        orderByDirection: Query.Direction = Query.Direction.DESCENDING,
+        valueType: Class<T>
     ) = runCatching {
         fireStore
             .collection(collection)
@@ -114,6 +121,7 @@ class FirebaseClient @Inject constructor(
             .orderBy(orderByField, orderByDirection)
             .get()
             .await()
+            .toObjects(valueType)
     }
 
     suspend fun basicAddData(
@@ -161,10 +169,11 @@ class FirebaseClient @Inject constructor(
             .await()
     }
 
-    suspend fun getBasicSearchData(
+    suspend fun <T> getBasicSearchData(
         collection: String,
         field: String,
-        startDate: String
+        startDate: String,
+        valueType: Class<T>
     ) = runCatching {
         fireStore
             .collection(collection)
@@ -173,6 +182,7 @@ class FirebaseClient @Inject constructor(
             .endAt("$startDate\\uf8ff")
             .get()
             .await()
+            .mapNotNull { Pair(it.toObject(valueType), it.id) }
     }
 
     suspend fun basicDelete(

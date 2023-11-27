@@ -1,5 +1,10 @@
 package com.ezen.lolketing.model
 
+import com.ezen.lolketing.util.Grade
+import com.ezen.lolketing.util.getGradeImageRes
+import com.ezen.lolketing.util.getGradeName
+import com.ezen.lolketing.util.priceFormat
+
 data class Users(
     var id : String ?= null,
     var uid : String ?= null,
@@ -31,9 +36,9 @@ data class Users(
         return MyPageInfo(
             id = id ?: return null,
             nickname = nickname ?: return null,
-            grade = grade ?: return null,
+            grade = getGradeName(grade ?: Grade.BRONZE.gradeCode),
             point = point ?: return null,
-            cache = cache ?: return null
+            cache = cache ?: return null,
         )
     }
 }
@@ -63,5 +68,21 @@ data class MyPageInfo(
     val nickname : String,
     val grade : String,
     val point : Long,
-    val cache : Long
-)
+    val cache : Long,
+    val couponInfo: String = ""
+) {
+    fun getGradeImage() = getGradeImageRes(grade)
+
+    fun getMyCache() = cache.priceFormat()
+
+    companion object {
+        fun create() = MyPageInfo(
+            id = "",
+            nickname = "",
+            grade = Grade.BRONZE.gradeName,
+            point = 0,
+            cache = 0,
+            couponInfo = "0 / 0"
+        )
+    }
+}

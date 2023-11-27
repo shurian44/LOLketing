@@ -2,69 +2,45 @@ package com.ezen.lolketing.repository
 
 import com.ezen.lolketing.model.Coupon
 import com.ezen.lolketing.model.CouponInfo
-import com.ezen.lolketing.model.MyPageCouponInfo
-import com.ezen.lolketing.model.MyPageInfo
 import com.ezen.lolketing.network.FirebaseClient
-import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.Constants
-import com.google.firebase.firestore.FieldValue
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class MyPageRepository @Inject constructor(
     private val client: FirebaseClient
 ) {
 
-    /** 유저 정보 조회 **/
-    suspend fun getUserInfo(
-        successListener: (MyPageInfo) -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client.getUserInfo(
-//            successListener = {
-//                it.mapperMyPageInfo()?.let(successListener) ?: failureListener()
-//            },
-//            failureListener = failureListener
-//        )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+    fun fetchUserInfo() = flow {
+        val info = client
+            .getUserInfo()
+            .getOrThrow()
+            .mapperMyPageInfo()
+            ?: throw Throwable("유저 정보 조회 실패")
+
+        val couponInfoList = client
+            .getBasicQuerySnapshot(
+                collection = Constants.COUPON,
+                field = "id",
+                query = info.id,
+                valueType = Coupon::class.java
+            )
+            .getOrThrow()
+            .mapNotNull { it.mapperMyPageCouponInfo() }
+
+        emit(
+            info.copy(
+                couponInfo = "${couponInfoList.count { it }} / ${couponInfoList.size}"
+            )
+        )
     }
 
-    /** 쿠폰 조회 : 사용 정보 파악용도 **/
-    suspend fun getUserCoupon(
-        id: String,
-        successListener: (List<MyPageCouponInfo>) -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client
-//            .getBasicQuerySnapshot(
-//                collection = Constants.COUPON,
-//                field = "id",
-//                query = id,
-//                successListener = { querySnapshot ->
-//                    val result = querySnapshot.mapNotNull {
-//                        it.toObject(Coupon::class.java).mapperMyPageCouponInfo()
-//                    }
-//                    successListener(result)
-//                },
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
-    }
+    /** 로그아웃 **/
+    fun signOut() = client.signOut()
 
     /** 회원 탈퇴 **/
-    suspend fun deleteUser(
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client.deleteUser(
-//            successListener = successListener,
-//            failureListener = failureListener,
-//        )
-    } catch (e: Exception) {
-        e.printStackTrace()
+    suspend fun deleteUser() {
+        client.deleteUser()
     }
 
     suspend fun getCouponList(
