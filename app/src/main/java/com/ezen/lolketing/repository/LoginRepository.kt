@@ -1,15 +1,17 @@
 package com.ezen.lolketing.repository
 
 import com.ezen.lolketing.model.Coupon
+import com.ezen.lolketing.model.LoginInfo
 import com.ezen.lolketing.model.UserInfo
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
-import com.ezen.lolketing.util.Constants
 import javax.inject.Inject
 
 class LoginRepository @Inject constructor(
     private val client: FirebaseClient
 ) {
+
+    fun fetchLoginInfo() = client.getUserEmail()
 
     suspend fun joinUser(
         email: String,
@@ -44,6 +46,8 @@ class LoginRepository @Inject constructor(
         e.printStackTrace()
         failureListener()
     }
+
+    suspend fun emailLogin(loginInfo: LoginInfo) = client.emailLogin(loginInfo)
 
     suspend fun deleteUser(
         successListener: () -> Unit,

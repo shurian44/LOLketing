@@ -8,6 +8,10 @@
         <variable
             name="activity"
             type="com.ezen.lolketing.view.login.LoginActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.login.LoginViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +25,7 @@
             android:id="@+id/loginLogo"
             android:layout_width="188dp"
             android:layout_height="98dp"
+            android:contentDescription="@string/imageContentDescription"
             android:src="@drawable/lolketing_logo"
             app:layout_constraintBottom_toTopOf="@id/loginId"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +40,7 @@
             android:drawableStart="@drawable/ic_user"
             android:hint="@string/hint_id"
             android:inputType="textEmailAddress"
+            android:text="@={vm.loginInfo.id}"
             app:layout_constraintBottom_toTopOf="@id/loginPw"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -47,6 +53,7 @@
             android:drawableStart="@drawable/ic_pw"
             android:hint="@string/hint_pw"
             android:inputType="textPassword"
+            android:text="@={vm.loginInfo.password}"
             app:layout_constraintBottom_toTopOf="@id/btnLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -56,6 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginBottom="64dp"
+            android:onClick="@{() -> vm.emailLogin()}"
             android:text="@string/login"
             android:textColor="#fff"
             android:textSize="20sp"
@@ -69,7 +77,8 @@
             android:id="@+id/btnFindID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/find_id_pw"
+            android:onClick="@{() -> activity.goToFindPassword()}"
+            android:text="@string/find_pw"
             android:textColor="@color/sub_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/viewLine"
@@ -80,6 +89,7 @@
             android:id="@+id/btn_join"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> activity.goToJoin()}"
             android:text="@string/join"
             android:textColor="@color/sub_color"
             android:textSize="16sp"

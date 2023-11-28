@@ -1,6 +1,7 @@
 package com.ezen.lolketing.network
 
 import android.net.Uri
+import com.ezen.lolketing.model.LoginInfo
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.Grade
@@ -49,6 +50,12 @@ class FirebaseClient @Inject constructor(
             .collection(Constants.USERS)
             .document(email)
             .set(user)
+            .await()
+    }
+
+    suspend fun emailLogin(info: LoginInfo) = runCatching {
+        auth
+            .signInWithEmailAndPassword(info.id, info.password)
             .await()
     }
 

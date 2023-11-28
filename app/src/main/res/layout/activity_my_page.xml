@@ -236,6 +236,7 @@
                     android:text="@string/logout"
                     android:textColor="@color/white"
                     android:textSize="16sp"
+                    android:onClick="@{() -> vm.logout()}"
                     app:drawableEndCompat="@drawable/ic_next" />
 
                 <TextView
