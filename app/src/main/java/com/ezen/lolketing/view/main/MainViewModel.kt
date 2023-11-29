@@ -1,8 +1,6 @@
 package com.ezen.lolketing.view.main
 
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
-import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,11 +16,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: MainRepository
 ) : StatusViewModel() {
-
-    private val _bannerImage = MutableStateFlow(
-        listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
-    )
-    val bannerImage: StateFlow<List<Int>> = _bannerImage
 
     private val _isNotJoinComplete = MutableStateFlow(true)
     val isNotJoinComplete: StateFlow<Boolean> = _isNotJoinComplete
