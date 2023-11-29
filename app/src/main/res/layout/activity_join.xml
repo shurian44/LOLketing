@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="activity"
-            type="com.ezen.lolketing.view.login.join.JoinActivity" />
+            name="vm"
+            type="com.ezen.lolketing.view.login.join.JoinViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +21,7 @@
             android:id="@+id/joinLogo"
             android:layout_width="168dp"
             android:layout_height="98dp"
+            android:contentDescription="@string/imageContentDescription"
             android:src="@drawable/lolketing_logo"
             app:layout_constraintBottom_toTopOf="@id/editJoinId"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,6 +81,7 @@
             android:drawablePadding="10dp"
             android:hint="@string/hint_id"
             android:inputType="textEmailAddress"
+            android:text="@={vm.info.id}"
             app:layout_constraintBottom_toTopOf="@id/editJoinPw"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -93,6 +95,7 @@
             android:drawablePadding="10dp"
             android:hint="@string/hint_pw"
             android:inputType="textPassword"
+            android:text="@={vm.info.password}"
             app:layout_constraintBottom_toTopOf="@id/editJoinPwCheck"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -106,6 +109,7 @@
             android:drawablePadding="10dp"
             android:hint="@string/hint_pw_check"
             android:inputType="textPassword"
+            android:text="@={vm.info.passwordCheck}"
             app:layout_constraintBottom_toTopOf="@id/btnJoin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -116,6 +120,7 @@
             android:layout_height="56dp"
             android:layout_marginBottom="20dp"
             android:backgroundTint="@color/main_color"
+            android:onClick="@{() -> vm.joinUser()}"
             android:text="@string/next"
             android:textColor="#fff"
             android:textSize="20sp"

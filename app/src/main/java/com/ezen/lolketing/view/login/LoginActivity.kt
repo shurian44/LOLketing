@@ -7,7 +7,7 @@ import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityLoginBinding
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.startActivity
-import com.ezen.lolketing.view.login.find.FindIdPwActivity
+import com.ezen.lolketing.view.login.find.FindPasswordActivity
 import com.ezen.lolketing.view.login.join.JoinActivity
 import com.ezen.lolketing.view.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +38,7 @@ class LoginActivity :
     }
 
     fun goToFindPassword() {
-        startActivity(FindIdPwActivity::class.java)
+        startActivity(FindPasswordActivity::class.java)
     }
 
     fun goToJoin() {

@@ -3,6 +3,7 @@ package com.ezen.lolketing.util
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 fun Long.timestampToString(format: String = "yyyy-MM-dd HH:mm") : String {
     val timeFormat = SimpleDateFormat(format, Locale.KOREA)
@@ -25,4 +26,9 @@ fun String.removePriceFormat(): Long = try {
 fun getCouponValidityPeriod() : String {
     val lateDay60 = System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 60L)
     return lateDay60.timestampToString()
+}
+
+fun checkPasswordFormat(password: String): Boolean {
+    val pattern = "\\w+"
+    return Pattern.matches(pattern, password) || password.length !in 6..20
 }

@@ -1,10 +1,13 @@
 package com.ezen.lolketing.repository
 
 import com.ezen.lolketing.model.Coupon
+import com.ezen.lolketing.model.JoinInfo
 import com.ezen.lolketing.model.LoginInfo
 import com.ezen.lolketing.model.UserInfo
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.network.FirebaseClient
+import com.ezen.lolketing.util.checkPasswordFormat
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class LoginRepository @Inject constructor(
@@ -30,6 +33,34 @@ class LoginRepository @Inject constructor(
         failureListener()
     }
 
+    fun joinUser(
+        info: JoinInfo
+    ) = flow {
+        joinValidationCheek(info)
+
+        val uid = client
+            .joinUser(info.id, info.password)
+            .getOrThrow()
+            .ifEmpty { throw Exception("회원가입 실패") }
+
+        client
+            .registerUser(
+                email = info.id,
+                uid = uid
+            )
+            .onFailure { deleteUser() }
+
+        emit("회원가입 완료")
+    }
+
+    private fun joinValidationCheek(info: JoinInfo) = when {
+        android.util.Patterns.EMAIL_ADDRESS.matcher(info.id).matches().not() ->
+            throw Exception("아이디는 이메일 형식으로 입력해주세요")
+        checkPasswordFormat(info.password) -> throw Exception("비밀번호는 영문, 숫자, 특수 문자를 모두 포함하여 6~20자를 입력하주세요")
+        info.password != info.passwordCheck -> throw Exception("비밀번호를 확인해주세요")
+        else -> true
+    }
+
     suspend fun registerUser(
         email: String,
         uid: String,
@@ -49,14 +80,8 @@ class LoginRepository @Inject constructor(
 
     suspend fun emailLogin(loginInfo: LoginInfo) = client.emailLogin(loginInfo)
 
-    suspend fun deleteUser(
-        successListener: () -> Unit,
-    ) = try {
-//        client.deleteUser(
-//            successListener= successListener
-//        )
-    } catch (e: Exception) {
-        e.printStackTrace()
+    suspend fun deleteUser() {
+        client.deleteUser()
     }
 
     suspend fun getUserInfo(
@@ -83,7 +108,7 @@ class LoginRepository @Inject constructor(
     }
 
     suspend fun updateUserInfo(
-        user : Users,
+        user: Users,
         successListener: () -> Unit,
         failureListener: () -> Unit
     ) {

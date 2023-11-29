@@ -59,6 +59,12 @@ class FirebaseClient @Inject constructor(
             .await()
     }
 
+    suspend fun sendPasswordResetEmail(email: String) = runCatching {
+        auth
+            .sendPasswordResetEmail(email)
+            .await()
+    }
+
     suspend fun deleteUser() = runCatching {
         getCurrentUser()
             ?.delete()
