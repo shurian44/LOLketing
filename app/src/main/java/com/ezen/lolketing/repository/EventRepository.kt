@@ -1,6 +1,5 @@
 package com.ezen.lolketing.repository
 
-import android.content.SharedPreferences
 import com.ezen.lolketing.model.Coupon
 import com.ezen.lolketing.model.EventDetailItem
 import com.ezen.lolketing.model.Users
@@ -15,13 +14,12 @@ import java.util.Random
 import javax.inject.Inject
 
 class EventRepository @Inject constructor(
-    private val client: FirebaseClient,
-    private val pref: SharedPreferences
+    private val client: FirebaseClient
 ) {
     /** 신규 회원 화면 정보 조회 **/
     fun fetchNewUserInfo() = flow {
         val nickname = client.getUserNickName().getOrThrow()
-        val email = pref.getString(Constants.ID, null) ?: throw LoginException.EmptyUser
+        val email = client.getUserEmail() ?: throw LoginException.EmptyUser
 
         val info = client
             .getBasicSearchData(
@@ -49,7 +47,7 @@ class EventRepository @Inject constructor(
 
     /** 신규 쿠폰 사용 및 포인트 적립 **/
     fun updateUseNewUserCoupon(documentId: String) = flow {
-        val email = pref.getString(Constants.ID, null) ?: throw LoginException.EmptyUser
+        val email = client.getUserEmail() ?: throw LoginException.EmptyUser
 
         client
             .basicUpdateData(

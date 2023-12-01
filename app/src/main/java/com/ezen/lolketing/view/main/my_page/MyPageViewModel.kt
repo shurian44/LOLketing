@@ -1,11 +1,9 @@
 package com.ezen.lolketing.view.main.my_page
 
-import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.MyPageInfo
 import com.ezen.lolketing.repository.MyPageRepository
-import com.ezen.lolketing.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val repository: MyPageRepository,
-    private val pref: SharedPreferences
+    private val repository: MyPageRepository
 ) : StatusViewModel() {
 
     private val _myPageInfo = MutableStateFlow(MyPageInfo.create())
@@ -40,7 +37,6 @@ class MyPageViewModel @Inject constructor(
     /** 로그아웃 **/
     fun logout() {
         repository.signOut()
-        pref.edit().putString(Constants.ID, null).apply()
         _goToLogin.value = true
     }
 
