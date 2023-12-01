@@ -6,9 +6,11 @@ import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityMyPageBinding
+import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.login.LoginActivity
+import com.ezen.lolketing.view.login.join.JoinDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -22,6 +24,7 @@ class MyPageActivity :
         super.onCreate(savedInstanceState)
 
         binding.vm = viewModel
+        binding.activity = this
         binding.layoutTop.btnBack.setOnClickListener { finish() }
 
         repeatOnStarted {
@@ -32,5 +35,18 @@ class MyPageActivity :
                 }
             }
         }
+    }
+
+    fun goToModify() {
+        startActivity(
+            createIntent(JoinDetailActivity::class.java).also {
+                it.putExtra(JoinDetailActivity.MODIFY, true)
+            }
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchUserInfo()
     }
 }

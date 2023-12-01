@@ -10,9 +10,13 @@ class AddressRepositoryImpl @Inject constructor(
 
     /** 주소 조회 **/
     override fun fetchAddress(keyword: String, currentPage: Int) = flow {
-        client
-            .fetchAddress(keyword, currentPage)
-            .onSuccess { emit(it.results.toSearchResult()) }
+        emit(
+            client
+                .fetchAddress(keyword, currentPage)
+                .getOrThrow()
+                .results
+                .toSearchResult()
+        )
     }
 
 }

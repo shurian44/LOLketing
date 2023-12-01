@@ -2,6 +2,11 @@
 <layout>
 
     <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.my_page.MyPageActivity" />
+
         <variable
             name="vm"
             type="com.ezen.lolketing.view.main.my_page.MyPageViewModel" />
@@ -37,9 +42,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:text="@{vm.myPageInfo.grade}"
             android:textColor="@color/sub_color"
             android:textSize="16sp"
-            android:text="@{vm.myPageInfo.grade}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgGrade"
@@ -61,10 +66,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
+            android:text="@{vm.myPageInfo.nickname}"
             android:textColor="@color/sub_color"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="@{vm.myPageInfo.nickname}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/progress"
             tools:text="유저 닉네임" />
@@ -74,10 +79,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:text="@{vm.myPageInfo.id}"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:text="@{vm.myPageInfo.id}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtName"
             tools:text="유저 닉네임" />
@@ -87,10 +92,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="24dp"
             app:cardBackgroundColor="@color/black"
             app:cardCornerRadius="10dp"
-            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toStartOf="@id/cardCoupon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtId"
@@ -116,11 +121,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
+                    android:text="@{vm.myPageInfo.myCache}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:text="@{vm.myPageInfo.myCache}"
                     tools:text="100,000원" />
 
                 <TextView
@@ -170,11 +175,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
+                    android:text="@{vm.myPageInfo.couponInfo}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:text="@{vm.myPageInfo.couponInfo}"
                     tools:text="5 / 10" />
 
                 <TextView
@@ -220,6 +225,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="@{() -> activity.goToModify()}"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="16dp"
                     android:text="@string/my_info_modify"
@@ -231,17 +237,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/light_black"
+                    android:onClick="@{() -> vm.logout()}"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="16dp"
                     android:text="@string/logout"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:onClick="@{() -> vm.logout()}"
                     app:drawableEndCompat="@drawable/ic_next" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.deleteUser()}"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="16dp"
                     android:text="@string/withdrawal"

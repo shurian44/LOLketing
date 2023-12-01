@@ -1,131 +1,94 @@
 package com.ezen.lolketing.view.login.join
 
-import android.content.SharedPreferences
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
-import com.ezen.lolketing.model.Coupon
+import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.Users
 import com.ezen.lolketing.repository.LoginRepository
-import com.ezen.lolketing.util.Code
-import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.util.getCouponValidityPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class JoinDetailViewModel @Inject constructor(
-    private val repository: LoginRepository,
-    private val pref : SharedPreferences
-) : BaseViewModel<JoinDetailViewModel.Event>() {
+    private val repository: LoginRepository
+) : StatusViewModel() {
 
-    var isModify = false
-    private val _user = MutableLiveData<Users>()
-    val user : LiveData<Users>
-        get() = _user
-    var email = ""
+    private val _isModify = MutableStateFlow(false)
+    val isModify: StateFlow<Boolean> = _isModify
 
-    init {
-        pref.getString(Constants.ID, null)?.let {
-            email = it
-        } ?: event(Event.UserInfoLoadError)
+    private val _info = MutableStateFlow(Users())
+    val info: StateFlow<Users> = _info
+
+    private val _isTrimVisible = MutableStateFlow(true)
+    val isTrimVisible: StateFlow<Boolean> = _isTrimVisible
+
+    private val _isComplete = MutableStateFlow(false)
+    val isComplete: StateFlow<Boolean> = _isComplete
+
+    fun agreeToTermsOfUse() {
+        _isTrimVisible.value = false
+    }
+
+    fun setIsModify(isModify: Boolean) {
+        _isModify.value = isModify
+        if (isModify) {
+            agreeToTermsOfUse()
+            fetchUserInfo()
+        }
     }
 
     /**
      * 유저 정보 조회
-     * 신규 회원 가입 : 이메일 정보 수동 셋팅
-     * 정보 수정 : 서버 조회
      * **/
-    fun getUserInfo(isModify: Boolean) = viewModelScope.launch {
-        if (isModify.not()) {
-            // 신규 회원가입시
-            _user.value = Users(id = email)
-            return@launch
-        }
-
-        repository.getUserInfo(
-            email = email,
-            successListener = { info ->
-                _user.value = Users(
-                    id = email,
-                    nickname = info.nickname,
-                    phone = info.phone,
-                    address = info.address
-                )
-            },
-            failureListener = {
-                event(Event.UserInfoLoadError)
-            }
-        )
+    private fun fetchUserInfo() {
+        repository
+            .fetchUserInfo()
+            .setLoadingState()
+            .onEach { _info.value = it }
+            .catch { updateMessage(it.message ?: "회원 정보 호출 중 오류가 발생하였습니다.") }
+            .launchIn(viewModelScope)
     }
 
-    /** 유저 정보 수정 **/
-    fun updateModifyUserInfo() = viewModelScope.launch {
-        event(Event.Loading)
-        _user.value?.let {
-            repository.updateUserInfo(
-                user = it,
-                successListener = {
-                    event(Event.UpdateSuccess)
-                },
-                failureListener = {
-                    event(Event.UpdateFailure)
-                }
-            )
-        } ?: event(Event.UpdateFailure)
+    fun setAddress(address: String) {
+        _info.update { it.copy(address = address) }
     }
 
-    /** 신규 회원가입 **/
-    fun updateNewUserInfo() = viewModelScope.launch {
-        event(Event.Loading)
-        _user.value?.let {
-            repository.updateUserInfo(
-                user = it,
-                successListener = {
+    fun updateUserInfo() {
+        repository
+            .updateUserInfo(_info.value)
+            .setLoadingState()
+            .onEach {
+                if (_isModify.value) {
+                    updateMessage("회원 정보 수정을 완료하였습니다.")
+                    _isComplete.value = true
+                } else {
                     setNewUserCoupon()
-                },
-                failureListener = {
-                    event(Event.JoinDetailFailure)
                 }
-            )
-        } ?: kotlin.run {
-            event(Event.JoinDetailFailure)
-        }
+            }
+            .catch { updateMessage(it.message ?: "정보 등록을 실패하였습니다.") }
+            .launchIn(viewModelScope)
     }
 
     /** 신규 회원 쿠폰 지급 **/
     private fun setNewUserCoupon() = viewModelScope.launch {
-        // 신규 가입 쿠폰 지급
-        val coupon = Coupon().also {
-            it.id = email
-            it.title = Code.NEW_USER_COUPON.code
-            it.use = Code.NOT_USE.code
-            it.limit = getCouponValidityPeriod()
-            it.point = 500
-            it.timestamp = System.currentTimeMillis()
-        }
-        repository.setNewUserCoupon(
-            coupon = coupon,
-            successListener = {
-                event(Event.CouponIssuanceSuccess)
-            },
-            failureListener = {
-                event(Event.CouponIssuanceFailure)
+        repository
+            .setNewUserCoupon()
+            .setLoadingState()
+            .onEach {
+                updateMessage("회원 정보를 등록하였습니다.")
+                _isComplete.value = true
             }
-        )
-    }
-
-    sealed class Event {
-        data class Error(val msg: String) : Event()
-        object Loading: Event()
-        object UserInfoLoadError : Event()
-        object UpdateSuccess : Event()
-        object UpdateFailure : Event()
-        object JoinDetailFailure: Event()
-        object CouponIssuanceSuccess: Event()
-        object CouponIssuanceFailure: Event()
+            .catch {
+                updateMessage("회원 정보를 등록하였습니다. 신규 회원 쿠폰 발급 문의를 해주세요")
+                _isComplete.value = true
+            }
+            .launchIn(viewModelScope)
     }
 
 }

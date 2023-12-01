@@ -98,15 +98,17 @@ class FirebaseClient @Inject constructor(
 
     fun signOut() = auth.signOut()
 
-    suspend fun getBasicSnapshot(
+    suspend fun <T> getBasicSnapshot(
         collection: String,
-        document: String
+        document: String,
+        valueType: Class<T>
     ) = runCatching {
         fireStore
             .collection(collection)
             .document(document)
             .get()
             .await()
+            .toObject(valueType)
     }
 
     suspend fun <T> getBasicSnapshot(

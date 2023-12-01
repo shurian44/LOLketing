@@ -77,10 +77,10 @@ class EventRepository @Inject constructor(
         client
             .getBasicSnapshot(
                 collection = Constants.USERS,
-                document = email
+                document = email,
+                valueType = Users::class.java
             )
             .getOrThrow()
-            .toObject(Users::class.java)
             ?.rouletteCount
             ?.let {
                 emit(it)

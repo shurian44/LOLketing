@@ -1,58 +1,73 @@
 package com.ezen.lolketing.view.login.join
 
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
+import com.ezen.lolketing.StatusViewModel
+import com.ezen.lolketing.model.AddressSearchInfo
 import com.ezen.lolketing.model.SearchAddressResult
 import com.ezen.lolketing.repository.AddressRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class AddressViewModel @Inject constructor(
     private val repository: AddressRepository
-) : BaseViewModel<AddressViewModel.Event>() {
+) : StatusViewModel() {
 
+    private val _list = MutableStateFlow(listOf<SearchAddressResult>())
+    val list: StateFlow<List<SearchAddressResult>> = _list
+
+    private val _info = MutableStateFlow(AddressSearchInfo())
+    val info: StateFlow<AddressSearchInfo> = _info
+
+    private var beforeKeyword = ""
     private var currentPage = 1
-    private var currentKeyword = ""
-    private var _isMoreData = true
-    val isMoreData : Boolean
-        get() = _isMoreData
+    private var isMoreData = true
 
-    fun selectAddress(keyword: String, isSearch: Boolean) {
-        if (isSearch) {
+    private fun setIsSearchMode(isSearchMode: Boolean) {
+        _info.update { it.copy(isSearchMode = isSearchMode) }
+    }
+
+    fun setAddress(address: String) {
+        _info.update { it.copy(address = address, keyword = address) }
+        setIsSearchMode(false)
+    }
+
+    fun fetchAddressList() {
+        if (_info.value.isSearchMode.not()) setIsSearchMode(true)
+
+        if (_info.value.keyword != beforeKeyword) {
             currentPage = 1
-            currentKeyword = keyword
+            _list.value = listOf()
+            beforeKeyword = _info.value.keyword
+            isMoreData = true
         }
 
+        if (isMoreData.not()) return
+
         repository
-            .fetchAddress(keyword = currentKeyword, currentPage = currentPage)
+            .fetchAddress(keyword = _info.value.keyword, currentPage = currentPage)
             .onEach {
                 if (it.list.isNullOrEmpty()) {
-                    event(Event.Error("입력한 주소를 확인해주세요"))
+                    isMoreData = false
+                    if (_list.value.isEmpty()) {
+                        updateMessage("입력한 주소를 확인해주세요")
+                    }
                 } else {
-                    event(Event.AddressSearchSuccess(it.list))
                     currentPage++
-                    _isMoreData = it.isMoreData
+                    _list.value = _list.value.toMutableList().also { list -> list.addAll(it.list) }
+                    isMoreData = it.isMoreData
                 }
             }
             .catch {
                 it.printStackTrace()
-                event(Event.Error("입력한 주소를 확인해주세요"))
+                updateMessage("입력한 주소를 확인해주세요")
             }
             .launchIn(viewModelScope)
-
     }
-
-    sealed class Event {
-        data class AddressSearchSuccess(
-            val list : List<SearchAddressResult>,
-        ) : Event()
-        data class Error(
-            val msg: String
-        ) : Event()
-    }
-
 }

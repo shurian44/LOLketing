@@ -13,14 +13,16 @@
             name="vm"
             type="com.ezen.lolketing.view.login.join.JoinDetailViewModel" />
 
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
-        android:focusable="true"
         android:clickable="true"
+        android:focusable="true"
         android:paddingHorizontal="20dp"
         tools:context=".view.login.join.JoinDetailActivity">
 
@@ -28,7 +30,7 @@
             android:id="@+id/layoutRegister"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
+            android:visibility="@{vm.trimVisible ? View.GONE : View.VISIBLE, default = gone}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -39,6 +41,7 @@
                 android:id="@+id/joinDetailLogo"
                 android:layout_width="188dp"
                 android:layout_height="98dp"
+                android:contentDescription="@string/imageContentDescription"
                 android:src="@drawable/lolketing_logo"
                 app:layout_constraintBottom_toTopOf="@id/editNickname"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +87,7 @@
                 android:hint="@string/guide_input_nickname"
                 android:inputType="text"
                 android:maxLines="1"
-                android:text="@={vm.user.nickname}"
+                android:text="@={vm.info.nickname}"
                 app:layout_constraintBottom_toTopOf="@id/editPhone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -120,7 +123,7 @@
                 android:hint="@string/guide_input_phone"
                 android:inputType="number"
                 android:maxLines="1"
-                android:text="@={vm.user.phone}"
+                android:text="@={vm.info.phone}"
                 app:layout_constraintBottom_toTopOf="@id/editAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -137,8 +140,8 @@
                 android:hint="@string/guide_input_address"
                 android:inputType="text"
                 android:maxLines="1"
-                android:onClick="@{activity::moveAddressSearch}"
-                android:text="@={vm.user.address}"
+                android:onClick="@{() -> activity.moveAddressSearch()}"
+                android:text="@={vm.info.address}"
                 app:layout_constraintBottom_toTopOf="@id/btnRegister"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -149,7 +152,7 @@
                 android:layout_height="56dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="@color/main_color"
-                android:onClick="@{activity::setUser}"
+                android:onClick="@{() -> vm.updateUserInfo()}"
                 android:text="@{vm.isModify ? @string/modify : @string/join}"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -165,6 +168,7 @@
             android:id="@+id/layout_check"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="@{vm.trimVisible ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -175,6 +179,7 @@
                 android:layout_width="188dp"
                 android:layout_height="98dp"
                 android:layout_marginTop="70dp"
+                android:contentDescription="@string/imageContentDescription"
                 android:src="@drawable/lolketing_logo"
                 app:layout_constraintBottom_toTopOf="@id/scrollView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -202,15 +207,18 @@
 
             </ScrollView>
 
-            <com.ezen.lolketing.view.custom.CustomCheckBox
+            <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/ckAcceptTerms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:checked="@{!vm.isTrimVisible}"
                 android:drawablePadding="5dp"
-                android:gravity="center"
+                android:onClick="@{() -> vm.agreeToTermsOfUse()}"
                 android:text="@string/accept_terms"
                 android:textColor="@color/sub_color"
+                android:visibility="@{vm.isTrimVisible ? View.VISIBLE : View.GONE}"
+                app:buttonTint="@color/sub_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

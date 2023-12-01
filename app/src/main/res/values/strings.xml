@@ -42,6 +42,7 @@
     <string name="guide_input_nickname">닉네임을 입력해주세요</string>
     <string name="guide_input_phone">전화번호를 입력해주세요</string>
     <string name="guide_input_address">주소를 입력해주세요</string>
+    <string name="guide_register_nickname">닉네임 등록 후 앱을 이용해주세요</string>
     <string name="guide_create_nickname">닉네임은 2~10자로 입력해주세요</string>
     <string name="guide_create_phone">전화번호를 확인해 주세요</string>
     <string name="guide_update">업데이트가 완료되었습니다.</string>

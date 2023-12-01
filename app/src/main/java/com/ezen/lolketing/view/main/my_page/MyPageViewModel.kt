@@ -27,12 +27,8 @@ class MyPageViewModel @Inject constructor(
     private val _goToLogin = MutableStateFlow(false)
     val goToLogin: StateFlow<Boolean> = _goToLogin
 
-    init {
-        fetchUserInfo()
-    }
-
     /** 유저 정보 조회 **/
-    private fun fetchUserInfo()  {
+    fun fetchUserInfo()  {
         repository
             .fetchUserInfo()
             .setLoadingState()
@@ -50,8 +46,8 @@ class MyPageViewModel @Inject constructor(
 
     /** 회원탈퇴 **/
     fun deleteUser() = viewModelScope.launch {
-        updateMessage("탈퇴가 완료되었습니다.")
         repository.deleteUser()
+        updateMessage("탈퇴가 완료되었습니다.")
         _goToLogin.value = true
     }
 

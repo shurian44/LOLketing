@@ -3,45 +3,46 @@ package com.ezen.lolketing.view.login.join
 import android.app.Activity
 import android.os.Bundle
 import android.text.InputFilter
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.ezen.lolketing.BaseViewModelActivity
 import com.ezen.lolketing.R
+import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityJoinDetailBinding
-import com.ezen.lolketing.util.*
+import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.repeatOnStarted
+import com.ezen.lolketing.util.setSpecialCharacterRestrictions
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
-class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, JoinDetailViewModel>(R.layout.activity_join_detail) {
+class JoinDetailActivity :
+    StatusViewModelActivity<ActivityJoinDetailBinding, JoinDetailViewModel>(R.layout.activity_join_detail) {
 
     override val viewModel: JoinDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        repeatOnStarted {
-            viewModel.eventFlow.collect { event -> eventHandler(event) }
-        }
-
         initViews()
+
+        repeatOnStarted {
+            viewModel.isComplete.collectLatest {
+                if (it) {
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+            }
+        }
 
     } // onCreate()
 
     private fun initViews() = with(binding) {
         vm = viewModel
         activity = this@JoinDetailActivity
-        viewModel.isModify = intent?.getBooleanExtra(MODIFY, false) ?: false
 
-        viewModel.getUserInfo(viewModel.isModify)
-
-        // 회원정보 수정일 경우
-        if(viewModel.isModify){
-            layoutCheck.isVisible = false
-            layoutRegister.isVisible = true
-        }
+        viewModel.setIsModify(intent?.getBooleanExtra(MODIFY, false) ?: false)
 
         // 특수문자 제한 및 길이 제한
         editNickname.filters = arrayOf(setSpecialCharacterRestrictions(), InputFilter.LengthFilter(10))
@@ -64,72 +65,21 @@ class JoinDetailActivity : BaseViewModelActivity<ActivityJoinDetailBinding, Join
                 txtTipPhone.isVisible = true
                 editPhone.setStateError(true)
             } else {
-                txtTipNickname.isVisible = false
+                txtTipPhone.isVisible = false
                 editPhone.setStateError(false)
             }
         }
-
-        // 이용약관 체크박스 채크
-        ckAcceptTerms.setOnClickListener {
-            ckAcceptTerms.toggle()
-            layoutCheck.isVisible = false
-            layoutRegister.isVisible = true
-        }
-    }
-
-    private fun eventHandler(event: JoinDetailViewModel.Event) {
-        dismissDialog()
-        when(event) {
-            is JoinDetailViewModel.Event.Error -> {
-                toast(event.msg)
-            }
-            is JoinDetailViewModel.Event.Loading -> {
-                showDialog()
-            }
-            is JoinDetailViewModel.Event.UserInfoLoadError -> {
-                toast(getString(R.string.error_user_info_search))
-                finish()
-            }
-            is JoinDetailViewModel.Event.UpdateSuccess -> {
-                toast(getString(R.string.guide_update))
-                finish()
-            }
-            is JoinDetailViewModel.Event.UpdateFailure -> {
-                toast(getString(R.string.error_update))
-            }
-            is JoinDetailViewModel.Event.CouponIssuanceSuccess -> {
-                toast(getString(R.string.user_register_success))
-                finish()
-            }
-            is JoinDetailViewModel.Event.CouponIssuanceFailure -> {
-                toast(getString(R.string.user_register_failure))
-            }
-            is JoinDetailViewModel.Event.JoinDetailFailure -> {
-                toast(getString(R.string.user_register_failure))
-            }
-        }
-    }
-
-    // 등록하기 버튼 클릭
-    fun setUser(view: View) {
-        // 회원가입 상세의 경우
-        if(viewModel.isModify.not()){
-            // 등급을 브론즈로 설정
-            viewModel.updateNewUserInfo()
-        } else {
-            viewModel.updateModifyUserInfo()
-        }
-    } // setUser()
+    } // initViews()
 
     /** 주소 페이지로 이동 **/
-    fun moveAddressSearch(view: View) {
+    fun moveAddressSearch() {
         launcher.launch(createIntent(AddressActivity::class.java))
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.getStringExtra(ADDRESS)?.let {
-                binding.editAddress.setText(it)
+                viewModel.setAddress(it)
             }
         }
     }
