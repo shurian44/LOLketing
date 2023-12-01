@@ -136,7 +136,7 @@ class FirebaseClient @Inject constructor(
             .orderBy(orderByField, orderByDirection)
             .get()
             .await()
-            .toObjects(valueType)
+            .mapNotNull { Pair(it.toObject(valueType), it.id) }
     }
 
     suspend fun basicAddData(

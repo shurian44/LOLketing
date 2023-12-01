@@ -74,7 +74,7 @@ class MyBoardActivity : BaseViewModelActivity<ActivityMyBoardBinding, MyBoardVie
     }
 
     private fun setRecyclerView(list: List<BoardItem.BoardListItem>) = with(binding) {
-        adapter.addItemList(list)
+//        adapter.addItemList(list)
         recyclerView.adapter = adapter
     }
 

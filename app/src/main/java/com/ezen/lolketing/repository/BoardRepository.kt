@@ -6,17 +6,18 @@ import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.view.main.board.search.SearchActivity
 import com.google.firebase.firestore.FieldValue
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class BoardRepository @Inject constructor(
     private val client: FirebaseClient
-){
+) {
 
-    suspend fun getUserNickname() : String? =
+    suspend fun getUserNickname(): String? =
         client.getUserNickName().getOrNull()
 
     suspend fun getUserGrade(
-        email : String,
+        email: String,
         successListener: (String) -> Unit,
         failureListener: () -> Unit
     ) = try {
@@ -37,10 +38,10 @@ class BoardRepository @Inject constructor(
     }
 
     suspend fun getBoardList(
-        field : String = Constants.TEAM,
-        query : String,
-        successListener : (List<BoardItem.BoardListItem>) -> Unit,
-        failureListener : () -> Unit
+        field: String = Constants.TEAM,
+        query: String,
+        successListener: (List<BoardItem.BoardListItem>) -> Unit,
+        failureListener: () -> Unit
     ) = try {
 //        client.getBasicQuerySnapshot(
 //            collection = Constants.BOARD,
@@ -57,17 +58,34 @@ class BoardRepository @Inject constructor(
 //                failureListener()
 //            }
 //        )
-    } catch (e : Exception) {
+    } catch (e: Exception) {
         e.printStackTrace()
         null
+    }
+
+    fun fetchBoardList(
+        field: String = Constants.TEAM,
+        query: String
+    ) = flow {
+        emit(
+            client
+                .getBasicQuerySnapshot(
+                    collection = Constants.BOARD,
+                    field = field,
+                    query = query,
+                    valueType = Board::class.java
+                )
+                .getOrThrow()
+                .mapNotNull { (board, documentId) -> board.boardListItemMapper(documentId) }
+        )
     }
 
     suspend fun getSearchBoardList(
         field: String,
         data: String,
         team: String,
-        successListener : (List<BoardItem.BoardListItem>) -> Unit,
-        failureListener : () -> Unit
+        successListener: (List<BoardItem.BoardListItem>) -> Unit,
+        failureListener: () -> Unit
     ) = try {
 //        client.getBasicQuerySnapshot(
 //            collection = Constants.BOARD,
@@ -90,7 +108,7 @@ class BoardRepository @Inject constructor(
 //                failureListener()
 //            }
 //        )
-    } catch (e : Exception) {
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     }
@@ -223,9 +241,9 @@ class BoardRepository @Inject constructor(
 
     // 게시글 업로드
     suspend fun uploadBoard(
-        data : Board,
-        successListener : (String) -> Unit,
-        errorListener : () -> Unit
+        data: Board,
+        successListener: (String) -> Unit,
+        errorListener: () -> Unit
     ) = try {
 //        client
 //            .basicAddData(
@@ -248,7 +266,7 @@ class BoardRepository @Inject constructor(
         documentId: String,
         updateData: Map<String, Any>,
         successListener: () -> Unit,
-        failureListener : () -> Unit
+        failureListener: () -> Unit
     ) = try {
 //        client.basicUpdateData(
 //            collection = Constants.BOARD,
@@ -257,7 +275,7 @@ class BoardRepository @Inject constructor(
 //            successListener = successListener,
 //            failureListener = failureListener
 //        )
-    } catch (e : Exception) {
+    } catch (e: Exception) {
         e.printStackTrace()
     }
 
@@ -290,7 +308,7 @@ class BoardRepository @Inject constructor(
     suspend fun deleteBoard(
         documentId: String,
         successListener: () -> Unit,
-        failureListener : () -> Unit
+        failureListener: () -> Unit
     ) = try {
 //        client.basicDeleteData(
 //            collection = Constants.BOARD,
@@ -401,7 +419,7 @@ class BoardRepository @Inject constructor(
         commentDocumentId: String,
         successListener: () -> Unit,
         failureListener: () -> Unit
-     ) = try {
+    ) = try {
 //        client
 //            .doubleDelete(
 //                firstCollection = Constants.BOARD,

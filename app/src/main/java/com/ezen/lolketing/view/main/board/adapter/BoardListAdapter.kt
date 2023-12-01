@@ -14,40 +14,18 @@ import com.ezen.lolketing.util.getBoardImage
 
 class BoardListAdapter(
     val onclickListener : (String) -> Unit,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val list = mutableListOf<BoardItem>()
-
-    inner class TopImageViewHolder(val binding: ItemBoardTopBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(teamImage : BoardItem.TeamImage) = with(binding) {
-            imageView.setImageResource(getBoardImage(teamImage.team))
-        }
-    }
-
-    inner class BoardListViewHolder(val binding : ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(board: BoardItem.BoardListItem) = with(binding) {
-            this.board = board
-            if (adapterPosition % 2 == 0) {
-                root.setBackgroundResource(R.color.black)
-            } else {
-                root.setBackgroundResource(R.color.light_black)
-            }
-
-            root.setOnClickListener {
-                onclickListener(board.documentId)
-            }
-        }
-    }
-
-    override fun getItemCount(): Int = list.size
+) : ListAdapter<BoardItem, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is TopImageViewHolder) {
-            holder.bind(list[position] as BoardItem.TeamImage)
+            holder.bind(currentList[position] as BoardItem.TeamImage)
         }
 
         if (holder is BoardListViewHolder) {
-            holder.bind(list[position] as BoardItem.BoardListItem)
+            holder.bind(
+                currentList[position] as BoardItem.BoardListItem,
+                onclickListener
+            )
         }
     }
 
@@ -60,19 +38,42 @@ class BoardListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return list[position].type
+        return currentList[position].type
     }
 
-    fun addItem(item : BoardItem) {
-        list.add(item)
-        notifyItemChanged(list.lastIndex)
-    }
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<BoardItem>() {
+            override fun areItemsTheSame(oldItem: BoardItem, newItem: BoardItem) =
+                oldItem == newItem
 
-    fun addItemList(list : List<BoardItem>) {
-        list.forEach {
-            this.list.add(it)
-            notifyItemChanged(list.lastIndex)
+            override fun areContentsTheSame(oldItem: BoardItem, newItem: BoardItem) =
+                oldItem == newItem
         }
     }
+}
 
+class TopImageViewHolder(val binding: ItemBoardTopBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(
+        teamImage : BoardItem.TeamImage
+    ) = with(binding) {
+        imageView.setImageResource(getBoardImage(teamImage.team))
+    }
+}
+
+class BoardListViewHolder(val binding : ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(
+        board: BoardItem.BoardListItem,
+        onclickListener : (String) -> Unit
+    ) = with(binding) {
+        this.board = board
+        if (absoluteAdapterPosition % 2 == 0) {
+            root.setBackgroundResource(R.color.black)
+        } else {
+            root.setBackgroundResource(R.color.light_black)
+        }
+
+        root.setOnClickListener {
+            onclickListener(board.documentId)
+        }
+    }
 }

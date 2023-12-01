@@ -26,7 +26,7 @@ class MyPageRepository @Inject constructor(
                 valueType = Coupon::class.java
             )
             .getOrThrow()
-            .mapNotNull { it.mapperMyPageCouponInfo() }
+            .map { (coupon, _) -> coupon.mapperMyPageCouponInfo() }
 
         emit(
             info.copy(

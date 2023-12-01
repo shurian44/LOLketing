@@ -62,7 +62,7 @@ data class BoardWriteInfo(
     val email: String
 )
 
-open class BoardItem(val type: Int) {
+sealed class BoardItem(val type: Int) {
     data class TeamImage(
         val team: String
     ) : BoardItem(type = TYPE_TEAM_IMAGE)

@@ -10,8 +10,8 @@
             type="com.ezen.lolketing.view.main.board.BoardListActivity" />
 
         <variable
-            name="title"
-            type="String" />
+            name="vm"
+            type="com.ezen.lolketing.view.main.board.BoardListViewModel" />
 
     </data>
 
@@ -25,6 +25,8 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:adapter="@{activity.adapter}"
+            app:submitList="@{vm.list}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/layoutBottom"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +39,7 @@
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
             app:isMenuVisible="@{true}"
-            app:title="@{title}" />
+            app:title="@{vm.team}" />
 
         <TextView
             android:id="@+id/txtEmpty"
@@ -49,6 +51,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="gone"
+            app:isVisible="@{vm.list.size() &lt; 2}"
             app:layout_constraintBottom_toTopOf="@id/layoutBottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,8 +81,9 @@
                 android:layout_height="24dp"
                 android:layout_marginVertical="11dp"
                 android:layout_marginStart="20dp"
+                android:contentDescription="@string/imageContentDescription"
                 android:background="@drawable/ic_search"
-                android:onClick="@{activity::searchBoard}"
+                android:onClick="@{() -> activity.searchBoard()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -89,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:onClick="@{activity::writeBoard}"
+                android:onClick="@{() -> activity.writeBoard()}"
                 android:text="@string/write"
                 android:textColor="@color/sub_color"
                 android:textSize="16sp"
@@ -104,7 +108,7 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/ic_write"
-                android:onClick="@{activity::writeBoard}"
+                android:onClick="@{() -> activity.writeBoard()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

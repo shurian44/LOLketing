@@ -77,7 +77,7 @@ class SearchActivity : BaseViewModelActivity<ActivitySearchBinding, SearchViewMo
             }
         )
 
-        adapter.addItemList(list)
+//        adapter.addItemList(list)
 
         recyclerView.adapter = adapter
         txtEmpty.text = getString(R.string.guide_search_empty)
