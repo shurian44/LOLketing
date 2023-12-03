@@ -14,6 +14,7 @@ object Constants {
     const val PLAYER = "Player"
     const val TIME = "time"
     const val ID = "id"
+    const val Email = "email"
     const val DOCUMENT_ID = "documentId"
     const val SELECT_IMAGE = "select_image"
     const val POSITION = "position"

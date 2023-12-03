@@ -17,7 +17,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+
 
 fun <T> Activity.startActivity(clazz: Class<T>) {
     startActivity(Intent(this, clazz))
@@ -117,3 +119,6 @@ fun RecyclerView.addOnScrollListener(onScrolled: (RecyclerView) -> Unit) {
         }
     })
 }
+
+fun Context.dpToPx(dpSize: Int): Int =
+    (dpSize * resources.displayMetrics.density).toInt()

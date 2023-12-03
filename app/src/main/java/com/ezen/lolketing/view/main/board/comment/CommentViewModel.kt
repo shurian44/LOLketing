@@ -2,113 +2,112 @@ package com.ezen.lolketing.view.main.board.comment
 
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.BaseViewModel
+import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.Board
 import com.ezen.lolketing.model.CommentItem
 import com.ezen.lolketing.repository.BoardRepository
 import com.ezen.lolketing.view.main.board.detail.BoardDetailViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class CommentViewModel @Inject constructor(
     private val repository: BoardRepository
-) : BaseViewModel<CommentViewModel.Event>(){
+) : StatusViewModel() {
+
+    private var _documentId = ""
+    val documentId
+        get() = _documentId
+
+    private val _email = MutableStateFlow("")
+    val email: StateFlow<String> = _email
+
+    private val _list = MutableStateFlow(listOf<CommentItem>())
+    val list: StateFlow<List<CommentItem>> = _list
+
+    private val _isSuccess = MutableStateFlow(false)
+    val isSuccess: StateFlow<Boolean> = _isSuccess
+
+    fun setDocumentId(documentId: String) {
+        _documentId = documentId
+    }
+
+    init {
+        setEmail()
+    }
+
+    private fun setEmail() = runCatching {
+        _email.value = repository.fetchEmail()
+    }.onFailure {
+        updateMessage(it.message ?: "유저 정보가 없습니다.")
+        updateFinish(true)
+    }
 
     /** 댓글 리스트 조회 **/
-    fun getCommentList(
-        documentId: String
-    ) = viewModelScope.launch {
+    fun fetchCommentList() {
         repository
-            .getCommentsList(
-                documentId = documentId,
-                successListener = {
-                    event(Event.CommentListSuccess(it))
-                },
-                failureListener = {
-                    event(Event.Failure)
-                }
-            )
+            .fetchComments(documentId)
+            .setLoadingState()
+            .onEach { _list.value = it }
+            .catch { updateMessage(it.message ?: "오류가 발생하였습니다.") }
+            .launchIn(viewModelScope)
     }
 
     /** 댓글 추가 **/
-    fun addComment(
-        documentId: String,
-        comment: String
-    ) = viewModelScope.launch {
-        event(Event.Loading)
+    fun addComment(comment: String) {
         repository
             .addComment(
                 documentId = documentId,
                 comment = comment,
-                successListener = {
-                    event(Event.AddCommentSuccess)
-                },
-                failureListener = {
-                    event(Event.AddCommentFailure)
-                }
+                count = _list.value.size + 1
             )
-    }
-
-    /** 댓글 수 업데이트 **/
-    fun updateCommentCount(
-        documentId: String,
-        count: Int
-    ) = viewModelScope.launch {
-        repository
-            .updateBoardCommentCount(
-                documentId = documentId,
-                count = count
-            )
+            .setLoadingState()
+            .onEach {
+                fetchCommentList()
+                _isSuccess.value = true
+            }
+            .catch { updateMessage(it.message ?: "오류가 발생하였습니다") }
+            .launchIn(viewModelScope)
     }
 
     /** 댓글 신고 업데이트 **/
     fun updateCommentReport(
-        boardDocumentId: String,
         commentDocumentId: String,
-        reportList: List<String>
-    ) = viewModelScope.launch {
-        event(Event.Loading)
+        reportList: List<String>,
+        report: String
+    ) {
+
         repository
             .updateCommentReport(
-                boardDocumentId = boardDocumentId,
+                boardDocumentId = documentId,
                 commentDocumentId = commentDocumentId,
-                reportList =  reportList,
-                successListener = {
-                    event(Event.CommentReportSuccess)
-                }
+                reportList = reportList.toMutableList().also {
+                    it.add(report)
+                },
             )
+            .setLoadingState()
+            .onEach { updateMessage(it) }
+            .catch { updateMessage(it.message ?: "신고 실패") }
+            .launchIn(viewModelScope)
     }
 
     /** 댓글 삭제 **/
-    fun deleteComment(
-        boardDocumentId: String,
-        commentDocumentId: String
-    ) = viewModelScope.launch {
-        event(Event.Loading)
+    fun deleteComment(commentDocumentId: String) {
         repository
             .deleteComment(
-                boardDocumentId = boardDocumentId,
+                boardDocumentId = documentId,
                 commentDocumentId = commentDocumentId,
-                successListener = {
-                    event(Event.CommentDeleteSuccess)
-                },
-                failureListener = {
-                    event(Event.Failure)
-                }
+                count = _list.value.size - 1
             )
-    }
-
-    sealed class Event {
-        data class CommentListSuccess(
-            val list : List<CommentItem>
-        ) : Event()
-        object AddCommentSuccess : Event()
-        object AddCommentFailure : Event()
-        object CommentReportSuccess : Event()
-        object CommentDeleteSuccess : Event()
-        object Failure : Event()
-        object Loading: Event()
+            .setLoadingState()
+            .onEach { fetchCommentList() }
+            .catch { updateMessage(it.message ?: "삭제 실패") }
+            .launchIn(viewModelScope)
     }
 
 }

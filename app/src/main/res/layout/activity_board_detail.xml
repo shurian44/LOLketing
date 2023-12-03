@@ -10,18 +10,10 @@
             type="com.ezen.lolketing.view.main.board.detail.BoardDetailActivity" />
 
         <variable
-            name="board"
-            type="com.ezen.lolketing.model.Board" />
+            name="vm"
+            type="com.ezen.lolketing.view.main.board.detail.BoardDetailViewModel" />
 
-        <variable
-            name="title"
-            type="String" />
-
-        <variable
-            name="commentCount"
-            type="Integer" />
-
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
 
     </data>
 
@@ -34,8 +26,7 @@
         <include
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
-            app:isBackVisible="@{true}"
-            app:title="@{title}" />
+            app:isBackVisible="@{true}" />
 
         <ScrollView
             android:layout_width="0dp"
@@ -57,8 +48,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:boardCategory="@{board.category ?? ``}"
-                    app:boardTitle="@{board.title ?? ``}"
+                    app:html="@{@string/board_detail_title(vm.info.categoryName, vm.info.title)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -69,6 +59,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginTop="10dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    app:imageRes="@{vm.info.gradeRes}"
                     app:layout_constraintStart_toStartOf="@id/txtTitle"
                     app:layout_constraintTop_toBottomOf="@id/txtTitle"
                     tools:src="@drawable/icon_bronze" />
@@ -78,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="@{board.nickname ?? ``}"
+                    android:text="@{vm.info.nickname}"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/imgIcon"
@@ -96,7 +88,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/imgIcon"
                     app:layout_constraintStart_toEndOf="@id/txtNickname"
                     app:layout_constraintTop_toTopOf="@id/imgIcon"
-                    app:timestamp="@{board.timestamp ?? 0L}"
+                    app:timestamp="@{vm.info.timestamp}"
                     tools:text="2022.05.21" />
 
                 <TextView
@@ -104,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="@{@string/board_views(board.views ?? 0L)}"
+                    android:text="@{@string/board_views(vm.info.views)}"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/imgIcon"
@@ -138,10 +130,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:contentDescription="@string/imageContentDescription"
                     app:layout_constraintEnd_toEndOf="@id/viewLine"
                     app:layout_constraintStart_toStartOf="@id/viewLine"
                     app:layout_constraintTop_toBottomOf="@id/viewLine"
-                    app:urlImage="@{board.image}"
+                    app:urlImage="@{vm.info.image}"
                     tools:src="@drawable/img_chatting" />
 
                 <View
@@ -159,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@{board.content ?? ``}"
+                    android:text="@{vm.info.content}"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@id/viewLine"
@@ -171,26 +164,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
+                    app:adapter="@{activity.adapter}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtContents"
+                    app:submitList="@{vm.info.commentList}"
                     tools:itemCount="5"
                     tools:listitem="@layout/item_comment" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:background="@color/sub_color"
-                    android:gravity="center"
-                    android:onClick="@{activity::onCommentClick}"
-                    android:text="@string/comments_detail"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recyclerView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -218,8 +199,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                android:onClick="@{activity::onCommentClick}"
-                android:text="@{commentCount.toString()}"
+                android:onClick="@{() -> activity.onCommentClick()}"
+                android:text="@{String.valueOf(vm.info.commentCounts)}"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -233,7 +214,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@drawable/ic_comment"
-                android:onClick="@{activity::onCommentClick}"
+                android:onClick="@{() -> activity.onCommentClick()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/txtCommentCount"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -243,8 +224,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:onClick="@{activity::onLikeClick}"
-                android:text="@{board.likeCounts.toString()}"
+                android:onClick="@{() -> vm.updateLike()}"
+                android:text="@{String.valueOf(vm.info.like.size())}"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -257,8 +238,8 @@
                 android:id="@+id/viewHeart"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:background="@drawable/ic_heart"
-                android:onClick="@{activity::onLikeClick}"
+                android:background="@{vm.isLike() ? @drawable/ic_heart_fill : @drawable/ic_heart}"
+                android:onClick="@{() -> vm.updateLike()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/txtLikeCount"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -275,7 +256,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:visibility="@{board.reportList.size() >= 5 ? View.VISIBLE : View.GONE, default = gone}"
+            android:visibility="@{vm.info.reportList.size() >= 5 ? View.VISIBLE : View.GONE, default = gone}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

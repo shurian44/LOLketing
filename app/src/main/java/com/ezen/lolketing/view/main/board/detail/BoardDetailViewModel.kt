@@ -1,202 +1,169 @@
 package com.ezen.lolketing.view.main.board.detail
 
-import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
-import com.ezen.lolketing.model.Board
-import com.ezen.lolketing.model.CommentItem
+import com.ezen.lolketing.StatusViewModel
+import com.ezen.lolketing.exception.BoardException
+import com.ezen.lolketing.model.BoardDetailInfo
 import com.ezen.lolketing.repository.BoardRepository
-import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.util.Grade
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BoardDetailViewModel @Inject constructor(
-    private val repository: BoardRepository,
-    private val pref : SharedPreferences
-) : BaseViewModel<BoardDetailViewModel.Event>(){
+    private val repository: BoardRepository
+) : StatusViewModel() {
 
-    private lateinit var board: Board
-    val email: String = pref.getString(Constants.ID, null) ?: ""
+    private val _info = MutableStateFlow(BoardDetailInfo.create())
+    val info: StateFlow<BoardDetailInfo> = _info
+
+    private val _email = MutableStateFlow("")
+    val email: StateFlow<String> = _email
+
+    val isLike: StateFlow<Boolean> = _info.map {
+        it.getIsLike(_email.value)
+    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
+
+    private var _documentId = ""
+    val documentId
+        get() = _documentId
+
+    init {
+        setEmail()
+    }
+
+    private fun setEmail() = runCatching {
+        _email.value = repository.fetchEmail()
+    }.onFailure {
+        updateMessage(it.message ?: "유저 정보가 없습니다.")
+        updateFinish(true)
+    }
+
+    fun setDocumentId(documentId: String) {
+        this._documentId = documentId
+    }
 
     /** 게시글 조회 **/
-    fun getBoard(
-        documentId : String
-    ) = viewModelScope.launch {
-        repository.getBoardReadInfo(
-            documentId = documentId,
-            successListener = {
-                board = it
-                event(Event.BoardInfoSuccess(it))
-
-                updateViews(documentId)
-                getUserGrade()
-                getCommentsList(documentId)
-            },
-            failureListener = {
-                event(Event.Failure)
-            }
-        )
-    }
-
-    /** 작성자 유저 등급 조회 **/
-    private fun getUserGrade() = viewModelScope.launch {
-        val email = board.email ?: return@launch
+    fun fetchBordInfo() {
         repository
-            .getUserGrade(
-                email = email,
-                successListener = {
-                    event(Event.UserGrade(it))
-                },
-                failureListener = {
-                    event(Event.UserGrade(Grade.BRONZE.gradeCode))
+            .fetchBoardInfo(_documentId)
+            .setLoadingState()
+            .onEach { _info.value = it }
+            .catch {
+                updateMessage(it.message ?: "조회 중 오류가 발생하였습니다.")
+                if (it is BoardException.SearchError) {
+                    updateFinish(true)
                 }
-            )
-    }
-
-    /** 조회수 업데이트 **/
-    private fun updateViews(
-        documentId: String
-    ) = viewModelScope.launch {
-        val userId = pref.getString(Constants.ID, "")
-        if (userId == board.email) return@launch
-
-        repository.updateViews(documentId = documentId)
+            }
+            .launchIn(viewModelScope)
     }
 
     /** 좋아요 업데이트 **/
-    fun updateLike(
-        documentId: String,
-    ) = viewModelScope.launch {
-        event(Event.Loading)
-        val userId = pref.getString(Constants.ID, "") ?: return@launch
-        val isLike = board.like?.get(userId) ?: false
-        board.like?.set(userId, isLike.not())
-        board.likeCounts = board.like?.filter { it.value }?.size?.toLong()
-
+    fun updateLike() {
         repository
             .updateLikes(
-                documentId = documentId,
-                board = board,
-                successListener = {
-                    event(Event.LikeUpdateSuccess(isLike.not(), board))
-                },
-                failureListener = {
-                    error(Event.Failure)
-                }
+                documentId = _documentId,
+                info = _info.value,
+                email = _email.value
             )
-    }
-
-    /** 댓글 리스트 조회 **/
-    fun getCommentsList(
-        documentId: String
-    ) = viewModelScope.launch {
-        repository
-            .getCommentsList(
-                documentId = documentId,
-                successListener = {
-                    event(Event.CommentsListSuccess(it))
-                },
-                failureListener = {
-                    event(Event.Failure)
-                }
-            )
+            .setLoadingState()
+            .onEach { fetchBordInfo() }
+            .catch { updateMessage(it.message ?: "업데이트 실패") }
+            .launchIn(viewModelScope)
     }
 
     /** 게시글 삭제 **/
     fun deleteBoard(
         documentId: String
     ) = viewModelScope.launch {
-        event(Event.Loading)
+//        event(Event.Loading)
         repository
             .deleteBoard(
                 documentId = documentId,
                 successListener = {
-                    event(Event.DeleteSuccess)
+//                    event(Event.DeleteSuccess)
                 },
                 failureListener = {
-                    event(Event.Failure)
+//                    event(Event.Failure)
                 }
             )
     }
 
     /** 게시글 신고하기 **/
-    fun updateReportList(
-        documentId: String,
-        reportList: List<String>
-    ) = viewModelScope.launch {
-        event(Event.Loading)
-        repository.updateBoardReport(
-            documentId = documentId,
-            reportList = reportList,
-            successListener = {
-                event(Event.ReportSuccess)
-            },
-            failureListener = {
-                event(Event.Failure)
+    fun updateReportList(report: String) {
+        val newReportList = _info.value.reportList.toMutableList().also {
+            it.add(report)
+        }
+
+        repository
+            .updateBoardReport(
+                documentId = _documentId,
+                reportList = newReportList,
+            )
+            .setLoadingState()
+            .onEach {
+                updateMessage(it)
+                _info.update { info -> info.copy(reportList = newReportList) }
             }
-        )
+            .catch { updateMessage(it.message ?: "오류가 발생하였습니다.") }
+            .launchIn(viewModelScope)
     }
 
     /** 댓글 신고하기 **/
     fun updateCommentReport(
-        boardDocumentId: String,
         commentDocumentId: String,
-        reportList: List<String>
+        reportList: List<String>,
+        report: String
     ) = viewModelScope.launch {
-        event(Event.Loading)
         repository
             .updateCommentReport(
-                boardDocumentId = boardDocumentId,
+                boardDocumentId = documentId,
                 commentDocumentId = commentDocumentId,
-                reportList = reportList,
-                successListener = {
-                    event(Event.CommentReportSuccess)
-                }
+                reportList = reportList.toMutableList().also {
+                    it.add(report)
+                },
             )
     }
 
     /** 댓글 삭제 **/
     fun deleteComment(
-        boardDocumentId: String,
         commentDocumentId: String
     ) = viewModelScope.launch {
-        event(Event.Loading)
         repository
             .deleteComment(
-                boardDocumentId = boardDocumentId,
+                boardDocumentId = documentId,
                 commentDocumentId = commentDocumentId,
-                successListener = {
-                    event(Event.CommentDeleteSuccess)
-                },
-                failureListener = {
-                    event(Event.Failure)
-                }
+                count = _info.value.commentList.size - 1
             )
+            .setLoadingState()
+            .onEach { fetchCommentList() }
+            .launchIn(viewModelScope)
     }
 
-    sealed class Event {
-        data class BoardInfoSuccess(
-            val board: Board
-        ) : Event()
-        data class UserGrade(
-            val grade: String
-        ) : Event()
-        data class CommentsListSuccess(
-            val comments : List<CommentItem>
-        ) : Event()
-        data class LikeUpdateSuccess(
-            val like: Boolean,
-            val board: Board
-        ) : Event()
-        object DeleteSuccess : Event()
-        object ReportSuccess : Event()
-        object CommentDeleteSuccess : Event()
-        object CommentReportSuccess : Event()
-        object Failure : Event()
-        object Loading : Event()
+    /** 댓글 조회 **/
+    private fun fetchCommentList() {
+        repository
+            .fetchComments(documentId = documentId)
+            .setLoadingState()
+            .onEach {
+                _info.update { item ->
+                    item.copy(
+                        commentList = it,
+                        commentCounts = it.size.toLong()
+                    )
+                }
+            }
+            .catch { }
+            .launchIn(viewModelScope)
     }
 
 }

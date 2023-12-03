@@ -13,6 +13,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.view.custom.CustomEditTextView
+import com.ezen.lolketing.view.custom.CustomLimitedEditTextView
 import com.ezen.lolketing.view.custom.ImageSlider
 
 @BindingAdapter("adapter")

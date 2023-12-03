@@ -10,8 +10,8 @@
             type="com.ezen.lolketing.view.main.board.comment.CommentActivity" />
 
         <variable
-            name="title"
-            type="String" />
+            name="vm"
+            type="com.ezen.lolketing.view.main.board.comment.CommentViewModel" />
 
         <variable
             name="category"
@@ -32,8 +32,7 @@
         <include
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
-            app:isBackVisible="@{true}"
-            app:title="@{title}" />
+            app:isBackVisible="@{true}" />
 
         <TextView
             android:id="@+id/txtTitle"
@@ -42,8 +41,7 @@
             android:layout_marginHorizontal="20dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:boardCategory="@{category ?? ``}"
-            app:boardTitle="@{boardTitle ?? ``}"
+            app:html="@{@string/board_detail_title(category, boardTitle)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutTop"
@@ -54,6 +52,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            app:adapter="@{activity.adapter}"
+            app:submitList="@{vm.list}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/editComment"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,6 +70,7 @@
             android:text="@string/empty_comment"
             android:visibility="gone"
             android:textAlignment="center"
+            app:isVisible="@{vm.list.size() == 0}"
             app:layout_constraintTop_toTopOf="@id/recyclerView"
             app:layout_constraintBottom_toBottomOf="@id/recyclerView"
             app:layout_constraintStart_toStartOf="@id/recyclerView"

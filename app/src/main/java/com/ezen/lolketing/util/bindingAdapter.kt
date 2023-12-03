@@ -43,6 +43,6 @@ fun setCodeName(textView: TextView, code: String) {
 
 @BindingAdapter("urlImage")
 fun setImage(imageView: ImageView, url: String?) {
-    if (url == null) return
+    if (url.isNullOrEmpty()) return
     setGlide(imageView, url)
 }

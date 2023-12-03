@@ -211,12 +211,13 @@ class FirebaseClient @Inject constructor(
             .await()
     }
 
-    suspend fun getDoubleSnapshot(
+    suspend fun <T> getDoubleSnapshot(
         firstCollection: String,
         firstDocument: String,
         secondCollection: String,
         orderByField: String = TIME_STAMP,
-        orderByDirection: Query.Direction = Query.Direction.DESCENDING
+        orderByDirection: Query.Direction = Query.Direction.DESCENDING,
+        valueType: Class<T>
     ) = runCatching {
         fireStore
             .collection(firstCollection)
@@ -225,6 +226,7 @@ class FirebaseClient @Inject constructor(
             .orderBy(orderByField, orderByDirection)
             .get()
             .await()
+            .mapNotNull { Pair(it.toObject(valueType), it.id) }
     }
 
     suspend fun doubleAddData(

@@ -1,48 +1,36 @@
 package com.ezen.lolketing.view.main.board.my_board
 
-import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
+import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.repository.BoardRepository
-import com.ezen.lolketing.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MyBoardViewModel @Inject constructor(
-    private val repository: BoardRepository,
-    private val pref : SharedPreferences
-) : BaseViewModel<MyBoardViewModel.Event>() {
+    private val repository: BoardRepository
+) : StatusViewModel() {
+
+    private val _list = MutableStateFlow(listOf<BoardItem>())
+    val list: StateFlow<List<BoardItem>> = _list
 
     fun getBoardList() = viewModelScope.launch {
 
-        val email = pref.getString(Constants.ID, "") ?: ""
-
-        if (email.isEmpty()) {
-            event(Event.Error)
-            return@launch
-        }
-
         repository
-            .getBoardList(
-                field = "email",
-                query = email,
-                successListener = {
-                    event(Event.Success(it))
-                },
-                failureListener = {
-                    event(Event.Error)
-                }
-            )
-    }
+            .fetchListOfMyWritings()
+            .setLoadingState()
+            .onEach {
 
-    sealed class Event {
-        data class Success(
-            val list: List<BoardItem.BoardListItem>
-        ): Event()
-        object Error: Event()
+            }
+            .catch {  }
+            .launchIn(viewModelScope)
     }
 
 }
