@@ -105,4 +105,6 @@ class CustomLimitedEditTextView : ConstraintLayout {
 
     fun getText() : String = binding.editTextView.text.toString()
 
+    fun getEditTextView() = binding.editTextView
+
 }

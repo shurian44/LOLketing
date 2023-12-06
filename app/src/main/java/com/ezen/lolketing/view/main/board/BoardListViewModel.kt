@@ -36,7 +36,7 @@ class BoardListViewModel @Inject constructor(
     /** 게시글 조회 **/
     fun fetchBoardList() = viewModelScope.launch {
         repository
-            .fetchBoardList(query = _team.value)
+            .fetchBoardList(team = _team.value)
             .setLoadingState()
             .onEach {
                 val list = mutableListOf<BoardItem>(BoardItem.TeamImage(_team.value))

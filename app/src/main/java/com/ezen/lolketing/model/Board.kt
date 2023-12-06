@@ -1,5 +1,6 @@
 package com.ezen.lolketing.model
 
+import android.net.Uri
 import android.os.Parcelable
 import com.ezen.lolketing.util.Grade
 import com.ezen.lolketing.util.findCodeName
@@ -50,8 +51,9 @@ data class Board(
             category = category ?: return null,
             title = title ?: return null,
             content = content ?: return null,
-            image = image,
-            email = email ?: return null
+            image = image?.let { Uri.parse(it) },
+            email = email ?: return null,
+            team = team ?: return null
         )
     }
 
@@ -82,11 +84,53 @@ data class Board(
 
 data class BoardWriteInfo(
     val category: String,
-    val title: String,
-    val content: String,
-    val image: String? = null,
-    val email: String
-)
+    var title: String,
+    var content: String,
+    val image: Uri? = null,
+    val email: String,
+    val team: String
+) {
+    fun getCategoryName() = findCodeName(category)
+
+    fun mapper(
+        image: String?,
+        email: String,
+        nickname: String
+    ): Board {
+        when {
+            category.isEmpty() -> throw Exception("카테고리를 선택해주세요")
+            title.isEmpty() -> throw Exception("제목을 입력해주세요")
+            content.isEmpty() -> throw Exception("내용을 입력해주세요")
+            team.isEmpty() -> throw Exception("오류가 발생하였습니다")
+        }
+
+        return Board(
+            title = title,
+            content = content,
+            category = category,
+            image = image,
+            email = email,
+            nickname = nickname,
+            team = team,
+            timestamp = System.currentTimeMillis(),
+            commentCounts = 0,
+            like = mapOf(),
+            views = 0,
+            likeCounts = 0
+        )
+    }
+
+    companion object {
+        fun create() = BoardWriteInfo(
+            category = "",
+            title = "",
+            content = "",
+            image = null,
+            email = "",
+            team = ""
+        )
+    }
+}
 
 sealed class BoardItem(val type: Int) {
     data class TeamImage(

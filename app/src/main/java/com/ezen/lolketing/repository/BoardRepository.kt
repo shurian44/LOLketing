@@ -14,18 +14,15 @@ class BoardRepository @Inject constructor(
     private val client: FirebaseClient
 ) {
 
-    suspend fun getUserNickname(): String? =
-        client.getUserNickName().getOrNull()
-
     fun fetchBoardList(
-        query: String
+        team: String
     ) = flow {
         emit(
             client
                 .getBasicQuerySnapshot(
                     collection = Constants.BOARD,
                     field = Constants.TEAM,
-                    query = query,
+                    query = team,
                     valueType = Board::class.java
                 )
                 .getOrThrow()
@@ -33,7 +30,26 @@ class BoardRepository @Inject constructor(
         )
     }
 
-    fun fetchListOfMyWritings() = flow {
+    fun fetchBoardList(
+        team: String,
+        filed: String,
+        query: String
+    ) = flow {
+        emit(
+            client
+                .getBasicQuerySnapshot(
+                    collection = Constants.BOARD,
+                    field = filed,
+                    query = query,
+                    valueType = Board::class.java
+                )
+                .getOrThrow()
+                .filter { (board, _) -> board.team == team }
+                .mapNotNull { (board, documentId) -> board.boardListItemMapper(documentId) }
+        )
+    }
+
+    fun fetchListOfMyWritings(team: String) = flow {
         val email = client.getUserEmail() ?: throw LoginException.EmptyInfo
         emit(
             client
@@ -44,64 +60,24 @@ class BoardRepository @Inject constructor(
                     valueType = Board::class.java
                 )
                 .getOrThrow()
+                .filter { (board, _) -> board.team == team }
                 .mapNotNull { (board, documentId) -> board.boardListItemMapper(documentId) }
         )
     }
 
-    suspend fun getSearchBoardList(
-        field: String,
-        data: String,
-        team: String,
-        successListener: (List<BoardItem.BoardListItem>) -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client.getBasicQuerySnapshot(
-//            collection = Constants.BOARD,
-//            field = Constants.TEAM,
-//            query = team,
-//            successListener = { snapshot ->
-//                val list = snapshot.mapNotNull {
-//                    it.toObject(Board::class.java)
-//                        .boardListItemMapper(it.id)
-//                }.filter {
-//                    if (field == SearchActivity.TITLE) {
-//                        it.title.contains(data)
-//                    } else {
-//                        it.nickname.contains(data)
-//                    }
-//                }
-//                successListener(list)
-//            },
-//            failureListener = {
-//                failureListener()
-//            }
-//        )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
-    }
-
-    // 수정을 위한 보드 정보 조회
-    suspend fun getBoardModifyInfo(
-        documentId: String,
-        successListener: (BoardWriteInfo) -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client
-//            .getBasicSnapshot(
-//                collection = Constants.BOARD,
-//                document = documentId,
-//                successListener = { snapshot ->
-//                    snapshot.toObject(Board::class.java)
-//                        ?.boardWriteInfoMapper()
-//                        ?.let(successListener)
-//                        ?: failureListener()
-//                },
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+    /** 수정을 위한 보드 정보 조회 **/
+    fun fetchBoardModifyInfo(documentId: String) = flow {
+        emit(
+            client
+                .getBasicSnapshot(
+                    collection = Constants.BOARD,
+                    document = documentId,
+                    valueType = Board::class.java
+                )
+                .getOrThrow()
+                ?.boardWriteInfoMapper()
+                ?: throw BoardException.SearchError
+        )
     }
 
     fun fetchEmail() = client.getUserEmail() ?: throw LoginException.EmptyUser
@@ -167,46 +143,7 @@ class BoardRepository @Inject constructor(
             updateData = mapOf("views" to FieldValue.increment(1))
         )
 
-    // 이미지 업로드
-    suspend fun uploadImage(
-        uri: Uri,
-        successListener: (String) -> Unit,
-        failureListener: () -> Unit
-    ): Any? = try {
-//        client
-//            .basicFileUpload(
-//                fileName = "board/${System.currentTimeMillis()}.png",
-//                uri = uri,
-//                successListener = successListener,
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
-    }
-
-
-    // 좋아요 업데이트
-    suspend fun updateLikes(
-        documentId: String,
-        board: Board,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-        // firebase update 사용 불가, like - key 의 값에 넣은 이메일의 . 때문에 오류 발생
-//        client
-//            .basicAddData(
-//                collection = Constants.BOARD,
-//                document = documentId,
-//                data = board,
-//                successListener = successListener,
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
-    }
-
+    /** 좋아요 업데이트 **/
     fun updateLikes(
         documentId: String,
         info: BoardDetailInfo,
@@ -232,44 +169,62 @@ class BoardRepository @Inject constructor(
             .getOrThrow()
     }
 
-    // 게시글 업로드
-    suspend fun uploadBoard(
-        data: Board,
-        successListener: (String) -> Unit,
-        errorListener: () -> Unit
-    ) = try {
-//        client
-//            .basicAddData(
-//                collection = Constants.BOARD,
-//                data = data,
-//                successListener = {
-//                    successListener(it.id)
-//                },
-//                failureListener = {
-//                    errorListener()
-//                }
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        errorListener()
+    /** 게시글 업로드 **/
+    fun uploadBoard(info: BoardWriteInfo) = flow {
+        val email = client.getUserEmail() ?: throw LoginException.EmptyUser
+        val nickname = client.getUserNickName().getOrThrow()
+        val image = info.image?.let {
+            uploadImage(it)
+        }?.getOrThrow()
+        val data = info.mapper(
+            image = image,
+            email = email,
+            nickname = nickname
+        )
+
+        client
+            .basicAddData(
+                collection = Constants.BOARD,
+                data = data
+            )
+        emit("등록 완료")
     }
 
-    // 게시글 수정
-    suspend fun updateBoard(
+    /** 게시글 수정 **/
+    fun updateBoard(
         documentId: String,
-        updateData: Map<String, Any>,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client.basicUpdateData(
-//            collection = Constants.BOARD,
-//            documentId = documentId,
-//            updateData = updateData,
-//            successListener = successListener,
-//            failureListener = failureListener
-//        )
-    } catch (e: Exception) {
-        e.printStackTrace()
+        info: BoardWriteInfo,
+        isImageChange: Boolean
+    ) = flow {
+        val updateData = mutableMapOf(
+            "content" to info.content,
+            "title" to info.title,
+            "category" to info.category
+        )
+
+        if (isImageChange && info.image != null) {
+            updateData["image"] = uploadImage(info.image).getOrThrow()
+        }
+
+        client
+            .basicUpdateData(
+                collection = Constants.BOARD,
+                documentId = documentId,
+                updateData = updateData
+            )
+            .getOrThrow()
+
+        emit("업데이트 성공")
+    }
+
+    /** 이미지 업로드 **/
+    private suspend fun uploadImage(uri: Uri) = runCatching {
+        client
+            .basicFileUpload(
+                fileName = "board/${System.currentTimeMillis()}.png",
+                uri = uri
+            )
+            .getOrThrow()
     }
 
     // 댓글 조회
@@ -278,23 +233,17 @@ class BoardRepository @Inject constructor(
     }
 
     // 게시글 삭제
-    suspend fun deleteBoard(
-        documentId: String,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client.basicDeleteData(
-//            collection = Constants.BOARD,
-//            documentId = documentId,
-//            successListener = {
-//                successListener()
-//            },
-//            failureListener = {
-//                failureListener()
-//            }
-//        )
-    } catch (e: Exception) {
-        e.printStackTrace()
+    fun deleteBoard(
+        documentId: String
+    ) = flow {
+        client
+            .basicDeleteData(
+                collection = Constants.BOARD,
+                documentId = documentId
+            )
+            .getOrThrow()
+
+        emit("삭제 완료")
     }
 
     /** 게시글 신고 업데이트 **/
@@ -319,7 +268,7 @@ class BoardRepository @Inject constructor(
         comment: String,
         count: Int
     ) = flow {
-        val nickname = getUserNickname() ?: throw LoginException.EmptyUser
+        val nickname = client.getUserNickName().getOrThrow()
         val email = client.getUserEmail() ?: throw LoginException.EmptyUser
 
         client

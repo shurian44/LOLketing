@@ -17,6 +17,7 @@ object Constants {
     const val Email = "email"
     const val DOCUMENT_ID = "documentId"
     const val SELECT_IMAGE = "select_image"
+    const val GALLERY_LIST = "Gallery List"
     const val POSITION = "position"
     const val URL = "url"
     const val ADDRESS_API_BASE_URL = "https://www.juso.go.kr/"

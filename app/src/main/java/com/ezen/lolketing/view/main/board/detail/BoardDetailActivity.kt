@@ -14,6 +14,7 @@ import com.ezen.lolketing.view.dialog.BasicPopup
 import com.ezen.lolketing.view.dialog.DialogReport
 import com.ezen.lolketing.view.dialog.PopupItem
 import com.ezen.lolketing.view.main.board.comment.CommentActivity
+import com.ezen.lolketing.view.main.board.write.BoardWriteActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -79,11 +80,20 @@ class BoardDetailActivity :
             list = listOf(
                 PopupItem(
                     text = getString(R.string.select_modify),
-                    onClick = {}
+                    onClick = {
+                        startActivity(
+                            createIntent(BoardWriteActivity::class.java).also {
+                                it.putExtra(Constants.TEAM, viewModel.info.value.team)
+                                it.putExtra(Constants.DOCUMENT_ID, viewModel.documentId)
+                            }
+                        )
+                    }
                 ),
                 PopupItem(
                     text = getString(R.string.select_delete),
-                    onClick = {}
+                    onClick = {
+                        viewModel.deleteBoard()
+                    }
                 )
             )
         ).showPopup()

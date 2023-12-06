@@ -5,40 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.ezen.lolketing.databinding.ItemGalleryDetailItemBinding
 import com.ezen.lolketing.model.GalleryItem
 import com.ezen.lolketing.util.setGlide
-import java.util.ArrayList
 
 class GalleryDetailAdapter(
-    private val listener : () -> Unit
-) : ListAdapter<GalleryItem, GalleryDetailAdapter.ViewHolder>(diffUtil) {
+    private val onClick : () -> Unit
+) : ListAdapter<GalleryItem, GalleryDetailViewHolder>(diffUtil) {
 
-    inner class ViewHolder(private val binding: ItemGalleryDetailItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(galleryItem: GalleryItem) {
-
-            setGlide(binding.imageView, galleryItem.contentUri)
-
-            binding.imageView.setOnClickListener {
-                listener()
-            }
-        }
-    }
-
-    fun getSelectItem() = currentList.firstOrNull { it.isChecked }
-
-    fun setSelectItemList(item: GalleryItem?) {
-        item ?: return
-
-        val index = currentList.indexOfFirst { it.id == item.id }
-        currentList[index].isChecked = item.isChecked
-    }
-
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryDetailViewHolder =
+        GalleryDetailViewHolder(
             ItemGalleryDetailItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -46,17 +22,32 @@ class GalleryDetailAdapter(
             )
         )
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(currentList[position])
+    override fun onBindViewHolder(holder: GalleryDetailViewHolder, position: Int) {
+        holder.bind(currentList[position], onClick)
     }
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<GalleryItem>() {
             override fun areItemsTheSame(oldItem: GalleryItem, newItem: GalleryItem): Boolean =
-                oldItem == newItem
+                oldItem.contentUri == newItem.contentUri
 
             override fun areContentsTheSame(oldItem: GalleryItem, newItem: GalleryItem): Boolean =
-                oldItem.contentUri == newItem.contentUri
+                oldItem == newItem
+        }
+    }
+}
+
+class GalleryDetailViewHolder(
+    private val binding: ItemGalleryDetailItemBinding
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(
+        galleryItem: GalleryItem,
+        onClick: () -> Unit
+    ) {
+
+        setGlide(binding.imageView, galleryItem.contentUri)
+        binding.imageView.setOnClickListener {
+            onClick()
         }
     }
 }

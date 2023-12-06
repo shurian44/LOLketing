@@ -82,20 +82,16 @@ class BoardDetailViewModel @Inject constructor(
     }
 
     /** 게시글 삭제 **/
-    fun deleteBoard(
-        documentId: String
-    ) = viewModelScope.launch {
-//        event(Event.Loading)
+    fun deleteBoard() {
         repository
-            .deleteBoard(
-                documentId = documentId,
-                successListener = {
-//                    event(Event.DeleteSuccess)
-                },
-                failureListener = {
-//                    event(Event.Failure)
-                }
-            )
+            .deleteBoard(documentId)
+            .setLoadingState()
+            .onEach {
+                updateMessage(it)
+                updateFinish(true)
+            }
+            .catch { updateMessage(it.message ?: "오류가 발생하였습니다") }
+            .launchIn(viewModelScope)
     }
 
     /** 게시글 신고하기 **/

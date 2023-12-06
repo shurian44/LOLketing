@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="item"
+            type="com.ezen.lolketing.model.GalleryItem" />
+
+        <import type="android.view.View" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,35 +22,38 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="2dp"
+            android:contentDescription="@string/imageContentDescription"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="1:1"
+            app:imageUri="@{item.contentUri}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/ic_launcher_background"/>
+            tools:background="@drawable/ic_launcher_background" />
 
         <View
             android:id="@+id/viewBackground"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="#B3000000"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{item.checked ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:visibility="visible"/>
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="12dp"
-            android:button="@android:color/transparent"
-            android:background="@drawable/bg_check_box"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            tools:visibility="visible" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:checked="@{item.checked}"
+            android:drawablePadding="5dp"
+            app:buttonTint="@color/sub_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

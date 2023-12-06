@@ -1,53 +1,61 @@
 package com.ezen.lolketing.view.gallery
 
-import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import com.ezen.lolketing.view.gallery.detail.GalleryDetailActivity
-import com.ezen.lolketing.BaseViewModelActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.ezen.lolketing.R
+import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityGalleryBinding
-import com.ezen.lolketing.model.GalleryItem
-import com.ezen.lolketing.util.*
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.gallery.detail.GalleryDetailAdapter
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class GalleryActivity : BaseViewModelActivity<ActivityGalleryBinding, GalleryViewModel>(R.layout.activity_gallery) {
+class GalleryActivity :
+    StatusViewModelActivity<ActivityGalleryBinding, GalleryViewModel>(R.layout.activity_gallery) {
 
     override val viewModel: GalleryViewModel by viewModels()
+    private var isRegister = false
+    val adapter = GalleryAdapter(
+        onCheckedClick = {
+            viewModel.onSelectChanged(it)
+        },
+        onItemClick = {
+            viewModel.updateIsDetail(true)
+            binding.viewPager.setCurrentItem(it, false)
+        }
+    )
+
+    val detailAdapter = GalleryDetailAdapter {
+        viewModel.updateIsDetail(false)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        repeatOnStarted {
-            viewModel.eventFlow.collect{ event -> eventHandler(event)}
-        }
-
         checkPermission()
-
-    }
-
-    private fun eventHandler(event: GalleryViewModel.Event) {
-        when(event) {
-            is GalleryViewModel.Event.ShowGalleryList -> {
-                setGalleryItems(event.list)
-            }
-        }
+        initViews()
     }
 
     private fun checkPermission() {
         TedPermission
             .create()
-            .setPermissions(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            .setPermissions(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    android.Manifest.permission.READ_MEDIA_IMAGES
+                } else {
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                }
+            )
             .setPermissionListener(object : PermissionListener {
                 override fun onPermissionGranted() {
-                    initViews()
+                    viewModel.fetchImageList(application)
                 }
 
                 override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
@@ -60,44 +68,42 @@ class GalleryActivity : BaseViewModelActivity<ActivityGalleryBinding, GalleryVie
 
     private fun initViews() = with(binding) {
         activity = this@GalleryActivity
+        vm = viewModel
         title = getString(R.string.select_image)
 
-        recyclerView.adapter = GalleryAdapter(
-            itemClickListener = { position ->
-                launch.launch(
-                    createIntent(GalleryDetailActivity::class.java).also {
-                        it.putExtra(Constants.POSITION, position)
-                        it.putExtra(Constants.SELECT_IMAGE, getSelectItem())
-                    }
-                )
-            }
-        )
+        layoutTop.btnBack.setOnClickListener { finish() }
 
-        btnRegister.setOnClickListener {
-            setResult(RESULT_OK, Intent().also {
-                it.putExtra(Constants.SELECT_IMAGE, getSelectItem())
-            })
-            finish()
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                binding.checkBox.isChecked = viewModel.list.value[position].isChecked
+            }
+        })
+    }
+
+    fun onItemSelect() {
+        viewModel.onSelectChanged(binding.viewPager.currentItem)
+    }
+
+    fun onRegister() {
+        viewModel.selectUri?.let { uri ->
+            setResult(
+                RESULT_OK,
+                Intent().also {
+                    it.putExtra(Constants.SELECT_IMAGE, uri)
+                }
+            )
         }
-
-        layoutTop.btnBack.setOnClickListener { onBackClick(it) }
-
-        viewModel.getImageList(application)
-
+        isRegister = true
+        finish()
     }
 
-    private fun setGalleryItems(list: List<GalleryItem>) = with(binding.recyclerView) {
-        (adapter as? GalleryAdapter)?.submitList(list)
-    }
-
-    private fun getSelectItem() = (binding.recyclerView.adapter as? GalleryAdapter)?.getSelectItem()
-
-    private val launch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if (it.resultCode == Activity.RESULT_OK) {
-            val selectItem = it.data?.getParcelableExtra<GalleryItem>(Constants.SELECT_IMAGE)
-            (binding.recyclerView.adapter as? GalleryAdapter)?.apply {
-                setSelectItem(selectItem)
-            }
+    override fun finish() {
+        if (isRegister.not() && viewModel.isDetail.value) {
+            viewModel.updateIsDetail(false)
+        } else {
+            super.finish()
         }
     }
 

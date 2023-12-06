@@ -1,132 +1,103 @@
 package com.ezen.lolketing.view.main.board.write
 
-import android.content.SharedPreferences
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
-import com.ezen.lolketing.model.Board
+import com.ezen.lolketing.StatusViewModel
+import com.ezen.lolketing.exception.BoardException
 import com.ezen.lolketing.model.BoardWriteInfo
 import com.ezen.lolketing.repository.BoardRepository
-import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.util.findCode
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class BoardWriteViewModel @Inject constructor(
-    private val repository: BoardRepository,
-    private val pref: SharedPreferences
-) : BaseViewModel<BoardWriteViewModel.Event>() {
+    private val repository: BoardRepository
+) : StatusViewModel() {
 
-    /** 게시글 조회 : 수정시에만 조회 **/
-    fun getBoard(
-        documentId: String
-    ) = viewModelScope.launch {
-        event(Event.Loading)
-        repository.getBoardModifyInfo(
-            documentId = documentId,
-            successListener = {
-                event(Event.WriteInfo(it))
-            },
-            failureListener = {
-                error("게시판 조회를 실패하였습니다.")
-            }
-        )
+    private val _info = MutableStateFlow(BoardWriteInfo.create())
+    val info: StateFlow<BoardWriteInfo> = _info
+
+    private var isImageChange = false
+    private var documentId = ""
+
+    fun setTeam(team: String) {
+        _info.update { it.copy(team = team) }
     }
 
-    /** 이미지 업로드 **/
-    fun uploadImage(
-        uri: Uri
-    ) = viewModelScope.launch {
-        event(Event.Loading)
+    fun setDocumentId(documentId: String) {
+        this.documentId = documentId
+        fetchBoardInfo()
+    }
+
+    fun updateCategory(category: String) {
+        _info.update {
+            it.copy(category = category)
+        }
+    }
+
+    fun updateImageUri(uri: Uri?) {
+        _info.update {
+            it.copy(image = uri)
+        }
+        isImageChange = true
+    }
+
+    /** 게시글 조회 : 수정 시에만 조회 **/
+    private fun fetchBoardInfo() {
         repository
-            .uploadImage(
-                uri = uri,
-                successListener = {
-                    event(Event.ImageUploadSuccess(it))
-                },
-                failureListener = {
-                    error("이미지 업로드에 실패하였습니다.")
-                }
-            )
+            .fetchBoardModifyInfo(documentId = documentId)
+            .setLoadingState()
+            .onEach { _info.value = it }
+            .catch {
+                it.printStackTrace()
+                updateMessage(it.message ?: "오류가 발생하였습니다")
+                if (it is BoardException.SearchError) updateFinish(true)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun onRegister() {
+        if (documentId.isNotEmpty()) {
+            updateBoard()
+        } else {
+            uploadBoard()
+        }
     }
 
     /** 게시글 수정 **/
-    fun updateBoard(
-        documentId: String,
-        updateData: Map<String, Any>
-    ) = viewModelScope.launch {
-        event(Event.Loading)
-        repository.updateBoard(
-            documentId = documentId,
-            updateData = updateData,
-            successListener = {
-                event(Event.UpdateSuccess)
-            },
-            failureListener = {
-                error("게시글 수정 중 오류가 발생하였습니다.")
+    private fun updateBoard() {
+        repository
+            .updateBoard(
+                documentId = documentId,
+                info = _info.value,
+                isImageChange = isImageChange
+            )
+            .setLoadingState()
+            .onEach {
+                updateMessage(it)
+                updateFinish(true)
             }
-        )
+            .catch { updateMessage(it.message ?: "수정 실패") }
+            .launchIn(viewModelScope)
     }
 
     /** 게시글 업로드 **/
-    fun uploadBoard(
-        title: String,
-        content: String,
-        category: String,
-        image: String?,
-        team: String?
-    ) = viewModelScope.launch {
-        event(Event.Loading)
-        val nickName = repository.getUserNickname()
-        val email = pref.getString(Constants.ID, "")
-
-        if (nickName.isNullOrEmpty() || email.isNullOrEmpty()) {
-            error("유저 정보 조회 중 오류가 발생하였습니다.")
-            return@launch
-        }
-
-        val board = Board(
-            title = title,
-            content = content,
-            category = findCode(category),
-            image = image,
-            email = email,
-            nickname = nickName,
-            team = team,
-            timestamp = System.currentTimeMillis(),
-            commentCounts = 0,
-            likeCounts = 0,
-            views = 0,
-            like = mutableMapOf()
-        )
-
-        repository.uploadBoard(
-            board,
-            successListener = {
-                event(Event.UploadSuccess)
-            },
-            errorListener = {
-                error("파일 업로드 과정 중 오류가 발생하였습니다.")
+    private fun uploadBoard()  {
+        repository
+            .uploadBoard(_info.value)
+            .setLoadingState()
+            .onEach {
+                updateMessage(it)
+                updateFinish(true)
             }
-        )
-    }
-
-    private fun error(message : String) {
-        event(Event.Error(message))
-    }
-
-    sealed class Event {
-        data class WriteInfo(val info : BoardWriteInfo) : Event()
-        data class UserNickName(val nickName: String) : Event()
-        data class Error(val msg: String) : Event()
-        data class ImageUploadSuccess(
-            val downloadUri : String
-        ) : Event()
-        object UploadSuccess : Event()
-        object UpdateSuccess : Event()
-        object Loading: Event()
+            .catch { updateMessage(it.message ?: "등록 실패") }
+            .launchIn(viewModelScope)
     }
 
 }

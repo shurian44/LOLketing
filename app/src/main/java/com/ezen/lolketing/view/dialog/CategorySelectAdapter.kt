@@ -21,11 +21,11 @@ class CategorySelectAdapter : ListAdapter<Category, CategorySelectAdapter.ViewHo
 
     inner class ViewHolder(val binding: ItemSelectBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
-            data = currentList[adapterPosition].data
-            isSelect = currentList[adapterPosition].isSelect
+            data = currentList[absoluteAdapterPosition].data
+            isSelect = currentList[absoluteAdapterPosition].isSelect
 
             root.setOnClickListener {
-                setOneSelect(adapterPosition)
+                setOneSelect(absoluteAdapterPosition)
             }
         }
     }
@@ -49,7 +49,7 @@ class CategorySelectAdapter : ListAdapter<Category, CategorySelectAdapter.ViewHo
         notifyItemChanged(selectIndex)
     }
 
-    fun getSelectInfo() = currentList.firstOrNull { it.isSelect }?.data
+    fun getSelectInfo() = currentList.firstOrNull { it.isSelect }?.getCode()
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Category>() {

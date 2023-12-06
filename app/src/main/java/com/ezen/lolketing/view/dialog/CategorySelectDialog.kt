@@ -14,6 +14,11 @@ class CategorySelectDialog(
     val listener : (String) -> Unit
 ) : BaseDialog<DialogCategorySelectBinding>(R.layout.dialog_category_select) {
 
+    val adapter = CategorySelectAdapter().also {
+        it.submitList(setCategoryList())
+        setSelectItem(it, data)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -23,10 +28,7 @@ class CategorySelectDialog(
 
     private fun initViews() = with(binding) {
         dialog = this@CategorySelectDialog
-        recyclerView.adapter = CategorySelectAdapter().also {
-            it.submitList(setCategoryList())
-            setSelectItem(it, data)
-        }
+        recyclerView.adapter = adapter
     }
 
     private fun setCategoryList() = listOf(
@@ -40,12 +42,12 @@ class CategorySelectDialog(
         adapter.setSelectItem(data)
     }
 
-    fun onCancel(view: View) {
+    fun onCancel() {
         dismiss()
     }
 
     fun onOkClick(view: View) {
-        val result = (binding.recyclerView.adapter as? CategorySelectAdapter)?.getSelectInfo()
+        val result = adapter.getSelectInfo()
 
         if (result == null) {
             toast(getString(R.string.select_category))

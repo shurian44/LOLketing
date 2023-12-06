@@ -10,6 +10,10 @@
             type="com.ezen.lolketing.view.main.board.write.BoardWriteActivity" />
 
         <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.board.write.BoardWriteViewModel" />
+
+        <variable
             name="title"
             type="String" />
     </data>
@@ -20,6 +24,7 @@
         android:background="@color/black"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:onClick="@{() -> activity.removeFocus()}"
         tools:context=".view.main.board.write.BoardWriteActivity">
 
         <include
@@ -51,6 +56,8 @@
                     android:layout_marginHorizontal="20dp"
                     android:focusable="false"
                     android:hint="@string/select_category"
+                    android:onClick="@{() -> activity.selectCategory()}"
+                    android:text="@{vm.info.categoryName}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -61,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:hint="@string/write_title"
+                    android:text="@={vm.info.title}"
                     app:layout_constraintEnd_toEndOf="@id/editCategory"
                     app:layout_constraintStart_toStartOf="@id/editCategory"
                     app:layout_constraintTop_toBottomOf="@id/editCategory" />
@@ -70,6 +78,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:text="@={vm.info.content}"
                     app:layout_constraintEnd_toEndOf="@id/editCategory"
                     app:layout_constraintStart_toStartOf="@id/editCategory"
                     app:layout_constraintTop_toBottomOf="@id/editTitle"
@@ -81,6 +90,8 @@
                     android:layout_width="0dp"
                     android:layout_height="235dp"
                     android:layout_marginTop="16dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    android:onClick="@{() -> activity.addImage()}"
                     android:scaleType="fitXY"
                     android:src="@drawable/img_bg_dot"
                     app:layout_constraintEnd_toEndOf="@id/editCategory"
@@ -116,13 +127,16 @@
                     android:id="@+id/groupAttach"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="imgAttach, imgPlus, txtAttach" />
+                    app:constraint_referenced_ids="imgAttach, imgPlus, txtAttach"
+                    app:isVisible="@{vm.info.image == null}" />
 
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    app:imageUri="@{vm.info.image}"
                     app:layout_constraintEnd_toEndOf="@id/editCategory"
                     app:layout_constraintStart_toStartOf="@id/editCategory"
                     app:layout_constraintTop_toBottomOf="@id/editContents" />
@@ -144,6 +158,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/bg_round_fill_3_main_color"
+                    android:onClick="@{() -> activity.addImage()}"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="2dp"
                     android:text="@string/change"
@@ -159,6 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/bg_round_fill_3_sub_color"
+                    android:onClick="@{() -> activity.removeImage()}"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="2dp"
                     android:text="@string/remove"
@@ -172,8 +188,8 @@
                     android:id="@+id/groupImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:constraint_referenced_ids="imageView, viewLine, txtChange, txtRemove" />
+                    app:constraint_referenced_ids="imageView, viewLine, txtChange, txtRemove"
+                    app:isVisible="@{vm.info.image != null}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -186,6 +202,7 @@
             android:backgroundTint="@color/main_color"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:onClick="@{() -> vm.onRegister()}"
             android:text="@string/register"
             android:textColor="@color/white"
             android:textSize="20sp"
