@@ -1,51 +1,64 @@
 package com.ezen.lolketing.view.main.board.search
 
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
+import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.repository.BoardRepository
+import com.ezen.lolketing.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: BoardRepository
-) : BaseViewModel<SearchViewModel.Event>() {
+) : StatusViewModel() {
 
-    var field: String = SearchActivity.TITLE
-    var searchText: String = ""
-    private var team: String = ""
+    var team = ""
+        private set
 
-    /** 검색 내용 조회 **/
-    fun getSearchBoardList() = viewModelScope.launch {
-        event(Event.Loading)
-        repository.getSearchBoardList(
-            field = field,
-            data = searchText,
-            team = team,
-            successListener = {
-                event(Event.Success(it))
-            },
-            failureListener = {
-                event(Event.Failure)
-            }
-        )
-    }
+    var query = ""
+        private set
 
-    /** 검색 조건 세팅 **/
-    fun setSearchData(field: String, searchText: String, team: String) {
-        this.field = field
-        this.searchText = searchText
+    var isTitleSearch = true
+        private set
+
+    private val _list = MutableStateFlow(listOf<BoardItem>())
+    val list: StateFlow<List<BoardItem>> = _list
+
+    fun setTeam(team: String) {
         this.team = team
     }
 
-    sealed class Event {
-        object Loading: Event()
-        object Failure: Event()
-        data class Success(
-            val list : List<BoardItem.BoardListItem>
-        ): Event()
+    /** 검색 내용 조회 **/
+    fun getSearchBoardList() {
+        repository
+            .fetchBoardList(
+                team = team,
+                filed = if (isTitleSearch) Constants.TITLE else Constants.NICKNAME,
+                query = query
+            )
+            .setLoadingState()
+            .onEach { _list.value = it }
+            .catch {
+                it.printStackTrace()
+                updateMessage(it.message ?: "오류가 발생하였습니다")
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun onSearch(
+        isTitleSearch: Boolean,
+        query: String
+    ) {
+        this.isTitleSearch = isTitleSearch
+        this.query = query
+
+        getSearchBoardList()
     }
 
 }

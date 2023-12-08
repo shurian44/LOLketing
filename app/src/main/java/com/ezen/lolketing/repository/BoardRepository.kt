@@ -39,12 +39,18 @@ class BoardRepository @Inject constructor(
             client
                 .getBasicQuerySnapshot(
                     collection = Constants.BOARD,
-                    field = filed,
-                    query = query,
+                    field = Constants.TEAM,
+                    query = team,
                     valueType = Board::class.java
                 )
                 .getOrThrow()
-                .filter { (board, _) -> board.team == team }
+                .filter { (board, _) ->
+                    if (filed == Constants.TITLE) {
+                        board.title?.contains(query) == true
+                    } else {
+                        board.nickname?.contains(query) == true
+                    }
+                }
                 .mapNotNull { (board, documentId) -> board.boardListItemMapper(documentId) }
         )
     }

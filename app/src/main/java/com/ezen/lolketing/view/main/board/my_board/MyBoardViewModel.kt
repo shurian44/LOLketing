@@ -18,18 +18,22 @@ class MyBoardViewModel @Inject constructor(
     private val repository: BoardRepository
 ) : StatusViewModel() {
 
+    private var _team = ""
+    val team: String = _team
+
     private val _list = MutableStateFlow(listOf<BoardItem>())
     val list: StateFlow<List<BoardItem>> = _list
 
-    fun getBoardList() = viewModelScope.launch {
+    fun setTeam(team: String) {
+        _team = team
+    }
 
+    fun fetchListOfMyWritings() = viewModelScope.launch {
         repository
-            .fetchListOfMyWritings()
+            .fetchListOfMyWritings(_team)
             .setLoadingState()
-            .onEach {
-
-            }
-            .catch {  }
+            .onEach { _list.value = it }
+            .catch { updateMessage(it.message ?: "오류가 발생하였습니다.") }
             .launchIn(viewModelScope)
     }
 

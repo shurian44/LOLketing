@@ -10,6 +10,10 @@
             type="com.ezen.lolketing.view.main.board.search.SearchActivity" />
 
         <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.board.search.SearchViewModel" />
+
+        <variable
             name="title"
             type="String" />
 
@@ -31,6 +35,8 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:adapter="@{activity.adapter}"
+            app:submitList="@{vm.list}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/layoutBottom"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +52,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:isVisible="@{vm.list.empty}"
             app:layout_constraintBottom_toTopOf="@id/layoutBottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

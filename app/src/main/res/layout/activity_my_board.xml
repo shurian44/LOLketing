@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.board.my_board.MyBoardViewModel" />
 
         <variable
-            name="title"
-            type="String" />
+            name="adapter"
+            type="com.ezen.lolketing.view.main.board.adapter.BoardListAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,12 +23,14 @@
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
-            app:title="@{title}" />
+            app:title="@{@string/my_board}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:adapter="@{adapter}"
+            app:submitList="@{vm.list}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +46,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:visibility="gone"
+            app:isVisible="@{vm.list.empty}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

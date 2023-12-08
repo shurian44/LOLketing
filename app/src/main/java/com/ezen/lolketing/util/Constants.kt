@@ -20,6 +20,8 @@ object Constants {
     const val GALLERY_LIST = "Gallery List"
     const val POSITION = "position"
     const val URL = "url"
+    const val TITLE = "title"
+    const val NICKNAME = "nickname"
     const val ADDRESS_API_BASE_URL = "https://www.juso.go.kr/"
     const val NAVER_API_BASE_URL = "https://openapi.naver.com/v1/"
 }

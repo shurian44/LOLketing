@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
         >
         <activity
             android:name=".view.main.board.my_board.MyBoardActivity"
@@ -72,7 +73,6 @@
             android:name=".view.main.board.write.BoardWriteActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.gallery.GalleryActivity" />
-        <activity android:name=".view.gallery.detail.GalleryDetailActivity" />
         <activity android:name=".view.main.board.BoardListActivity" />
         <activity android:name=".view.main.board.detail.BoardDetailActivity" />
         <activity android:name=".view.main.my_page.cache.CacheChargingActivity" />

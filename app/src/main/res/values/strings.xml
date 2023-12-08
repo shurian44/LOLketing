@@ -69,7 +69,7 @@
     <string name="board_write_complete">글이 작성 되었습니다.</string>
     <string name="board_modify_complete">글이 수정 되었습니다.</string>
     <string name="empty_comment">댓글이 없습니다.\n첫번째 댓글을 남겨주세요</string>
-    <string name="guide_search">검색어를 입력해주세요</string>
+    <string name="guide_search">검색 결과가 없습니다.</string>
     <string name="guide_search_empty">검색 결과가 없습니다.\n다른 검색어로 다시 검색해보세요.</string>
     <string name="my_board">내가 쓴 글</string>
     <string name="team_info">구단 정보</string>
@@ -426,5 +426,7 @@
     <string name="title_activity_guide">GuideActivity</string>
     <string name="title_activity_league_info">LeagueInfoActivity</string>
     <string name="start">Start</string>
+    <string name="search_title">제목으로 검색</string>
+    <string name="search_user">작성자로 검색</string>
 
 </resources>
