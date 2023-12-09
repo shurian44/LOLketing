@@ -1,102 +1,65 @@
 package com.ezen.lolketing.repository
 
-import com.ezen.lolketing.model.*
+import com.ezen.lolketing.model.Game
+import com.ezen.lolketing.model.Seat
+import com.ezen.lolketing.model.SeatItem
 import com.ezen.lolketing.network.FirebaseClient
-import com.ezen.lolketing.util.*
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import kotlinx.coroutines.tasks.await
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.getCurrentDateTime
+import com.ezen.lolketing.util.timestampToString
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class TicketingRepository @Inject constructor(
-    private val client: FirebaseClient,
-    private val firestore: FirebaseFirestore
+    private val client: FirebaseClient
 ) {
 
+    private fun getYesterdayDateTime() : String =
+        (System.currentTimeMillis() - (1000 * 60 * 60 * 24)).timestampToString("yyyy.MM.dd")
+
     /** 게임 일정 조회 **/
-    suspend fun getGameList(
-        date: String,
-        onSuccessListener: (List<Ticket>) -> Unit,
-        onFailureListener: () -> Unit
-    ) {
-        try {
-            val result = firestore
-                .collection(Constants.GAME)
-                .orderBy(DATE)
-                .whereGreaterThan(DATE, date)
-                .get()
-                .await()
+    fun fetchGameList() = flow {
+        val date = getYesterdayDateTime()
+        val list = client
+            .fetchTicketList(date)
+            .getOrThrow()
+            .toMutableList()
 
-            result
-                .mapNotNull {
-                    it.toObject(Game::class.java).mapper()
-                }
-                .let(onSuccessListener)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            onFailureListener()
+        if (list.isEmpty()) {
+            val today = getCurrentDateTime().time.timestampToString("yyyy.MM.dd")
+            addNewGame(Game.createRandomGame(today, "17:00"))
+            addNewGame(Game.createRandomGame(today, "20:00"))
+
+            list.addAll(
+                client
+                    .fetchTicketList(date)
+                    .getOrThrow()
+                    .toMutableList()
+            )
         }
-    }
 
-    /** 유저 정보 조회 : 마스터 등급 여부 **/
-    suspend fun isMasterUser(
-        listener: (Boolean) -> Unit
-    ) = try {
-//        client
-//            .getUserInfo(
-//                successListener = { user ->
-//                    listener(user.grade == Grade.MASTER.gradeCode)
-//                },
-//                failureListener = {
-//                    listener(false)
-//                }
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        listener(false)
+        emit(list.filter { it.team.split(":").size == 2 })
     }
 
     /** 경기 일정 추가 **/
-    suspend fun addNewGame(
-        date: String,
-        time: String,
-        successListener: () -> Unit,
-        failureListener: () -> Unit,
-    ) {
-        val gameData = Game(
-            date = date,
-            status = Code.TICKETING_ON.code,
-            team = getRandomGame(),
-            time = time
-        )
+    private suspend fun addNewGame(game: Game) {
+        client
+            .basicAddData(
+                collection = Constants.GAME,
+                document = game.getDocumentId(),
+                data = game
+            )
+            .getOrThrow()
 
-//        client
-//            .basicAddData(
-//                collection = Constants.GAME,
-//                document = "$date $time",
-//                data = gameData,
-//                successListener = successListener,
-//                failureListener = failureListener
-//            )
-
-    }
-
-    /** 좌석 추가 **/
-    suspend fun setReservedSeat(
-        documentId: String,
-        successListener: () -> Unit
-    ) {
         getSeatList().forEach {
-//            client
-//                .doubleAddData(
-//                    firstCollection = Constants.GAME,
-//                    firstDocument = documentId,
-//                    secondCollection = Constants.SEAT,
-//                    data = it,
-//                    successListener = {}
-//                )
+            client
+                .doubleAddData(
+                    firstCollection = Constants.GAME,
+                    firstDocument = game.getDocumentId(),
+                    secondCollection = Constants.SEAT,
+                    data = it
+                )
         }
-        successListener()
     }
 
     /** 좌석 조회 **/
