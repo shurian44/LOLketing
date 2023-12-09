@@ -1,84 +1,33 @@
 package com.ezen.lolketing.view.main.ticket.list
 
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
+import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.Ticket
 import com.ezen.lolketing.repository.TicketingRepository
-import com.ezen.lolketing.util.timestampToString
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ReserveListViewModel @Inject constructor(
     private val repository: TicketingRepository
-) : BaseViewModel<ReserveListViewModel.Event>() {
+) : StatusViewModel() {
 
-    private fun getYesterdayDateTime() : String =
-        (System.currentTimeMillis() - (1000 * 60 * 60 * 24)).timestampToString("yyyy.MM.dd")
+    private val _list = MutableStateFlow(listOf<Ticket>())
+    val list: StateFlow<List<Ticket>> = _list
 
     /** 경기 일정 조회 **/
-    fun getGameList() = viewModelScope.launch {
-        event(Event.Loading)
-        repository.getGameList(
-            date = getYesterdayDateTime(),
-            onSuccessListener = {
-                event(Event.GameList(it.ifEmpty { emptyList() }))
-            },
-            onFailureListener = {
-                event(Event.GameList(emptyList()))
-            }
-        )
+    fun fetchGameList() = viewModelScope.launch {
+        repository
+            .fetchGameList()
+            .setLoadingState()
+            .onEach { _list.value = it }
+            .catch { updateMessage(it.message ?: "오류 발생") }
+            .launchIn(viewModelScope)
     }
-
-    /** 유저 등급 조회 : 마스터 등급 여부 확인 **/
-    fun isMasterUser() = viewModelScope.launch {
-        repository.isMasterUser {
-            event(Event.UserGrade(isMaster = it))
-        }
-    }
-
-    /** 경기 일정 추가 **/
-    fun addNewGame(
-        date: String,
-        time: String
-    ) = viewModelScope.launch {
-        event(Event.Loading)
-        repository.addNewGame(
-            date = date,
-            time = time,
-            successListener = {
-                event(Event.NewGameAddSuccess("$date $time"))
-            },
-            failureListener = {
-                event(Event.NewGameAddFailure)
-            }
-        )
-    }
-
-    /** 좌석 추가 **/
-    fun setReservedSeat(
-        time: String
-    ) = viewModelScope.launch {
-        repository.setReservedSeat(
-            documentId = time,
-            successListener = {
-                event(Event.ReserveSeatAddSuccess)
-            }
-        )
-    }
-
-    sealed class Event {
-        data class GameList(
-            val list : List<Ticket>
-        ) : Event()
-        data class UserGrade(val isMaster: Boolean) : Event()
-        data class NewGameAddSuccess(
-            val time: String
-        ) : Event()
-        object Loading: Event()
-        object NewGameAddFailure : Event()
-        object ReserveSeatAddSuccess : Event()
-    }
-
 }

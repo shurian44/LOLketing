@@ -1,7 +1,11 @@
 package com.ezen.lolketing.util
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.ezen.lolketing.R
 import com.ezen.lolketing.model.BoardItem
@@ -45,4 +49,14 @@ fun setCodeName(textView: TextView, code: String) {
 fun setImage(imageView: ImageView, url: String?) {
     if (url.isNullOrEmpty()) return
     setGlide(imageView, url)
+}
+
+@BindingAdapter("backgroundColorRes")
+fun setBackgroundColor(view: View, @ColorRes color: Int) {
+    view.setBackgroundColor(ContextCompat.getColor(view.context, color))
+}
+
+@BindingAdapter("imageRes")
+fun imageLoad(imageView: ImageView, @DrawableRes resId: Int) {
+    imageView.setImageResource(resId)
 }

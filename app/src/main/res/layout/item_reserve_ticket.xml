@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="ticket"
+            type="com.ezen.lolketing.model.Ticket" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,21 +19,24 @@
             android:id="@+id/txtTicketingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="2020.02.12\n17:00"
-            android:textAlignment="center"
             android:layout_marginStart="20dp"
+            android:text="@{@string/ticketing_time(ticket.date, ticket.time)}"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/txtMiddle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/txtMiddle" />
+            app:layout_constraintTop_toTopOf="@id/txtMiddle"
+            tools:text="2020.02.12\n17:00" />
 
         <ImageView
             android:id="@+id/imgTeam1"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="25dp"
+            android:contentDescription="@string/imageContentDescription"
             android:src="@drawable/logo_t1"
+            app:imageRes="@{ticket.firstImageRes}"
             app:layout_constraintBottom_toBottomOf="@id/txtMiddle"
             app:layout_constraintEnd_toStartOf="@id/txtMiddle"
             app:layout_constraintTop_toTopOf="@id/txtMiddle" />
@@ -41,17 +50,19 @@
             android:textColor="#B3B3B3"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imgTeam2"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="25dp"
+            android:contentDescription="@string/imageContentDescription"
             android:src="@drawable/icon_sandbox"
+            app:imageRes="@{ticket.secondImageRes}"
             app:layout_constraintBottom_toBottomOf="@id/txtMiddle"
             app:layout_constraintStart_toEndOf="@id/txtMiddle"
             app:layout_constraintTop_toTopOf="@id/txtMiddle" />
@@ -61,13 +72,15 @@
             android:layout_width="70dp"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="@string/ticketing_on"
+            android:text="@{ticket.statusText}"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:background="@color/sub_color"
+            app:backgroundColorRes="@{ticket.backgroundColorRes}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            tools:background="@color/sub_color"
+            tools:text="@string/ticketing_on" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
