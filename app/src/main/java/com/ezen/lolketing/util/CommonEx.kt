@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Handler
 import android.text.Html
 import android.text.InputFilter
 import android.text.Spanned
@@ -54,6 +55,11 @@ fun <T> Activity.createIntent(clazz: Class<T>, vararg flags : Int) =
 
 fun Activity.toast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+}
+
+fun Activity.showErrorMessageAndFinish() {
+    toast("오류가 발생하였습니다")
+    Handler(mainLooper).postDelayed({ finish() }, 1000)
 }
 
 fun Context.toast(msg: String) {

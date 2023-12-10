@@ -2,44 +2,43 @@ package com.ezen.lolketing.view.main.ticket.detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.databinding.ItemHallBinding
 import com.ezen.lolketing.model.SeatItem
 
 class HallAdapter(
-    val checkedChangeListener : (Int, SeatItem) -> Unit
-) : RecyclerView.Adapter<HallAdapter.ViewHolder>() {
+    private val onClick: (SeatItem) -> Unit
+) : ListAdapter<SeatItem, HallViewHolder>(diffUtil) {
 
-    private var list = listOf<SeatItem>()
 
-    inner class ViewHolder(private val binding: ItemHallBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(seat: SeatItem) = with(binding) {
-            data = seat
-            checkBox.isEnabled = seat.enabled
-            checkBox.isChecked = seat.checked
-            checkBox.setOnChangeListener {
-                seat.checked = it
-                checkedChangeListener(adapterPosition, seat)
-            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HallViewHolder =
+        HallViewHolder(ItemHallBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+
+    override fun onBindViewHolder(holder: HallViewHolder, position: Int) {
+        holder.bind(currentList[position], onClick)
+    }
+
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<SeatItem>() {
+            override fun areItemsTheSame(oldItem: SeatItem, newItem: SeatItem) =
+                oldItem.documentId == newItem.documentId
+
+            override fun areContentsTheSame(oldItem: SeatItem, newItem: SeatItem) =
+                oldItem == newItem
         }
     }
+}
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ItemHallBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position])
+class HallViewHolder(
+    private val binding: ItemHallBinding
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(
+        seat: SeatItem,
+        onClick: (SeatItem) -> Unit
+    ) = with(binding) {
+        data = seat
+        checkBox.setOnClick { onClick(seat) }
     }
-
-    override fun getItemCount(): Int = list.size
-
-    fun setSeatList(list: List<SeatItem>) {
-        this.list = list
-    }
-
-    fun setChecked(position: Int, checked: Boolean) {
-        list[position].checked = checked
-        notifyItemChanged(position)
-    }
-
 }

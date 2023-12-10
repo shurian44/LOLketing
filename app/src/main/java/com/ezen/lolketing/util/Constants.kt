@@ -8,6 +8,7 @@ object Constants {
     const val SHOP = "Shop"
     const val GAME = "Game"
     const val SEAT = "Seat"
+    const val DATE = "date"
     const val COUPON = "Coupon"
     const val PURCHASE = "Purchase"
     const val TeamCollection = "Team"

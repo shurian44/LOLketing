@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
             type="com.ezen.lolketing.model.SeatItem" />
@@ -19,17 +19,21 @@
             android:id="@+id/checkBox"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="15dp"
+            android:checked="@{data.checked}"
+            android:enabled="@{data.enabled}"
+            android:gravity="center"
+            android:text="@{data.seatNum}"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:text="@{data.seatNum}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="A1"/>
+            tools:text="A1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

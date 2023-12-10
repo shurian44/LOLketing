@@ -2,11 +2,11 @@ package com.ezen.lolketing.repository
 
 import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.model.Seat
-import com.ezen.lolketing.model.SeatItem
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.getCurrentDateTime
 import com.ezen.lolketing.util.timestampToString
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -62,43 +62,10 @@ class TicketingRepository @Inject constructor(
         }
     }
 
-    /** 좌석 조회 **/
-    suspend fun getReservedSeat(
-        documentId: String,
-        hall: String,
-        onSuccessListener: (List<SeatItem>) -> Unit,
-        onFailureListener: () -> Unit
-    ) {
-        try {
-//            client
-//                .getDoubleSnapshot(
-//                    firstCollection = Constants.GAME,
-//                    firstDocument = documentId,
-//                    orderByField = "seatNum",
-//                    orderByDirection = Query.Direction.ASCENDING,
-//                    secondCollection = Constants.SEAT,
-//                    successListener = { querySnapshot ->
-//                        querySnapshot
-//                            .map {
-//                                it.toObject(Seat::class.java)
-//                                    .also { seat ->
-//                                        seat.seatNum = seat.seatNum.replace("$hall ", "")
-//                                    }
-//                                    .mapper(it.id)
-//                            }
-//                            .let(onSuccessListener)
-//                    },
-//                    failureListener = onFailureListener
-//                )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            onFailureListener()
-        }
-    }
-
     /** 좌석 리스트 생성 **/
     private fun getSeatList(): List<Seat> {
         val list = mutableListOf<Seat>()
+        val rowList = listOf("A", "B", "C", "D", "E", "F", "G", "H")
         rowList.forEach {
             for (i in 1..9) {
                 list.add(Seat("A홀 $it$i"))
@@ -108,9 +75,23 @@ class TicketingRepository @Inject constructor(
         return list
     }
 
-    companion object {
-        const val DATE = "date"
-        val rowList = listOf("A", "B", "C", "D", "E", "F", "G", "H")
+    /** 좌석 조회 **/
+    fun fetchReservedSeat(
+        documentId: String,
+        hall: String
+    ) = flow {
+        emit(
+            client
+                .getDoubleSnapshot(
+                    firstCollection = Constants.GAME,
+                    firstDocument = documentId,
+                    secondCollection = Constants.SEAT,
+                    orderByField = "seatNum",
+                    orderByDirection = Query.Direction.ASCENDING,
+                    valueType = Seat::class.java
+                )
+                .getOrThrow()
+                .map { (seat, documentId) -> seat.mapper(documentId, hall) }
+        )
     }
-
 }

@@ -9,7 +9,9 @@ import com.google.android.material.textview.MaterialTextView
 
 class CustomSeatCheckBox : MaterialTextView, Checkable {
 
-    var listener : ((Boolean) -> Unit)?= null
+    private var listener : ((Boolean) -> Unit)?= null
+    private var onClick: () -> Unit = {}
+
     var status = false
         set(value) {
             field = value
@@ -31,9 +33,7 @@ class CustomSeatCheckBox : MaterialTextView, Checkable {
     }
 
     private fun initView() {
-        setOnClickListener {
-            toggle()
-        }
+        setOnClickListener { onClick() }
 
         if (isEnabled.not()) {
             setBackgroundResource(R.drawable.bg_round_fill_3_light_black)
@@ -66,6 +66,10 @@ class CustomSeatCheckBox : MaterialTextView, Checkable {
 
     fun setOnChangeListener(listener: (Boolean) -> Unit) {
         this.listener = listener
+    }
+
+    fun setOnClick(onClick: () -> Unit) {
+        this.onClick = onClick
     }
 
     override fun setChecked(checked: Boolean) {

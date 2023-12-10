@@ -10,7 +10,11 @@
             type="com.ezen.lolketing.view.main.ticket.detail.ReserveDetailActivity" />
 
         <variable
-            name="title"
+            name="vm"
+            type="com.ezen.lolketing.view.main.ticket.detail.ReserveDetailViewModel" />
+
+        <variable
+            name="team"
             type="String" />
     </data>
 
@@ -24,7 +28,7 @@
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
-            app:title="@{title}" />
+            app:title="@{@string/ticket_reserve}" />
 
         <TextView
             android:id="@+id/txtSelectHall"
@@ -44,10 +48,25 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/layoutInfo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtSelectHall" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:adapter="@{activity.adapter}"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/layoutInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtSelectHall"
+            app:spanCount="8"
+            app:submitList="@{vm.list}"
+            tools:listitem="@layout/item_hall" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutInfo"
@@ -64,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="16dp"
+                android:text="@{vm.reserveTime}"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -74,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="15dp"
+                android:onClick="@{() -> activity.goToReserve()}"
                 android:text="@string/ticket_guide_button"
                 android:textColor="@color/light_gray"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,6 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:text="@{team}"
                 android:textColor="@color/sub_color"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -109,6 +131,7 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
+                android:checked="@{vm.isOnePerson()}"
                 android:text="@string/one"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -124,6 +147,7 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
+                android:checked="@{!vm.isOnePerson()}"
                 android:text="@string/two"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -151,7 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/guide_select_seat"
+                android:text="@{vm.selectSeatItem.empty ? @string/guide_select_seat : vm.selectSeatItem}"
                 android:textColor="@color/sub_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -185,6 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
+                android:text="@{vm.ticketPrice}"
                 android:textColor="@color/sub_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -200,6 +225,7 @@
             android:layout_height="56dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:onClick="@{() -> activity.goTaPayment()}"
             android:text="@string/make_reservation"
             android:textColor="@color/white"
             android:textSize="20sp"

@@ -2,116 +2,94 @@ package com.ezen.lolketing.view.main.ticket.detail
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import com.ezen.lolketing.BaseActivity
+import androidx.activity.viewModels
 import com.ezen.lolketing.R
+import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityReserveDetailBinding
-import com.ezen.lolketing.util.*
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.showErrorMessageAndFinish
+import com.ezen.lolketing.util.startActivity
+import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.main.ticket.ReserveActivity
 import com.ezen.lolketing.view.main.ticket.payment.PaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReserveDetailActivity : BaseActivity<ActivityReserveDetailBinding>(R.layout.activity_reserve_detail) {
+class ReserveDetailActivity :
+    StatusViewModelActivity<ActivityReserveDetailBinding, ReserveDetailViewModel>(R.layout.activity_reserve_detail) {
 
-    private lateinit var hallFragment: HallFragment
-    private var documentIdList = arrayListOf<String>()
-    private val ticketPrice = 11_000L
+    override val viewModel: ReserveDetailViewModel by viewModels()
+
+    val adapter by lazy { HallAdapter(viewModel::updateSeatState) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initViews()
 
-    } // onCreate()
+    }
 
     /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
         activity = this@ReserveDetailActivity
-        title = getString(R.string.ticket_reserve)
-        layoutTop.btnBack.setOnClickListener { onBackClick(it) }
+        vm = viewModel
 
-        val time = intent?.getStringExtra(Constants.TIME)
-        val team = intent?.getStringExtra(Constants.TEAM)
+        intent
+            ?.getStringExtra(Constants.TIME)
+            ?.let { viewModel.setReserveTime(it) }
+            ?: { showErrorMessageAndFinish() }
 
-        if (time == null || team == null) {
-            toast(getString(R.string.error_unexpected))
-            finish()
-            return@with
-        }
-
-        txtTime.text = time
-        txtGameTitle.text = team
-        txtCurrentAmount.text = ticketPrice.priceFormat()
+        intent
+            ?.getStringExtra(Constants.TEAM)
+            ?.let { team = it }
 
         txtSelectHall.text = "A홀"
-        setFragment()
-
-        chPersonnelOne.setOnChangeListener {
-            if(it) {
-                chPersonnelTwo.isChecked = false
-                hallFragment.setSeatCount(1)
-                txtCurrentAmount.text = ticketPrice.priceFormat()
-            }
-        }
-
-        chPersonnelTwo.setOnChangeListener {
-            if(it) {
-                chPersonnelOne.isChecked = false
-                hallFragment.setSeatCount(2)
-                txtCurrentAmount.text = (ticketPrice * 2).priceFormat()
-            }
-        }
-    }
-
-    /** 좌석 선택 Fragment 생성 **/
-    private fun setFragment() = with(binding) {
-        hallFragment = HallFragment(txtSelectHall.text.toString(), txtTime.text.toString()) { seat, documentIdList ->
-            txtSelectSeat.text = seat
-            this@ReserveDetailActivity.documentIdList = documentIdList
-        }
-
-        supportFragmentManager.beginTransaction().also {
-            it.replace(fragmentContainer.id, hallFragment, "")
-            it.commit()
-        }
+        layoutTop.btnBack.setOnClickListener { finish() }
+        chPersonnelOne.setOnClick { viewModel.chanePerson(true) }
+        chPersonnelTwo.setOnClick { viewModel.chanePerson(false) }
     }
 
     /** 예매하기 버튼 클릭 **/
-    fun onReserveClick(view: View) = with(binding) {
-        if (txtSelectSeat.text == getString(R.string.guide_select_seat)){
+    fun goTaPayment() = with(binding) {
+        val count = if (viewModel.isOnePerson.value) 1 else 2
+        val checkedCount = viewModel.list.value.count { it.checked }
+        if (checkedCount < count) {
             toast(getString(R.string.guide_select_seat))
             return@with
         }
 
-        if (chPersonnelTwo.isChecked && documentIdList.size != 2) {
-            toast(getString(R.string.guide_select_seat))
-            return@with
-        }
+        val documentIdList =
+            viewModel.list.value.filter { it.checked }.map { it.documentId }.toTypedArray()
 
         launcher.launch(
             createIntent(PaymentActivity::class.java).also {
-                it.putExtra(PaymentActivity.TIME, txtTime.text.toString())
+                it.putExtra(PaymentActivity.TIME, viewModel.reserveTime.value)
                 it.putExtra(PaymentActivity.GAME_TITLE, txtGameTitle.text.toString())
-                it.putExtra(PaymentActivity.SEAT, txtSelectSeat.text.toString())
-                it.putExtra(PaymentActivity.AMOUNT, txtCurrentAmount.text.toString())
+                it.putExtra(PaymentActivity.SEAT, viewModel.selectSeatItem.value)
+                it.putExtra(PaymentActivity.AMOUNT, viewModel.ticketPrice.value)
                 it.putExtra(PaymentActivity.DOCUMENT_ID_LIST, documentIdList)
             }
         )
     }
 
     /** 티켓 안내 클릭 **/
-    fun onTicketInfoClick(view: View) {
+    fun goToReserve() {
         startActivity(ReserveActivity::class.java)
     }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if (it.resultCode == Activity.RESULT_OK) {
-            setResult(Activity.RESULT_OK)
-            finish()
-        }
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchReservedSeat()
     }
+
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+        }
 
 }

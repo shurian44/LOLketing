@@ -4,7 +4,6 @@ import android.net.Uri
 import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.model.LoginInfo
 import com.ezen.lolketing.model.Users
-import com.ezen.lolketing.repository.TicketingRepository
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.Grade
 import com.ezen.lolketing.util.LoginException
@@ -103,8 +102,8 @@ class FirebaseClient @Inject constructor(
     suspend fun fetchTicketList(date: String) = runCatching {
         fireStore
             .collection(Constants.GAME)
-            .orderBy(TicketingRepository.DATE)
-            .whereGreaterThan(TicketingRepository.DATE, date)
+            .orderBy(Constants.DATE)
+            .whereGreaterThan(Constants.DATE, date)
             .get()
             .await()
             .mapNotNull { it.toObject(Game::class.java).mapper() }
