@@ -5,7 +5,9 @@ import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.model.*
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.LoginException
 import com.google.firebase.firestore.FieldValue
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class PurchaseRepository @Inject constructor(
@@ -13,102 +15,71 @@ class PurchaseRepository @Inject constructor(
     private val database: ShopDao
 ) {
 
-    suspend fun getTicketInfo(
-        documentId: String,
-        successListener: (TicketInfo) -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client
-//            .getBasicSnapshot(
-//                collection = Constants.PURCHASE,
-//                document = documentId,
-//                successListener = {
-//                    it.toObject(PurchaseDTO::class.java)?.let { purchase ->
-//                        successListener(purchase.ticketMapper())
-//                    } ?: failureListener()
-//                },
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+    fun fetchTicketInfo(documentId: String) = flow {
+        client
+            .getBasicSnapshot(
+                collection = Constants.PURCHASE,
+                document = documentId,
+                valueType = PurchaseDTO::class.java
+            )
+            .getOrThrow()
+            ?.ticketMapper()
+            ?.let { emit(it) }
+            ?: throw Exception("오류 발생")
     }
 
-    suspend fun updateUserCache(
-        refund: Long,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        val email = client.getUserEmail() ?: throw Exception("email is null")
-//
-//        client
-//            .basicUpdateData(
-//                collection = Constants.USERS,
-//                documentId = email,
-//                updateData = mapOf(CACHE to FieldValue.increment(refund)),
-//                successListener = successListener,
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+    fun updateRefundTicket(
+        ticketInfo: TicketInfo,
+        purchaseDocumentId: String
+    ) = flow {
+        deletePurchase(purchaseDocumentId)
+        deleteQrCode(ticketInfo.getQrCodeName())
+        updateCache(ticketInfo.getRefund())
+        updateSeatInfo(
+            time = ticketInfo.getTime(),
+            documentIdList = ticketInfo.documentList
+        )
+        emit("환불 완료")
     }
 
-    suspend fun updateSeatInfo(
+    private suspend fun deletePurchase(documentId: String) {
+        client
+            .basicDelete(
+                collection = Constants.PURCHASE,
+                documentId = documentId
+            )
+    }
+
+    private suspend fun deleteQrCode(path: String) {
+        client
+            .storageDelete(path = path)
+    }
+
+    private suspend fun updateCache(refund: Long) {
+        val email = client.getUserEmail() ?: throw LoginException.EmptyInfo
+
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = email,
+                updateData = mapOf(CACHE to FieldValue.increment(refund))
+            )
+    }
+
+    private suspend fun updateSeatInfo(
         time: String,
-        documentIdList: List<String>,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        documentIdList.forEach {
-//            client
-//                .doubleUpdateData(
-//                    firstCollection = Constants.GAME,
-//                    firstDocument = time,
-//                    secondCollection = Constants.SEAT,
-//                    secondDocument = it,
-//                    updateData = mapOf(DOCUMENT_ID to "", RESERVE_ID to ""),
-//                    successListener = {},
-//                    failureListener = failureListener
-//                )
-//        }
-//        successListener()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
-    }
-
-    suspend fun deletePurchase(
-        documentId: String,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client
-//            .basicDelete(
-//                collection = Constants.PURCHASE,
-//                documentId = documentId,
-//                successListener = successListener,
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
-    }
-
-    suspend fun deleteQrCode(
-        path: String,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ): Any? = try {
-//        client
-//            .storageDelete(
-//                path = path,
-//                successListener = successListener,
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+        documentIdList: List<String>
+    ) {
+        documentIdList.forEach {
+            client
+                .doubleUpdateData(
+                    firstCollection = Constants.GAME,
+                    firstDocument = time,
+                    secondCollection = Constants.SEAT,
+                    secondDocument = it,
+                    updateData = mapOf(RESERVE_ID to "")
+                )
+        }
     }
 
     fun selectAllShoppingBasket() =

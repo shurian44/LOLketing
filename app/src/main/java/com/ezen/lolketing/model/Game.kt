@@ -105,7 +105,7 @@ data class Ticket(
     }.getOrElse { Team.T1.image }
 
     fun getSecondImageRes() = runCatching {
-        getImageRes(team.split(":")[0])
+        getImageRes(team.split(":")[1])
     }.getOrElse { Team.T1.image }
 }
 

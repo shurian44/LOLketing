@@ -5,11 +5,12 @@
 
     <data>
         <variable
-            name="title"
-            type="String" />
-        <variable
             name="activity"
             type="com.ezen.lolketing.view.main.ticket.payment.PaymentActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.ticket.payment.PaymentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +24,7 @@
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
             app:isMenuVisible="@{false}"
-            app:title="@{title}" />
+            app:title="@{@string/ticket_payment}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutReserveInfo"
@@ -42,6 +43,7 @@
                 android:layout_marginTop="16dp"
                 android:textColor="@color/white"
                 android:textSize="16sp"
+                android:text="@{vm.info.time}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="2022.05.27 17:00" />
@@ -54,6 +56,7 @@
                 android:textColor="@color/sub_color"
                 android:textSize="22sp"
                 android:textStyle="bold"
+                android:text="@{vm.info.gameTitle}"
                 app:layout_constraintStart_toStartOf="@id/txtTime"
                 app:layout_constraintTop_toBottomOf="@id/txtTime"
                 tools:text="T1 vs T1" />
@@ -78,6 +81,7 @@
                 android:textColor="@color/sub_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:text="@{vm.info.seats}"
                 app:layout_constraintBottom_toBottomOf="@id/labelSeat"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/labelSeat"
@@ -103,6 +107,7 @@
                 android:textColor="@color/sub_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:text="@{vm.info.priceWon}"
                 app:layout_constraintBottom_toBottomOf="@id/labelPrice"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/labelPrice"
@@ -130,9 +135,11 @@
                 android:textColor="@color/sub_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:text="@{vm.myCache}"
                 app:layout_constraintBottom_toBottomOf="@id/labelMyCache"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/labelMyCache"
+                app:layout_constraintVertical_bias="0.0"
                 tools:text="11,000원" />
 
             <com.google.android.material.button.MaterialButton
@@ -148,8 +155,8 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:visibility="gone"
-                android:onClick="@{activity::onChargingCacheClick}"
+                app:isVisible="@{vm.insufficientBalance}"
+                android:onClick="@{() -> activity.goToCacheCharging()}"
                 app:cornerRadius="4dp"
                 android:backgroundTint="@color/light_black"
                 app:strokeWidth="2dp"
@@ -169,7 +176,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="24dp"
             android:text="@string/ticket_guide_button"
-            android:onClick="@{activity::onTicketInfoClick}"
+            android:onClick="@{() -> activity.goToReserve()}"
             android:textColor="@color/gray"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutReserveInfo" />
@@ -185,7 +192,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:onClick="@{activity::onPaymentClick}"
+            android:onClick="@{() -> vm.buyTickets()}"
             app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

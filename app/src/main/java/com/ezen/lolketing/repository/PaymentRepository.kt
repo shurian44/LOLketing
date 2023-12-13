@@ -2,159 +2,125 @@ package com.ezen.lolketing.repository
 
 import com.ezen.lolketing.model.CacheModifyUser
 import com.ezen.lolketing.model.PurchaseDTO
+import com.ezen.lolketing.model.TicketTemp
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.LoginException
 import com.google.firebase.firestore.FieldValue
-import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class PaymentRepository @Inject constructor(
     private val client: FirebaseClient
 ) {
 
-    suspend fun getUserCache(
-        successListener: (Long) -> Unit,
-        failureListener: () -> Unit
-    ) {
-//        client
-//            .getUserInfo(
-//                successListener = {
-//                    it.cache?.let(successListener)?:failureListener()
-//                },
-//                failureListener = {
-//                    failureListener()
-//                }
-//            )
+    fun fetchUserCacheInfo() = flow {
+        client
+            .getUserInfo()
+            .getOrThrow()
+            .cache
+            ?.let { emit(it) }
+            ?: throw LoginException.EmptyUser
     }
 
-    suspend fun getUserInfo(
-        successListener: (CacheModifyUser) -> Unit,
-        failureListener: () -> Unit
-    ) {
-//        client
-//            .getUserInfo(
-//                successListener = {
-//                    successListener(it.mapper())
-//                },
-//                failureListener = {
-//                    failureListener()
-//                }
-//            )
-    }
-
-    suspend fun updateSeat(
-        firstDocumentId: String,
-        secondDocumentId: String,
-        data: String,
-        onSuccessListener: () -> Unit,
-        onFailureListener: () -> Unit
-    ) {
-        try {
+    fun fetchCacheDetailInfo() = flow {
+        emit(
             client
-                .getFireStore(Constants.GAME)
-                .document(firstDocumentId)
-                .collection(Constants.SEAT)
-                .document(secondDocumentId)
-                .update("reserveId", data)
-                .await()
-
-            onSuccessListener()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            onFailureListener()
-        }
+                .getUserInfo()
+                .getOrThrow()
+                .mapperCacheModify()
+                ?: throw LoginException.EmptyInfo
+        )
     }
 
-    suspend fun generateQrCode(
-        path: String,
+    fun buyTickets(
+        ticketTemp: TicketTemp,
         data: ByteArray,
-        onSuccessListener: (String) -> Unit,
-        onFailureListener: () -> Unit
-    ) {
-        val storageRef = client
-            .getStorageReference(path)
+    ) = flow {
+        val email = client.getUserEmail() ?: throw LoginException.EmptyUser
 
-        storageRef.putBytes(data)
-            .addOnSuccessListener {
-                storageRef.downloadUrl.addOnCompleteListener { task ->
-                    task.result.toString()
-                    onSuccessListener(task.result.toString())
-                }
-            }
-            .addOnFailureListener {
-                it.printStackTrace()
-                onFailureListener()
-            }
-            .await()
-    }
-
-    suspend fun setPurchase(
-        data: PurchaseDTO,
-        successListener : (String) -> Unit,
-        failureListener : () -> Unit
-    ) {
-//        client
-//            .basicAddData(
-//                collection = Constants.PURCHASE,
-//                data = data,
-//                successListener = {
-//                    successListener(it.id)
-//                },
-//                failureListener = failureListener
-//            )
-    }
-
-    suspend fun myCacheDeduction(
-        deductionCache: Long,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) {
-        val email = client.getUserEmail()
-
-        if (email == null){
-            failureListener()
-            return
+        ticketTemp.documentList.forEach {
+            updateSeats(time = ticketTemp.time, documentId = it, email = email)
         }
 
-//        client
-//            .basicUpdateData(
-//                collection = Constants.USERS,
-//                documentId = email,
-//                updateData = mapOf(
-//                    CACHE to FieldValue.increment(-deductionCache),
-//                    ROULETTE_COUNT to FieldValue.increment(if (deductionCache > 11_000) 2 else 1)
-//                ),
-//                successListener = successListener,
-//                failureListener = failureListener
-//            )
+        val image = generateQrCode(path = ticketTemp.qrCodeInfo(), data = data)
+
+        val documentId = addPurchase(
+            ticketTemp.toPurchaseDTO(
+                id = email,
+                image = image
+            )
+        ).id
+
+        myCacheDeduction(
+            email = email,
+            deductionCache = ticketTemp.getPrice()
+        )
+
+        emit(documentId)
     }
 
-    suspend fun updateChargingCache(
-        addCache: Long,
-        point: Long,
-        grade: String,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) {
-        val email = client.getUserEmail()
+    private suspend fun updateSeats(
+        time: String,
+        documentId: String,
+        email: String
+    ) = client
+        .doubleUpdateData(
+            firstCollection = Constants.GAME,
+            firstDocument = time,
+            secondCollection = Constants.SEAT,
+            secondDocument = documentId,
+            updateData = mapOf("reserveId" to email)
+        )
+        .getOrThrow()
 
-        if (email == null){
-            failureListener()
-            return
-        }
+    private suspend fun generateQrCode(
+        path: String,
+        data: ByteArray
+    ) = client
+            .basicFileUpload(
+                fileName = path,
+                data = data
+            )
+            .getOrThrow()
 
-//        client
-//            .basicUpdateData(
-//                collection = Constants.USERS,
-//                documentId = email,
-//                updateData = mapOf(
-//                    CACHE to FieldValue.increment(addCache),
-//                    POINT to point,
-//                    GRADE to grade
-//                ),
-//                successListener = successListener,
-//                failureListener = failureListener
-//            )
+    private suspend fun addPurchase(
+        data: PurchaseDTO
+    ) = client
+            .basicAddData(
+                collection = Constants.PURCHASE,
+                data = data,
+            )
+            .getOrThrow()
+
+    private suspend fun myCacheDeduction(
+        email: String,
+        deductionCache: Long
+    ) = client
+        .basicUpdateData(
+            collection = Constants.USERS,
+            documentId = email,
+            updateData = mapOf(
+                CACHE to FieldValue.increment(-deductionCache),
+                ROULETTE_COUNT to FieldValue.increment(if (deductionCache > 11_000) 2 else 1)
+            )
+        )
+
+    fun updateChargingCache(info: CacheModifyUser) = flow {
+        val email = client.getUserEmail() ?: throw LoginException.EmptyInfo
+
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = email,
+                updateData = mapOf(
+                    CACHE to info.myCache,
+                    POINT to info.point,
+                    GRADE to info.grade
+                )
+            )
+
+        emit("충전 완료")
     }
 
     companion object {

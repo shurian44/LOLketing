@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.text.Html
 import android.text.InputFilter
@@ -68,6 +69,14 @@ fun Context.toast(msg: String) {
 
 fun Context.toast(msgRes: Int) {
     Toast.makeText(this, getString(msgRes), Toast.LENGTH_SHORT).show()
+}
+
+inline fun <reified T : Any> Intent.getParcelableExtraCompat(name: String): T? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        getParcelableExtra(name, T::class.java)
+    } else {
+        getParcelableExtra(name)
+    }
 }
 
 fun View.showKeyboard() {

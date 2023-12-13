@@ -53,23 +53,13 @@ class ReserveDetailActivity :
 
     /** 예매하기 버튼 클릭 **/
     fun goTaPayment() = with(binding) {
-        val count = if (viewModel.isOnePerson.value) 1 else 2
-        val checkedCount = viewModel.list.value.count { it.checked }
-        if (checkedCount < count) {
-            toast(getString(R.string.guide_select_seat))
-            return@with
-        }
-
-        val documentIdList =
-            viewModel.list.value.filter { it.checked }.map { it.documentId }.toTypedArray()
+        val info = viewModel.getTicketInfo(txtGameTitle.text.toString())
+            .onFailure { toast(it.message ?: getString(R.string.error_unexpected)) }
+            .getOrNull() ?: return@with
 
         launcher.launch(
             createIntent(PaymentActivity::class.java).also {
-                it.putExtra(PaymentActivity.TIME, viewModel.reserveTime.value)
-                it.putExtra(PaymentActivity.GAME_TITLE, txtGameTitle.text.toString())
-                it.putExtra(PaymentActivity.SEAT, viewModel.selectSeatItem.value)
-                it.putExtra(PaymentActivity.AMOUNT, viewModel.ticketPrice.value)
-                it.putExtra(PaymentActivity.DOCUMENT_ID_LIST, documentIdList)
+                it.putExtra(PaymentActivity.INFO, info)
             }
         )
     }

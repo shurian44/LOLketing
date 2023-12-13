@@ -44,8 +44,12 @@ abstract class StatusViewModelActivity<B : ViewDataBinding, VM : StatusViewModel
         }
 
         repeatOnStarted {
-            status.isFinish.collectLatest { if (it) finish() }
+            status.isFinish.collectLatest { if (it) statusFinish() }
         }
+    }
+
+    open fun statusFinish() {
+        finish()
     }
 
     private fun showDialog() = runCatching {

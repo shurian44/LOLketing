@@ -10,8 +10,8 @@
             type="com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity" />
 
         <variable
-            name="title"
-            type="String" />
+            name="vm"
+            type="com.ezen.lolketing.view.main.my_page.cache.CacheChargingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +25,7 @@
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
             app:isMenuVisible="@{false}"
-            app:title="@{title}" />
+            app:title="@{@string/charging_cache}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,6 +46,7 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:text="@{vm.info.myCacheFormat}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutTop"
             tools:text="10,000원" />
@@ -55,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:text="충전할 캐시"
+            android:text="@string/charging_cache_title"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -70,7 +71,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="24dp"
             android:backgroundTint="@color/black"
-            android:onClick="@{activity::plusCacheClick}"
+            android:onClick="@{() -> activity.plusCacheClick(10_000L)}"
             android:paddingHorizontal="0dp"
             android:text="@string/ten_thousand_won"
             android:textSize="20sp"
@@ -88,7 +89,7 @@
             android:layout_height="56dp"
             android:layout_marginEnd="8dp"
             android:backgroundTint="@color/black"
-            android:onClick="@{activity::plusCacheClick}"
+            android:onClick="@{() -> activity.plusCacheClick(100_000L)}"
             android:paddingHorizontal="0dp"
             android:text="@string/hundred_thousand_won"
             android:textSize="20sp"
@@ -106,7 +107,7 @@
             android:layout_height="56dp"
             android:layout_marginEnd="20dp"
             android:backgroundTint="@color/black"
-            android:onClick="@{activity::plusCacheClick}"
+            android:onClick="@{() -> activity.plusCacheClick(1_000_000L)}"
             android:paddingHorizontal="0dp"
             android:text="@string/million_won"
             android:textSize="20sp"
@@ -123,7 +124,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:text="@string/zero_won"
+            android:text="@{vm.info.chargingCacheFormat}"
             android:textAlignment="center"
             android:textColor="@color/sub_color"
             android:textSize="35sp"
@@ -131,7 +132,8 @@
             app:layout_constraintBottom_toTopOf="@id/labelChargingGuide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutTop" />
+            app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            tools:text="0원" />
 
         <TextView
             android:id="@+id/labelChargingGuide"
@@ -168,7 +170,7 @@
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:background="@color/colorPrimary"
-            android:onClick="@{activity::chargingClick}"
+            android:onClick="@{() -> vm.updateChargingCache()}"
             android:text="@string/charging_cache"
             android:textColor="@color/white"
             android:textSize="20sp"

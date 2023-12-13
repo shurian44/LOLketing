@@ -5,9 +5,6 @@
 
     <data>
         <variable
-            name="title"
-            type="String" />
-        <variable
             name="activity"
             type="com.ezen.lolketing.view.main.ticket.ReserveActivity" />
     </data>
@@ -23,7 +20,7 @@
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
             app:isMenuVisible="@{false}"
-            app:title="@{title}" />
+            app:title="@{@string/ticket_guide}" />
 
         <ScrollView
             android:id="@+id/reserveScroll"

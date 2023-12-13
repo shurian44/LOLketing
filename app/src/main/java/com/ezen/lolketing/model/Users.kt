@@ -1,9 +1,11 @@
 package com.ezen.lolketing.model
 
 import com.ezen.lolketing.util.Grade
+import com.ezen.lolketing.util.getGrade
 import com.ezen.lolketing.util.getGradeImageRes
 import com.ezen.lolketing.util.getGradeName
 import com.ezen.lolketing.util.priceFormat
+import kotlin.math.min
 
 data class Users(
     var id : String ?= null,
@@ -17,11 +19,13 @@ data class Users(
     var point : Long ?= 0,
     var cache : Long ?= 0
 ) {
-    fun mapper() = CacheModifyUser(
-        grade = grade,
-        point = point,
-        cache = cache
-    )
+    fun mapperCacheModify(): CacheModifyUser? {
+        return CacheModifyUser(
+            grade = grade ?: return null,
+            point = point ?: return null,
+            myCache = cache ?: return null
+        )
+    }
     fun mapperShippingInfo(): ShippingInfo? {
         return ShippingInfo(
             id = id ?: return null,
@@ -50,10 +54,32 @@ data class UserInfo(
 )
 
 data class CacheModifyUser(
-    var grade: String?= null,
-    var point: Long?= 0,
-    var cache: Long?= 0
-)
+    val grade: String = Grade.BRONZE.gradeCode,
+    val point: Long = 0,
+    val myCache: Long = 0,
+    val chargingCache: Long = 0
+) {
+    fun getChargingCacheFormat() = chargingCache.priceFormat()
+
+    fun getMyCacheFormat() = myCache.priceFormat()
+
+    fun updateInfo(): CacheModifyUser {
+        var addPoint = 0
+        addPoint += if(myCache + chargingCache > 100_000_000){
+            (100_000_000 - myCache.toInt()) / 10
+        }else{
+            (chargingCache / 10).toInt()
+        }
+
+        val newPoint = min(point + addPoint, 100_000_000)
+
+        return this.copy(
+            myCache = min(myCache + chargingCache, 100_000_000),
+            point = newPoint,
+            grade = getGrade(newPoint)
+        )
+    }
+}
 
 data class ShippingInfo(
     val id: String,

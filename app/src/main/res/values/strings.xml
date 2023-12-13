@@ -136,6 +136,7 @@
     <!-- 캐시 -->
     <string name="my_cache">My 캐시</string>
     <string name="charging_cache">캐시 충전</string>
+    <string name="charging_cache_title">충전할 캐시</string>
     <string name="button_charging_cache">충전하기</string>
     <string name="label_guide_charging_cache">충전 시 주의사항</string>
     <string name="guide_charging_cache"><![CDATA[&quot;롤켓팅&quot;의 캐시는 <font color=\"#03DAC5\"><b>가상머니</b></font>입니다.<br>원하시는 충전 금액을 입력하시고 캐시 충전 버튼을 눌러주세요.\n<font color=\"#03DAC5\"><br>최대 보유 캐시는 1억원 입니다.</font>]]></string>

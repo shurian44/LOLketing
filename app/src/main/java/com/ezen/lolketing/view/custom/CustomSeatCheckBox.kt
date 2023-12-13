@@ -9,14 +9,9 @@ import com.google.android.material.textview.MaterialTextView
 
 class CustomSeatCheckBox : MaterialTextView, Checkable {
 
-    private var listener : ((Boolean) -> Unit)?= null
     private var onClick: () -> Unit = {}
 
-    var status = false
-        set(value) {
-            field = value
-            listener?.invoke(value)
-        }
+    private var status = false
 
     constructor(context: Context) : super(context) {
         initView()
@@ -64,12 +59,13 @@ class CustomSeatCheckBox : MaterialTextView, Checkable {
 
     }
 
-    fun setOnChangeListener(listener: (Boolean) -> Unit) {
-        this.listener = listener
-    }
-
     fun setOnClick(onClick: () -> Unit) {
         this.onClick = onClick
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        initView()
     }
 
     override fun setChecked(checked: Boolean) {

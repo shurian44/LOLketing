@@ -3,6 +3,7 @@ package com.ezen.lolketing.view.main.ticket.detail
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.SeatItem
+import com.ezen.lolketing.model.TicketTemp
 import com.ezen.lolketing.repository.TicketingRepository
 import com.ezen.lolketing.util.priceFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -93,6 +94,22 @@ class ReserveDetailViewModel @Inject constructor(
             .onEach { _list.value = it }
             .catch { updateMessage(it.message ?: "오류 발생") }
             .launchIn(viewModelScope)
+    }
+
+    fun getTicketInfo(title: String) = runCatching {
+        val count = if (_isOnePerson.value) 1 else 2
+        val checkedCount = _list.value.count { it.checked }
+        if (checkedCount != count) {
+            throw Exception("좌석을 선택해 주세요")
+        }
+
+        TicketTemp(
+            amount = if (_isOnePerson.value) 1 else 2,
+            gameTitle = title,
+            time = _reserveTime.value,
+            seats = selectSeatItem.value,
+            documentList = _list.value.filter { it.checked }.map { it.documentId }
+        ).validationCheck()
     }
 
 }

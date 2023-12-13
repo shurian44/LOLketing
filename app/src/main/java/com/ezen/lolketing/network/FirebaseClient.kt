@@ -310,6 +310,22 @@ class FirebaseClient @Inject constructor(
             .toString()
     }
 
+    suspend fun basicFileUpload(
+        fileName: String,
+        data: ByteArray
+    ) = runCatching{
+        val storageRef = getStorageReference(fileName)
+
+        storageRef
+            .putBytes(data)
+            .await()
+
+        storageRef
+            .downloadUrl
+            .await()
+            .toString()
+    }
+
     companion object {
         const val TIME_STAMP = "timestamp"
     }
