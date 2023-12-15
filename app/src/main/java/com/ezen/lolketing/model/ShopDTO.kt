@@ -1,6 +1,8 @@
 package com.ezen.lolketing.model
 
 import com.ezen.lolketing.database.entity.ShopEntity
+import com.ezen.lolketing.util.findCodeName
+import com.ezen.lolketing.util.priceFormat
 
 data class ShopDTO(
     var images : List<String>?= null,
@@ -8,12 +10,13 @@ data class ShopDTO(
     var name : String ?= null,
     var group : String ?= null
 ) {
-    fun mapper() : ShopListItem? {
+    fun mapper(documentId: String) : ShopListItem? {
         return ShopListItem(
             image = images?.get(0) ?: return null,
             price = price ?: return null,
             name = name ?: return null,
-            group = group ?: return null
+            group = group ?: return null,
+            documentId = documentId
         )
     }
 
@@ -35,7 +38,11 @@ data class ShopListItem(
     val name : String,
     val group : String,
     var documentId : String = ""
-)
+) {
+    fun getCategory() = "[${findCodeName(group)}]"
+
+    fun getPriceFormat() = price.priceFormat()
+}
 
 data class ShopItem(
     val images : List<String>,

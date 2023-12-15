@@ -28,7 +28,23 @@ enum class Code(val code: String, val codeName: String) {
     ART("SHOP009", "서적/아트"),
     PURCHASE_TICKET("PURCHASE001", "경기 티켓"),
     BOARD_GAME("SHOP010", "보드게임"),
-    UNKNOWN("UNKNOWN", ""),
+    UNKNOWN("UNKNOWN", "");
+
+    companion object {
+        fun getShoppingItems() = listOf(
+            SHOP_ALL,
+            STATUE,
+            FIGURE,
+            ACCESSORY,
+            DOLL,
+            T_SHIRT,
+            JACKET,
+            PAJAMAS,
+            ART,
+            PURCHASE_TICKET,
+            BOARD_GAME
+        )
+    }
 }
 
 fun findCode(codeName: String) =

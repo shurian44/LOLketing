@@ -1,41 +1,48 @@
 package com.ezen.lolketing.view.main.shop
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.ezen.lolketing.view.ui.theme.Black
-import com.ezen.lolketing.view.ui.theme.LOLketingTheme
-import com.google.gson.Gson
+import androidx.activity.viewModels
+import com.ezen.lolketing.R
+import com.ezen.lolketing.StatusViewModelActivity
+import com.ezen.lolketing.databinding.ActivityShopBinding
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ShopActivity : ComponentActivity() {
+class ShopActivity :
+    StatusViewModelActivity<ActivityShopBinding, ShopViewModel>(R.layout.activity_shop) {
+
+    override val viewModel: ShopViewModel by viewModels()
+    val adapter = ShopAdapter {
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            LOLketingTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Black
-                ) {
-                    ShopNavigationGraph()
-                }
-            }
-        }
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    LOLketingTheme {
-        ShopNavigationGraph()
+        initViews()
     }
+
+    private fun initViews() = with(binding) {
+        activity = this@ShopActivity
+        vm = viewModel
+
+        viewModel.shoppingCategoryNames.forEachIndexed { index, name ->
+            tabLayout.addTab(
+                tabLayout.newTab().apply {
+                    text = name
+                    id = index
+                }
+            )
+        }
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let { viewModel.setQuery(it.id) }
+            }
+        })
+    }
+
 }

@@ -9,6 +9,7 @@ import com.ezen.lolketing.model.mapper
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ShopRepository @Inject constructor(
@@ -37,29 +38,15 @@ class ShopRepository @Inject constructor(
         failureListener()
     }
 
-    suspend fun getShoppingList(
-        query: String,
-        successListener: (List<ShopListItem>) -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-//        client.getBasicQuerySnapshot(
-//            collection = Constants.SHOP,
-//            field = "group",
-//            query = query,
-//            orderByField = "name",
-//            successListener = { snapshot ->
-//                val list = snapshot.mapNotNull {
-//                    it.toObject(ShopDTO::class.java).mapper().also { item ->
-//                        item?.documentId = it.id
-//                    }
-//                }
-//                successListener(list)
-//            },
-//            failureListener = failureListener
-//        )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+    fun fetchShoppingList() = flow {
+        client
+            .getBasicSnapshot(
+                collection = Constants.SHOP,
+                valueType = ShopDTO::class.java
+            )
+            .getOrThrow()
+            .mapNotNull { (item, documentId) -> item.mapper(documentId) }
+            .let { emit(it) }
     }
 
     suspend fun getShoppingItem(

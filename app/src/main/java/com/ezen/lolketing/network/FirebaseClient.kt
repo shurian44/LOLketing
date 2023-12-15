@@ -130,7 +130,7 @@ class FirebaseClient @Inject constructor(
             .collection(collection)
             .get()
             .await()
-            .toObjects(valueType)
+            .mapNotNull { Pair(it.toObject(valueType), it.id) }
     }
 
     suspend fun <T> getBasicQuerySnapshot(
