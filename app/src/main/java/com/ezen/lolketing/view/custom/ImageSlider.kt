@@ -7,14 +7,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.ezen.lolketing.databinding.CustomImageSliderBinding
 import com.ezen.lolketing.view.custom.adapter.ImageSliderAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 class ImageSlider : ConstraintLayout {
 
     private val binding = CustomImageSliderBinding.inflate(LayoutInflater.from(context))
-    private val _imageList = MutableStateFlow(listOf<Int>())
-    val imageList: StateFlow<List<Int>> = _imageList
     private val adapter = ImageSliderAdapter()
 
     constructor(context: Context) : super(context) {
@@ -50,7 +46,10 @@ class ImageSlider : ConstraintLayout {
     fun setImageList(list: List<Int>) {
         adapter.currentList.clear()
         adapter.submitList(list)
-        _imageList.value = list
+    }
+
+    fun setImageAddressList(list: List<String>) {
+        adapter.submitList(list)
     }
 
 }

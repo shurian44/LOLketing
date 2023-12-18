@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.shop.detail.ShopDetailActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.shop.detail.ShopDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".view.main.shop.detail.ShopDetailActivity">
+
+        <View
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_back"
+            android:onClick="@{() -> activity.finish()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/btnCart"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_cart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/bg_circle_sub_color"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:text="@{vm.count}"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:isVisible="@{vm.count != `0`}"
+            app:layout_constraintBottom_toBottomOf="@id/btnCart"
+            app:layout_constraintEnd_toEndOf="@id/btnCart"
+            app:layout_constraintStart_toStartOf="@id/btnCart"
+            tools:text="1+" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="56dp"
+            app:layout_constraintBottom_toTopOf="@id/txtRightAway"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.ezen.lolketing.view.custom.ImageSlider
+                    android:id="@+id/imageSlider"
+                    android:layout_width="0dp"
+                    android:layout_height="300dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:sliderAddressImage="@{vm.item.images}"
+                    tools:background="@color/main_color" />
+
+                <View
+                    android:id="@+id/viewBackground"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="-15dp"
+                    android:background="@color/light_black"
+                    app:layout_constraintBottom_toBottomOf="@id/btnPlus"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imageSlider" />
+
+                <TextView
+                    android:id="@+id/txtCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@{vm.item.category}"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imageSlider"
+                    tools:text="[카테고리]" />
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="@{vm.item.name}"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/txtCategory"
+                    app:layout_constraintTop_toBottomOf="@id/txtCategory"
+                    tools:text="상품 이름" />
+
+                <TextView
+                    android:id="@+id/labelPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/amount"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/txtCategory"
+                    app:layout_constraintTop_toBottomOf="@id/txtName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:text="@{vm.item.priceFormat}"
+                    android:textColor="@color/sub_color"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/labelPrice"
+                    tools:text="11,000원" />
+
+                <TextView
+                    android:id="@+id/labelAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="@string/quantity"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/txtCategory"
+                    app:layout_constraintTop_toBottomOf="@id/labelPrice" />
+
+                <View
+                    android:id="@+id/btnMinus"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="7dp"
+                    android:background="@drawable/ic_btn_minus"
+                    android:onClick="@{() -> vm.decreaseAmount()}"
+                    app:layout_constraintBottom_toBottomOf="@id/labelAmount"
+                    app:layout_constraintEnd_toStartOf="@id/txtAmount"
+                    app:layout_constraintTop_toTopOf="@id/labelAmount" />
+
+                <TextView
+                    android:id="@+id/txtAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:text="@{String.valueOf(vm.item.amount)}"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/labelAmount"
+                    app:layout_constraintEnd_toStartOf="@id/btnPlus"
+                    app:layout_constraintTop_toTopOf="@id/labelAmount"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:text="100" />
+
+                <View
+                    android:id="@+id/btnPlus"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_btn_plus"
+                    android:onClick="@{() -> vm.increaseAmount()}"
+                    app:layout_constraintBottom_toBottomOf="@id/labelAmount"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/labelAmount" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/guide_refund"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/viewBackground" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/txtCart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/sub_color"
+            android:onClick="@{() -> vm.insertShoppingBasket()}"
+            android:paddingVertical="16dp"
+            android:text="@string/insert_basket"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/txtRightAway"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/txtRightAway"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/main_color"
+            android:paddingVertical="16dp"
+            android:text="@string/right_away_purchase"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:onClick="@{() -> activity.goToPurchase()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtCart" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

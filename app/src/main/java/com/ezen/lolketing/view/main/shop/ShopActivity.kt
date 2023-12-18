@@ -1,10 +1,15 @@
 package com.ezen.lolketing.view.main.shop
 
+import android.app.Activity
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityShopBinding
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.view.main.shop.detail.ShopDetailActivity
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,8 +18,12 @@ class ShopActivity :
     StatusViewModelActivity<ActivityShopBinding, ShopViewModel>(R.layout.activity_shop) {
 
     override val viewModel: ShopViewModel by viewModels()
-    val adapter = ShopAdapter {
-
+    val adapter = ShopAdapter { documentId ->
+        launcher.launch(
+            createIntent(ShopDetailActivity::class.java).also {
+                it.putExtra(Constants.DOCUMENT_ID, documentId)
+            }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +52,12 @@ class ShopActivity :
                 tab?.let { viewModel.setQuery(it.id) }
             }
         })
+    }
+
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            finish()
+        }
     }
 
 }

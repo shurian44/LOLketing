@@ -215,6 +215,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/light_black"
+                    android:onClick="@{() -> activity.goToPurchaseHistory()}"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="16dp"
                     android:text="@string/purchase_history"

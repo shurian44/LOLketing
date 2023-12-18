@@ -29,6 +29,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:id="@+id/btnCart"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_cart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/bg_circle_sub_color"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:text="@{vm.count}"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:isVisible="@{vm.count != `0`}"
+            app:layout_constraintBottom_toBottomOf="@id/btnCart"
+            app:layout_constraintEnd_toEndOf="@id/btnCart"
+            app:layout_constraintStart_toStartOf="@id/btnCart"
+            tools:text="1+" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

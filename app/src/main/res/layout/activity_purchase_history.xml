@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.shop.history.PurchaseHistoryActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.shop.history.PurchaseHistoryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".view.main.shop.history.PurchaseHistoryActivity">
+
+        <include
+            android:id="@+id/layoutTop"
+            layout="@layout/layout_top"
+            app:isBackVisible="@{true}"
+            app:title="@{@string/purchase_history}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:adapter="@{activity.adapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            app:submitList="@{vm.list}"
+            tools:listitem="@layout/item_product" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

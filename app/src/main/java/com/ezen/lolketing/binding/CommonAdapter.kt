@@ -52,9 +52,9 @@ fun imageLoad(imageView: ImageView, @DrawableRes resId: Int) {
     imageView.setImageResource(resId)
 }
 
-@BindingAdapter("sliderImage")
-fun imageListLoad(slider: ImageSlider, list: List<Int>) {
-    slider.setImageList(list)
+@BindingAdapter("sliderAddressImage")
+fun imageListLoad(slider: ImageSlider, list: List<String>) {
+    slider.setImageAddressList(list)
 }
 
 @BindingAdapter("isVisible")

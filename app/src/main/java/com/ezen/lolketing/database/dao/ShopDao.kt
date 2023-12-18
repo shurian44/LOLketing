@@ -19,7 +19,10 @@ interface ShopDao {
     fun selectShoppingBasket(id: Long) : Flow<ShopEntity>
 
     @Query("SELECT * FROM ShopEntity WHERE id IN (:idList)")
-    fun selectShoppingBasketList(idList: List<Long>) : Flow<List<ShopEntity>>
+    fun selectShoppingBasketListFlow(idList: List<Long>) : Flow<List<ShopEntity>>
+
+    @Query("SELECT * FROM ShopEntity WHERE id IN (:idList)")
+    suspend fun selectShoppingBasketList(idList: List<Long>) : List<ShopEntity>
 
     @Query("UPDATE ShopEntity SET isChecked = :isChecked WHERE id = :id")
     suspend fun updateBasketChecked(id: Long, isChecked: Boolean)

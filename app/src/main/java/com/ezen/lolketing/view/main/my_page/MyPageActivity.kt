@@ -11,6 +11,7 @@ import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.login.join.JoinDetailActivity
+import com.ezen.lolketing.view.main.shop.history.PurchaseHistoryActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -43,6 +44,10 @@ class MyPageActivity :
                 it.putExtra(JoinDetailActivity.MODIFY, true)
             }
         )
+    }
+
+    fun goToPurchaseHistory() {
+        startActivity(PurchaseHistoryActivity::class.java)
     }
 
     override fun onResume() {

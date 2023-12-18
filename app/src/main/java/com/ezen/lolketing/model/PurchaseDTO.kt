@@ -2,6 +2,7 @@ package com.ezen.lolketing.model
 
 import android.os.Parcelable
 import com.ezen.lolketing.util.Code
+import com.ezen.lolketing.util.findCodeName
 import com.ezen.lolketing.util.priceFormat
 import com.ezen.lolketing.util.timestampToString
 import kotlinx.parcelize.Parcelize
@@ -34,16 +35,12 @@ data class PurchaseDTO(
     fun historyMapper(documentId: String): PurchaseHistory.History? {
         return PurchaseHistory.History(
             name = name ?: return null,
-            image = image,
-            group = group ?: return null,
+            image = image ?: return null,
+            category = "[${findCodeName(group ?: return null)}]",
             price = price,
             amount = amount,
-            timestamp = timestamp,
-            documentId = if (group == Code.PURCHASE_TICKET.code) {
-                documentId
-            } else {
-                information ?: return null
-            }
+            date = timestamp.timestampToString("yyyy.MM.dd"),
+            documentId = documentId
         )
     }
 
@@ -53,6 +50,7 @@ data class PurchaseDTO(
 }
 
 data class PurchaseInfo(
+    var databaseId: Long = 0,
     var name: String,
     var image: String,
     var status: String,
@@ -63,11 +61,12 @@ data class PurchaseInfo(
     var information: String,
     var message: String,
     var address: String,
-    var documentList: List<String>
+    var documentList: List<String>?,
+    var isChecked: Boolean = false
 ) {
-    fun mapper(id: String): PurchaseDTO? {
+    fun mapper(info: ShoppingInfo): PurchaseDTO? {
         return PurchaseDTO(
-            id = id,
+            id = info.id,
             name = name.ifEmpty { return null },
             image = image.ifEmpty { return null },
             status = status,
@@ -77,13 +76,19 @@ data class PurchaseInfo(
             timestamp = System.currentTimeMillis(),
             information = information,
             message = message,
-            address = address,
+            address = info.address,
             documentList = documentList
         )
     }
 
+    fun getCategory() = "[${findCodeName(group)}]"
+
+    fun getAmountFormat() = "${amount}개"
+
+    fun getPriceFormat() = price.priceFormat()
+
     companion object {
-        fun createPurchase() = PurchaseInfo(
+        fun create() = PurchaseInfo(
             name = "",
             image = "",
             status = "",
@@ -211,52 +216,52 @@ data class TicketTemp(
     }
 }
 
-sealed class PurchaseHistory {
-    data class PurchaseItem(
-        val name: String,
-        val image: String? = null,
-        val group: String,
-        val price: Long,
-        val amount: Int,
-        val documentId: String
-    ) : PurchaseHistory()
-
+sealed class PurchaseHistory(val type: Int) {
     data class PurchaseDate(
         val date: String
-    ) : PurchaseHistory()
+    ) : PurchaseHistory(DATE)
 
     data class History(
+        val image: String,
         val name: String,
-        val image: String? = null,
-        val group: String,
-        val price: Long,
+        val category: String,
         val amount: Int,
-        val timestamp: Long,
+        val price: Long,
+        val date: String,
         val documentId: String
-    )
-}
+    ): PurchaseHistory(HISTORY) {
+        fun getPriceFormat() = price.priceFormat()
 
-fun PurchaseHistory.History.mapper() = PurchaseHistory.PurchaseItem(
-    name = name,
-    image = image,
-    group = group,
-    price = price,
-    amount = amount,
-    documentId = documentId
-)
-
-fun List<PurchaseHistory.History>.mapper(): List<PurchaseHistory> {
-    val result = mutableListOf<PurchaseHistory>()
-    var date = ""
-
-    forEach {
-        val currentDate = it.timestamp.timestampToString("yyyy.MM.dd")
-        if (date != currentDate) {
-            date = currentDate
-            result.add(PurchaseHistory.PurchaseDate(currentDate))
-        }
-        result.add(it.mapper())
+        fun getAmountFormat() = "${amount}개"
     }
 
-    return result
+    companion object {
+        const val DATE = 1
+        const val HISTORY = 2
+    }
 }
+
+//fun PurchaseHistory.History.mapper() = PurchaseHistory.PurchaseItem(
+//    name = name,
+//    image = image,
+//    group = group,
+//    price = price,
+//    amount = amount,
+//    documentId = documentId
+//)
+//
+//fun List<PurchaseHistory.History>.mapper(): List<PurchaseHistory> {
+//    val result = mutableListOf<PurchaseHistory>()
+//    var date = ""
+//
+//    forEach {
+//        val currentDate = it.timestamp.timestampToString("yyyy.MM.dd")
+//        if (date != currentDate) {
+//            date = currentDate
+//            result.add(PurchaseHistory.PurchaseDate(currentDate))
+//        }
+//        result.add(it.mapper())
+//    }
+//
+//    return result
+//}

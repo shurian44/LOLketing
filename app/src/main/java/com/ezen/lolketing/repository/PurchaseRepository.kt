@@ -82,11 +82,82 @@ class PurchaseRepository @Inject constructor(
         }
     }
 
+    fun fetchShoppingList() = flow {
+        client
+            .getBasicSnapshot(
+                collection = Constants.SHOP,
+                valueType = ShopDTO::class.java
+            )
+            .getOrThrow()
+            .mapNotNull { (item, documentId) -> item.mapper(documentId) }
+            .let { emit(it) }
+    }
+
+    fun fetchShoppingDetail(documentId: String) = flow {
+        client
+            .getBasicSnapshot(
+                collection = Constants.SHOP,
+                document = documentId,
+                valueType = ShopDTO::class.java
+            )
+            .getOrThrow()
+            ?.itemMapper()
+            ?.let { emit(it) }
+            ?: throw Exception("오류 발생")
+    }
+
+    fun insertShoppingBasket(
+        item: ShopItem,
+        documentId: String
+    ) = flow {
+        emit(database.insertShoppingBasket(item.mapper(documentId)))
+    }
+
+    fun selectBasketCount() = database.selectBasketCount()
+
+    fun fetchPurchaseInfo(
+        databaseIdList: List<Long>,
+        documentId: String,
+        amount: Int
+    ) = flow {
+        val shoppingInfo = getShoppingInfo()
+        val list = mutableListOf<PurchaseInfo>()
+
+        if (documentId.isNotEmpty()) {
+            client
+                .getBasicSnapshot(
+                    collection = Constants.SHOP,
+                    document = documentId,
+                    valueType = ShopDTO::class.java
+                )
+                .getOrThrow()
+                ?.purchaseMapper(
+                    amount = amount,
+                    documentId = documentId,
+                )
+                ?.let { list.add(it) }
+                ?: throw Exception("오류 발생")
+        } else {
+            database
+                .selectShoppingBasketList(databaseIdList)
+                .map { it.mapper() }
+                .let { list.addAll(it) }
+        }
+        emit(Pair(shoppingInfo, list))
+    }
+
+    private suspend fun getShoppingInfo() =
+        client
+            .getUserInfo()
+            .getOrNull()
+            ?.mapperShoppingInfo()
+            ?: throw LoginException.EmptyInfo
+
     fun selectAllShoppingBasket() =
         database.selectAllShoppingBasket()
 
     fun selectShoppingBasketList(idList: List<Long>) =
-        database.selectShoppingBasketList(idList)
+        database.selectShoppingBasketListFlow(idList)
 
     suspend fun updateBasketChecked(id: Long, isChecked: Boolean) =
         database.updateBasketChecked(id, isChecked)
@@ -94,67 +165,30 @@ class PurchaseRepository @Inject constructor(
     suspend fun deleteBasketItems(idList: List<Long>) =
         database.deleteBasketItems(idList)
 
-    suspend fun getUserInfo(
-        successListener: (ShippingInfo) -> Unit,
-        failureListener: () -> Unit
-    ) {
-//        client.getUserInfo(
-//            successListener = {
-//                it.mapperShippingInfo()?.let(successListener) ?: failureListener()
-//            },
-//            failureListener = failureListener
-//        )
-    }
-
-    suspend fun setPurchaseItems(
-        list: List<ShopEntity>,
-        userInfo: ShippingInfo,
-        message: String,
-        successListener: () -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-        list.forEach {
-            val item = PurchaseDTO(
-                id = userInfo.id,
-                address = userInfo.address,
-                amount = it.count,
-                group = it.group,
-                image = it.image,
-                information = it.documentId,
-                message = message,
-                price = it.price,
-                name = it.name,
-                status = null,
-                timestamp = System.currentTimeMillis()
-            )
-
-//            client
-//                .basicAddData(
-//                    collection = Constants.PURCHASE,
-//                    data = item,
-//                    failureListener = {
-//                        failureListener()
-//                        return@basicAddData
-//                    }
-//                )
-
+    fun setPurchaseItems(
+        list: List<PurchaseInfo>,
+        userInfo: ShoppingInfo
+    ) = flow {
+        list.mapNotNull { it.mapper(userInfo) }.forEach {
+            client
+                .basicAddData(
+                    collection = Constants.PURCHASE,
+                    data = it
+                )
+                .getOrThrow()
         }
 
         val result = list.sumOf { it.price }
-//        client
-//            .basicUpdateData(
-//                collection = Constants.USERS,
-//                documentId = userInfo.id,
-//                updateData = mapOf("cache" to FieldValue.increment(result * -1)),
-//                successListener = {},
-//                failureListener = failureListener
-//            )
+        client
+            .basicUpdateData(
+                collection = Constants.USERS,
+                documentId = userInfo.id,
+                updateData = mapOf("cache" to FieldValue.increment(result * -1))
+            )
+            .getOrThrow()
 
-        successListener()
 
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
+        emit("결제 완료")
     }
 
     suspend fun getPurchaseHistoryList(
@@ -180,6 +214,26 @@ class PurchaseRepository @Inject constructor(
     } catch (e: Exception) {
         e.printStackTrace()
         failureListener()
+    }
+    fun fetchPurchaseHistory() = flow {
+        val email = client.getUserEmail() ?: throw LoginException.EmptyInfo
+        val list = mutableListOf<PurchaseHistory>()
+        client
+            .getBasicQuerySnapshot(
+                collection = Constants.PURCHASE,
+                field = "id",
+                query = email,
+                valueType = PurchaseDTO::class.java
+            )
+            .getOrThrow()
+            .mapNotNull { (item, documentId) -> item.historyMapper(documentId) }
+            .groupBy { it.date }
+            .map { (date, historyList) ->
+                list.add(PurchaseHistory.PurchaseDate(date))
+                list.addAll(historyList)
+            }
+
+        emit(list.toList())
     }
 
     companion object {

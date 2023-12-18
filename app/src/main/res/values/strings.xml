@@ -150,7 +150,7 @@
     <string name="game_time">경기 시간</string>
     <string name="area">장소</string>
     <string name="game_area">LoL PARK</string>
-    <string name="guide_refund">환불 안내</string>
+    <string name="guide_refund">환불 안내 ></string>
     <string name="guide_refund_info">티켓 환불은 당일 경기시간 4시간 전까지 가능합니다.\n예매 당일 환불 시 수수료가 발생하지 않습니다.\n이후 환불 시 티켓 금액의 10% 취소 수수료 부과됩니다.</string>
 
     <!-- 뉴스 -->
@@ -262,6 +262,8 @@
     <string name="insert_basket_success">장바구니에 담겼습니다.</string>
     <string name="insert_basket_failure">장바구니 담기에 실패하였습니다.</string>
     <string name="empty_basket_list">장바구니에 등록된 상품이 없습니다.</string>
+    <string name="order_name">주문자 명</string>
+    <string name="phone_number">전화번호</string>
 
     <!-- html -->
     <string name="condition_silver"><![CDATA[누적 포인트<br><font color=\"#03DAC5\"><b>3천 P</b></font> 이상]]></string>
@@ -429,5 +431,7 @@
     <string name="start">Start</string>
     <string name="search_title">제목으로 검색</string>
     <string name="search_user">작성자로 검색</string>
+    <string name="my_cache_label">My 캐시</string>
+    <string name="shipping_information">배송 정보</string>
 
 </resources>

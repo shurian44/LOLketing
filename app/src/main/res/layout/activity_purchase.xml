@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.shop.purchase.PurchaseActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.shop.purchase.PurchaseViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".view.main.shop.purchase.PurchaseActivity">
+
+        <View
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/btnCart"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_cart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/bg_circle_sub_color"
+            android:minWidth="15dp"
+            android:minHeight="15dp"
+            android:text="@{vm.count}"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:isVisible="@{vm.count != `0`}"
+            app:layout_constraintBottom_toBottomOf="@id/btnCart"
+            app:layout_constraintEnd_toEndOf="@id/btnCart"
+            app:layout_constraintStart_toStartOf="@id/btnCart"
+            tools:text="1+" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:clipToPadding="false"
+            android:paddingBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@id/viewBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBack">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/select_item"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"
+                    app:adapter="@{activity.adapter}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:submitList="@{vm.list}"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_product" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/shipping_information"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.ezen.lolketing.view.custom.CustomEditTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="10dp"
+                    android:drawableStart="@drawable/ic_user"
+                    android:hint="@string/order_name"
+                    android:inputType="text"
+                    android:text="@={vm.shoppingInfo.nickname}"
+                    app:layout_constraintBottom_toTopOf="@id/loginPw"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.ezen.lolketing.view.custom.CustomEditTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="10dp"
+                    android:drawableStart="@drawable/ic_phone"
+                    android:hint="@string/phone_number"
+                    android:inputType="numberDecimal"
+                    android:text="@={vm.shoppingInfo.phone}"
+                    app:layout_constraintBottom_toTopOf="@id/loginPw"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.ezen.lolketing.view.custom.CustomEditTextView
+                    android:id="@+id/editAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="10dp"
+                    android:drawableStart="@drawable/ic_address"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:hint="@string/guide_input_address"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:onClick="@{() -> activity.moveAddressSearch()}"
+                    android:text="@={vm.shoppingInfo.address}" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <View
+            android:id="@+id/viewBackground"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="-17dp"
+            android:background="@drawable/bg_top_round_20_white"
+            app:layout_constraintBottom_toTopOf="@id/btnPayment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/labelPurchaseInfo" />
+
+        <TextView
+            android:id="@+id/labelPurchaseInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/purchase_info"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/labelTotalPrice"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@string/guide_refund"
+            android:textColor="@color/light_gray"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/labelPurchaseInfo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/labelPurchaseInfo" />
+
+        <TextView
+            android:id="@+id/labelTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/total_price"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/labelMyCache"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@{vm.totalPrice}"
+            android:textColor="@color/sub_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/labelTotalPrice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/labelTotalPrice"
+            tools:text="200,000원" />
+
+        <TextView
+            android:id="@+id/labelMyCache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/my_cache_label"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/btnPayment"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@{vm.shoppingInfo.cacheFormat}"
+            android:textColor="@color/sub_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/labelMyCache"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/labelMyCache"
+            tools:text="200,000원" />
+
+        <TextView
+            android:id="@+id/btnPayment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/main_color"
+            android:paddingVertical="16dp"
+            android:text="@string/payment"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:onClick="@{() -> vm.doPayment()}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
