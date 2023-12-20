@@ -38,6 +38,7 @@ data class ShopEntity(
         message = "",
         address = "",
         status = "",
-        documentList = listOf()
+        documentList = listOf(),
+        isChecked = isChecked
     )
 }

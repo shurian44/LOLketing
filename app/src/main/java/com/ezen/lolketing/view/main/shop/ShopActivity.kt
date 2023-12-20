@@ -9,6 +9,8 @@ import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityShopBinding
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.startActivity
+import com.ezen.lolketing.view.main.shop.basket.BasketActivity
 import com.ezen.lolketing.view.main.shop.detail.ShopDetailActivity
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +54,10 @@ class ShopActivity :
                 tab?.let { viewModel.setQuery(it.id) }
             }
         })
+    }
+
+    fun goToBasket() {
+        startActivity(BasketActivity::class.java)
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

@@ -130,7 +130,7 @@ data class TicketInfo(
         return currentTime > ticketTime - fourHour
     }
 
-    private fun isFeeWaiver() : Boolean {
+    private fun isFeeWaiver(): Boolean {
         val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
         val currentTime = System.currentTimeMillis()
 
@@ -174,6 +174,7 @@ data class TicketTemp(
         amount !in 1..2 -> throw Exception("인원수를 확인해주세요")
         gameTitle.isEmpty() || time.isEmpty() || seats.isEmpty() || documentList.isEmpty() ->
             throw Exception("오류 발생")
+
         else -> this
     }
 
@@ -229,7 +230,7 @@ sealed class PurchaseHistory(val type: Int) {
         val price: Long,
         val date: String,
         val documentId: String
-    ): PurchaseHistory(HISTORY) {
+    ) : PurchaseHistory(HISTORY) {
         fun getPriceFormat() = price.priceFormat()
 
         fun getAmountFormat() = "${amount}개"

@@ -19,6 +19,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.main.shop.basket.BasketActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.main.shop.history.PurchaseHistoryActivity"
             android:exported="false" />
         <activity

@@ -13,7 +13,7 @@ interface ShopDao {
     suspend fun insertShoppingBasket(shopEntity: ShopEntity) : Long
 
     @Query("SELECT * FROM ShopEntity")
-    fun selectAllShoppingBasket() : Flow<List<ShopEntity>>
+    suspend fun selectAllShoppingBasket() : List<ShopEntity>
 
     @Query("SELECT * FROM ShopEntity WHERE id = :id")
     fun selectShoppingBasket(id: Long) : Flow<ShopEntity>

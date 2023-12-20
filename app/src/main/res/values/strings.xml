@@ -433,5 +433,6 @@
     <string name="search_user">작성자로 검색</string>
     <string name="my_cache_label">My 캐시</string>
     <string name="shipping_information">배송 정보</string>
+    <string name="expected_payment_amount">결제 예정 금액</string>
 
 </resources>
