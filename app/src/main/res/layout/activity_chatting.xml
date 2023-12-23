@@ -6,8 +6,12 @@
     <data>
 
         <variable
-            name="title"
-            type="String" />
+            name="activity"
+            type="com.ezen.lolketing.view.main.chatting.ChattingActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.chatting.ChattingViewModel" />
 
     </data>
 
@@ -21,13 +25,15 @@
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
-            app:title="@{title}" />
+            app:title="@{vm.info.title}" />
 
         <ImageView
             android:id="@+id/imgTeam1"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:contentDescription="@string/imageContentDescription"
+            app:imageRes="@{vm.info.leftTeamImageRes}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/txtVs"
             app:layout_constraintTop_toBottomOf="@id/layoutTop"
@@ -37,7 +43,7 @@
             android:id="@+id/txtVs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="vs"
+            android:text="@string/versus"
             android:textColor="@color/red"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -50,6 +56,8 @@
             android:id="@+id/imgTeam2"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/imageContentDescription"
+            app:imageRes="@{vm.info.rightTeamImageRes}"
             app:layout_constraintLeft_toRightOf="@id/txtVs"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/imgTeam1"
@@ -72,11 +80,15 @@
             android:layout_height="0dp"
             android:layout_marginHorizontal="20dp"
             android:paddingVertical="5dp"
+            app:adapter="@{activity.adapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/view2"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view1"
-            tools:listitem="@layout/item_chat"/>
+            app:stackFromEnd="true"
+            app:submitList="@{vm.list}"
+            tools:listitem="@layout/item_left_team_chat" />
 
         <View
             android:id="@+id/view2"
@@ -94,6 +106,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:text="@={vm.myChat.message}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

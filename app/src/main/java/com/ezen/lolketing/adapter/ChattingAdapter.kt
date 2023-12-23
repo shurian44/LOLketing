@@ -1,70 +1,75 @@
 package com.ezen.lolketing.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.updateLayoutParams
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ezen.lolketing.R
-import com.ezen.lolketing.databinding.ItemChatBinding
-import com.ezen.lolketing.model.ChattingDTO
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.ezen.lolketing.databinding.ItemLeftTeamChatBinding
+import com.ezen.lolketing.databinding.ItemRightTeamChatBinding
+import com.ezen.lolketing.model.ChattingItem
 
 class ChattingAdapter(
-    options : FirebaseRecyclerOptions<ChattingDTO.Comment>,
-    private val dataChangeListener: () -> Unit
-) : FirebaseRecyclerAdapter<ChattingDTO.Comment, ChattingAdapter.ChattingHolder>(options){
-
-    class ChattingHolder(private val binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: ChattingDTO.Comment) = with(binding) {
-            txtChatting.text = model.message
-            txtName.text = model.id
-
-            setUILocation(txtName, txtChatting, viewChatting, model.team)
-        }
-
-        /** 선택 팀에 따라 UI 변경 **/
-        private fun setUILocation(txtName: TextView, txtChat: TextView, view: View, team: String?) {
-            when(team) {
-                "L" -> {
-                    txtName.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                        startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                        endToEnd = ConstraintLayout.LayoutParams.UNSET
-                    }
-                    txtChat.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                        startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-                        endToEnd = ConstraintLayout.LayoutParams.UNSET
-                    }
-                    view.setBackgroundResource(R.drawable.bubble_left)
-                }
-                else -> {
-                    txtName.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                        startToStart = ConstraintLayout.LayoutParams.UNSET
-                        endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    }
-                    txtChat.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                        startToStart = ConstraintLayout.LayoutParams.UNSET
-                        endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
-                    }
-                    view.setBackgroundResource(R.drawable.bubble_right)
-                }
+    private val leftTeam: String,
+): ListAdapter<ChattingItem, RecyclerView.ViewHolder>(diffUtil) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when(viewType) {
+            0 -> {
+                LeftTeamChattingViewHolder(
+                    ItemLeftTeamChatBinding.inflate(
+                        LayoutInflater.from(parent.context), parent, false
+                    )
+                )
+            }
+            else -> {
+                RightTeamChattingViewHolder(
+                    ItemRightTeamChatBinding.inflate(
+                        LayoutInflater.from(parent.context), parent, false
+                    )
+                )
             }
         }
-
     }
 
-    override fun onDataChanged() {
-        super.onDataChanged()
-        dataChangeListener()
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(holder) {
+            is LeftTeamChattingViewHolder -> {
+                holder.bind(currentList[position])
+            }
+            is RightTeamChattingViewHolder -> {
+                holder.bind(currentList[position])
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChattingHolder =
-        ChattingHolder(ItemChatBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun getItemViewType(position: Int): Int {
+        return if (currentList[position].team == leftTeam) 0 else 1
+    }
 
-    override fun onBindViewHolder(holder: ChattingHolder, position: Int, model: ChattingDTO.Comment) {
-        holder.bind(model)
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<ChattingItem>() {
+            override fun areItemsTheSame(oldItem: ChattingItem, newItem: ChattingItem) =
+                oldItem.id == newItem.id && oldItem.timestamp == newItem.timestamp
+
+            override fun areContentsTheSame(oldItem: ChattingItem, newItem: ChattingItem) =
+                oldItem == newItem
+        }
+    }
+
+}
+
+class LeftTeamChattingViewHolder(
+    private val binding: ItemLeftTeamChatBinding
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: ChattingItem) {
+        binding.item = item
+    }
+}
+
+class RightTeamChattingViewHolder(
+    private val binding: ItemRightTeamChatBinding
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: ChattingItem) {
+        binding.item = item
     }
 }

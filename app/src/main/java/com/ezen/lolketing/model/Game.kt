@@ -1,12 +1,15 @@
 package com.ezen.lolketing.model
 
+import android.os.Parcelable
 import com.ezen.lolketing.R
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.Team
+import com.ezen.lolketing.util.getTeamLogoImageRes
 import com.ezen.lolketing.util.getRandomGame
 import com.ezen.lolketing.util.isCurrentDate
 import com.ezen.lolketing.util.isPassedDate
 import com.ezen.lolketing.util.isPassedTime
+import kotlinx.parcelize.Parcelize
 
 data class Game(
     var date: String? = null,
@@ -45,10 +48,15 @@ data class Game(
     }
 
     fun mapperChattingInfo(): ChattingInfo? {
-        return ChattingInfo(
-            time = time ?: return null,
-            team = team ?: return null
-        )
+        val teamList = team?.split(":") ?: return null
+        return runCatching {
+            ChattingInfo(
+                documentId = getDocumentId(),
+                time = time ?: return null,
+                leftTeam = teamList[0],
+                rightTeam = teamList[1]
+            )
+        }.getOrNull()
     }
 
     fun getDocumentId() = "$date $time"
@@ -109,7 +117,17 @@ data class Ticket(
     }.getOrElse { Team.T1.image }
 }
 
+@Parcelize
 data class ChattingInfo(
-    val time: String,
-    val team: String,
-)
+    val documentId: String = "",
+    val time: String = "",
+    val leftTeam: String = "",
+    val rightTeam: String = "",
+    val selectTeam: String = ""
+) : Parcelable {
+    fun getLeftTeamImageRes() = getTeamLogoImageRes(leftTeam)
+
+    fun getRightTeamImageRes() = getTeamLogoImageRes(rightTeam)
+
+    fun getTitle() = "$leftTeam vs $rightTeam"
+}

@@ -10,7 +10,7 @@ import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.dialog.TeamSelectDialog
 import com.ezen.lolketing.view.login.join.JoinDetailActivity
 import com.ezen.lolketing.view.main.board.BoardListActivity
-import com.ezen.lolketing.view.main.chatting.ChattingListActivity
+import com.ezen.lolketing.view.main.chatting.list.ChattingListActivity
 import com.ezen.lolketing.view.main.event.EventListActivity
 import com.ezen.lolketing.view.main.guide.GuideActivity
 import com.ezen.lolketing.view.main.league_info.LeagueInfoActivity

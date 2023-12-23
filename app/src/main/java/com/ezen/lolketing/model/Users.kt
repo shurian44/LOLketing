@@ -26,8 +26,8 @@ data class Users(
             myCache = cache ?: return null
         )
     }
-    fun mapperShippingInfo(): ShippingInfo? {
-        return ShippingInfo(
+    fun mapperShoppingInfo(): ShoppingInfo? {
+        return ShoppingInfo(
             id = id ?: return null,
             nickname = nickname ?: "",
             phone = phone ?: "",
@@ -81,13 +81,25 @@ data class CacheModifyUser(
     }
 }
 
-data class ShippingInfo(
+data class ShoppingInfo(
     val id: String,
     var nickname: String,
     var phone: String,
     var address: String,
     val cache: Long
-)
+) {
+    fun getCacheFormat() = cache.priceFormat()
+
+    companion object {
+        fun create() = ShoppingInfo(
+            id = "",
+            nickname = "",
+            phone = "",
+            address = "",
+            cache = 0
+        )
+    }
+}
 
 data class MyPageInfo(
     val id : String,

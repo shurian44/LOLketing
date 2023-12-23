@@ -32,3 +32,33 @@ fun checkPasswordFormat(password: String): Boolean {
     val pattern = "\\w+"
     return Pattern.matches(pattern, password) || password.length !in 6..20
 }
+
+fun getToday(format: String = "yyyy.MM.dd") = System.currentTimeMillis().timestampToString(format)
+
+fun formatDate(year: Int, month: Int, day: Int): String {
+    val calendar = Calendar.getInstance()
+    calendar.set(year, month, day)
+
+    val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+    return dateFormat.format(calendar.time)
+}
+
+fun getPreviousDay(currentDate: String): String {
+    val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+    val date = dateFormat.parse(currentDate) ?: return currentDate
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    calendar.add(Calendar.DAY_OF_MONTH, -1)
+
+    return dateFormat.format(calendar.time)
+}
+
+fun getNextDay(currentDate: String): String {
+    val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
+    val date = dateFormat.parse(currentDate) ?: return currentDate
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    calendar.add(Calendar.DAY_OF_MONTH, 1)
+
+    return dateFormat.format(calendar.time)
+}

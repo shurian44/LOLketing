@@ -80,7 +80,7 @@
             android:name=".view.main.chatting.ChattingActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.main.event.RouletteActivity" />
-        <activity android:name=".view.main.chatting.ChattingListActivity" />
+        <activity android:name=".view.main.chatting.list.ChattingListActivity" />
         <activity
             android:name=".view.main.board.write.BoardWriteActivity"
             android:windowSoftInputMode="adjustPan" />

@@ -104,9 +104,6 @@ fun setGlide(view: ImageView, uri: Uri) {
 fun String.htmlFormat() : Spanned =
     Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
 
-fun getCurrentDateTime(): Date =
-    Calendar.getInstance().time
-
 fun setSpecialCharacterRestrictions() = InputFilter { source, _, _, _, _, _ ->
     source.forEach {
         if (!Character.isLetterOrDigit(it)) {

@@ -3,47 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="item"
+            type="com.ezen.lolketing.model.ChattingItem" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
+        android:padding="6dp"
         tools:background="@color/black">
 
         <TextView
             android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{item.nickname}"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="이름" />
 
-        <View
-            android:id="@+id/viewChatting"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/bubble_left"
-            app:layout_constraintBottom_toBottomOf="@id/txtChatting"
-            app:layout_constraintEnd_toEndOf="@id/txtChatting"
-            app:layout_constraintStart_toStartOf="@id/txtChatting"
-            app:layout_constraintTop_toTopOf="@id/txtChatting" />
-
         <TextView
             android:id="@+id/txtChatting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:background="@drawable/bubble_left"
             android:maxWidth="200dp"
             android:paddingHorizontal="15dp"
             android:paddingTop="5dp"
             android:paddingBottom="15dp"
+            android:text="@{item.message}"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtName"
             tools:text="안녕하세요" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

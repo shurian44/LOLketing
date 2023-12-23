@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="item"
+            type="com.ezen.lolketing.model.ChattingInfo" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
         tools:background="@color/black">
 
         <TextView
@@ -15,6 +22,7 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:text="@{item.time}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="17:00" />
@@ -24,6 +32,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="10dp"
+            app:imageRes="@{item.leftTeamImageRes}"
+            android:contentDescription="@string/imageContentDescription"
             app:layout_constraintEnd_toStartOf="@id/txtVs"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtTime"
@@ -49,6 +59,8 @@
             android:layout_marginBottom="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/txtVs"
+            app:imageRes="@{item.rightTeamImageRes}"
+            android:contentDescription="@string/imageContentDescription"
             app:layout_constraintTop_toTopOf="@id/imgTeamLeft"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:src="@drawable/logo_afreeca" />

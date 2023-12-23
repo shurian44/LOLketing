@@ -9,8 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.ezen.lolketing.databinding.DialogAddNewGameBinding
 import com.ezen.lolketing.util.backgroundTransparent
-import com.ezen.lolketing.util.getCurrentDateTime
-import com.ezen.lolketing.util.timestampToString
+import com.ezen.lolketing.util.getToday
 
 class AddNewGameDialog(
     val addGameClickListener : (String, String) -> Unit
@@ -34,7 +33,7 @@ class AddNewGameDialog(
         dialog?.backgroundTransparent()
         binding.dialog = this
 
-        val today = getCurrentDateTime().time.timestampToString("yyyy.MM.dd")
+        val today = getToday()
         today.split(".").apply {
             year = get(0).toInt()
             month = get(1).toInt()
