@@ -4,7 +4,7 @@ import com.ezen.lolketing.model.Game
 import com.ezen.lolketing.model.Seat
 import com.ezen.lolketing.network.FirebaseClient
 import com.ezen.lolketing.util.Constants
-import com.ezen.lolketing.util.getCurrentDateTime
+import com.ezen.lolketing.util.getToday
 import com.ezen.lolketing.util.timestampToString
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.flow.flow
@@ -26,7 +26,7 @@ class TicketingRepository @Inject constructor(
             .toMutableList()
 
         if (list.isEmpty()) {
-            val today = getCurrentDateTime().time.timestampToString("yyyy.MM.dd")
+            val today = getToday()
             addNewGame(Game.createRandomGame(today, "17:00"))
             addNewGame(Game.createRandomGame(today, "20:00"))
 
