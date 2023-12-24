@@ -166,19 +166,16 @@ class PurchaseRepository @Inject constructor(
         )
     }
 
-
-    fun selectShoppingBasketList(idList: List<Long>) =
-        database.selectShoppingBasketListFlow(idList)
-
     suspend fun updateBasketChecked(id: Long, isChecked: Boolean) =
         database.updateBasketChecked(id, isChecked)
 
-    suspend fun deleteBasketItems(idList: List<Long>) =
+    private suspend fun deleteBasketItems(idList: List<Long>) =
         database.deleteBasketItems(idList)
 
     fun setPurchaseItems(
         list: List<PurchaseInfo>,
-        userInfo: ShoppingInfo
+        userInfo: ShoppingInfo,
+        idList: List<Long>
     ) = flow {
         list.mapNotNull { it.mapper(userInfo) }.forEach {
             client
@@ -198,34 +195,12 @@ class PurchaseRepository @Inject constructor(
             )
             .getOrThrow()
 
+        deleteBasketItems(idList)
+
 
         emit("결제 완료")
     }
 
-    suspend fun getPurchaseHistoryList(
-        successListener: (List<PurchaseHistory>) -> Unit,
-        failureListener: () -> Unit
-    ) = try {
-        val id = client.getUserEmail() ?: throw Exception("email is null")
-
-//        client
-//            .getBasicQuerySnapshot(
-//                collection = Constants.PURCHASE,
-//                field = "id",
-//                query = id,
-//                successListener = { snapshot ->
-//                    val result = snapshot.mapNotNull {
-//                        it.toObject(PurchaseDTO::class.java)
-//                            .historyMapper(it.id)
-//                    }
-//                    successListener(result.mapper())
-//                },
-//                failureListener = failureListener
-//            )
-    } catch (e: Exception) {
-        e.printStackTrace()
-        failureListener()
-    }
     fun fetchPurchaseHistory() = flow {
         val email = client.getUserEmail() ?: throw LoginException.EmptyInfo
         val list = mutableListOf<PurchaseHistory>()

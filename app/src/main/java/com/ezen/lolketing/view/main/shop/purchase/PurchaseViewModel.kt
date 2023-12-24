@@ -114,7 +114,8 @@ class PurchaseViewModel @Inject constructor(
             repository
                 .setPurchaseItems(
                     list = _list.value,
-                    userInfo = _shoppingInfo.value
+                    userInfo = _shoppingInfo.value,
+                    idList = databaseIdList
                 )
                 .setLoadingState()
                 .onEach {
