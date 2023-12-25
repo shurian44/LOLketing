@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".view.main.guide.GuideTermsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/lol_guide_term" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms01" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms02" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms03" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms04" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms05" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms06" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms07" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms08" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms09" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms10" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms11" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms12" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms13" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/imageContentDescription"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_terms14" />
+
+    </LinearLayout>
+
+</ScrollView>

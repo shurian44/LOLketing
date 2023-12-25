@@ -211,6 +211,7 @@
             android:id="@+id/cardTerms"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:onClick="@{activity::onClick}"
             app:layout_constraintBottom_toBottomOf="@id/cardScore"
             app:layout_constraintEnd_toEndOf="@id/cardRule"
             app:layout_constraintStart_toStartOf="@id/cardRule"
