@@ -33,6 +33,7 @@ class ChattingActivity :
         binding.activity = this
         binding.vm = viewModel
 
+        binding.layoutTop.btnBack.setOnClickListener { finish() }
         binding.editChat.setRegisterListener { viewModel.onRegister() }
 
     }
