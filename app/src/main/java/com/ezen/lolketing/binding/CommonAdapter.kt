@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.ezen.lolketing.view.custom.CustomEditTextView
 import com.ezen.lolketing.view.custom.CustomLimitedEditTextView
 import com.ezen.lolketing.view.custom.ImageSlider
+import com.google.android.material.progressindicator.LinearProgressIndicator
 
 @BindingAdapter("adapter")
 fun bindAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
@@ -138,4 +139,9 @@ fun setTextWatcher(view: CustomLimitedEditTextView, listener: InverseBindingList
         }
     }
     view.getEditTextView().addTextChangedListener(watcher)
+}
+
+@BindingAdapter("animationProgress")
+fun setAnimationProgress(progressIndicator: LinearProgressIndicator, progress: Long) {
+    progressIndicator.setProgressCompat(progress.toInt(), true)
 }

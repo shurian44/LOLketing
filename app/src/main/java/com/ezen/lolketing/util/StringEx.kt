@@ -10,11 +10,13 @@ fun Long.timestampToString(format: String = "yyyy-MM-dd HH:mm") : String {
     return timeFormat.format(this)
 }
 
-fun Long.priceFormat() : String =
-    DecimalFormat("###,###").format(this).plus("원")
+fun Long.addCommas(): String = DecimalFormat("###,###").format(this)
 
-fun Int.priceFormat() : String =
-    this.toLong().priceFormat()
+fun Int.addCommas(): String = DecimalFormat("###,###").format(this)
+
+fun Long.priceFormat() = addCommas().plus("원")
+
+fun Int.priceFormat() = addCommas().plus("원")
 
 fun String.removePriceFormat(): Long = try {
     this.replace(",", "").replace("원", "").toLong()

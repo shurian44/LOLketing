@@ -22,3 +22,19 @@ fun getGradeName(gradeCode: String) =
 
 fun getGradeImageRes(gradeName: String) =
     Grade.values().find { it.gradeName == gradeName }?.image ?: Grade.BRONZE.image
+
+fun gradeMaxPoint(gradeName: String) =
+    when (gradeName) {
+        Grade.BRONZE.gradeName -> {
+            3_000
+        }
+        Grade.SILVER.gradeName -> {
+            30_000
+        }
+        Grade.GOLD.gradeName -> {
+            300_000
+        }
+        else -> {
+            300_000
+        }
+    }

@@ -11,6 +11,7 @@ import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.login.join.JoinDetailActivity
+import com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity
 import com.ezen.lolketing.view.main.shop.history.PurchaseHistoryActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -48,6 +49,10 @@ class MyPageActivity :
 
     fun goToPurchaseHistory() {
         startActivity(PurchaseHistoryActivity::class.java)
+    }
+
+    fun goToCacheCharging() {
+        startActivity(CacheChargingActivity::class.java)
     }
 
     override fun onResume() {

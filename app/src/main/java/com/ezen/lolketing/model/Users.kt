@@ -1,9 +1,11 @@
 package com.ezen.lolketing.model
 
 import com.ezen.lolketing.util.Grade
+import com.ezen.lolketing.util.addCommas
 import com.ezen.lolketing.util.getGrade
 import com.ezen.lolketing.util.getGradeImageRes
 import com.ezen.lolketing.util.getGradeName
+import com.ezen.lolketing.util.gradeMaxPoint
 import com.ezen.lolketing.util.priceFormat
 import kotlin.math.min
 
@@ -112,6 +114,13 @@ data class MyPageInfo(
     fun getGradeImage() = getGradeImageRes(grade)
 
     fun getMyCache() = cache.priceFormat()
+
+    fun getGradeMaxPoint() = gradeMaxPoint(grade)
+
+    fun getProgress() = when(grade) {
+        Grade.PLATINUM.gradeName, Grade.MASTER.gradeName -> { "max" }
+        else -> { "${point.addCommas()} / ${getGradeMaxPoint().addCommas()}" }
+    }
 
     companion object {
         fun create() = MyPageInfo(
