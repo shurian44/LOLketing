@@ -21,21 +21,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor
-    ) : OkHttpClient =
-        OkHttpClient.Builder()
-            .readTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
-            .addInterceptor(loggingInterceptor)
-            .build()
-
-    @Provides
-    @Singleton
-    fun provideGsonConvertFactory() : GsonConverterFactory = GsonConverterFactory.create()
 
     @AddressRetrofit
     @Provides
@@ -62,17 +47,6 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
-
-    @Provides
-    @Singleton
-    fun provideLoggingInterceptor() : HttpLoggingInterceptor =
-        HttpLoggingInterceptor().apply {
-            level = if(BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
-        }
 
     @Provides
     @Singleton

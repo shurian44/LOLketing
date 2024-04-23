@@ -22,14 +22,4 @@ class FirebaseModule {
     fun provideFirebaseAuth() : FirebaseAuth =
         Firebase.auth
 
-    @Provides
-    @Singleton
-    fun provideFirebaseStorage() : FirebaseStorage =
-        Firebase.storage
-
-    @Provides
-    @Singleton
-    fun provideFirebaseFirestore() : FirebaseFirestore =
-        Firebase.firestore
-
 }

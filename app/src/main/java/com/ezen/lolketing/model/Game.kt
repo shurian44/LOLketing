@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.ezen.lolketing.R
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.Team
-import com.ezen.lolketing.util.getTeamLogoImageRes
 import com.ezen.lolketing.util.getRandomGame
 import com.ezen.lolketing.util.isCurrentDate
 import com.ezen.lolketing.util.isPassedDate
@@ -130,4 +129,6 @@ data class ChattingInfo(
     fun getRightTeamImageRes() = getTeamLogoImageRes(rightTeam)
 
     fun getTitle() = "$leftTeam vs $rightTeam"
+
+    private fun getTeamLogoImageRes(team: String) = Team.T1.image
 }
