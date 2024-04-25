@@ -1,8 +1,8 @@
 package com.ezen.auth.model
 
 data class LoginInfo(
-    val id: String,
-    val password: String
+    var id: String,
+    var password: String
 )
 
 data class SocialLoginInfo(

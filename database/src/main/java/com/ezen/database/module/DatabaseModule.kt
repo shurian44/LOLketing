@@ -23,7 +23,7 @@ object DatabaseModule {
     fun provideDatabase(
         application: Application
     ): LoLketingDatabase = Room
-        .databaseBuilder(application, LoLketingDatabase::class.java, "lolketingXml.db")
+        .databaseBuilder(application, LoLketingDatabase::class.java, "lolketing.db")
         .fallbackToDestructiveMigration()
         .build()
 

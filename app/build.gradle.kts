@@ -27,6 +27,10 @@ android {
         buildConfigField("String", "ADDRESS_API_KEY", "${properties["address_api_key"]}")
         buildConfigField("String", "CLIENT_ID", "${properties["client_id"]}")
         buildConfigField("String", "CLIENT_SECRET", "${properties["client_secret"]}")
+
+        manifestPlaceholders["KAKAO_APP_KEY"] = properties.getProperty("KAKAO_APP_KEY")
+        manifestPlaceholders["MAP_CLIENT_ID"] = properties.getProperty("map_client_id")
+        manifestPlaceholders["MAP_CLIENT_SECRET"] = properties.getProperty("map_client_secret")
         
         vectorDrawables {
             useSupportLibrary = true

@@ -1,13 +1,12 @@
 package com.ezen.lolketing.view.login
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.ezen.auth.model.LoginInfo
+import com.ezen.auth.repository.AuthRepository
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.model.LoginInfo
-import com.ezen.lolketing.model.Users
-import com.ezen.lolketing.repository.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,40 +14,39 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: LoginRepository,
+    private val repository: AuthRepository,
 ) : StatusViewModel() {
 
-    private val _userInfo = MutableStateFlow<Users?>(null)
-    val userInfo: StateFlow<Users?> = _userInfo
-
-    private val _loginInfo = MutableStateFlow(LoginInfo())
-    val loginInfo: StateFlow<LoginInfo> = _loginInfo
-
-    init {
-        fetchInitLoginInfo()
-    }
-
-    private fun fetchInitLoginInfo() {
-        repository
-            .fetchLoginInfo()
-            .onEach { _userInfo.value = it }
-            .catch { _userInfo.value = null }
-            .launchIn(viewModelScope)
-    }
+    val loginInfo = MutableStateFlow(LoginInfo("", ""))
 
     fun emailLogin() {
         repository
-            .emailLogin(_loginInfo.value)
+            .emailLogin(loginInfo.value)
             .setLoadingState()
-            .onEach { _userInfo.value = it }
+            .onEach { updateFinish() }
+            .catch { updateMessage(it.message ?: "로그인 실패") }
+            .launchIn(viewModelScope)
+    }
+
+    fun naverLogin(context: Context) {
+        repository
+            .naverLogin(context)
+            .onEach { updateFinish() }
             .catch {
                 it.printStackTrace()
-                updateMessage("아이디 또는 패스워드를 확인해 주세요.")
+                updateMessage(it.message ?: "로그인 실패")
             }
             .launchIn(viewModelScope)
     }
 
-    fun logout() {
-        repository.logout()
+    fun kakaoLogin(context: Context) {
+        repository
+            .kakaoLogin(context)
+            .onEach { updateFinish() }
+            .catch {
+                it.printStackTrace()
+                updateMessage(it.message ?: "로그인 실패")
+            }
+            .launchIn(viewModelScope)
     }
 }

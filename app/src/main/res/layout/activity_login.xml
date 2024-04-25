@@ -36,7 +36,7 @@
             android:id="@+id/loginId"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="15dp"
             android:drawableStart="@drawable/ic_user"
             android:hint="@string/hint_id"
             android:inputType="textEmailAddress"
@@ -49,7 +49,7 @@
             android:id="@+id/loginPw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="15dp"
             android:drawableStart="@drawable/ic_pw"
             android:hint="@string/hint_pw"
             android:inputType="textPassword"
@@ -65,7 +65,7 @@
             android:layout_marginBottom="64dp"
             android:onClick="@{() -> vm.emailLogin()}"
             android:text="@string/login"
-            android:textColor="#fff"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:cornerRadius="3dp"
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> activity.goToFindPassword()}"
             android:text="@string/find_pw"
-            android:textColor="@color/sub_color"
+            android:textColor="@color/main_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/viewLine"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> activity.goToJoin()}"
             android:text="@string/join"
-            android:textColor="@color/sub_color"
+            android:textColor="@color/main_color"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/btnFindID"
             app:layout_constraintEnd_toEndOf="parent"
@@ -101,9 +101,9 @@
             android:id="@+id/viewLine"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="15dp"
             android:background="@color/light_gray"
-            app:layout_constraintBottom_toTopOf="@id/btnGoogleLogin"
+            app:layout_constraintBottom_toTopOf="@id/btnNaverLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -120,12 +120,38 @@
             app:layout_constraintTop_toTopOf="@id/viewLine" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGoogleLogin"
+            android:id="@+id/btnNaverLogin"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            android:layout_marginBottom="90dp"
-            android:backgroundTint="@color/white"
-            android:text="@string/google_login"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="#03C75A"
+            android:onClick="@{() -> vm.naverLogin(context)}"
+            android:text="@string/naver_login"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:cornerRadius="3dp"
+            app:layout_constraintBottom_toTopOf="@id/btnKakaoLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/img_logo_naver"
+            app:layout_constraintBottom_toBottomOf="@id/btnNaverLogin"
+            app:layout_constraintStart_toStartOf="@id/btnNaverLogin"
+            app:layout_constraintTop_toTopOf="@id/btnNaverLogin" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnKakaoLogin"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="70dp"
+            android:backgroundTint="#FEE500"
+            android:onClick="@{() -> vm.kakaoLogin(context)}"
+            android:text="@string/kakao_login"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -135,13 +161,13 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <View
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="12dp"
-            android:background="@drawable/logo_google"
-            app:layout_constraintBottom_toBottomOf="@id/btnGoogleLogin"
-            app:layout_constraintStart_toStartOf="@id/btnGoogleLogin"
-            app:layout_constraintTop_toTopOf="@id/btnGoogleLogin" />
+            android:background="@drawable/img_logo_kakao"
+            app:layout_constraintBottom_toBottomOf="@id/btnKakaoLogin"
+            app:layout_constraintStart_toStartOf="@id/btnKakaoLogin"
+            app:layout_constraintTop_toTopOf="@id/btnKakaoLogin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
