@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.PurchaseInfo
 import com.ezen.lolketing.model.ShoppingInfo
-import com.ezen.lolketing.repository.PurchaseRepository
 import com.ezen.lolketing.util.priceFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PurchaseViewModel @Inject constructor(
-    private val repository: PurchaseRepository
+//    private val repository: PurchaseRepository
 ) : StatusViewModel() {
 
     private var documentId = ""
@@ -54,30 +53,30 @@ class PurchaseViewModel @Inject constructor(
     }
 
     private fun selectBasketCount() {
-        repository
-            .selectBasketCount()
-            .onEach { _count.value = it }
-            .catch { _count.value = 0 }
-            .launchIn(viewModelScope)
+//        repository
+//            .selectBasketCount()
+//            .onEach { _count.value = it }
+//            .catch { _count.value = 0 }
+//            .launchIn(viewModelScope)
     }
 
     fun fetchPurchaseInfo() {
-        repository
-            .fetchPurchaseInfo(
-                databaseIdList = databaseIdList,
-                documentId = documentId,
-                amount = amount
-            )
-            .setLoadingState()
-            .onEach { (shoppingInfo, list) ->
-                _shoppingInfo.value = shoppingInfo
-                _list.value = list
-                _purchaseStatus.value = PurchaseStatus.InsufficientBalance(
-                    isInsufficientBalance = isInsufficientBalance()
-                )
-            }
-            .catch { updateMessage(it.message ?: "오류 발생") }
-            .launchIn(viewModelScope)
+//        repository
+//            .fetchPurchaseInfo(
+//                databaseIdList = databaseIdList,
+//                documentId = documentId,
+//                amount = amount
+//            )
+//            .setLoadingState()
+//            .onEach { (shoppingInfo, list) ->
+//                _shoppingInfo.value = shoppingInfo
+//                _list.value = list
+//                _purchaseStatus.value = PurchaseStatus.InsufficientBalance(
+//                    isInsufficientBalance = isInsufficientBalance()
+//                )
+//            }
+//            .catch { updateMessage(it.message ?: "오류 발생") }
+//            .launchIn(viewModelScope)
     }
 
     fun setDatabaseIdList(list: List<Long>) {
@@ -111,18 +110,18 @@ class PurchaseViewModel @Inject constructor(
         if (isInsufficientBalance()) {
             _purchaseStatus.value = PurchaseStatus.RequiresCharging
         } else {
-            repository
-                .setPurchaseItems(
-                    list = _list.value,
-                    userInfo = _shoppingInfo.value,
-                    idList = databaseIdList
-                )
-                .setLoadingState()
-                .onEach {
-                    _purchaseStatus.value = PurchaseStatus.PaymentComplete
-                }
-                .catch { updateMessage(it.message ?: "오류 발생") }
-                .launchIn(viewModelScope)
+//            repository
+//                .setPurchaseItems(
+//                    list = _list.value,
+//                    userInfo = _shoppingInfo.value,
+//                    idList = databaseIdList
+//                )
+//                .setLoadingState()
+//                .onEach {
+//                    _purchaseStatus.value = PurchaseStatus.PaymentComplete
+//                }
+//                .catch { updateMessage(it.message ?: "오류 발생") }
+//                .launchIn(viewModelScope)
         }
     }
 

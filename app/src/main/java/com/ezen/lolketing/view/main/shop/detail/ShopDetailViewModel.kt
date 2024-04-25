@@ -3,7 +3,6 @@ package com.ezen.lolketing.view.main.shop.detail
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.ShopItem
-import com.ezen.lolketing.repository.PurchaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,7 +19,7 @@ import kotlin.math.min
 
 @HiltViewModel
 class ShopDetailViewModel @Inject constructor(
-    private val repository: PurchaseRepository
+//    private val repository: PurchaseRepository
 ) : StatusViewModel() {
 
     private val _count = MutableStateFlow(0L)
@@ -38,11 +37,11 @@ class ShopDetailViewModel @Inject constructor(
     }
 
     private fun selectBasketCount() {
-        repository
-            .selectBasketCount()
-            .onEach { _count.value = it }
-            .catch { _count.value = 0 }
-            .launchIn(viewModelScope)
+//        repository
+//            .selectBasketCount()
+//            .onEach { _count.value = it }
+//            .catch { _count.value = 0 }
+//            .launchIn(viewModelScope)
     }
 
     fun setDocumentId(documentId: String) {
@@ -53,27 +52,27 @@ class ShopDetailViewModel @Inject constructor(
     fun getDocumentId() = documentId
 
     private fun fetchShoppingDetail() {
-        repository
-            .fetchShoppingDetail(documentId)
-            .setLoadingState()
-            .onEach { _item.value = it }
-            .catch {
-                updateMessage(it.message ?: "오류 발생")
-                updateFinish(true)
-            }
-            .launchIn(viewModelScope)
+//        repository
+//            .fetchShoppingDetail(documentId)
+//            .setLoadingState()
+//            .onEach { _item.value = it }
+//            .catch {
+//                updateMessage(it.message ?: "오류 발생")
+//                updateFinish(true)
+//            }
+//            .launchIn(viewModelScope)
     }
 
     fun insertShoppingBasket() {
-        repository
-            .insertShoppingBasket(
-                item = _item.value,
-                documentId = documentId
-            )
-            .setLoadingState()
-            .onEach { updateMessage("장바구니에 상품을 등록하였습니다") }
-            .catch { updateMessage(it.message ?: "오류 발생") }
-            .launchIn(viewModelScope)
+//        repository
+//            .insertShoppingBasket(
+//                item = _item.value,
+//                documentId = documentId
+//            )
+//            .setLoadingState()
+//            .onEach { updateMessage("장바구니에 상품을 등록하였습니다") }
+//            .catch { updateMessage(it.message ?: "오류 발생") }
+//            .launchIn(viewModelScope)
     }
 
     fun increaseAmount() {

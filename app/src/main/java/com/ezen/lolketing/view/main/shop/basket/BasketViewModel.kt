@@ -3,7 +3,6 @@ package com.ezen.lolketing.view.main.shop.basket
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.PurchaseInfo
-import com.ezen.lolketing.repository.PurchaseRepository
 import com.ezen.lolketing.util.priceFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BasketViewModel @Inject constructor(
-    private val repository: PurchaseRepository
+//    private val repository: PurchaseRepository
 ) : StatusViewModel() {
 
     private val _list = MutableStateFlow(listOf<PurchaseInfo>())
@@ -25,14 +24,14 @@ class BasketViewModel @Inject constructor(
     val totalPrice: StateFlow<String> = _totalPrice
 
     fun fetchBasketList() {
-        repository
-            .fetchBasketList()
-            .onEach {
-                _list.value = it
-                getTotalPrice()
-            }
-            .catch { updateMessage(it.message ?: "오류 발생") }
-            .launchIn(viewModelScope)
+//        repository
+//            .fetchBasketList()
+//            .onEach {
+//                _list.value = it
+//                getTotalPrice()
+//            }
+//            .catch { updateMessage(it.message ?: "오류 발생") }
+//            .launchIn(viewModelScope)
     }
 
     fun updateBasketChecked(id: Long) = viewModelScope.launch {
@@ -45,7 +44,7 @@ class BasketViewModel @Inject constructor(
         }
         _list.value = newList
 
-        repository.updateBasketChecked(id, _list.value[index].isChecked)
+//        repository.updateBasketChecked(id, _list.value[index].isChecked)
         getTotalPrice()
     }
 

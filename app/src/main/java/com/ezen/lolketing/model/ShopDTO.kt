@@ -1,6 +1,5 @@
 package com.ezen.lolketing.model
 
-import com.ezen.lolketing.database.entity.ShopEntity
 import com.ezen.lolketing.util.findCodeName
 import com.ezen.lolketing.util.priceFormat
 
@@ -73,17 +72,17 @@ data class ShopItem(
 
     fun getPriceFormat() = (price * amount).priceFormat()
 
-    fun mapper(
-        documentId: String
-    ) = ShopEntity(
-        group = group,
-        name = name,
-        price = price,
-        image = images[0],
-        count = amount,
-        documentId = documentId,
-        timestamp = System.currentTimeMillis()
-    )
+//    fun mapper(
+//        documentId: String
+//    ) = ShopEntity(
+//        group = group,
+//        name = name,
+//        price = price,
+//        image = images[0],
+//        count = amount,
+//        documentId = documentId,
+//        timestamp = System.currentTimeMillis()
+//    )
 
     companion object {
         fun create() = ShopItem(

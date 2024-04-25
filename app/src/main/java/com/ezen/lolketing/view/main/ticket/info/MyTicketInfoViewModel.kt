@@ -3,7 +3,6 @@ package com.ezen.lolketing.view.main.ticket.info
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.TicketInfo
-import com.ezen.lolketing.repository.PurchaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyTicketInfoViewModel @Inject constructor(
-    private val repository: PurchaseRepository
+//    private val repository: PurchaseRepository
 ) : StatusViewModel() {
 
     private val _ticketInfo = MutableStateFlow(TicketInfo.create())
@@ -28,12 +27,12 @@ class MyTicketInfoViewModel @Inject constructor(
     }
 
     fun fetchTicketInfo()  {
-        repository
-            .fetchTicketInfo(documentId)
-            .setLoadingState()
-            .onEach { _ticketInfo.value = it }
-            .catch { updateMessage(it.message ?: "오류 발생") }
-            .launchIn(viewModelScope)
+//        repository
+//            .fetchTicketInfo(documentId)
+//            .setLoadingState()
+//            .onEach { _ticketInfo.value = it }
+//            .catch { updateMessage(it.message ?: "오류 발생") }
+//            .launchIn(viewModelScope)
     }
 
     /** 티켓 환불 **/
@@ -43,18 +42,18 @@ class MyTicketInfoViewModel @Inject constructor(
             return
         }
 
-        repository
-            .updateRefundTicket(
-                ticketInfo = _ticketInfo.value,
-                purchaseDocumentId = documentId
-            )
-            .setLoadingState()
-            .onEach {
-                updateMessage(it)
-                updateFinish(true)
-            }
-            .catch { updateMessage(it.message ?: "오류 발생") }
-            .launchIn(viewModelScope)
+//        repository
+//            .updateRefundTicket(
+//                ticketInfo = _ticketInfo.value,
+//                purchaseDocumentId = documentId
+//            )
+//            .setLoadingState()
+//            .onEach {
+//                updateMessage(it)
+//                updateFinish(true)
+//            }
+//            .catch { updateMessage(it.message ?: "오류 발생") }
+//            .launchIn(viewModelScope)
     }
 
 }

@@ -3,7 +3,6 @@ package com.ezen.lolketing.view.main.shop
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
 import com.ezen.lolketing.model.ShopListItem
-import com.ezen.lolketing.repository.PurchaseRepository
 import com.ezen.lolketing.util.Code
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShopViewModel @Inject constructor(
-    private val repository: PurchaseRepository
+//    private val repository: PurchaseRepository
 ) : StatusViewModel() {
 
     private val _count = MutableStateFlow(0L)
@@ -39,23 +38,23 @@ class ShopViewModel @Inject constructor(
     }
 
     private fun selectBasketCount() {
-        repository
-            .selectBasketCount()
-            .onEach { _count.value = it }
-            .catch { _count.value = 0 }
-            .launchIn(viewModelScope)
+//        repository
+//            .selectBasketCount()
+//            .onEach { _count.value = it }
+//            .catch { _count.value = 0 }
+//            .launchIn(viewModelScope)
     }
 
     private fun fetchShopList() {
-        repository
-            .fetchShoppingList()
-            .setLoadingState()
-            .onEach {
-                originList = it
-                setQuery(0)
-            }
-            .catch { updateMessage(it.message ?: "오류 발생") }
-            .launchIn(viewModelScope)
+//        repository
+//            .fetchShoppingList()
+//            .setLoadingState()
+//            .onEach {
+//                originList = it
+//                setQuery(0)
+//            }
+//            .catch { updateMessage(it.message ?: "오류 발생") }
+//            .launchIn(viewModelScope)
     }
 
     fun setQuery(index: Int) = runCatching {
