@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.ezen.lolketing.R
 import com.ezen.lolketing.model.BoardItem
+import com.ezen.lolketing.view.custom.CustomEditTextView
 
 @BindingAdapter("timestamp")
 fun setTimestamp(textView: TextView, timestamp: Long) {
@@ -52,4 +53,9 @@ fun setBackgroundColor(view: View, @ColorRes color: Int) {
 @BindingAdapter("imageRes")
 fun imageLoad(imageView: ImageView, @DrawableRes resId: Int) {
     imageView.setImageResource(resId)
+}
+
+@BindingAdapter("validationStatus")
+fun validationStatus(edit: CustomEditTextView, isValidity: Boolean) {
+    edit.setStateError(isValidity)
 }

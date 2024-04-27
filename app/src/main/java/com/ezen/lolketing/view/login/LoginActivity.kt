@@ -5,6 +5,8 @@ import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityLoginBinding
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.login.find.FindPasswordActivity
 import com.ezen.lolketing.view.login.join.JoinActivity
@@ -29,7 +31,11 @@ class LoginActivity :
     }
 
     fun goToJoin() {
-        startActivity(JoinActivity::class.java)
+        startActivity(
+            createIntent(JoinActivity::class.java).also {
+                it.putExtra(Constants.JoinType, Constants.Email)
+            }
+        )
     }
 
     override fun statusFinish() {

@@ -27,7 +27,7 @@
             android:layout_height="98dp"
             android:contentDescription="@string/imageContentDescription"
             android:src="@drawable/lolketing_logo"
-            app:layout_constraintBottom_toTopOf="@id/loginId"
+            android:layout_marginTop="117dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

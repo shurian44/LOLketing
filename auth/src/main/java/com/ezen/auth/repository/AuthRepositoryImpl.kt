@@ -22,7 +22,7 @@ class AuthRepositoryImpl @Inject constructor(
 ): AuthRepository {
 
     override fun join(joinInfo: JoinInfo) = flow {
-        joinInfo.checkValidation()
+        joinInfo.checkValidationException()
         authClient.join(joinInfo)
             .onSuccess { result ->
                 databaseRepository

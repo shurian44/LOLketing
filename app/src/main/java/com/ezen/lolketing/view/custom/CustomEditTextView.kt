@@ -40,14 +40,7 @@ class CustomEditTextView : TextInputEditText {
         onFocusChangeListener = OnFocusChangeListener { _, isFocused ->
             if (stateError) return@OnFocusChangeListener
 
-            when(isFocused) {
-                true -> {
-                    setBackgroundResource(R.drawable.bg_round_outline_3_main_color)
-                }
-                false -> {
-                    setBackgroundResource(R.drawable.bg_round_outline_3_white)
-                }
-            }
+            setFocusBackground(isFocused)
         }
     }
 
@@ -67,19 +60,28 @@ class CustomEditTextView : TextInputEditText {
     fun setStateError(isError: Boolean) {
         stateError = isError
 
+        if(text.isNullOrEmpty()) {
+            stateError = false
+            return
+        }
+
         when(isError) {
             true -> {
-                setBackgroundResource(R.drawable.bg_round_outline_3_red)
+                setBackgroundResource(R.drawable.bg_round_outline_3_yellow)
             }
             false -> {
-                when(isFocused) {
-                    true -> {
-                        setBackgroundResource(R.drawable.bg_round_outline_3_main_color)
-                    }
-                    false -> {
-                        setBackgroundResource(R.drawable.bg_round_outline_3_white)
-                    }
-                }
+                setFocusBackground(isFocused)
+            }
+        }
+    }
+
+    private fun setFocusBackground(isFocused: Boolean) {
+        when(isFocused) {
+            true -> {
+                setBackgroundResource(R.drawable.bg_round_outline_3_main_color)
+            }
+            false -> {
+                setBackgroundResource(R.drawable.bg_round_outline_3_white)
             }
         }
     }

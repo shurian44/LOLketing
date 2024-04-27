@@ -31,19 +31,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/address_setting"
-            android:textColor="@color/sub_color"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/btnBack"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btnBack" />
-
         <com.ezen.lolketing.view.custom.CustomEditTextView
             android:id="@+id/editAddress"
             android:layout_width="0dp"
@@ -58,7 +45,7 @@
             app:editSearch="@{() -> vm.fetchAddressList()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+            app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
         <com.ezen.lolketing.view.custom.CustomEditTextView
             android:id="@+id/editAddressDetail"
@@ -100,13 +87,25 @@
             app:submitList="@{vm.list}"
             tools:listitem="@layout/item_address" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guide_address"
+            android:textAlignment="center"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            app:isVisible="@{vm.info.searchMode &amp; vm.list.empty}"
+            app:layout_constraintBottom_toBottomOf="@id/recyclerView"
+            app:layout_constraintEnd_toEndOf="@id/recyclerView"
+            app:layout_constraintStart_toStartOf="@id/recyclerView"
+            app:layout_constraintTop_toTopOf="@id/recyclerView" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/main_color"
+            android:insetBottom="0dp"
             android:onClick="@{() -> activity.addressRegister()}"
             android:text="@string/address_setting"
             android:textColor="@color/white"

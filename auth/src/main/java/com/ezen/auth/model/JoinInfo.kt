@@ -30,34 +30,58 @@ data class JoinInfo(
             mobile = "",
             address = "",
         )
+
+        const val TypeId = "id"
+        const val TypePassword = "password"
+        const val TypePasswordCheck = "passwordCheck"
+        const val TypeNickname = "nickname"
+        const val TypeMobile = "mobile"
+        const val TypeAddress = "address"
+    }
+
+    fun checkValidationException() {
+        val message = checkValidation()
+        if (message.isNotEmpty()) {
+            throw Exception(message)
+        }
     }
 
     fun checkValidation() = when {
-        isEmailValid().not() -> throw Exception("아이디는 이메일 형식으로 입력해 주세요.")
-        id.length > 100 -> throw Exception("아이디는 100자 이하로 설정해주세요.")
-        isEmailType() && isPasswordValid().not() ->
-            throw Exception("비밀번호는 영문, 숫자, 특수문자가 모두 포함되게 입력해 주세요.")
+        isEmailValid(id).not() -> "아이디는 이메일 형식으로 입력해 주세요."
+        id.length > 100 -> "아이디는 100자 이하로 설정해주세요."
+        isEmailType() && isPasswordValid(password).not() ->
+            "비밀번호는 영문, 숫자, 특수문자가 모두 포함되게 입력해 주세요."
         isEmailType() && password.length !in 6..30 ->
-            throw Exception("비밀번호는 6자 이상 30자 이하로 입력해 주세요.")
-        isEmailType() && password != passwordCheck ->
-            throw Exception("비밀번호와 비밀번호 확인이 일치하지 않습니다.")
-        nickname.isEmpty() || nickname.length >= 11 ->
-            throw Exception("닉네임은 1~11자 이상으로 입력해 주세요.")
-        mobile.isNotEmpty() && mobile.length !in 10..11 -> throw Exception("전화번호를 확인해 주세요.")
-        else -> true
+            "비밀번호는 6자 이상 30자 이하로 입력해 주세요."
+        isEmailType() && isPasswordCheckValid(password, passwordCheck).not() ->
+            "비밀번호와 비밀번호 확인이 일치하지 않습니다."
+        nickname.isEmpty() || isNicknameValid(nickname).not() ->
+            "닉네임은 1~11자 이상으로 입력해 주세요."
+        mobile.isNotEmpty() && isMobileValid(mobile).not() ->
+            "전화번호를 확인해 주세요."
+        else -> ""
     }
 
-    private fun isEmailType() = type == UserInfoType.Email.type
+    fun isEmailType() = type == UserInfoType.Email.type
 
-    fun isEmailValid(): Boolean {
+    fun isEmailValid(value: String): Boolean {
         val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\$")
-        return emailRegex.matches(id)
+        return emailRegex.matches(value)
     }
 
-    fun isPasswordValid(): Boolean {
+    fun isPasswordValid(value: String): Boolean {
         val regex = Regex("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#\$%^&*()]).{3,30}$")
-        return regex.matches(password)
+        return regex.matches(value)
     }
+
+    fun isPasswordCheckValid(password: String, passwordCheck: String) =
+        password == passwordCheck
+
+    fun isNicknameValid(nickname: String) =
+        nickname.length in 1..11
+
+    fun isMobileValid(mobile: String) =
+        mobile.length in 10..11
 
     override fun describeContents(): Int {
         return 0
