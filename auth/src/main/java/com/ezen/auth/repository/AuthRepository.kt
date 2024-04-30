@@ -19,7 +19,6 @@ interface AuthRepository {
 
     suspend fun withdrawal(): Result<Unit>
 
-    suspend fun isLogin(): Boolean
-
+    fun isLogin(): Flow<Boolean>
 
 }

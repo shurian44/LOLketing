@@ -22,7 +22,7 @@ class SearchActivity :
 
     override val viewModel: SearchViewModel by viewModels()
     val adapter = BoardListAdapter(
-        onclickListener = { documentId ->
+        onClickListener = { documentId ->
             launcher.launch(
                 createIntent(BoardDetailActivity::class.java).also {
                     it.putExtra(Constants.TEAM, viewModel.team)

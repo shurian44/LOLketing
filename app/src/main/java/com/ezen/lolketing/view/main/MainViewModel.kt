@@ -1,41 +1,23 @@
 package com.ezen.lolketing.view.main
 
 import androidx.lifecycle.viewModelScope
+import com.ezen.auth.repository.AuthRepository
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: MainRepository
+    repository: AuthRepository
 ) : StatusViewModel() {
 
-    private val _isNotJoinComplete = MutableStateFlow(true)
-    val isNotJoinComplete: StateFlow<Boolean> = _isNotJoinComplete
-
-    init {
-        getUserInfo()
-    }
-
-    // 유저 정보 조회
-    private fun getUserInfo() = viewModelScope.launch {
-        repository
-            .getUserInfo()
-            .setLoadingState()
-            .onEach {
-                _isNotJoinComplete.value = it
-            }
-            .catch {
-                updateMessage("유저 정보 조회 중 오류가 발생하였습니다.")
-            }
-            .launchIn(viewModelScope)
-    }
+    val isLogin = repository.isLogin()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(500),
+            initialValue = true
+        )
 
 }

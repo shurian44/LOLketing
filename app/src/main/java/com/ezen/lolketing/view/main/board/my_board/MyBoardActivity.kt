@@ -19,7 +19,7 @@ class MyBoardActivity :
 
     override val viewModel: MyBoardViewModel by viewModels()
     val adapter = BoardListAdapter(
-        onclickListener = { documentId ->
+        onClickListener = { documentId ->
             startActivity(
                 createIntent(BoardDetailActivity::class.java).also {
                     it.putExtra(Constants.TEAM, viewModel.team)

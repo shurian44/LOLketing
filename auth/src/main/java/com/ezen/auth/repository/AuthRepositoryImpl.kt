@@ -121,6 +121,6 @@ class AuthRepositoryImpl @Inject constructor(
         databaseRepository.logout()
     }
 
-    override suspend fun isLogin() = databaseRepository.isLogin()
+    override fun isLogin() = flow { emit(databaseRepository.isLogin()) }
 
 }

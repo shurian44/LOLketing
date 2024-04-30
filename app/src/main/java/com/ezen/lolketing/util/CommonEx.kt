@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -13,6 +14,8 @@ import android.text.Html
 import android.text.InputFilter
 import android.text.Spanned
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
@@ -134,3 +137,21 @@ fun RecyclerView.addOnScrollListener(onScrolled: (RecyclerView) -> Unit) {
 
 fun Context.dpToPx(dpSize: Int): Int =
     (dpSize * resources.displayMetrics.density).toInt()
+
+fun Context.dialogResize(dialog: Dialog?){
+
+    val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val deviceWidth = if (Build.VERSION.SDK_INT < 30){
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        size.x
+    } else {
+        val rect = windowManager.currentWindowMetrics.bounds
+        rect.width()
+    }
+
+    val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+    params?.width = (deviceWidth * 0.9).toInt()
+    dialog?.window?.attributes = params as WindowManager.LayoutParams
+}

@@ -16,6 +16,7 @@ import com.ezen.lolketing.util.setSpecialCharacterRestrictions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
+// 제거 예정
 @AndroidEntryPoint
 class JoinDetailActivity :
     StatusViewModelActivity<ActivityJoinDetailBinding, JoinDetailViewModel>(R.layout.activity_join_detail) {

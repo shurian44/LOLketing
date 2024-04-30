@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// 제거 예정
 @HiltViewModel
 class JoinDetailViewModel @Inject constructor(
     private val repository: LoginRepository

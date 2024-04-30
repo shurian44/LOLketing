@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,45 +9,31 @@
             name="dialog"
             type="com.ezen.lolketing.view.dialog.TeamSelectDialog" />
 
-        <variable
-            name="team"
-            type="com.ezen.lolketing.util.Team" />
-
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/light_black"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/card_const"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
-
-            <View
-                android:id="@+id/view1"
-                android:layout_width="2dp"
-                android:layout_height="0dp"
-                android:background="@color/gray"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imgGriffin"
-                app:layout_constraintStart_toEndOf="@id/imgT1"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
                 android:gravity="center"
-                android:padding="16dp"
+                android:paddingVertical="20dp"
                 android:text="@string/select_board"
                 android:textColor="@color/common_google_signin_btn_text_dark_default"
                 android:textSize="18sp"
@@ -55,178 +42,46 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imgT1"
+            <View
                 android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginVertical="5dp"
-                android:maxWidth="60dp"
-                android:onClick="@{()->dialog.onClick(team.T1.teamName)}"
-                android:paddingVertical="12dp"
-                android:src="@drawable/logo_t1"
-                app:layout_constraintBottom_toTopOf="@id/view2"
-                app:layout_constraintEnd_toStartOf="@id/imgGriffin"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtTitle" />
 
-            <ImageView
-                android:id="@+id/imgGriffin"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:onClick="@{()->dialog.onClick(team.GRIFFIN.teamName)}"
-                android:src="@drawable/icon_griffin"
-                app:layout_constraintBottom_toBottomOf="@id/imgT1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                app:adapter="@{dialog.adapter}"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgT1"
-                app:layout_constraintTop_toTopOf="@id/imgT1" />
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="@color/gray"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/imgGeng"
-                app:layout_constraintTop_toBottomOf="@id/imgT1" />
+                app:layout_constraintTop_toBottomOf="@id/txtTitle"
+                app:spanCount="2"
+                app:submitList="@{dialog.list}"
+                tools:itemCount="6"
+                tools:listitem="@layout/cell_team" />
 
-            <ImageView
-                android:id="@+id/imgGeng"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAllSelect"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginVertical="5dp"
-                android:onClick="@{()->dialog.onClick(team.GENG.teamName)}"
-                android:src="@drawable/icon_geng"
-                app:layout_constraintBottom_toTopOf="@id/view3"
-                app:layout_constraintEnd_toStartOf="@id/imgDragonx"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view2" />
-
-            <ImageView
-                android:id="@+id/imgDragonx"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:onClick="@{()->dialog.onClick(team.DRAGON.teamName)}"
-                android:src="@drawable/icon_dragonx"
-                app:layout_constraintBottom_toBottomOf="@id/imgGeng"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgGeng"
-                app:layout_constraintTop_toTopOf="@id/imgGeng" />
-
-            <View
-                android:id="@+id/view3"
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="@color/gray"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/imgFreecs"
-                app:layout_constraintTop_toBottomOf="@id/imgGeng" />
-
-            <ImageView
-                android:id="@+id/imgFreecs"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginVertical="5dp"
-                android:onClick="@{()->dialog.onClick(team.AF.teamName)}"
-                android:src="@drawable/icon_afreeca"
-                app:layout_constraintBottom_toTopOf="@id/view4"
-                app:layout_constraintEnd_toStartOf="@id/imgSandbox"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view3" />
-
-            <ImageView
-                android:id="@+id/imgSandbox"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:onClick="@{()->dialog.onClick(team.SANDBOX.teamName)}"
-                android:src="@drawable/icon_sandbox"
-                app:layout_constraintBottom_toBottomOf="@id/imgFreecs"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgFreecs"
-                app:layout_constraintTop_toTopOf="@id/imgFreecs" />
-
-            <View
-                android:id="@+id/view4"
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:background="@color/gray"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/imgDamwon"
-                app:layout_constraintTop_toBottomOf="@id/imgFreecs" />
-
-            <ImageView
-                android:id="@+id/imgDamwon"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginVertical="5dp"
-                android:onClick="@{()->dialog.onClick(team.DAMWON.teamName)}"
-                android:paddingVertical="10dp"
-                android:src="@drawable/icon_damwon"
-                app:layout_constraintBottom_toTopOf="@id/view5"
-                app:layout_constraintEnd_toStartOf="@id/imgApk"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view4" />
-
-            <ImageView
-                android:id="@+id/imgApk"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:onClick="@{()->dialog.onClick(team.APK.teamName)}"
-                android:src="@drawable/logo_apk"
-                app:layout_constraintBottom_toBottomOf="@id/imgDamwon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgDamwon"
-                app:layout_constraintTop_toTopOf="@id/imgDamwon" />
-
-            <View
-                android:id="@+id/view5"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/gray"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/imgRolster"
-                app:layout_constraintTop_toBottomOf="@id/imgDamwon" />
-
-            <ImageView
-                android:id="@+id/imgRolster"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginVertical="5dp"
-                android:onClick="@{()->dialog.onClick(team.KT.teamName)}"
-                android:paddingVertical="10dp"
-                android:src="@drawable/icon_rolster"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:text="@string/view_all"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:cornerRadius="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/imgHanhwa"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view5" />
-
-            <ImageView
-                android:id="@+id/imgHanhwa"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:onClick="@{()->dialog.onClick(team.HANWHA.teamName)}"
-                android:paddingVertical="10dp"
-                android:src="@drawable/icon_hanwha"
-                app:layout_constraintBottom_toBottomOf="@id/imgRolster"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgRolster"
-                app:layout_constraintTop_toTopOf="@id/imgRolster" />
-
-            <View
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/ic_cancel"
-                android:onClick="@{dialog::onCancel}"
-                app:layout_constraintTop_toTopOf="@id/txtTitle"
-                app:layout_constraintBottom_toBottomOf="@id/txtTitle"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

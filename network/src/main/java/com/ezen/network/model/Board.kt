@@ -1,13 +1,15 @@
 package com.ezen.network.model
 
 import android.net.Uri
+import com.google.gson.annotations.SerializedName
 
 data class Board(
     val id: Int,
     val contents: String,
     val image: String,
     val timestamp: String,
-    val name: String,
+    @SerializedName("name")
+    val category: String,
     val userId: Int = 0,
     val nickname: String,
     val likeCount: Int,
@@ -85,7 +87,7 @@ data class BoardDetail(
         contents = contents,
         image = image,
         timestamp = timestamp,
-        name = name,
+        category = name,
         nickname = nickname,
         likeCount = likeCount,
         isLike = isLike,

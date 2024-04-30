@@ -7,8 +7,7 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityMainBinding
 import com.ezen.lolketing.util.*
-import com.ezen.lolketing.view.dialog.TeamSelectDialog
-import com.ezen.lolketing.view.login.join.JoinDetailActivity
+import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.board.BoardListActivity
 import com.ezen.lolketing.view.main.chatting.list.ChattingListActivity
 import com.ezen.lolketing.view.main.event.EventListActivity
@@ -36,10 +35,10 @@ class MainActivity : StatusViewModelActivity<ActivityMainBinding, MainViewModel>
         )
 
         repeatOnStarted {
-            viewModel.isNotJoinComplete.collectLatest {
+            viewModel.isLogin.collectLatest {
                 if (it.not()) {
-                    // 상세 회원 가입 여부 조회
-                    startActivity(JoinDetailActivity::class.java)
+                    startActivity(LoginActivity::class.java)
+                    finish()
                 }
             }
         }
@@ -56,17 +55,7 @@ class MainActivity : StatusViewModelActivity<ActivityMainBinding, MainViewModel>
             txtGuid.id -> startActivity(GuideActivity::class.java)
             txtNews.id -> startActivity(NewsActivity::class.java)
             txtChatting.id -> startActivity(ChattingListActivity::class.java)
-            txtBoard.id -> { showTeamSelectDialog() }
+            txtBoard.id -> startActivity(BoardListActivity::class.java)
         }
-    }
-
-    private fun showTeamSelectDialog() {
-        TeamSelectDialog{ team ->
-            startActivity(
-                createIntent(BoardListActivity::class.java).also { intent ->
-                    intent.putExtra(Constants.TEAM, team)
-                }
-            )
-        }.show(supportFragmentManager, "")
     }
 }

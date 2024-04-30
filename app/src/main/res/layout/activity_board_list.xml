@@ -13,6 +13,8 @@
             name="vm"
             type="com.ezen.lolketing.view.main.board.BoardListViewModel" />
 
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,100 +23,115 @@
         android:background="@color/black"
         tools:context=".view.main.board.BoardListActivity">
 
+        <View
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> activity.showTeamSelectDialog()}"
+            android:text="@{vm.item.team.teamName}"
+            android:textColor="@color/main_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/btnSelect"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack"
+            tools:text="전체보기" />
+
+        <View
+            android:id="@+id/btnSelect"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/ic_up"
+            android:onClick="@{() -> activity.showTeamSelectDialog()}"
+            android:rotation="180"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtSelect"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+        <View
+            android:id="@+id/btnSearch"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/btnWrite"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+        <View
+            android:id="@+id/btnWrite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_plus"
+            android:onClick="@{() -> activity.writeBoard()}"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:adapter="@{activity.adapter}"
-            app:submitList="@{vm.list}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/layoutBottom"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:submitList="@{vm.item.list}"
             tools:listitem="@layout/item_board" />
 
-        <include
-            android:id="@+id/layoutTop"
-            layout="@layout/layout_top"
-            app:isBackVisible="@{true}"
-            app:isMenuVisible="@{true}"
-            app:title="@{vm.team}" />
+        <ImageView
+            android:id="@+id/imageEmpty"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="15dp"
+            android:contentDescription="@string/imageContentDescription"
+            android:src="@drawable/img_empty"
+            android:visibility="@{vm.item.list.empty ? View.VISIBLE : View.GONE, default=gone}"
+            app:layout_constraintBottom_toTopOf="@id/txtEmpty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
             android:id="@+id/txtEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
             android:text="@string/empty_board_list"
-            android:textColor="@color/white"
+            android:textColor="@color/gray"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:visibility="gone"
-            app:isVisible="@{vm.list.size() &lt; 2}"
-            app:layout_constraintBottom_toTopOf="@id/layoutBottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/layoutBottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutBottom"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/light_black"
+            android:visibility="@{vm.item.list.empty ? View.VISIBLE : View.GONE, default=gone}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/imgSearch"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginVertical="11dp"
-                android:layout_marginStart="20dp"
-                android:contentDescription="@string/imageContentDescription"
-                android:background="@drawable/ic_search"
-                android:onClick="@{() -> activity.searchBoard()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txtWrite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:onClick="@{() -> activity.writeBoard()}"
-                android:text="@string/write"
-                android:textColor="@color/sub_color"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/viewWrite"
-                app:layout_constraintEnd_toStartOf="@id/viewWrite"
-                app:layout_constraintTop_toTopOf="@id/viewWrite" />
-
-            <View
-                android:id="@+id/viewWrite"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/ic_write"
-                android:onClick="@{() -> activity.writeBoard()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
