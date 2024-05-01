@@ -2,9 +2,11 @@ package com.ezen.lolketing.view.main.board
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityBoardListBinding
+import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.view.dialog.TeamSelectDialog
 import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
@@ -21,8 +23,9 @@ class BoardListActivity :
         onClickListener = { boardId ->
             startActivity(
                 createIntent(BoardDetailActivity::class.java).also {
-//                    it.putExtra(Constants.TEAM, viewModel.team.value)
-//                    it.putExtra(Constants.DOCUMENT_ID, documentId)
+                    it.putExtras(
+                        bundleOf(Constants.BoardId to boardId)
+                    )
                 }
             )
         }

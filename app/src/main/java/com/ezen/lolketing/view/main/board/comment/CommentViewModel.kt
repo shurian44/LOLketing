@@ -1,12 +1,9 @@
 package com.ezen.lolketing.view.main.board.comment
 
 import androidx.lifecycle.viewModelScope
-import com.ezen.lolketing.BaseViewModel
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.model.Board
 import com.ezen.lolketing.model.CommentItem
 import com.ezen.lolketing.repository.BoardRepository
-import com.ezen.lolketing.view.main.board.detail.BoardDetailViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +11,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
-
+// 제거 예정
 @HiltViewModel
 class CommentViewModel @Inject constructor(
     private val repository: BoardRepository

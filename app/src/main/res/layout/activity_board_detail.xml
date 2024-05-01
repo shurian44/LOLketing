@@ -31,7 +31,10 @@
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/layoutBottom"
+            android:layout_marginBottom="3dp"
+            android:clipToPadding="false"
+            android:paddingBottom="30dp"
+            app:layout_constraintBottom_toTopOf="@id/editComment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutTop">
@@ -39,228 +42,184 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="30dp">
+                android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/txtTitle"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:html="@{@string/board_detail_title(vm.info.categoryName, vm.info.title)}"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="20dp"
+                    android:text="@{`[`.concat(vm.info.category).concat(`]`)}"
+                    android:textColor="@color/yellow"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/btnMore"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="[타이틀] 제목제목" />
+                    app:layout_constraintTop_toTopOf="@id/btnMore"
+                    tools:text="[타이틀]" />
 
-                <ImageView
-                    android:id="@+id/imgIcon"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="@{vm.info.timestamp}"
+                    android:textColor="@color/light_gray"
+                    app:layout_constraintBottom_toBottomOf="@id/btnMore"
+                    app:layout_constraintEnd_toStartOf="@id/btnMore"
+                    app:layout_constraintTop_toTopOf="@id/btnMore"
+                    tools:text="2024.04.23" />
+
+                <View
+                    android:id="@+id/btnMore"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginTop="10dp"
-                    android:contentDescription="@string/imageContentDescription"
-                    app:imageRes="@{vm.info.gradeRes}"
-                    app:layout_constraintStart_toStartOf="@id/txtTitle"
-                    app:layout_constraintTop_toBottomOf="@id/txtTitle"
-                    tools:src="@drawable/icon_bronze" />
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_more"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txtNickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="20dp"
                     android:text="@{vm.info.nickname}"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/imgIcon"
-                    app:layout_constraintStart_toEndOf="@id/imgIcon"
-                    app:layout_constraintTop_toTopOf="@id/imgIcon"
-                    tools:text="롤켓팅" />
-
-                <TextView
-                    android:id="@+id/txtDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/imgIcon"
-                    app:layout_constraintStart_toEndOf="@id/txtNickname"
-                    app:layout_constraintTop_toTopOf="@id/imgIcon"
-                    app:timestamp="@{vm.info.timestamp}"
-                    tools:text="2022.05.21" />
-
-                <TextView
-                    android:id="@+id/txtViews"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@{@string/board_views(vm.info.views)}"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/imgIcon"
-                    app:layout_constraintStart_toEndOf="@id/txtDate"
-                    app:layout_constraintTop_toTopOf="@id/imgIcon"
-                    tools:text="조회 10" />
-
-                <View
-                    android:id="@+id/viewMore"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/ic_more"
-                    android:onClick="@{activity::onMoreClick}"
-                    app:layout_constraintBottom_toTopOf="@id/viewLine"
-                    app:layout_constraintEnd_toEndOf="@id/viewLine" />
-
-                <View
-                    android:id="@+id/viewLine"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtNickname" />
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:contentDescription="@string/imageContentDescription"
-                    app:layout_constraintEnd_toEndOf="@id/viewLine"
-                    app:layout_constraintStart_toStartOf="@id/viewLine"
-                    app:layout_constraintTop_toBottomOf="@id/viewLine"
-                    app:urlImage="@{vm.info.image}"
-                    tools:src="@drawable/img_chatting" />
-
-                <View
-                    android:id="@+id/viewImageLine"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="@drawable/bg_round_outline_3_white"
-                    app:layout_constraintBottom_toBottomOf="@id/imageView"
-                    app:layout_constraintEnd_toEndOf="@id/imageView"
-                    app:layout_constraintStart_toStartOf="@id/imageView"
-                    app:layout_constraintTop_toTopOf="@id/imageView" />
+                    app:layout_constraintTop_toBottomOf="@id/btnMore"
+                    tools:text="작성자" />
 
                 <TextView
                     android:id="@+id/txtContents"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@{vm.info.content}"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="@id/viewLine"
-                    app:layout_constraintTop_toBottomOf="@id/imageView"
-                    tools:text="내용이 들어갑니다." />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@{vm.info.contents}"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtNickname"
+                    tools:text="content\ncontent\ncontent" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/imageContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="@{vm.info.image.empty ? View.GONE : View.VISIBLE, default=gone}"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardCornerRadius="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtContents"
+                    tools:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/imageContentDescription"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtContents"
+                        app:urlImage="@{vm.info.image}"
+                        tools:src="@drawable/banner1" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <ImageView
+                    android:id="@+id/btnLike"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    android:onClick="@{() -> activity.updateBoardLike()}"
+                    android:src="@{vm.info.like ? @drawable/ic_heart_fill : @drawable/ic_heart, default=@drawable/ic_heart}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imageContainer" />
+
+                <TextView
+                    android:id="@+id/txtLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@{String.valueOf(vm.info.likeCount)}"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/btnLike"
+                    app:layout_constraintStart_toEndOf="@id/btnLike"
+                    app:layout_constraintTop_toTopOf="@id/btnLike"
+                    tools:text="10" />
+
+                <ImageView
+                    android:id="@+id/btnComment"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    android:src="@drawable/ic_comment"
+                    app:layout_constraintStart_toEndOf="@id/txtLike"
+                    app:layout_constraintTop_toBottomOf="@id/imageContainer" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@{String.valueOf(vm.info.commentList.size)}"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/btnLike"
+                    app:layout_constraintStart_toEndOf="@id/btnComment"
+                    app:layout_constraintTop_toTopOf="@id/btnLike"
+                    tools:text="10" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnLike" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="true"
                     app:adapter="@{activity.adapter}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtContents"
+                    app:layout_constraintTop_toBottomOf="@id/divider"
                     app:submitList="@{vm.info.commentList}"
-                    tools:itemCount="5"
                     tools:listitem="@layout/item_comment" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
 
-        <View
+        <com.ezen.lolketing.view.custom.CustomLimitedEditTextView
+            android:id="@+id/editComment"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/layoutBottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutBottom"
-            android:layout_width="0dp"
-            android:layout_height="46dp"
-            android:background="@color/light_black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:id="@+id/txtCommentCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:onClick="@{() -> activity.onCommentClick()}"
-                android:text="@{String.valueOf(vm.info.commentCounts)}"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="10" />
-
-            <View
-                android:id="@+id/viewComment"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/ic_comment"
-                android:onClick="@{() -> activity.onCommentClick()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/txtCommentCount"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/txtLikeCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:onClick="@{() -> vm.updateLike()}"
-                android:text="@{String.valueOf(vm.info.like.size())}"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/viewComment"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="10" />
-
-            <View
-                android:id="@+id/viewHeart"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@{vm.isLike() ? @drawable/ic_heart_fill : @drawable/ic_heart}"
-                android:onClick="@{() -> vm.updateLike()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/txtLikeCount"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/txtReport"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/light_black"
-            android:gravity="center"
-            android:text="@string/report_received_contents"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="@{vm.info.reportList.size() >= 5 ? View.VISIBLE : View.GONE, default = gone}"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutTop" />
+            app:limited="200"
+            app:minimumHeight="85"
+            app:registerBtnIsVisible="true" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

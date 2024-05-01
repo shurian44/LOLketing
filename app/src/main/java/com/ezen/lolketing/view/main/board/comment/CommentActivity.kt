@@ -9,31 +9,18 @@ import com.ezen.lolketing.databinding.ActivityCommentBinding
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.repeatOnCreated
 import com.ezen.lolketing.util.toast
-import com.ezen.lolketing.view.dialog.DialogReport
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
+
+// 제거 예정
 @AndroidEntryPoint
 class CommentActivity :
     StatusViewModelActivity<ActivityCommentBinding, CommentViewModel>(R.layout.activity_comment) {
 
     override val viewModel: CommentViewModel by viewModels()
     val adapter by lazy {
-        CommentAdapter(
-            layoutInflater = layoutInflater,
-            myEmail = viewModel.email.value,
-            onDelete = { viewModel.deleteComment(it) },
-            onReport = { documentId, list ->
-                DialogReport { report ->
-                    viewModel
-                        .updateCommentReport(
-                            commentDocumentId = documentId,
-                            reportList = list,
-                            report = report
-                        )
-                }.show(supportFragmentManager, "")
-            }
-        )
+        CommentAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

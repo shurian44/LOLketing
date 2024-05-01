@@ -52,7 +52,7 @@ class CustomLimitedEditTextView : ConstraintLayout {
         editTextView.setOnFocusChangeListener { view, isFocused ->
             if(isFocused) {
                 view.showKeyboard()
-                cardView.strokeColor = ContextCompat.getColor(context, R.color.sub_color)
+                cardView.strokeColor = ContextCompat.getColor(context, R.color.main_color)
             } else {
                 view.hideKeyboard()
                 cardView.strokeColor = ContextCompat.getColor(context, R.color.white)

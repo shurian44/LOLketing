@@ -75,31 +75,19 @@ data class BoardDetail(
     val contents: String,
     val image: String,
     val timestamp: String,
-    val name: String,
+    @SerializedName("name")
+    val category: String,
     val nickname: String,
     val likeCount: Int,
     val isLike: Boolean,
     val commentList: List<Comment>,
     val isAuthor: Boolean
 ) {
-    fun toBoard() = Board(
-        id = id,
-        contents = contents,
-        image = image,
-        timestamp = timestamp,
-        category = name,
-        nickname = nickname,
-        likeCount = likeCount,
-        isLike = isLike,
-        commentCount = commentList.size,
-        isAuthor = isAuthor
-    )
-
     fun toBoardWriteInfo() = BoardWriteInfo(
         contents = contents,
         image = if (image.trim().isEmpty()) null else Uri.parse(image),
-        teamId = Team.getTeamId(name),
-        teamName = name,
+        teamId = Team.getTeamId(category),
+        teamName = category,
         boardId = id
     )
 
@@ -109,7 +97,7 @@ data class BoardDetail(
             contents = "",
             image = "",
             timestamp = "",
-            name = "",
+            category = "",
             nickname = "",
             likeCount = 0,
             isLike = false,

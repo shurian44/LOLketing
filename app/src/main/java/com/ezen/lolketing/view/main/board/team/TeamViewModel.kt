@@ -8,7 +8,7 @@ import com.ezen.lolketing.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+// 제거 예정
 @HiltViewModel
 class TeamViewModel @Inject constructor(
     private val repository: TeamRepository

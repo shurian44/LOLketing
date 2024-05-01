@@ -11,7 +11,7 @@ import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.toast
 import dagger.hilt.android.AndroidEntryPoint
-
+// 제거 예정
 @AndroidEntryPoint
 class TeamActivity : BaseViewModelActivity<ActivityTeamBinding, TeamViewModel>(R.layout.activity_team) {
 

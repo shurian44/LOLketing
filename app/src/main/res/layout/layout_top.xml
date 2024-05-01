@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="title"
             type="String" />
@@ -16,7 +17,7 @@
             name="isMenuVisible"
             type="Boolean" />
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,27 +44,35 @@
             android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/sub_color"
+            android:text="@{title}"
+            android:textColor="@color/main_color"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@{title}"
             app:layout_constraintBottom_toBottomOf="@id/btnBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/btnBack"
-            tools:text="제목이 들어갑니다."/>
+            tools:text="제목이 들어갑니다." />
 
         <View
             android:id="@+id/btnMenu"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/ic_menu"
             android:visibility="@{isMenuVisible ? View.VISIBLE : View.GONE, default = gone}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

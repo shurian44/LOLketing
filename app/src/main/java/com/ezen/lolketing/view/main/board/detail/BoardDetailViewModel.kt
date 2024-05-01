@@ -1,164 +1,86 @@
 package com.ezen.lolketing.view.main.board.detail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.exception.BoardException
-import com.ezen.lolketing.model.BoardDetailInfo
-import com.ezen.lolketing.repository.BoardRepository
+import com.ezen.lolketing.util.Constants
+import com.ezen.network.model.BoardDetail
+import com.ezen.network.repository.BoardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BoardDetailViewModel @Inject constructor(
-    private val repository: BoardRepository
+    private val repository: BoardRepository,
+    savedStateHandle: SavedStateHandle
 ) : StatusViewModel() {
 
-    private val _info = MutableStateFlow(BoardDetailInfo.create())
-    val info: StateFlow<BoardDetailInfo> = _info
+    private val boardId = savedStateHandle.get<Int>(Constants.BoardId)
 
-    private val _email = MutableStateFlow("")
-    val email: StateFlow<String> = _email
+    private val _info = MutableStateFlow(BoardDetail.init())
+    val info: StateFlow<BoardDetail> = _info
 
-    val isLike: StateFlow<Boolean> = _info.map {
-        it.getIsLike(_email.value)
-    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
-
-    private var _documentId = ""
-    val documentId
-        get() = _documentId
-
-    init {
-        setEmail()
-    }
-
-    private fun setEmail() = runCatching {
-        _email.value = repository.fetchEmail()
-    }.onFailure {
-        updateMessage(it.message ?: "유저 정보가 없습니다.")
-        updateFinish(true)
-    }
-
-    fun setDocumentId(documentId: String) {
-        this._documentId = documentId
-    }
 
     /** 게시글 조회 **/
     fun fetchBordInfo() {
-        repository
-            .fetchBoardInfo(_documentId)
-            .setLoadingState()
-            .onEach { _info.value = it }
-            .catch {
-                updateMessage(it.message ?: "조회 중 오류가 발생하였습니다.")
-                if (it is BoardException.SearchError) {
-                    updateFinish(true)
-                }
-            }
-            .launchIn(viewModelScope)
-    }
-
-    /** 좋아요 업데이트 **/
-    fun updateLike() {
-        repository
-            .updateLikes(
-                documentId = _documentId,
-                info = _info.value,
-                email = _email.value
-            )
-            .setLoadingState()
-            .onEach { fetchBordInfo() }
-            .catch { updateMessage(it.message ?: "업데이트 실패") }
-            .launchIn(viewModelScope)
-    }
-
-    /** 게시글 삭제 **/
-    fun deleteBoard() {
-        repository
-            .deleteBoard(documentId)
-            .setLoadingState()
-            .onEach {
-                updateMessage(it)
-                updateFinish(true)
-            }
-            .catch { updateMessage(it.message ?: "오류가 발생하였습니다") }
-            .launchIn(viewModelScope)
-    }
-
-    /** 게시글 신고하기 **/
-    fun updateReportList(report: String) {
-        val newReportList = _info.value.reportList.toMutableList().also {
-            it.add(report)
+        if (boardId == null) {
+            updateMessage("게시글 정보가 없습니다.")
+            updateFinish()
+            return
         }
 
         repository
-            .updateBoardReport(
-                documentId = _documentId,
-                reportList = newReportList,
-            )
+            .fetchBoardDetail(boardId)
             .setLoadingState()
-            .onEach {
-                updateMessage(it)
-                _info.update { info -> info.copy(reportList = newReportList) }
+            .onEach { detail ->
+                _info.update { detail }
             }
-            .catch { updateMessage(it.message ?: "오류가 발생하였습니다.") }
+            .catch {
+                updateMessage(it.message ?: "게시글 정보가 없습니다.")
+                updateFinish()
+            }
             .launchIn(viewModelScope)
     }
 
-    /** 댓글 신고하기 **/
-    fun updateCommentReport(
-        commentDocumentId: String,
-        reportList: List<String>,
-        report: String
-    ) = viewModelScope.launch {
-        repository
-            .updateCommentReport(
-                boardDocumentId = documentId,
-                commentDocumentId = commentDocumentId,
-                reportList = reportList.toMutableList().also {
-                    it.add(report)
-                },
-            )
-    }
+    fun insertComment(contents: String) {
+        if (boardId == null) {
+            updateMessage("게시글 정보가 없습니다.")
+            return
+        }
 
-    /** 댓글 삭제 **/
-    fun deleteComment(
-        commentDocumentId: String
-    ) = viewModelScope.launch {
         repository
-            .deleteComment(
-                boardDocumentId = documentId,
-                commentDocumentId = commentDocumentId,
-                count = _info.value.commentList.size - 1
+            .insertComment(
+                contents = contents,
+                boardId = boardId
             )
             .setLoadingState()
-            .onEach { fetchCommentList() }
+            .onEach { comments ->
+                _info.update { it.copy(commentList = comments) }
+            }
+            .catch { updateMessage(it.message ?: "댓글 작성 실패") }
             .launchIn(viewModelScope)
     }
 
-    /** 댓글 조회 **/
-    private fun fetchCommentList() {
+    fun updateBoardLike() {
+        if (boardId == null) {
+            updateMessage("게시글 정보가 없습니다.")
+            return
+        }
+
         repository
-            .fetchComments(documentId = documentId)
-            .setLoadingState()
-            .onEach {
-                _info.update { item ->
-                    item.copy(
-                        commentList = it,
-                        commentCounts = it.size.toLong()
-                    )
+            .updateBoardLike(boardId)
+            .onEach { board ->
+                _info.update {
+                    it.copy(likeCount = board.likeCount, isLike = board.isLike)
                 }
             }
-            .catch { }
+            .catch { updateMessage(it.message ?: "좋아요 업데이트 오류") }
             .launchIn(viewModelScope)
     }
 
