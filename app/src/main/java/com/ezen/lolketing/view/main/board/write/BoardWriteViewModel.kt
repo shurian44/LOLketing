@@ -1,11 +1,13 @@
 package com.ezen.lolketing.view.main.board.write
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.exception.BoardException
-import com.ezen.lolketing.model.BoardWriteInfo
-import com.ezen.lolketing.repository.BoardRepository
+import com.ezen.lolketing.util.Constants
+import com.ezen.network.model.BoardWriteInfo
+import com.ezen.network.model.Team
+import com.ezen.network.repository.BoardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,87 +19,99 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoardWriteViewModel @Inject constructor(
-    private val repository: BoardRepository
+    private val repository: BoardRepository,
+    savedStateHandle: SavedStateHandle
 ) : StatusViewModel() {
 
-    private val _info = MutableStateFlow(BoardWriteInfo.create())
-    val info: StateFlow<BoardWriteInfo> = _info
+    private val _item = MutableStateFlow(BoardWriteItem())
+    val item: StateFlow<BoardWriteItem> = _item
 
-    private var isImageChange = false
-    private var documentId = ""
-
-    fun setTeam(team: String) {
-        _info.update { it.copy(team = team) }
+    init {
+        savedStateHandle.get<Int>(Constants.BoardId)?.let(::fetchBoardInfo)
     }
 
-    fun setDocumentId(documentId: String) {
-        this.documentId = documentId
-        fetchBoardInfo()
-    }
-
-    fun updateCategory(category: String) {
-        _info.update {
-            it.copy(category = category)
+    fun updateTeam(team: Team) {
+        _item.update {
+            it.copy(
+                info = it.info.copy(
+                    teamId = team.teamId,
+                    teamName = team.teamName
+                )
+            )
         }
     }
 
     fun updateImageUri(uri: Uri?) {
-        _info.update {
-            it.copy(image = uri)
+        _item.update {
+            it.copy(
+                info = it.info.copy(image = uri),
+                isImageChanged = true
+            )
         }
-        isImageChange = true
     }
 
-    /** 게시글 조회 : 수정 시에만 조회 **/
-    private fun fetchBoardInfo() {
+    /** 게시글 수정 시 게시글 정보 조회 **/
+    private fun fetchBoardInfo(boardId: Int) {
         repository
-            .fetchBoardModifyInfo(documentId = documentId)
+            .fetchBoardDetail(boardId)
             .setLoadingState()
-            .onEach { _info.value = it }
+            .onEach {
+                val info = it.toBoardWriteInfo()
+                _item.update { item ->
+                    item.copy(
+                        info = info,
+                        boardId = boardId,
+                        isModify = true
+                    )
+                }
+            }
             .catch {
-                it.printStackTrace()
-                updateMessage(it.message ?: "오류가 발생하였습니다")
-                if (it is BoardException.SearchError) updateFinish(true)
+                updateMessage(it.message ?: "정보를 가져오지 못하였습니다.")
+                updateFinish()
             }
             .launchIn(viewModelScope)
     }
 
     fun onRegister() {
-        if (documentId.isNotEmpty()) {
-            updateBoard()
+        val item = _item.value
+        if (item.isModify) {
+            updateBoard(item.info, item.isImageChanged)
         } else {
-            uploadBoard()
+            insertBoard(item.info)
         }
     }
 
-    /** 게시글 수정 **/
-    private fun updateBoard() {
+    /** 게시글 업로드 **/
+    private fun insertBoard(info: BoardWriteInfo) {
         repository
-            .updateBoard(
-                documentId = documentId,
-                info = _info.value,
-                isImageChange = isImageChange
-            )
+            .insertBoard(info)
             .setLoadingState()
             .onEach {
                 updateMessage(it)
-                updateFinish(true)
+                updateFinish()
+            }
+            .catch { updateMessage(it.message ?: "업로드 실패") }
+            .launchIn(viewModelScope)
+    }
+
+    /** 게시글 수정 **/
+    private fun updateBoard(info: BoardWriteInfo, isImageChanged: Boolean) {
+        repository
+            .updateBoard(info, isImageChanged)
+            .setLoadingState()
+            .onEach {
+                updateMessage(it)
+                updateFinish()
             }
             .catch { updateMessage(it.message ?: "수정 실패") }
             .launchIn(viewModelScope)
     }
 
-    /** 게시글 업로드 **/
-    private fun uploadBoard()  {
-        repository
-            .uploadBoard(_info.value)
-            .setLoadingState()
-            .onEach {
-                updateMessage(it)
-                updateFinish(true)
-            }
-            .catch { updateMessage(it.message ?: "등록 실패") }
-            .launchIn(viewModelScope)
-    }
-
 }
+
+data class BoardWriteItem(
+    val info: BoardWriteInfo = BoardWriteInfo.init(),
+    val isImageChanged: Boolean = false,
+    val isModify: Boolean = false,
+    val boardId: Int = 0
+)

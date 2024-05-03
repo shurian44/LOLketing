@@ -26,6 +26,12 @@ class BoardDetailViewModel @Inject constructor(
     private val _info = MutableStateFlow(BoardDetail.init())
     val info: StateFlow<BoardDetail> = _info
 
+    fun getBoardId() =
+        if (boardId == null) {
+            updateMessage("게시글 정보가 없습니다.")
+            null
+        } else boardId
+
 
     /** 게시글 조회 **/
     fun fetchBordInfo() {

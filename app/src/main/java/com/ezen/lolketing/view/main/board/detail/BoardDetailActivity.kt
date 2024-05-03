@@ -2,10 +2,15 @@ package com.ezen.lolketing.view.main.board.detail
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.adapter.CommentAdapter
 import com.ezen.lolketing.databinding.ActivityBoardDetailBinding
+import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.startActivity
+import com.ezen.lolketing.view.main.board.write.BoardWriteActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,6 +42,18 @@ class BoardDetailActivity :
 
     fun updateBoardLike() {
         viewModel.updateBoardLike()
+    }
+
+    fun goToModify() {
+        viewModel.getBoardId()?.let { boardId ->
+            startActivity(
+                createIntent(BoardWriteActivity::class.java).also {
+                    it.putExtras(
+                        bundleOf(Constants.BoardId to boardId)
+                    )
+                }
+            )
+        }
     }
 
     override fun onResume() {

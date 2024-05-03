@@ -27,7 +27,7 @@ data class BoardWrite(
 )
 
 data class BoardWriteInfo(
-    val contents: String,
+    var contents: String,
     val image: Uri?,
     val teamId: Int,
     val teamName: String,

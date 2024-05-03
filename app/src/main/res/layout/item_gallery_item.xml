@@ -51,7 +51,7 @@
             android:layout_marginBottom="20dp"
             android:checked="@{item.checked}"
             android:drawablePadding="5dp"
-            app:buttonTint="@color/sub_color"
+            app:buttonTint="@color/main_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

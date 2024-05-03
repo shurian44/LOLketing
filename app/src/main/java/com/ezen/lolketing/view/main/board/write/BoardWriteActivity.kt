@@ -12,6 +12,7 @@ import com.ezen.lolketing.databinding.ActivityBoardWriteBinding
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.view.dialog.CategorySelectDialog
+import com.ezen.lolketing.view.dialog.TeamSelectDialog
 import com.ezen.lolketing.view.gallery.GalleryActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,13 +33,7 @@ class BoardWriteActivity :
     private fun initSettings() = with(binding) {
         activity = this@BoardWriteActivity
         vm = viewModel
-
-        intent.getStringExtra(Constants.TEAM)?.let {
-            viewModel.setTeam(it)
-        }
-        intent.getStringExtra(Constants.DOCUMENT_ID)?.let {
-            viewModel.setDocumentId(it)
-        }
+        title = getString(R.string.insert_board)
         layoutTop.btnBack.setOnClickListener { finish() }
     } // initViews
 
@@ -47,13 +42,12 @@ class BoardWriteActivity :
     }
 
     /** 카테고리 선택 다이얼로그 **/
-    fun selectCategory() {
+    fun selectTeam() {
         clearFocus()
-        CategorySelectDialog(
-            data = viewModel.info.value.category
-        ) {
-            viewModel.updateCategory(it)
-        }.show(supportFragmentManager, "category")
+        TeamSelectDialog(
+            isNeedAll = false,
+            onClick = viewModel::updateTeam
+        ).show(supportFragmentManager, "team")
     }
 
     /** 이미지 추가 버튼 클릭 **/
@@ -69,7 +63,6 @@ class BoardWriteActivity :
 
     /** 포케스 제거 **/
     private fun clearFocus() = with(binding) {
-        editTitle.clearFocus()
         editContents.clearFocus()
     }
 

@@ -9,6 +9,7 @@ import com.ezen.lolketing.model.Category
 import com.ezen.lolketing.util.Code
 import com.ezen.lolketing.util.toast
 
+// 제거 예정
 class CategorySelectDialog(
     val data: String,
     val listener : (String) -> Unit

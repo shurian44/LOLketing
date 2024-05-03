@@ -80,6 +80,7 @@
     <string name="board_title">글 제목</string>
     <string name="search">검색하기</string>
     <string name="view_all">전체보기</string>
+    <string name="insert_board">게시글 등록</string>
 
     <!-- 이벤트 -->
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>
@@ -225,7 +226,7 @@
     <string name="amount">금액</string>
     <string name="move_home">홈으로 이동</string>
     <string name="change">변경</string>
-    <string name="remove">제거</string>
+    <string name="delete">삭제</string>
     <string name="select_modify">수정하기</string>
     <string name="select_delete">삭제하기</string>
     <string name="select_comment">댓글쓰기</string>

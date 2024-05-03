@@ -8,9 +8,11 @@ import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityBoardListBinding
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.dialog.TeamSelectDialog
 import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
 import com.ezen.lolketing.view.main.board.detail.BoardDetailActivity
+import com.ezen.lolketing.view.main.board.write.BoardWriteActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,11 +54,7 @@ class BoardListActivity :
 
     /** 글쓰기 버튼 클릭 **/
     fun writeBoard() {
-//        startActivity(
-//            createIntent(BoardWriteActivity::class.java).also {
-//                it.putExtra(Constants.TEAM, viewModel.team.value)
-//            }
-//        )
+        startActivity(BoardWriteActivity::class.java)
     }
 
 }

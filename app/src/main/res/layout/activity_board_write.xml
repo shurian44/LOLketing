@@ -50,40 +50,30 @@
                 android:paddingBottom="20dp">
 
                 <com.ezen.lolketing.view.custom.CustomEditTextView
-                    android:id="@+id/editCategory"
+                    android:id="@+id/editTeam"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:layout_marginHorizontal="20dp"
                     android:focusable="false"
                     android:hint="@string/select_category"
-                    android:onClick="@{() -> activity.selectCategory()}"
-                    android:text="@{vm.info.categoryName}"
+                    android:onClick="@{() -> activity.selectTeam()}"
+                    android:text="@{vm.item.info.teamName}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <com.ezen.lolketing.view.custom.CustomEditTextView
-                    android:id="@+id/editTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/write_title"
-                    android:text="@={vm.info.title}"
-                    app:layout_constraintEnd_toEndOf="@id/editCategory"
-                    app:layout_constraintStart_toStartOf="@id/editCategory"
-                    app:layout_constraintTop_toBottomOf="@id/editCategory" />
 
                 <com.ezen.lolketing.view.custom.CustomLimitedEditTextView
                     android:id="@+id/editContents"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@={vm.info.content}"
-                    app:layout_constraintEnd_toEndOf="@id/editCategory"
-                    app:layout_constraintStart_toStartOf="@id/editCategory"
-                    app:layout_constraintTop_toBottomOf="@id/editTitle"
-                    app:limited="15000"
-                    app:minimumHeight="235" />
+                    android:text="@={vm.item.info.contents}"
+                    app:layout_constraintEnd_toEndOf="@id/editTeam"
+                    app:layout_constraintStart_toStartOf="@id/editTeam"
+                    app:layout_constraintTop_toBottomOf="@id/editTeam"
+                    app:limited="1000"
+                    app:minimumHeight="300" />
 
                 <ImageView
                     android:id="@+id/imgAttach"
@@ -94,8 +84,8 @@
                     android:onClick="@{() -> activity.addImage()}"
                     android:scaleType="fitXY"
                     android:src="@drawable/img_bg_dot"
-                    app:layout_constraintEnd_toEndOf="@id/editCategory"
-                    app:layout_constraintStart_toStartOf="@id/editCategory"
+                    app:layout_constraintEnd_toEndOf="@id/editTeam"
+                    app:layout_constraintStart_toStartOf="@id/editTeam"
                     app:layout_constraintTop_toBottomOf="@id/editContents" />
 
                 <View
@@ -128,7 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:constraint_referenced_ids="imgAttach, imgPlus, txtAttach"
-                    app:isVisible="@{vm.info.image == null}" />
+                    app:isVisible="@{vm.item.info.image == null}" />
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -136,10 +126,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:contentDescription="@string/imageContentDescription"
-                    app:imageUri="@{vm.info.image}"
-                    app:layout_constraintEnd_toEndOf="@id/editCategory"
-                    app:layout_constraintStart_toStartOf="@id/editCategory"
-                    app:layout_constraintTop_toBottomOf="@id/editContents" />
+                    app:imageUri="@{vm.item.info.image}"
+                    app:layout_constraintEnd_toEndOf="@id/editTeam"
+                    app:layout_constraintStart_toStartOf="@id/editTeam"
+                    app:layout_constraintTop_toBottomOf="@id/editContents"
+                    tools:src="@drawable/banner1"/>
 
                 <View
                     android:id="@+id/viewLine"
@@ -156,7 +147,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
                     android:background="@drawable/bg_round_fill_3_main_color"
                     android:onClick="@{() -> activity.addImage()}"
                     android:paddingHorizontal="10dp"
@@ -173,11 +163,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:background="@drawable/bg_round_fill_3_sub_color"
+                    android:background="@drawable/bg_round_fill_3_red"
                     android:onClick="@{() -> activity.removeImage()}"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="2dp"
-                    android:text="@string/remove"
+                    android:text="@string/delete"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -189,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:constraint_referenced_ids="imageView, viewLine, txtChange, txtRemove"
-                    app:isVisible="@{vm.info.image != null}" />
+                    app:isVisible="@{vm.item.info.image != null}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
