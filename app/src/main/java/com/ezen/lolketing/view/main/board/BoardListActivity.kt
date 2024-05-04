@@ -47,7 +47,7 @@ class BoardListActivity :
 
     fun showTeamSelectDialog() {
         TeamSelectDialog(
-            isNeedAll = false,
+            isNeedAll = true,
             onClick = viewModel::updateTeam
         ).show(supportFragmentManager, "")
     }

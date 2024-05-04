@@ -9,7 +9,11 @@ import kotlinx.coroutines.flow.Flow
 interface BoardRepository {
     fun insertBoard(info: BoardWriteInfo): Flow<String>
 
-    fun fetchBoardList(skip: Int, limit: Int): Flow<List<Board>>
+    fun fetchBoardList(
+        skip: Int,
+        limit: Int,
+        teamId: Int
+    ): Flow<List<Board>>
 
     fun fetchBoardDetail(boardId: Int): Flow<BoardDetail>
 

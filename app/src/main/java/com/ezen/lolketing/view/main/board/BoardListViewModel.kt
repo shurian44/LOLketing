@@ -31,7 +31,11 @@ class BoardListViewModel @Inject constructor(
 
     fun fetchBoardList() {
         repository
-            .fetchBoardList(skip, limit)
+            .fetchBoardList(
+                skip = skip,
+                limit = limit,
+                teamId = _item.value.team.teamId
+            )
             .setLoadingState()
             .onEach { newList ->
                 _item.value = _item.value.copy(list = _item.value.list + newList)
@@ -41,7 +45,16 @@ class BoardListViewModel @Inject constructor(
     }
 
     fun updateTeam(team: Team) {
-        _item.update { it.copy(team = team) }
+        if (_item.value.team == team)
+            return
+
+        _item.update {
+            it.copy(
+                list = listOf(),
+                team = team
+            )
+        }
+        fetchBoardList()
     }
 }
 

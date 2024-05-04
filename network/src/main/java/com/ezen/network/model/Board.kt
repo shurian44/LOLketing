@@ -62,6 +62,7 @@ data class BoardWriteInfo(
 data class BoardSearch(
     val skip: Int,
     val limit: Int,
+    val teamId: Int,
     val userId: Int
 )
 

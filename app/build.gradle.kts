@@ -125,14 +125,14 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
 
-    val retrofit_version = "2.9.0"
-    val okhttp3_version = "4.11.0"
+    val retrofitVersion = "2.9.0"
+    val okhttp3Version = "4.11.0"
     // retrofit - http://square.github.io/retrofit/ (Apache 2.0)
-    implementation ("com.squareup.retrofit2:retrofit:$retrofit_version")
-    implementation ("com.squareup.retrofit2:converter-gson:$retrofit_version")
+    implementation ("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     // okhttp - https://github.com/square/okhttp (Apache 2.0)
-    implementation ("com.squareup.okhttp3:okhttp:$okhttp3_version")
-    implementation ("com.squareup.okhttp3:logging-interceptor:$okhttp3_version")
+    implementation ("com.squareup.okhttp3:okhttp:$okhttp3Version")
+    implementation ("com.squareup.okhttp3:logging-interceptor:$okhttp3Version")
 
     // KTX
     implementation ("org.jetbrains.kotlin:kotlin-reflect:1.8.22")

@@ -56,7 +56,11 @@ class BoardRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchBoardList(skip: Int, limit: Int) = flow {
+    override fun fetchBoardList(
+        skip: Int,
+        limit: Int,
+        teamId: Int
+    ) = flow {
         val userId = databaseRepository.getUserId()
         if (userId == 0) throw Exception("유저 정보가 없습니다.")
 
@@ -65,6 +69,7 @@ class BoardRepositoryImpl @Inject constructor(
                 BoardSearch(
                     skip = skip,
                     limit = limit,
+                    teamId = teamId,
                     userId = userId
                 )
             )
