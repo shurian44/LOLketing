@@ -9,13 +9,17 @@ import com.ezen.lolketing.databinding.ItemBoardBinding
 import com.ezen.network.model.Board
 
 class BoardListAdapter(
-    private val onClickListener : (Int) -> Unit,
+    private val onItemClick: (Int) -> Unit,
+    private val onLikeClick: (Int) -> Unit,
+    private val onMenuClick: (Int) -> Unit
 ) : ListAdapter<Board, BoardViewHolder>(diffUtil) {
 
     override fun onBindViewHolder(holder: BoardViewHolder, position: Int) {
         holder.bind(
             currentList[position],
-            onClickListener
+            onItemClick,
+            onLikeClick,
+            onMenuClick
         )
     }
 
@@ -38,12 +42,22 @@ class BoardListAdapter(
 class BoardViewHolder(val binding : ItemBoardBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(
         board: Board,
-        onClickListener : (Int) -> Unit
+        onItemClick: (Int) -> Unit,
+        onLikeClick: (Int) -> Unit,
+        onMenuClick: (Int) -> Unit
     ) = with(binding) {
         this.board = board
 
         root.setOnClickListener {
-            onClickListener(board.id)
+            onItemClick(board.id)
+        }
+
+        btnLike.setOnClickListener {
+            onLikeClick(board.id)
+        }
+
+        btnMore.setOnClickListener {
+            onMenuClick(board.id)
         }
     }
 }

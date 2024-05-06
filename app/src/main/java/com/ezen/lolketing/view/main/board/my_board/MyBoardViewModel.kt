@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// 제거 예정
 @HiltViewModel
 class MyBoardViewModel @Inject constructor(
     private val repository: BoardRepository

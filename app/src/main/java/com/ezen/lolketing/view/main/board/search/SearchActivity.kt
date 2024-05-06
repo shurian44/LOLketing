@@ -16,21 +16,22 @@ import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
 import com.ezen.lolketing.view.main.board.detail.BoardDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
+// 제거 예정
 @AndroidEntryPoint
 class SearchActivity :
     StatusViewModelActivity<ActivitySearchBinding, SearchViewModel>(R.layout.activity_search) {
 
     override val viewModel: SearchViewModel by viewModels()
-    val adapter = BoardListAdapter(
-        onClickListener = { documentId ->
-            launcher.launch(
-                createIntent(BoardDetailActivity::class.java).also {
-                    it.putExtra(Constants.TEAM, viewModel.team)
-                    it.putExtra(Constants.DOCUMENT_ID, documentId)
-                }
-            )
-        }
-    )
+//    val adapter = BoardListAdapter(
+//        onClickListener = { documentId ->
+//            launcher.launch(
+//                createIntent(BoardDetailActivity::class.java).also {
+//                    it.putExtra(Constants.TEAM, viewModel.team)
+//                    it.putExtra(Constants.DOCUMENT_ID, documentId)
+//                }
+//            )
+//        }
+//    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

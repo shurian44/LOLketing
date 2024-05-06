@@ -7,6 +7,7 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityBoardListBinding
 import com.ezen.lolketing.util.Constants
+import com.ezen.lolketing.util.addOnScrollListener
 import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.dialog.TeamSelectDialog
@@ -21,17 +22,21 @@ class BoardListActivity :
 
     override val viewModel: BoardListViewModel by viewModels()
 
-    val adapter = BoardListAdapter(
-        onClickListener = { boardId ->
-            startActivity(
-                createIntent(BoardDetailActivity::class.java).also {
-                    it.putExtras(
-                        bundleOf(Constants.BoardId to boardId)
-                    )
-                }
-            )
-        }
-    )
+    val adapter by lazy {
+        BoardListAdapter(
+            onItemClick = { boardId ->
+                startActivity(
+                    createIntent(BoardDetailActivity::class.java).also {
+                        it.putExtras(
+                            bundleOf(Constants.BoardId to boardId)
+                        )
+                    }
+                )
+            },
+            onLikeClick = viewModel::updateLike,
+            onMenuClick = {}
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +48,12 @@ class BoardListActivity :
     private fun initViews() = with(binding) {
         activity = this@BoardListActivity
         vm = viewModel
+
+        recyclerView.addOnScrollListener {
+            if (!recyclerView.canScrollVertically(1)) {
+                viewModel.fetchBoardList()
+            }
+        }
     }
 
     fun showTeamSelectDialog() {

@@ -13,21 +13,22 @@ import com.ezen.lolketing.view.main.board.adapter.BoardListAdapter
 import com.ezen.lolketing.view.main.board.detail.BoardDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
+// 제거 예정
 @AndroidEntryPoint
 class MyBoardActivity :
     StatusViewModelActivity<ActivityMyBoardBinding, MyBoardViewModel>(R.layout.activity_my_board) {
 
     override val viewModel: MyBoardViewModel by viewModels()
-    val adapter = BoardListAdapter(
-        onClickListener = { documentId ->
-            startActivity(
-                createIntent(BoardDetailActivity::class.java).also {
-                    it.putExtra(Constants.TEAM, viewModel.team)
-                    it.putExtra(Constants.DOCUMENT_ID, documentId)
-                }
-            )
-        }
-    )
+//    val adapter = BoardListAdapter(
+//        onClickListener = { documentId ->
+//            startActivity(
+//                createIntent(BoardDetailActivity::class.java).also {
+//                    it.putExtra(Constants.TEAM, viewModel.team)
+//                    it.putExtra(Constants.DOCUMENT_ID, documentId)
+//                }
+//            )
+//        }
+//    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,17 +39,17 @@ class MyBoardActivity :
 
     /** 각종 뷰들 초기화 **/
     private fun initViews() = with(binding) {
-        adapter = this@MyBoardActivity.adapter
-        vm = viewModel
-
-        intent
-            ?.getStringExtra(Constants.TEAM)
-            ?.let { viewModel.setTeam(it) }
-            ?: {
-                toast("오류가 발생하였습니다")
-                Handler(mainLooper).postDelayed({ finish() }, 1000)
-            }
-        layoutTop.btnBack.setOnClickListener { finish() }
+//        adapter = this@MyBoardActivity.adapter
+//        vm = viewModel
+//
+//        intent
+//            ?.getStringExtra(Constants.TEAM)
+//            ?.let { viewModel.setTeam(it) }
+//            ?: {
+//                toast("오류가 발생하였습니다")
+//                Handler(mainLooper).postDelayed({ finish() }, 1000)
+//            }
+//        layoutTop.btnBack.setOnClickListener { finish() }
     }
 
     override fun onResume() {
