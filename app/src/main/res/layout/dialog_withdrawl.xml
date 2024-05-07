@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="dialog"
+            type="com.ezen.lolketing.view.dialog.WithdrawalDialog" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/light_black"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/card_const"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/withdrawal"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/guide_withdrawal"
+                android:textAlignment="center"
+                android:textColor="@color/light_gray"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTitle"/>
+
+            <com.ezen.lolketing.view.custom.CustomEditTextView
+                android:id="@+id/editWithdrawal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:drawablePadding="10dp"
+                android:hint="@string/withdrawal"
+                android:maxLength="10"
+                android:layout_marginTop="25dp"
+                android:layout_marginHorizontal="20dp"
+                app:layout_constraintTop_toBottomOf="@id/txtMessage"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="30dp"
+                android:backgroundTint="@color/gray"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="@{() -> dialog.dismiss()}"
+                android:text="@string/cancel"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:cornerRadius="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnOk"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editWithdrawal"
+                app:strokeColor="@color/gray" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:onClick="@{() -> dialog.onOkClick()}"
+                android:text="@string/label_withdrawal"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:cornerRadius="3dp"
+                android:backgroundTint="@color/red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnCancel"
+                app:layout_constraintTop_toTopOf="@id/btnCancel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

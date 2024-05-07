@@ -63,7 +63,7 @@ class PurchaseActivity :
                     }
                     is PurchaseViewModel.PurchaseStatus.InsufficientBalance -> {
                         binding.btnPayment.text = if (it.isInsufficientBalance) {
-                            getString(R.string.charging_cache)
+                            getString(R.string.charging_cash)
                         } else {
                             getString(R.string.payment)
                         }

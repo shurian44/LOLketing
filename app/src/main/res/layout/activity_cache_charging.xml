@@ -25,7 +25,7 @@
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
             app:isMenuVisible="@{false}"
-            app:title="@{@string/charging_cache}" />
+            app:title="@{@string/charging_cash}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -171,7 +171,7 @@
             android:layout_height="56dp"
             android:background="@color/colorPrimary"
             android:onClick="@{() -> vm.updateChargingCache()}"
-            android:text="@string/charging_cache"
+            android:text="@string/charging_cash"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"

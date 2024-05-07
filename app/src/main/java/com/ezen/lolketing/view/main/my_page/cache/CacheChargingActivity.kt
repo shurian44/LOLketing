@@ -7,6 +7,7 @@ import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityCacheChargingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+// 제거 예정
 @AndroidEntryPoint
 class CacheChargingActivity :
     StatusViewModelActivity<ActivityCacheChargingBinding, CacheChargingViewModel>(R.layout.activity_cache_charging) {

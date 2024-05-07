@@ -1,5 +1,7 @@
 package com.ezen.network.model
 
+import java.text.DecimalFormat
+
 data class StringIdParam(
     val id: String
 )
@@ -33,9 +35,21 @@ data class MyInfo(
         address = address
     )
 
+    fun getFormatCash() = DecimalFormat("###,###").format(cash).plus("원")
+
     fun getAvailableList() = list.filter { it.isUsed.not() }
 
     fun getUsedList() = list.filter { it.isUsed }
+
+    fun getCouponInfo() = "${getAvailableList().size} / $totalCoupons"
+
+    fun getGradeImage() = Grade.getImage(grade)
+
+    fun getGradeName() = Grade.getKoreanName(grade)
+
+    fun getMaxPoint() = Grade.getMaxPoint(grade)
+
+    fun getGradeProgress() = "$point / ${getMaxPoint()}"
 
     companion object {
         fun init() = MyInfo(

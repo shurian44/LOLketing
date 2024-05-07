@@ -7,14 +7,14 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityMyPageBinding
 import com.ezen.lolketing.util.createIntent
-import com.ezen.lolketing.util.repeatOnStarted
 import com.ezen.lolketing.util.startActivity
+import com.ezen.lolketing.view.dialog.CashChargingDialog
+import com.ezen.lolketing.view.dialog.LogoutDialog
+import com.ezen.lolketing.view.dialog.WithdrawalDialog
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.login.join.JoinDetailActivity
-import com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity
 import com.ezen.lolketing.view.main.shop.history.PurchaseHistoryActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class MyPageActivity :
@@ -25,18 +25,14 @@ class MyPageActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.vm = viewModel
-        binding.activity = this
-        binding.layoutTop.btnBack.setOnClickListener { finish() }
+        initViews()
 
-        repeatOnStarted {
-            viewModel.goToLogin.collectLatest {
-                if (it) {
-                    finishAffinity()
-                    startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                }
-            }
-        }
+    }
+
+    fun initViews() = with(binding) {
+        vm = viewModel
+        activity = this@MyPageActivity
+        layoutTop.btnBack.setOnClickListener { finish() }
     }
 
     fun goToModify() {
@@ -52,11 +48,31 @@ class MyPageActivity :
     }
 
     fun goToCacheCharging() {
-        startActivity(CacheChargingActivity::class.java)
+        CashChargingDialog(
+            onOkClick = viewModel::updateCashCharging,
+            myCash = viewModel.info.value.getFormatCash()
+        ).show(supportFragmentManager, null)
+    }
+
+    fun logout() {
+        LogoutDialog(
+            onOkClick = viewModel::logout
+        ).show(supportFragmentManager, null)
+    }
+
+    fun withdrawal() {
+        WithdrawalDialog(
+            onOkClick = viewModel::withdrawal
+        ).show(supportFragmentManager, null)
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.fetchUserInfo()
+    }
+
+    override fun statusFinish() {
+        finishAffinity()
+        startActivity(LoginActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
     }
 }
