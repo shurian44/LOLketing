@@ -12,6 +12,8 @@ data class Coupon(
         "COUPON001" -> "신규 가입 쿠폰"
         else -> "룰렛 쿠폰"
     }
+
+    fun getReceiveTitle() = "${rp}RP\n받기"
 }
 
 data class UpdateCouponItem(

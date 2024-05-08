@@ -24,6 +24,9 @@ class MyPageViewModel @Inject constructor(
     private val _info = MutableStateFlow(MyInfo.init())
     val info: StateFlow<MyInfo> = _info
 
+    private val _myPageStatus = MutableStateFlow<MyPageStatus>(MyPageStatus.Init)
+    val myPageStatus: StateFlow<MyPageStatus> = _myPageStatus
+
     /** 유저 정보 조회 **/
     fun fetchUserInfo()  {
         repository
@@ -65,4 +68,26 @@ class MyPageViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    /** 쿠폰 사용 **/
+    fun updateUsingCoupon(couponId: Int) {
+        repository
+            .updateUsingCoupon(couponId)
+            .setLoadingState()
+            .onEach {
+                _info.value = it
+                _myPageStatus.value = MyPageStatus.Success
+            }
+            .catch { updateMessage(it.message ?: "쿠폰 사용 실패") }
+            .launchIn(viewModelScope)
+    }
+
+    fun updateStatusInit() {
+        _myPageStatus.value = MyPageStatus.Init
+    }
+
+}
+
+sealed class MyPageStatus {
+    object Init: MyPageStatus()
+    object Success: MyPageStatus()
 }
