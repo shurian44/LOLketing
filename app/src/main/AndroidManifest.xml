@@ -96,7 +96,7 @@
         <activity android:name=".view.main.league_info.LeagueInfoActivity" />
         <activity android:name=".view.main.ticket.ReserveActivity" />
         <activity android:name=".view.main.ticket.list.ReserveListActivity" />
-        <activity android:name=".view.login.join.JoinDetailActivity" />
+        <activity android:name=".view.login.join.MyInfoModifyActivity" />
         <activity android:name=".view.main.board.team.TeamActivity" />
         <activity android:name=".view.main.news.NewsActivity" />
         <activity android:name=".view.main.news.NewsWebViewActivity" />

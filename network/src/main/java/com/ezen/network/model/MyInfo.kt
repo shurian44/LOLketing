@@ -76,12 +76,18 @@ data class ModifyInfo(
 ) {
     fun checkValidation() = when {
         id.isEmpty() -> throw Exception("유저 정보가 없습니다.")
-        nickname.isEmpty() || nickname.length >= 11 ->
-            throw Exception("닉네임은 1~11자 이상으로 입력해 주세요.")
-        mobile.isNotEmpty() && mobile.length !in 10..11 ->
-            throw Exception("전화번호를 확인해 주세요.")
+        nickname.isEmpty() || isNicknameValid(nickname).not() ->
+            "닉네임은 1~11자 이상으로 입력해 주세요."
+        mobile.isNotEmpty() && isMobileValid(mobile).not() ->
+            "전화번호를 확인해 주세요."
         else -> true
     }
+
+    fun isNicknameValid(nickname: String) =
+        nickname.length in 1..11
+
+    fun isMobileValid(mobile: String) =
+        mobile.length in 10..11
 
     companion object {
         fun init() = ModifyInfo(
@@ -90,5 +96,9 @@ data class ModifyInfo(
             mobile = "",
             address = ""
         )
+
+        const val TypeMobile = "mobile"
+        const val TypeNickname = "nickname"
+        const val TypeAddress = "address"
     }
 }

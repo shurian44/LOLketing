@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityAddressBinding
+import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.addOnScrollListener
 import com.ezen.lolketing.util.toast
 import com.ezen.lolketing.view.login.adater.AddressAdapter
@@ -39,7 +40,6 @@ class AddressActivity :
 
     }
 
-    // 등록한 주소를 이전 화면(JoinDetailActivity)에 데이터 전달
     fun addressRegister() {
         var address = ""
         viewModel.info.value.getFullAddress()
@@ -52,7 +52,7 @@ class AddressActivity :
         setResult(
             Activity.RESULT_OK,
             Intent().also {
-                it.putExtra(JoinDetailActivity.ADDRESS, address)
+                it.putExtra(Constants.Address, address)
             }
         )
         finish()

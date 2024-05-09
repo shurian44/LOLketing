@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.login.join.MyInfoModifyActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.login.join.MyInfoModifyViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:clickable="true"
+        android:focusable="true"
+        tools:context=".view.login.join.MyInfoModifyActivity">
+
+        <include
+            android:id="@+id/layoutTop"
+            layout="@layout/layout_top"
+            app:isBackVisible="@{true}"
+            app:title="@{@string/my_info_modify}" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            app:layout_constraintBottom_toTopOf="@id/btnModify"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <com.ezen.lolketing.view.custom.CustomEditTextView
+                    android:id="@+id/editNickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:drawableStart="@drawable/ic_user"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/guide_input_nickname"
+                    android:inputType="text"
+                    android:maxLength="11"
+                    android:maxLines="1"
+                    android:onTextChanged="@{(text, s, b, c) -> vm.updateEditValue(vm.info.TypeNickname, text.toString())}"
+                    android:text="@{vm.info.nickname}"
+                    app:validationStatus="@{!vm.info.isNicknameValid(vm.info.nickname)}" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <View
+                        android:id="@+id/viewLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center"
+                        android:background="@color/gray" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/black"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/select" />
+
+                </FrameLayout>
+
+                <com.ezen.lolketing.view.custom.CustomEditTextView
+                    android:id="@+id/editPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:drawableStart="@drawable/ic_phone"
+                    android:drawablePadding="10dp"
+                    android:hint="@string/guide_input_phone"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:maxLines="1"
+                    android:onTextChanged="@{(text, s, b, c) -> vm.updateEditValue(vm.info.TypeMobile, text.toString())}"
+                    android:text="@{vm.info.mobile}"
+                    app:validationStatus="@{!vm.info.isMobileValid(vm.info.mobile)}" />
+
+                <com.ezen.lolketing.view.custom.CustomEditTextView
+                    android:id="@+id/editAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_address"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:hint="@string/guide_input_address"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:onClick="@{() -> activity.moveAddressSearch()}"
+                    android:text="@{vm.info.address}"
+                    app:layout_constraintBottom_toTopOf="@id/btnRegister"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnModify"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/main_color"
+            android:insetBottom="0dp"
+            android:onClick="@{() -> vm.updateUserInfo()}"
+            android:text="@string/select_modify"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:cornerRadius="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

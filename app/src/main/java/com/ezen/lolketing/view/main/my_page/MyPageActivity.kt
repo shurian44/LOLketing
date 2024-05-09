@@ -6,7 +6,6 @@ import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityMyPageBinding
-import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.util.repeatOnCreated
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.dialog.CashChargingDialog
@@ -14,7 +13,7 @@ import com.ezen.lolketing.view.dialog.CouponDialog
 import com.ezen.lolketing.view.dialog.LogoutDialog
 import com.ezen.lolketing.view.dialog.WithdrawalDialog
 import com.ezen.lolketing.view.login.LoginActivity
-import com.ezen.lolketing.view.login.join.JoinDetailActivity
+import com.ezen.lolketing.view.login.join.MyInfoModifyActivity
 import com.ezen.lolketing.view.main.shop.history.PurchaseHistoryActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -51,11 +50,7 @@ class MyPageActivity :
     }
 
     fun goToModify() {
-        startActivity(
-            createIntent(JoinDetailActivity::class.java).also {
-                it.putExtra(JoinDetailActivity.MODIFY, true)
-            }
-        )
+        startActivity(MyInfoModifyActivity::class.java)
     }
 
     fun goToPurchaseHistory() {

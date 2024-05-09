@@ -12,7 +12,6 @@ import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.util.repeatOnCreated
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.login.join.AddressActivity
-import com.ezen.lolketing.view.login.join.JoinDetailActivity
 import com.ezen.lolketing.view.main.my_page.cache.CacheChargingActivity
 import com.ezen.lolketing.view.main.shop.history.PurchaseHistoryActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -87,7 +86,7 @@ class PurchaseActivity :
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.getStringExtra(JoinDetailActivity.ADDRESS)?.let {
+            result.data?.getStringExtra(Constants.Address)?.let {
                 viewModel.setAddress(it)
             }
         }
