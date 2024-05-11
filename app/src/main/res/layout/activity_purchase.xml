@@ -47,7 +47,7 @@
             android:layout_marginStart="3dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="7dp"
-            android:background="@drawable/bg_circle_sub_color"
+            android:background="@drawable/bg_circle_main_color"
             android:minWidth="15dp"
             android:minHeight="15dp"
             android:text="@{vm.count}"

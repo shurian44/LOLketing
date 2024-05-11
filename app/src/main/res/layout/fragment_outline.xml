@@ -1,265 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
-        tools:context=".view.main.league_info.OutlineFragment">
+        android:background="@color/black">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="What is LCK?"
+                android:textColor="@color/main_color"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="15dp"
-                    android:text="2022 LCK SPRING TITLE"
-                    android:textColor="@color/sub_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="라이엇 게임즈에서 주최/주관하는 공식 리그로, 최상위 실력의 프로팀들이 경쟁하는 공식 프로 티어 리그 입니다.\n\n총 10팀이 참가하여 2라운드 풀리그로 정규 리그 경기가 진행되며, 정규리그 최종 상위 5팀은 포스트 시즌에 진출하여 우승 타이틀을 놓고 경쟁하게 됩니다."
+                android:textColor="@color/light_gray"
+                android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/labelLCK"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/light_black"
-                    android:padding="4dp"
-                    android:text="What is LCK?"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="일정"
+                android:textColor="@color/main_color"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtLCK"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@color/white"
-                    android:gravity="left|center_vertical"
-                    android:lineSpacingMultiplier="1.2"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="6dp"
-                    android:text="라이엇 게임즈에서 주최/주관하는 공식 리그로, 최상위 실력의 프로팀들이 경쟁하는 공식 프로 티어 리그 입니다.\n총 10팀이 참가하여 2라운드 풀리그로 정규 리그 경기가 진행되며, 정규리그 최종 상위 5팀은 포스트 시즌에 진출하여 우승 타이틀을 놓고 경쟁하게 됩니다."
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/labelLCK" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="1라운드(17:00)\n매주 수요일, 목요일, 금요일, 토요일, 일요일\n\n2라운드(20:00)\n매주 목요일, 금요일, 토요일, 일요일"
+                android:textColor="@color/light_gray"
+                android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/txtSummary"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@color/light_black"
-                    android:padding="4dp"
-                    android:text="개요"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtLCK" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="총상금"
+                android:textColor="@color/main_color"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <LinearLayout
-                    android:id="@+id/layout1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="2dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtSummary">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="300,000,000원"
+                android:textColor="@color/light_gray"
+                android:textSize="12sp" />
 
-                    <TextView
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="대회명"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="중계"
+                android:textColor="@color/main_color"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="2dp"
-                        android:background="@color/white"
-                        android:gravity="start|center_vertical"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="6dp"
-                        android:text="리그 오브 레전드 챔피언스 코리아 스프링(LCK)"
-                        android:textColor="@color/black" />
-                </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="(TV) SBS-AfreecaTV(온라인) 네이버, 아프리카TV, 트위치, 유튜브, Wavve, LG U+ 모바일 tv"
+                android:textColor="@color/light_gray"
+                android:textSize="12sp" />
 
-                <LinearLayout
-                    android:id="@+id/layout2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="2dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="장소"
+                android:textColor="@color/main_color"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:gravity="center_horizontal|top"
-                        android:padding="5dp"
-                        android:text="일정"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="롤파크(LoL PARK) 내 LCK아레나(LCK Arena)"
+                android:textColor="@color/light_gray"
+                android:textSize="12sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="2dp"
-                        android:background="@color/white"
-                        android:gravity="start|center_vertical"
-                        android:lineSpacingMultiplier="1.2"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="6dp"
-                        android:text="1라운드 매주 수요일, 목요일, 금요일, 토요일, 일요일\n2라운드 매주 목요일, 금요일, 토요일, 일요일\n1경기 오후 5시 / 2경기 오후 8시"
-                        android:textColor="@color/black" />
-                </LinearLayout>
+        </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/layout3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="2dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout2">
-
-                    <TextView
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:gravity="center_horizontal|center_vertical"
-                        android:padding="5dp"
-                        android:text="총상금"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="2dp"
-                        android:background="@color/white"
-                        android:gravity="start|center_vertical"
-                        android:lineSpacingMultiplier="1.2"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="6dp"
-                        android:text="300,000,000원"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="2dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout3">
-
-                    <TextView
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:gravity="center_horizontal|top"
-                        android:padding="5dp"
-                        android:text="중계"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="2dp"
-                        android:background="@color/common_google_signin_btn_text_dark_default"
-                        android:gravity="start|center_vertical"
-                        android:lineSpacingMultiplier="1.2"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="6dp"
-                        android:text="(TV) SBS-AfreecaTV\n(온라인) 네이버, 아프리카TV, 트위치, 유튜브, Wavve, LG U+ 모바일 tv"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="30dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout4">
-
-                    <TextView
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="장소"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="2dp"
-                        android:background="@color/white"
-                        android:gravity="start|center_vertical"
-                        android:lineSpacingMultiplier="1.2"
-                        android:paddingHorizontal="15dp"
-                        android:paddingVertical="6dp"
-                        android:text="롤파크(LoL PARK) 내 LCK아레나(LCK Arena)"
-                        android:textColor="@color/black" />
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </ScrollView>
-    </FrameLayout>
-
+    </ScrollView>
 </layout>

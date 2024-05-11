@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="title"
-            type="String" />
+            name="activity"
+            type="com.ezen.lolketing.view.main.league_info.LeagueInfoActivity" />
 
     </data>
 
@@ -40,11 +40,28 @@
             app:layout_constraintStart_toStartOf="@id/imgTop"
             app:layout_constraintTop_toTopOf="@id/imgTop" />
 
-        <include
-            android:id="@+id/layoutTop"
-            layout="@layout/layout_top"
-            app:isBackVisible="@{true}"
-            app:title="@{@string/league_info}" />
+        <View
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_back"
+            android:onClick="@{() -> activity.finish()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/league_info"
+            android:textColor="@color/main_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -55,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgTop"
-            app:tabSelectedTextColor="@color/sub_color"
+            app:tabSelectedTextColor="@color/main_color"
             app:tabTextColor="@color/white" />
 
         <androidx.viewpager2.widget.ViewPager2
@@ -67,6 +84,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabLayout"
             tools:background="@color/black" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="-1dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

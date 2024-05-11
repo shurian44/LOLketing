@@ -28,6 +28,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#B3000000"
+            app:layout_constraintBottom_toBottomOf="@id/imageView"
+            app:layout_constraintEnd_toEndOf="@id/imageView"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="@id/imageView" />
+
+        <View
+            android:id="@+id/btnBack"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="20dp"
@@ -36,6 +46,18 @@
             android:onClick="@{() -> activity.finish()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/lol_guide_title"
+            android:textColor="@color/white"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardAos"
@@ -47,7 +69,8 @@
             app:layout_constraintBottom_toTopOf="@id/cardPosition"
             app:layout_constraintEnd_toStartOf="@id/cardRule"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageView">
+            app:layout_constraintTop_toBottomOf="@id/imageView"
+            app:strokeColor="@color/main_color">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -81,7 +104,8 @@
             app:layout_constraintBottom_toBottomOf="@id/cardAos"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cardAos"
-            app:layout_constraintTop_toTopOf="@id/cardAos">
+            app:layout_constraintTop_toTopOf="@id/cardAos"
+            app:strokeColor="@color/main_color">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -115,7 +139,8 @@
             app:layout_constraintBottom_toTopOf="@id/cardScore"
             app:layout_constraintEnd_toEndOf="@id/cardAos"
             app:layout_constraintStart_toStartOf="@id/cardAos"
-            app:layout_constraintTop_toBottomOf="@id/cardAos">
+            app:layout_constraintTop_toBottomOf="@id/cardAos"
+            app:strokeColor="@color/main_color">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -148,7 +173,8 @@
             app:layout_constraintBottom_toBottomOf="@id/cardPosition"
             app:layout_constraintEnd_toEndOf="@id/cardRule"
             app:layout_constraintStart_toStartOf="@id/cardRule"
-            app:layout_constraintTop_toTopOf="@id/cardPosition">
+            app:layout_constraintTop_toTopOf="@id/cardPosition"
+            app:strokeColor="@color/main_color">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -182,7 +208,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/cardPosition"
             app:layout_constraintStart_toStartOf="@id/cardPosition"
-            app:layout_constraintTop_toBottomOf="@id/cardPosition">
+            app:layout_constraintTop_toBottomOf="@id/cardPosition"
+            app:strokeColor="@color/main_color">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -215,7 +242,8 @@
             app:layout_constraintBottom_toBottomOf="@id/cardScore"
             app:layout_constraintEnd_toEndOf="@id/cardRule"
             app:layout_constraintStart_toStartOf="@id/cardRule"
-            app:layout_constraintTop_toTopOf="@id/cardScore">
+            app:layout_constraintTop_toTopOf="@id/cardScore"
+            app:strokeColor="@color/main_color">
 
             <ImageView
                 android:layout_width="match_parent"
