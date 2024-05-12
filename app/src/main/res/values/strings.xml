@@ -197,7 +197,7 @@
     <string name="price">가격</string>
 
     <!-- 리그 정보 -->
-    <string name="info_content">2022 LoL 챔피언스 코리아\n스프링 스플릿 대회 안내</string>
+    <string name="info_content">LoL 챔피언스 코리아\n스프링 스플릿 대회 안내</string>
     <string name="menu_summary">개요</string>
     <string name="menu_proceeding">진행 방식</string>
     <string name="menu_prize_money">대회 상금</string>
@@ -222,6 +222,7 @@
     <string name="ticket_payment">티켓 결제</string>
     <string name="shopping">쇼핑</string>
     <string name="lol_guide">롤알못</string>
+    <string name="lol_guide_title">롤알못\n가이드</string>
     <string name="news">뉴스</string>
     <string name="chatting">채팅</string>
     <string name="versus">vs</string>
@@ -250,7 +251,7 @@
 
     <!-- 쇼핑 -->
     <string name="goods_shopping">굿즈 쇼핑</string>
-    <string name="shopping_item_ready">상품 준비중입니다.</string>
+    <string name="shopping_item_ready">등록된 상품이 없습니다</string>
     <string name="image_load_failure">이미지 로드 실패</string>
     <string name="select_item">선택 상품</string>
     <string name="empty_select_item">선택한 상품이 없습니다.</string>

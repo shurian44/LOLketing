@@ -20,10 +20,10 @@ class ShopActivity :
     StatusViewModelActivity<ActivityShopBinding, ShopViewModel>(R.layout.activity_shop) {
 
     override val viewModel: ShopViewModel by viewModels()
-    val adapter = ShopAdapter { documentId ->
-        launcher.launch(
+    val adapter = ShopAdapter { goodsId ->
+        startActivity(
             createIntent(ShopDetailActivity::class.java).also {
-                it.putExtra(Constants.DOCUMENT_ID, documentId)
+                it.putExtra(Constants.ID, goodsId)
             }
         )
     }
@@ -38,7 +38,7 @@ class ShopActivity :
         activity = this@ShopActivity
         vm = viewModel
 
-        viewModel.shoppingCategoryNames.forEachIndexed { index, name ->
+        viewModel.tabList.forEachIndexed { index, name ->
             tabLayout.addTab(
                 tabLayout.newTab().apply {
                     text = name
@@ -51,19 +51,13 @@ class ShopActivity :
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let { viewModel.setQuery(it.id) }
+                tab?.let { viewModel.updateIndex(it.id) }
             }
         })
     }
 
     fun goToBasket() {
         startActivity(BasketActivity::class.java)
-    }
-
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            finish()
-        }
     }
 
 }

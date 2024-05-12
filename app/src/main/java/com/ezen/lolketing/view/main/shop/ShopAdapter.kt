@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.databinding.ItemShoppingBinding
-import com.ezen.lolketing.model.ShopListItem
+import com.ezen.network.model.Goods
 
 class ShopAdapter(
-    private val onClick: (String) -> Unit
-): ListAdapter<ShopListItem, ShopViewHolder>(diffUtil) {
+    private val onClick: (Int) -> Unit
+): ListAdapter<Goods, ShopViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ShopViewHolder(
@@ -27,11 +27,11 @@ class ShopAdapter(
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<ShopListItem>() {
-            override fun areItemsTheSame(oldItem: ShopListItem, newItem: ShopListItem) =
-                oldItem.documentId == newItem.documentId
+        val diffUtil = object : DiffUtil.ItemCallback<Goods>() {
+            override fun areItemsTheSame(oldItem: Goods, newItem: Goods) =
+                oldItem.goodsId == newItem.goodsId
 
-            override fun areContentsTheSame(oldItem: ShopListItem, newItem: ShopListItem) =
+            override fun areContentsTheSame(oldItem: Goods, newItem: Goods) =
                 oldItem == newItem
 
         }
@@ -42,10 +42,10 @@ class ShopViewHolder(
     private val binding: ItemShoppingBinding
 ): RecyclerView.ViewHolder(binding.root) {
     fun bind(
-        item: ShopListItem,
-        onClick: (String) -> Unit
+        item: Goods,
+        onClick: (Int) -> Unit
     ) {
         binding.item = item
-        binding.root.setOnClickListener { onClick(item.documentId) }
+        binding.root.setOnClickListener { onClick(item.goodsId) }
     }
 }

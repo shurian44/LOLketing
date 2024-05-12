@@ -47,16 +47,16 @@
             android:layout_marginStart="3dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="7dp"
-            android:background="@drawable/bg_circle_sub_color"
+            android:background="@drawable/bg_circle_main_color"
             android:minWidth="15dp"
             android:minHeight="15dp"
             android:onClick="@{() -> activity.goToBasket()}"
-            android:text="@{vm.count}"
+            android:text="@{vm.cartCount}"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:isVisible="@{vm.count != `0`}"
+            app:isVisible="@{!vm.cartCount.empty}"
             app:layout_constraintBottom_toBottomOf="@id/btnCart"
             app:layout_constraintEnd_toEndOf="@id/btnCart"
             app:layout_constraintStart_toStartOf="@id/btnCart"
@@ -103,7 +103,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageView"
             app:tabMode="scrollable"
-            app:tabSelectedTextColor="@color/sub_color"
+            app:tabSelectedTextColor="@color/main_color"
             app:tabTextColor="@color/white" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -112,6 +112,7 @@
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:paddingHorizontal="13dp"
+            android:paddingBottom="30dp"
             app:adapter="@{activity.adapter}"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -122,9 +123,24 @@
             app:submitList="@{vm.list}"
             tools:listitem="@layout/item_shopping" />
 
+        <ImageView
+            android:id="@+id/imageEmpty"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/imageContentDescription"
+            android:src="@drawable/img_empty"
+            app:isVisible="@{vm.list.empty}"
+            app:layout_constraintBottom_toTopOf="@id/txtEmpty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabLayout"
+            app:layout_constraintVertical_chainStyle="packed" />
+
         <TextView
+            android:id="@+id/txtEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="@string/shopping_item_ready"
             android:textColor="@color/gray"
             android:textSize="16sp"
@@ -132,7 +148,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tabLayout" />
+            app:layout_constraintTop_toBottomOf="@id/imageEmpty" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
