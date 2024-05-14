@@ -38,6 +38,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/ic_cart"
+            android:onClick="@{() -> activity.goToBasket()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
@@ -48,15 +49,16 @@
             android:layout_marginStart="3dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="7dp"
-            android:background="@drawable/bg_circle_sub_color"
+            android:background="@drawable/bg_circle_main_color"
             android:minWidth="15dp"
             android:minHeight="15dp"
-            android:text="@{vm.count}"
+            android:onClick="@{() -> activity.goToBasket()}"
+            android:text="@{vm.cartCount}"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:isVisible="@{vm.count != `0`}"
+            app:isVisible="@{!vm.cartCount.empty}"
             app:layout_constraintBottom_toBottomOf="@id/btnCart"
             app:layout_constraintEnd_toEndOf="@id/btnCart"
             app:layout_constraintStart_toStartOf="@id/btnCart"
@@ -78,23 +80,12 @@
                 <com.ezen.lolketing.view.custom.ImageSlider
                     android:id="@+id/imageSlider"
                     android:layout_width="0dp"
-                    android:layout_height="300dp"
+                    android:layout_height="310dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:sliderAddressImage="@{vm.item.images}"
+                    app:sliderAddressImage="@{vm.item.imageList}"
                     tools:background="@color/main_color" />
-
-                <View
-                    android:id="@+id/viewBackground"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="-15dp"
-                    android:background="@color/light_black"
-                    app:layout_constraintBottom_toBottomOf="@id/btnPlus"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imageSlider" />
 
                 <TextView
                     android:id="@+id/txtCategory"
@@ -104,7 +95,7 @@
                     android:layout_marginTop="16dp"
                     android:text="@{vm.item.category}"
                     android:textColor="@color/gray"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imageSlider"
                     tools:text="[카테고리]" />
@@ -113,7 +104,7 @@
                     android:id="@+id/txtName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="3dp"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
@@ -126,87 +117,83 @@
                     app:layout_constraintTop_toBottomOf="@id/txtCategory"
                     tools:text="상품 이름" />
 
-                <TextView
-                    android:id="@+id/labelPrice"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/amount"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="@id/txtCategory"
-                    app:layout_constraintTop_toBottomOf="@id/txtName" />
+                    android:backgroundTint="@android:color/transparent"
+                    app:cardCornerRadius="5dp"
+                    app:layout_constraintStart_toStartOf="@id/txtName"
+                    app:layout_constraintTop_toBottomOf="@id/txtName"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:id="@+id/btnMinus"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/ic_minus"
+                            android:onClick="@{() -> vm.decreaseAmount()}"
+                            app:layout_constraintBottom_toBottomOf="@id/labelAmount"
+                            app:layout_constraintEnd_toStartOf="@id/txtAmount"
+                            app:layout_constraintTop_toTopOf="@id/labelAmount" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="33dp"
+                            android:background="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/txtAmount"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@{String.valueOf(vm.item.amount)}"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="10" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="33dp"
+                            android:background="@color/gray" />
+
+                        <View
+                            android:id="@+id/btnPlus"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/ic_plus"
+                            android:onClick="@{() -> vm.increaseAmount()}"
+                            app:layout_constraintBottom_toBottomOf="@id/labelAmount"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/labelAmount" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:text="@{vm.item.priceFormat}"
-                    android:textColor="@color/sub_color"
-                    android:textSize="16sp"
+                    android:textColor="@color/main_color"
+                    android:textSize="20sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/cardAmount"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/labelPrice"
+                    app:layout_constraintTop_toTopOf="@id/cardAmount"
                     tools:text="11,000원" />
-
-                <TextView
-                    android:id="@+id/labelAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:text="@string/quantity"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="@id/txtCategory"
-                    app:layout_constraintTop_toBottomOf="@id/labelPrice" />
-
-                <View
-                    android:id="@+id/btnMinus"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="7dp"
-                    android:background="@drawable/ic_btn_minus"
-                    android:onClick="@{() -> vm.decreaseAmount()}"
-                    app:layout_constraintBottom_toBottomOf="@id/labelAmount"
-                    app:layout_constraintEnd_toStartOf="@id/txtAmount"
-                    app:layout_constraintTop_toTopOf="@id/labelAmount" />
-
-                <TextView
-                    android:id="@+id/txtAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:text="@{String.valueOf(vm.item.amount)}"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/labelAmount"
-                    app:layout_constraintEnd_toStartOf="@id/btnPlus"
-                    app:layout_constraintTop_toTopOf="@id/labelAmount"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:text="100" />
-
-                <View
-                    android:id="@+id/btnPlus"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/ic_btn_plus"
-                    android:onClick="@{() -> vm.increaseAmount()}"
-                    app:layout_constraintBottom_toBottomOf="@id/labelAmount"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/labelAmount" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/guide_refund"
-                    android:textColor="@color/gray"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/viewBackground" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -216,7 +203,7 @@
             android:id="@+id/txtCart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/sub_color"
+            android:background="@color/gray"
             android:onClick="@{() -> vm.insertShoppingBasket()}"
             android:paddingVertical="16dp"
             android:text="@string/insert_basket"
@@ -233,13 +220,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/main_color"
+            android:onClick="@{() -> activity.goToPurchase()}"
             android:paddingVertical="16dp"
             android:text="@string/right_away_purchase"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:onClick="@{() -> activity.goToPurchase()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/txtCart" />

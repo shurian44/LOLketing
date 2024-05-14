@@ -9,9 +9,15 @@ import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityShopDetailBinding
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.createIntent
+import com.ezen.lolketing.util.repeatOnCreated
 import com.ezen.lolketing.util.showErrorMessageAndFinish
+import com.ezen.lolketing.util.startActivity
+import com.ezen.lolketing.view.dialog.CommonDialogItem
+import com.ezen.lolketing.view.dialog.ConfirmDialog
+import com.ezen.lolketing.view.main.shop.basket.BasketActivity
 import com.ezen.lolketing.view.main.shop.purchase.PurchaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ShopDetailActivity :
@@ -23,22 +29,50 @@ class ShopDetailActivity :
         super.onCreate(savedInstanceState)
 
         intent
-            ?.getStringExtra(Constants.DOCUMENT_ID)
-            ?.let { viewModel.setDocumentId(it) }
+            ?.getIntExtra(Constants.ID, 0)
+            ?.let(viewModel::fetchShoppingDetail)
             ?: showErrorMessageAndFinish()
 
         binding.activity = this
         binding.vm = viewModel
+
+        repeatOnCreated {
+            viewModel.uiStatus.collectLatest {
+                when(it) {
+                    ShopDetailUIStatus.Init -> {}
+                    ShopDetailUIStatus.BasketInsertSuccess -> {
+                        showInsertSuccessDialog()
+                        viewModel.updateInitStatus()
+                    }
+                }
+            }
+        }
 
     }
 
     fun goToPurchase() {
         launcher.launch(
             createIntent(PurchaseActivity::class.java).also {
-                it.putExtra(Constants.DOCUMENT_ID, viewModel.getDocumentId())
+                it.putExtra(Constants.ID, viewModel.item.value.goodsId)
                 it.putExtra(PurchaseActivity.AMOUNT, viewModel.item.value.amount)
             }
         )
+    }
+
+    fun goToBasket() {
+        startActivity(BasketActivity::class.java)
+    }
+
+    private fun showInsertSuccessDialog() {
+        ConfirmDialog(
+            dialogItem = CommonDialogItem(
+                message = "장바구니에 상품을 추가하였습니다.",
+                cancelText = "장바구니 보기",
+                okText = "계속 쇼핑하기",
+                onCancelClick = ::goToBasket,
+                onOkClick = { finish() }
+            )
+        ).show(supportFragmentManager, "")
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

@@ -1,6 +1,7 @@
 package com.ezen.lolketing.util
 
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -47,6 +48,11 @@ fun setImage(imageView: ImageView, url: String?) {
 
 @BindingAdapter("backgroundColorRes")
 fun setBackgroundColor(view: View, @ColorRes color: Int) {
+    view.setBackgroundColor(ContextCompat.getColor(view.context, color))
+}
+
+@BindingAdapter("cardBackgroundColorRes")
+fun setCardViewBackgroundColor(view: Button, @ColorRes color: Int) {
     view.setBackgroundColor(ContextCompat.getColor(view.context, color))
 }
 
