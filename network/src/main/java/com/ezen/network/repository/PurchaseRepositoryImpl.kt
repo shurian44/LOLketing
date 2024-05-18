@@ -130,7 +130,7 @@ class PurchaseRepositoryImpl @Inject constructor(
             .fetchGoodsItemDetail(
                 IntIdParam(goodsId)
             )
-            .onSuccess { emit(it) }
+            .onSuccess { emit(it.copy(amount = 1)) }
             .onFailure { throw it }
     }
 

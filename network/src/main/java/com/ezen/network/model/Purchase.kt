@@ -1,6 +1,9 @@
 package com.ezen.network.model
 
+import com.ezen.database.entity.CartItem
 import com.ezen.database.entity.GoodsEntity
+import com.ezen.network.util.priceFormat
+import java.text.DecimalFormat
 
 sealed class PurchaseHistoryInfo {
     data class PurchaseHistoryDate(
@@ -56,16 +59,19 @@ data class Goods(
     val name: String,
     val price: Int,
     val url: String
-)
+) {
+    fun getPriceFormat() = price.priceFormat()
+}
 
 data class GoodsDetail(
     val goodsId: Int,
     val category: String,
     val name: String,
     val price: Int,
-    val imageList: List<String>
+    val imageList: List<String>,
+    val amount: Int
 ) {
-    fun toEntity(amount: Int) = GoodsEntity(
+    fun toEntity() = GoodsEntity(
         index = 0,
         category = category,
         name = name,
@@ -74,13 +80,23 @@ data class GoodsDetail(
         image = imageList.getOrElse(0, defaultValue = { "" }),
         goodsId = goodsId
     )
+
+    fun toCartItem() = CartItem(
+        list = listOf(toEntity()),
+        totalPrice = price * amount.toLong(),
+        isAllSelect = true
+    )
+
+    fun getPriceFormat() = (amount * price).priceFormat()
+
     companion object {
         fun init() = GoodsDetail(
             category = "",
             name = "",
             price = 0,
             imageList = listOf(),
-            goodsId = 0
+            goodsId = 0,
+            amount = 1
         )
     }
 }
@@ -112,4 +128,6 @@ data class PurchaseInfo(
             false
         else -> true
     }
+
+    fun getFormatCash() = DecimalFormat("###,###").format(cash).plus("원")
 }

@@ -4,19 +4,24 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
-import com.ezen.lolketing.databinding.ActivityBasketBinding
+import com.ezen.lolketing.databinding.ActivityCartBinding
+import com.ezen.lolketing.util.argumentEncode
 import com.ezen.lolketing.util.createIntent
-import com.ezen.lolketing.view.main.shop.purchase.ProductAdapter
 import com.ezen.lolketing.view.main.shop.purchase.PurchaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BasketActivity : StatusViewModelActivity<ActivityBasketBinding, BasketViewModel>(R.layout.activity_basket) {
-    override val viewModel: BasketViewModel by viewModels()
-    val adapter = ProductAdapter(
-        isBasket = true,
-        onClick = { viewModel.updateBasketChecked(it) }
-    )
+class CartActivity :
+    StatusViewModelActivity<ActivityCartBinding, CartViewModel>(R.layout.activity_cart) {
+    override val viewModel: CartViewModel by viewModels()
+    val adapter by lazy {
+        CartAdapter(
+            isBasket = true,
+            onClick = viewModel::updateBasketChecked,
+            onDecreaseAmount = viewModel::decreaseAmount,
+            onIncreaseAmount = viewModel::increaseAmount
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +39,7 @@ class BasketActivity : StatusViewModelActivity<ActivityBasketBinding, BasketView
     fun goToPurchase() {
         startActivity(
             createIntent(PurchaseActivity::class.java).also {
-                it.putExtra(PurchaseActivity.DATABASE_ID_LIST, viewModel.getIdList())
+                it.putExtra(PurchaseActivity.PURCHASE_LIST, viewModel.getPurchaseItem())
             }
         )
     }

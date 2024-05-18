@@ -1,4 +1,4 @@
-package com.ezen.lolketing.view.main.shop.purchase
+package com.ezen.lolketing.view.main.shop.basket
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,26 +6,26 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.database.entity.GoodsEntity
-import com.ezen.lolketing.databinding.ItemProductBinding
+import com.ezen.lolketing.databinding.ItemCartBinding
 
-class ProductAdapter(
+class CartAdapter(
     private val isBasket: Boolean,
-    private val onDelete: (Int) -> Unit,
+    private val onClick: (Int) -> Unit,
     private val onDecreaseAmount: (Int) -> Unit,
     private val onIncreaseAmount: (Int) -> Unit,
-) : ListAdapter<GoodsEntity, ProductViewHolder>(diffUtil) {
+) : ListAdapter<GoodsEntity, CartViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ProductViewHolder(
-            ItemProductBinding.inflate(
+        CartViewHolder(
+            ItemCartBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
 
-    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         holder.bind(
             currentList[position],
             isBasket,
-            onDelete,
+            onClick,
             onDecreaseAmount,
             onIncreaseAmount
         )
@@ -42,20 +42,22 @@ class ProductAdapter(
     }
 }
 
-class ProductViewHolder(
-    private val binding: ItemProductBinding
+class CartViewHolder(
+    private val binding: ItemCartBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
         item: GoodsEntity,
         isBasket: Boolean,
-        onDelete: (Int) -> Unit,
+        onClick: (Int) -> Unit,
         decreaseAmount: (Int) -> Unit,
         increaseAmount: (Int) -> Unit
     ) = with(binding) {
         this.isBasket = isBasket
         this.item = item
-        btnDelete.setOnClickListener { onDelete(item.index) }
+        checkbox.setOnClickListener {
+            if (isBasket) onClick(item.index)
+        }
         btnMinus.setOnClickListener { decreaseAmount(item.index) }
         btnPlus.setOnClickListener { increaseAmount(item.index) }
     }

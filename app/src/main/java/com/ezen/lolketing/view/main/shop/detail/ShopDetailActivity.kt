@@ -14,7 +14,7 @@ import com.ezen.lolketing.util.showErrorMessageAndFinish
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.view.dialog.CommonDialogItem
 import com.ezen.lolketing.view.dialog.ConfirmDialog
-import com.ezen.lolketing.view.main.shop.basket.BasketActivity
+import com.ezen.lolketing.view.main.shop.basket.CartActivity
 import com.ezen.lolketing.view.main.shop.purchase.PurchaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -53,14 +53,13 @@ class ShopDetailActivity :
     fun goToPurchase() {
         launcher.launch(
             createIntent(PurchaseActivity::class.java).also {
-                it.putExtra(Constants.ID, viewModel.item.value.goodsId)
-                it.putExtra(PurchaseActivity.AMOUNT, viewModel.item.value.amount)
+                it.putExtra(PurchaseActivity.PURCHASE_LIST, viewModel.item.value.toCartItem())
             }
         )
     }
 
     fun goToBasket() {
-        startActivity(BasketActivity::class.java)
+        startActivity(CartActivity::class.java)
     }
 
     private fun showInsertSuccessDialog() {

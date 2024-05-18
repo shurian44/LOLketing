@@ -1,5 +1,6 @@
 package com.ezen.database.repository
 
+import com.ezen.database.entity.CartItem
 import com.ezen.database.entity.GoodsEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,7 +20,7 @@ interface DatabaseRepository {
 
     suspend fun insertGoods(goodsEntity: GoodsEntity): Result<Unit>
 
-    fun fetchCartList(): Flow<List<GoodsEntity>>
+    fun fetchCartList(): Flow<CartItem>
 
     fun fetchCartCount(): Flow<Int>
 

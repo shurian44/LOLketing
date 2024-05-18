@@ -2,9 +2,10 @@ package com.ezen.database.repository
 
 import com.ezen.database.client.DatabaseClient
 import com.ezen.database.entity.AuthEntity
+import com.ezen.database.entity.CartItem
 import com.ezen.database.entity.GoodsEntity
-import com.ezen.database.repository.DatabaseRepository
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DatabaseRepositoryImpl @Inject constructor(
@@ -35,6 +36,17 @@ class DatabaseRepositoryImpl @Inject constructor(
     override fun fetchCartList() = client
         .fetchCartList()
         .getOrThrow()
+        .map {
+            CartItem(
+                list = it,
+                totalPrice = it
+                    .filter { item -> item.isChecked }
+                    .map { item -> item.price * item.amount.toLong() }
+                    .reduceOrNull { acc, l -> acc + l }
+                    ?: 0L,
+                isAllSelect = it.all { item -> item.isChecked }
+            )
+        }
 
     override fun fetchCartCount() = client
         .fetchCartCount()

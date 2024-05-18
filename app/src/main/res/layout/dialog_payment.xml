@@ -7,7 +7,7 @@
 
         <variable
             name="dialog"
-            type="com.ezen.lolketing.view.dialog.ConfirmDialog" />
+            type="com.ezen.lolketing.view.dialog.PaymentDialog" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -32,30 +32,63 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="@{dialog.item.title}"
+                android:text="@string/goods_payment"
                 android:textColor="@color/light_gray"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                app:isVisible="@{!dialog.item.title.empty}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="타이틀" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/txtMessage"
+                android:id="@+id/labelTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/total_price"
+                android:textColor="@color/light_gray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="@{dialog.item.message}"
-                android:textAlignment="center"
+                android:layout_marginEnd="20dp"
+                android:text="@{dialog.totalPriceFormat}"
+                android:textColor="@color/main_color"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/labelTotalPrice"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/labelTotalPrice"
+                tools:text="11,000원" />
+
+            <TextView
+                android:id="@+id/labelMyCash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/my_cash"
                 android:textColor="@color/light_gray"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtTitle"
-                app:layout_goneMarginTop="40dp"
-                tools:text="메시지" />
+                app:layout_constraintTop_toBottomOf="@id/labelTotalPrice" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:text="@{dialog.myCashFormat}"
+                android:textColor="@color/main_color"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/labelMyCash"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/labelMyCash"
+                tools:text="11,000원" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancel"
@@ -68,16 +101,15 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:onClick="@{() -> dialog.onCancelClick()}"
-                android:text="@{dialog.item.cancelText}"
+                android:text="@string/cancel"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:cornerRadius="3dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnOk"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtMessage"
-                app:strokeColor="@color/gray"
-                tools:text="@string/cancel" />
+                app:layout_constraintTop_toBottomOf="@id/labelMyCash"
+                app:strokeColor="@color/gray" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOk"
@@ -87,15 +119,13 @@
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:onClick="@{() -> dialog.onOkClick()}"
-                android:text="@{dialog.item.okText}"
+                android:text="@string/payment"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:cardBackgroundColorRes="@{dialog.item.okButtonColor}"
                 app:cornerRadius="3dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btnCancel"
-                app:layout_constraintTop_toTopOf="@id/btnCancel"
-                tools:text="@string/ok" />
+                app:layout_constraintTop_toTopOf="@id/btnCancel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

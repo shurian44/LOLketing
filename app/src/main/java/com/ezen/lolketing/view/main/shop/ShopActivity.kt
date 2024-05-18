@@ -1,8 +1,6 @@
 package com.ezen.lolketing.view.main.shop
 
-import android.app.Activity
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
@@ -10,7 +8,7 @@ import com.ezen.lolketing.databinding.ActivityShopBinding
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.util.startActivity
-import com.ezen.lolketing.view.main.shop.basket.BasketActivity
+import com.ezen.lolketing.view.main.shop.basket.CartActivity
 import com.ezen.lolketing.view.main.shop.detail.ShopDetailActivity
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +55,7 @@ class ShopActivity :
     }
 
     fun goToBasket() {
-        startActivity(BasketActivity::class.java)
+        startActivity(CartActivity::class.java)
     }
 
 }
