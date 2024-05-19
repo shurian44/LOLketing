@@ -7,6 +7,7 @@ import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityEventDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+// 제거 예정
 @AndroidEntryPoint
 class EventDetailActivity : StatusViewModelActivity<ActivityEventDetailBinding, EventDetailViewModel>(R.layout.activity_event_detail) {
     override val viewModel: EventDetailViewModel by viewModels()

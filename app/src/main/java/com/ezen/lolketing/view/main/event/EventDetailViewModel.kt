@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
-
+// 제거 예정
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
     private val repository: EventRepository

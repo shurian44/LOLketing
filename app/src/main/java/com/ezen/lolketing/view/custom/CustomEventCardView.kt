@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.CustomEventCardBinding
 
+// 제거 예정
 class CustomEventCardView : ConstraintLayout {
 
     private val binding = CustomEventCardBinding.inflate(LayoutInflater.from(context))

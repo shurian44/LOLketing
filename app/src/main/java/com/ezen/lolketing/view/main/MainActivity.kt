@@ -10,7 +10,7 @@ import com.ezen.lolketing.util.*
 import com.ezen.lolketing.view.login.LoginActivity
 import com.ezen.lolketing.view.main.board.BoardListActivity
 import com.ezen.lolketing.view.main.chatting.list.ChattingListActivity
-import com.ezen.lolketing.view.main.event.EventListActivity
+import com.ezen.lolketing.view.main.event.EventActivity
 import com.ezen.lolketing.view.main.guide.GuideActivity
 import com.ezen.lolketing.view.main.league_info.LeagueInfoActivity
 import com.ezen.lolketing.view.main.my_page.MyPageActivity
@@ -47,7 +47,7 @@ class MainActivity : StatusViewModelActivity<ActivityMainBinding, MainViewModel>
     /** 각 버튼별 페이지 이동 **/
     fun moveActivity(view: View) = with(binding) {
         when(view.id){
-            txtEvent.id -> startActivity(EventListActivity::class.java)
+            txtEvent.id -> startActivity(EventActivity::class.java)
             txtMyPage.id -> startActivity(MyPageActivity::class.java)
             txtInfo.id -> startActivity(LeagueInfoActivity::class.java)
             txtReserve.id -> startActivity(ReserveListActivity::class.java)

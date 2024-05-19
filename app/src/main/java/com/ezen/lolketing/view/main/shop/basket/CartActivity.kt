@@ -5,7 +5,6 @@ import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityCartBinding
-import com.ezen.lolketing.util.argumentEncode
 import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.view.main.shop.purchase.PurchaseActivity
 import dagger.hilt.android.AndroidEntryPoint

@@ -22,7 +22,6 @@ class NewsWebViewActivity : BaseActivity<ActivityNewsWebViewBinding>(R.layout.ac
     }
 
     private fun initViews() = with(binding) {
-        title = getString(R.string.news)
         layoutTop.btnBack.setOnClickListener { onBackClick(it) }
 
         val url = intent.getStringExtra(Constants.URL)

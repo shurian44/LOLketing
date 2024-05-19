@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="newsContents"
-            type="com.ezen.lolketing.model.NewsContents" />
+            type="com.ezen.network.model.NewsContents" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,32 +20,47 @@
             android:id="@+id/txtTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/sub_color"
+            android:maxLines="1"
+            android:textColor="@color/yellow"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:html="@{newsContents.title}"
+            app:layout_constraintEnd_toStartOf="@id/txtDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:html="@{newsContents.title}"
             tools:text="기사 제목" />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@{newsContents.date}"
+            android:textColor="@color/light_gray"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/txtTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txtTitle"
+            tools:text="2022.05.21 " />
 
         <TextView
             android:id="@+id/txtDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
-            android:maxLines="2"
-            app:html="@{newsContents.description}"
+            android:maxLines="3"
             android:textColor="@color/white"
             android:textSize="14sp"
+            app:html="@{newsContents.description}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/txtTitle"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/txtTitle"
             app:layout_constraintTop_toBottomOf="@id/txtTitle"
             tools:text="뉴스 정보" />

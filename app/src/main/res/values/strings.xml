@@ -86,10 +86,21 @@
     <string name="new_coupon_using">신규 회원 쿠폰 사용하기</string>
     <string name="event_title_new_user">[이벤트] 신규 회원 이벤트</string>
     <string name="event_title_ticket_reserve">[이벤트] 티켓 구입 이벤트</string>
-    <string name="event_title_roulette">[이벤트] 룰렛 이벤트</string>
-    <string name="roulette_count">룰렛 남은 횟수 : %d번</string>
+    <string name="event_title_roulette">RP 룰렛</string>
+    <string name="roulette_title">100% 당첨 룰렛</string>
+    <string name="roulette_message">돌리고 RP를 모아보세요!</string>
+    <string name="roulette_count">%d번 더 돌릴 수 있어요!</string>
+    <string name="roulette_start">돌리기</string>
     <string name="roulette_result">축하합니다! %dRP에 당첨되셨습니다!!</string>
-    <string name="roulette_title">포인트 룰렛</string>
+    <string name="guide_take_roulette"><![CDATA[티켓 1장 당 룰렛 1회 이용 가능<br>티켓 구매하시고 추가 <font color=\"#03DAC5\"><b>RP</b></font> 받아가세요]]></string>
+    <string name="guide_roulette_no_limit">해당 이벤트는 횟 수 제한 없이 참여 가능합니다.</string>
+    <string name="event_1">Event 1</string>
+    <string name="event_new_user_coupon">신규 가입 웰컴 선물</string>
+    <string name="event_new_user_coupon_message">신규 가입 기념\n500RP 쿠폰 발급</string>
+    <string name="get_coupon">쿠폰 받기</string>
+    <string name="event_2">Event 2</string>
+    <string name="event_ticket_reservation">티켓 예매 이벤트</string>
+    <string name="go_to_roulette">룰렛 페이지 이동</string>
 
     <!-- 티켓 예매 -->
     <string name="ticketing_on">예매</string>

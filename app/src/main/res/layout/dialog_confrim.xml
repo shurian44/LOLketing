@@ -72,6 +72,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:cornerRadius="3dp"
+                app:isVisible="@{!dialog.item.singleButton}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnOk"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +84,9 @@
                 android:id="@+id/btnOk"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="30dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:onClick="@{() -> dialog.onOkClick()}"
@@ -92,9 +95,11 @@
                 android:textStyle="bold"
                 app:cardBackgroundColorRes="@{dialog.item.okButtonColor}"
                 app:cornerRadius="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btnCancel"
-                app:layout_constraintTop_toTopOf="@id/btnCancel"
+                app:layout_constraintTop_toBottomOf="@id/txtMessage"
+                app:layout_goneMarginStart="20dp"
                 tools:text="@string/ok" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

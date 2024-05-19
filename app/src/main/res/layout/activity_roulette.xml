@@ -29,6 +29,31 @@
             app:isBackVisible="@{true}"
             app:title="@{@string/event_title_roulette}" />
 
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="46dp"
+            android:text="@string/roulette_title"
+            android:textColor="@color/main_color"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutTop" />
+
+        <TextView
+            android:id="@+id/txtMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/roulette_message"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
         <ImageView
             android:id="@+id/imgRoulette"
             android:layout_width="320dp"
@@ -36,10 +61,10 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/imageContentDescription"
             android:src="@drawable/img_roulette"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txtCount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/txtMessage" />
 
         <ImageView
             android:id="@+id/imgRoulettePosition"
@@ -53,33 +78,37 @@
             app:layout_constraintStart_toStartOf="@id/imgRoulette" />
 
         <TextView
-            android:id="@+id/btnSpinning"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:backgroundTint="@android:color/transparent"
-            android:gravity="center"
-            android:onClick="@{() -> vm.startRoulette()}"
-            android:text="@string/start"
+            android:id="@+id/txtCount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="46dp"
+            android:text="@{@string/roulette_count(vm.count)}"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/imgRoulette"
-            app:layout_constraintEnd_toEndOf="@id/imgRoulette"
-            app:layout_constraintStart_toStartOf="@id/imgRoulette"
-            app:layout_constraintTop_toTopOf="@id/imgRoulette" />
-
-        <TextView
-            android:id="@+id/txtCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/roulette_count(vm.count)}"
-            android:textColor="@color/sub_color"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btnStart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgRoulette"
-            tools:text="남은 횟수 : 0 번" />
+            tools:text="1번 더 돌릴 수 있어요!" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:onClick="@{() -> vm.setDeg()}"
+            android:paddingVertical="16dp"
+            android:text="@string/roulette_start"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:cornerRadius="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

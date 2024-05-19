@@ -2,8 +2,8 @@ package com.ezen.lolketing.view.main.news
 
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.model.NewsContents
-import com.ezen.lolketing.repository.NewsRepository
+import com.ezen.network.model.NewsContents
+import com.ezen.network.repository.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,10 +41,7 @@ class NewsViewModel @Inject constructor(
             )
             .setLoadingState()
             .onEach {
-                val temp = _list.value.toMutableList()
-                temp.addAll(it.mapper())
-                _list.value = temp
-
+                _list.value = _list.value + it.mapper()
                 if (it.total <= start * display || start * display >= 1000) {
                     _isMore = false
                 } else {

@@ -61,5 +61,6 @@ data class CommonDialogItem(
     val onCancelClick: () -> Unit = {},
     @ColorRes
     val okButtonColor: Int = R.color.main_color,
-    val cancelable: Boolean = false
+    val cancelable: Boolean = false,
+    val isSingleButton: Boolean = false
 )

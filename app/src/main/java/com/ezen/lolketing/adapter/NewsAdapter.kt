@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.R
 import com.ezen.lolketing.databinding.ItemNewsBinding
-import com.ezen.lolketing.model.NewsContents
+import com.ezen.network.model.NewsContents
 
 class NewsAdapter(
     private val onClick: (String) -> Unit
