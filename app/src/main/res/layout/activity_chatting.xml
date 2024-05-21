@@ -25,88 +25,32 @@
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
-            app:title="@{vm.info.title}" />
-
-        <ImageView
-            android:id="@+id/imgTeam1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="@string/imageContentDescription"
-            app:imageRes="@{vm.info.leftTeamImageRes}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/txtVs"
-            app:layout_constraintTop_toBottomOf="@id/layoutTop"
-            tools:src="@drawable/logo_t1" />
-
-        <TextView
-            android:id="@+id/txtVs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/versus"
-            android:textColor="@color/red"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/imgTeam1"
-            app:layout_constraintLeft_toRightOf="@id/imgTeam1"
-            app:layout_constraintRight_toLeftOf="@id/imgTeam2"
-            app:layout_constraintTop_toTopOf="@id/imgTeam1" />
-
-        <ImageView
-            android:id="@+id/imgTeam2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/imageContentDescription"
-            app:imageRes="@{vm.info.rightTeamImageRes}"
-            app:layout_constraintLeft_toRightOf="@id/txtVs"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/imgTeam1"
-            tools:src="@drawable/logo_afreeca" />
-
-        <View
-            android:id="@+id/view1"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/white"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgTeam1" />
+            app:title="@{vm.info.roomInfo.gameTitle}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chattingRecycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="20dp"
-            android:paddingVertical="5dp"
+            android:clipToPadding="false"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="15dp"
             app:adapter="@{activity.adapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/view2"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view1"
-            app:stackFromEnd="true"
-            app:submitList="@{vm.list}"
-            tools:listitem="@layout/item_left_team_chat" />
-
-        <View
-            android:id="@+id/view2"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/white"
             app:layout_constraintBottom_toTopOf="@id/editChat"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            app:stackFromEnd="true"
+            app:submitList="@{vm.info.list}"
+            tools:listitem="@layout/item_left_team_chat" />
 
         <com.ezen.lolketing.view.custom.CustomLimitedEditTextView
             android:id="@+id/editChat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="@={vm.myChat.message}"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="25dp"
+            android:text="@={vm.info.message}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

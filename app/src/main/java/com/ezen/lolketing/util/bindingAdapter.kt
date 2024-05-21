@@ -7,10 +7,13 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import com.ezen.lolketing.R
 import com.ezen.lolketing.model.BoardItem
+import com.ezen.lolketing.view.custom.CustomChattingRoomSelectorView
 import com.ezen.lolketing.view.custom.CustomEditTextView
+import com.ezen.network.model.ChattingRoomInfo
 
 @BindingAdapter("timestamp")
 fun setTimestamp(textView: TextView, timestamp: Long) {
@@ -31,7 +34,8 @@ fun setBoardTitle(textView: TextView, boardTitle: String, boardCategory: String)
 
 @BindingAdapter("boardWriter")
 fun setBoardWriter(textView: TextView, boardItem: BoardItem.BoardListItem) {
-    val writer = "${boardItem.nickname} ${boardItem.timestamp.timestampToString("yyyy.MM.dd")} 조회 ${boardItem.views}"
+    val writer =
+        "${boardItem.nickname} ${boardItem.timestamp.timestampToString("yyyy.MM.dd")} 조회 ${boardItem.views}"
     textView.text = writer
 }
 
@@ -64,4 +68,19 @@ fun imageLoad(imageView: ImageView, @DrawableRes resId: Int) {
 @BindingAdapter("validationStatus")
 fun validationStatus(edit: CustomEditTextView, isValidity: Boolean) {
     edit.setStateError(isValidity)
+}
+
+@BindingAdapter(value = ["chattingRoomList", "chattingRoomIndex"])
+fun setChattingRoomSelector(
+    view: CustomChattingRoomSelectorView,
+    chattingRoomList: List<ChattingRoomInfo>,
+    chattingRoomIndex: Int
+) {
+    runCatching {
+        view.setInfo(chattingRoomList[chattingRoomIndex])
+    }.onSuccess {
+        view.isVisible = true
+    }.onFailure {
+        view.isVisible = false
+    }
 }

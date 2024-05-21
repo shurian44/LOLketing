@@ -2,10 +2,9 @@ package com.ezen.lolketing.view.main.chatting
 
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.model.ChattingInfo
-import com.ezen.lolketing.model.ChattingItem
-import com.ezen.lolketing.repository.ChattingRepository
-import com.ezen.lolketing.util.getToday
+import com.ezen.network.model.ChattingItem
+import com.ezen.network.model.ChattingRoomInfo
+import com.ezen.network.repository.ChattingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,66 +19,54 @@ class ChattingViewModel @Inject constructor(
     private val repository: ChattingRepository
 ) : StatusViewModel() {
 
-    private val _list = MutableStateFlow(listOf<ChattingItem>())
-    val list: StateFlow<List<ChattingItem>> = _list
+    private var selectTeam = ""
 
-    private val _info = MutableStateFlow(ChattingInfo())
-    val info: StateFlow<ChattingInfo> = _info
+    private val _info = MutableStateFlow(Chatting())
+    val info: StateFlow<Chatting> = _info
 
-    private val _myChat = MutableStateFlow(ChattingItem())
-    val myChat: StateFlow<ChattingItem> = _myChat
+    fun setInfo(info: ChattingRoomInfo?, selectTeam: String?) {
+        if (info == null || selectTeam == null) {
+            updateMessage("채팅 조회 실패")
+            updateFinish()
+            return
+        }
 
-    private val today = getToday()
-
-    fun setInfo(info: ChattingInfo) {
-        _info.value = info
+        _info.update { it.copy(roomInfo = info) }
+        this.selectTeam = selectTeam
         fetchChattingList()
-        fetchUserInfo()
     }
 
     private fun fetchChattingList() {
         repository
-            .observeChatUpdates(_info.value.documentId)
-            .onEach { _list.value = it }
-            .catch { updateMessage(it.message ?: "오류 발생")
-            it.printStackTrace()}
+            .observeChatUpdates(info.value.roomInfo)
+            .onEach { newList ->
+                _info.update { _info.value.updateList(newList) }
+            }
+            .catch { updateMessage(it.message ?: "채팅 조회 실패") }
             .launchIn(viewModelScope)
     }
 
-    private fun fetchUserInfo() {
+    fun addChat() {
         repository
-            .fetchUserInfo()
-            .setLoadingState()
-            .onEach { (id, nickname) ->
-                _myChat.update {
-                    it.copy(
-                        id = id,
-                        nickname = nickname,
-                        gameTime = _info.value.documentId,
-                        team = _info.value.selectTeam
-                    )
-                }
-            }
-            .catch {
-                updateMessage(it.message ?: "오류 발생")
-                updateFinish(true)
-            }
-            .launchIn(viewModelScope)
-    }
-
-    fun onRegister() {
-        val gameDate = _info.value.documentId.substring(0, 10)
-        if (gameDate != today) {
-            updateMessage("채팅은 당일에만 작성이 가능합니다")
-            return
-        }
-
-        repository
-            .addChat(_myChat.value)
+            .addChat(
+                message = _info.value.message,
+                selectedTeam = selectTeam,
+                info = _info.value.roomInfo
+            )
             .onEach {
-                _myChat.update { it.copy(message = "") }
+                _info.update { it.copy(message = "") }
             }
-            .catch { updateMessage(it.message ?: "오류 발생") }
+            .catch { updateMessage(it.message ?: "채팅 실패") }
             .launchIn(viewModelScope)
     }
+}
+
+data class Chatting(
+    val roomInfo: ChattingRoomInfo = ChattingRoomInfo.init(),
+    val list: List<ChattingItem> = listOf(),
+    var message: String = ""
+) {
+    fun updateList(newList: List<ChattingItem>) = this.copy(
+        list = newList
+    )
 }

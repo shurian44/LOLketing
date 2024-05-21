@@ -1,16 +1,26 @@
 package com.ezen.network.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 data class ChattingListParam(
     val date: String
 )
 
+@Parcelize
 data class ChattingRoomInfo(
     val gameId: Int,
     val gameDate: String,
     val gameTime: String,
     val leftTeam: String,
     val rightTeam: String
-) {
+): Parcelable {
+    fun getLetTeamImage() = Team.getTeamImage(leftTeam)
+
+    fun getRightTeamImage() = Team.getTeamImage(rightTeam)
+
+    fun getGameTitle() = "$leftTeam vs $rightTeam"
+
     companion object {
         fun init() = ChattingRoomInfo(
             gameId = 0,

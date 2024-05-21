@@ -2,12 +2,10 @@ package com.ezen.lolketing.view.main.chatting.list
 
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.model.ChattingInfo
-import com.ezen.lolketing.repository.ChattingRepository
 import com.ezen.lolketing.util.formatDate
-import com.ezen.lolketing.util.getNextDay
-import com.ezen.lolketing.util.getPreviousDay
 import com.ezen.lolketing.util.getToday
+import com.ezen.network.model.ChattingRoomInfo
+import com.ezen.network.repository.ChattingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +19,8 @@ class ChattingListViewModel @Inject constructor(
     private val repository: ChattingRepository
 ) : StatusViewModel() {
 
-    private val _list = MutableStateFlow(listOf<ChattingInfo>())
-    val list: StateFlow<List<ChattingInfo>> = _list
+    private val _list = MutableStateFlow(listOf<ChattingRoomInfo>())
+    val list: StateFlow<List<ChattingRoomInfo>> = _list
 
     private val _date = MutableStateFlow(getToday())
     val date: StateFlow<String> = _date
@@ -43,25 +41,13 @@ class ChattingListViewModel @Inject constructor(
         getGameData()
     }
 
-    /** 이전 날짜 **/
-    fun previousDay() {
-        _date.value = getPreviousDay(_date.value)
-        getGameData()
-    }
-
-    /** 다음 날짜 **/
-    fun nextDay() {
-        _date.value = getNextDay(_date.value)
-        getGameData()
-    }
-
     /** 경기 정보 조회 **/
     private fun getGameData() {
         repository
-            .fetchGameDate(startDate = _date.value)
+            .fetchChattingList(_date.value)
             .setLoadingState()
             .onEach { _list.value = it }
-            .catch { updateMessage(it.message ?: "오류 발생") }
+            .catch { updateMessage(it.message ?: "채팅 정보 오류") }
             .launchIn(viewModelScope)
     }
 

@@ -26,7 +26,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/sub_color"
+            android:background="@color/main_color"
             app:layout_constraintBottom_toBottomOf="@id/imgTop"
             app:layout_constraintEnd_toEndOf="@id/imgTop"
             app:layout_constraintStart_toStartOf="@id/imgTop"
@@ -65,87 +65,85 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-        <View
-            android:id="@+id/viewPrev"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_prev"
-            android:onClick="@{() -> vm.previousDay()}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgTop" />
-
         <TextView
             android:id="@+id/txtDate"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginEnd="5dp"
             android:onClick="@{() -> activity.showDatePickerDialog()}"
             android:text="@{vm.date}"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@id/viewNext"
-            app:layout_constraintEnd_toStartOf="@id/viewNext"
-            app:layout_constraintStart_toEndOf="@id/viewPrev"
-            app:layout_constraintTop_toTopOf="@id/viewNext"
-            tools:text="2020.02.05" />
+            app:layout_constraintBottom_toBottomOf="@id/viewDate"
+            app:layout_constraintEnd_toStartOf="@id/viewDate"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/viewDate"
+            tools:text="2024.01.01" />
 
         <View
-            android:id="@+id/viewNext"
+            android:id="@+id/viewDate"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/ic_next"
-            android:onClick="@{() -> vm.nextDay()}"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_up"
+            android:onClick="@{() -> activity.showDatePickerDialog()}"
+            android:rotation="180"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtDate"
             app:layout_constraintTop_toBottomOf="@id/imgTop" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.ezen.lolketing.view.custom.CustomChattingRoomSelectorView
+            android:id="@+id/selector1"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:paddingTop="20dp"
-            app:adapter="@{activity.adapter}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/labelChattingInfo"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="15dp"
+            app:chattingRoomIndex="@{0}"
+            app:chattingRoomList="@{vm.list}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtDate"
-            app:submitList="@{vm.list}"
-            tools:listitem="@layout/item_chatting" />
+            app:layout_constraintTop_toBottomOf="@id/viewDate" />
 
-        <TextView
-            android:id="@+id/txtNoGame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/empty_game"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:isVisible="@{vm.list.empty}"
-            app:layout_constraintBottom_toTopOf="@id/labelChattingInfo"
-            app:layout_constraintEnd_toEndOf="@id/txtDate"
-            app:layout_constraintStart_toStartOf="@id/txtDate"
-            app:layout_constraintTop_toBottomOf="@id/txtDate" />
-
-        <TextView
-            android:id="@+id/labelChattingInfo"
+        <com.ezen.lolketing.view.custom.CustomChattingRoomSelectorView
+            android:id="@+id/selector2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:background="@color/sub_color"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="8dp"
-            android:text="@string/guide_chatting_info"
-            android:textColor="@color/white"
-            android:textSize="18sp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="15dp"
+            app:chattingRoomIndex="@{1}"
+            app:chattingRoomList="@{vm.list}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selector1" />
+
+        <ImageView
+            android:id="@+id/imgEmpty"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="15dp"
+            android:contentDescription="@string/imageContentDescription"
+            android:src="@drawable/img_empty"
+            app:isVisible="@{vm.list.empty}"
+            app:layout_constraintBottom_toTopOf="@id/txtEmpty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgTop"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/txtEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_game"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:isVisible="@{vm.list.empty}"
             app:layout_constraintBottom_toTopOf="@id/txtChattingInfo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgEmpty" />
 
         <TextView
             android:id="@+id/txtChattingInfo"
@@ -155,10 +153,11 @@
             android:layout_marginBottom="15dp"
             android:lineSpacingMultiplier="1.2"
             android:text="@string/guide_chatting_info_content"
+            android:textAlignment="center"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/labelChattingInfo"
-            app:layout_constraintStart_toStartOf="@id/labelChattingInfo" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

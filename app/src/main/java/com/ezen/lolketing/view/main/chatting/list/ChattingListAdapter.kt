@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.databinding.ItemChattingBinding
 import com.ezen.lolketing.model.ChattingInfo
 
+// 제거 예졍
 class ChattingListAdapter(
     private val onClick: (ChattingInfo) -> Unit
 ) : ListAdapter<ChattingInfo, ChattingListViewHolder>(diffUtil) {
