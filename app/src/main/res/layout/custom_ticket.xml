@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="info"
+            type="com.ezen.lolketing.view.custom.TicketItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        tools:background="@color/black">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            app:cardCornerRadius="5dp"
+            app:strokeWidth="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp">
+
+                <LinearLayout
+                    android:id="@+id/viewBackground"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="100dp"
+                    android:orientation="horizontal"
+                    app:backgroundColorRes="@{info.statusColor}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:background="@color/main_color">
+
+                    <TextView
+                        android:id="@+id/txtLeftTeam"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="15dp"
+                        android:layout_weight="1"
+                        android:text="@{info.leftTeam}"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        tools:text="Hanwha\nLife Esports" />
+
+                    <TextView
+                        android:id="@+id/txtVersus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingHorizontal="5dp"
+                        android:text="@string/versus"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txtRightTeam"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="15dp"
+                        android:layout_weight="1"
+                        android:text="@{info.rightTeam}"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        tools:text="Hanwha\nLife Esports" />
+
+                </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:backgroundTint="@android:color/transparent"
+                    app:cardCornerRadius="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/viewBackground"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColorRes="@{info.statusColor}"
+                    app:strokeWidth="1dp"
+                    tools:strokeColor="@color/main_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{info.message}"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/viewBackground"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="A1" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="-10dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    app:imageRes="@{info.statusDotRes}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/ticket_hall_main" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="-10dp"
+                    android:layout_marginTop="-10dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    app:imageRes="@{info.statusDotRes}"
+                    app:layout_constraintStart_toEndOf="@id/viewBackground"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/ticket_hall_main" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="-10dp"
+                    android:layout_marginBottom="-10dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    app:imageRes="@{info.statusDotRes}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/viewBackground"
+                    tools:src="@drawable/ticket_hall_main" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</layout>

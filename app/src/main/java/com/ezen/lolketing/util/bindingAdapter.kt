@@ -13,7 +13,10 @@ import com.ezen.lolketing.R
 import com.ezen.lolketing.model.BoardItem
 import com.ezen.lolketing.view.custom.CustomChattingRoomSelectorView
 import com.ezen.lolketing.view.custom.CustomEditTextView
+import com.ezen.lolketing.view.custom.CustomTicketView
+import com.ezen.lolketing.view.custom.TicketItem
 import com.ezen.network.model.ChattingRoomInfo
+import com.google.android.material.card.MaterialCardView
 
 @BindingAdapter("timestamp")
 fun setTimestamp(textView: TextView, timestamp: Long) {
@@ -52,7 +55,9 @@ fun setImage(imageView: ImageView, url: String?) {
 
 @BindingAdapter("backgroundColorRes")
 fun setBackgroundColor(view: View, @ColorRes color: Int) {
-    view.setBackgroundColor(ContextCompat.getColor(view.context, color))
+    if (color != 0) {
+        view.setBackgroundColor(ContextCompat.getColor(view.context, color))
+    }
 }
 
 @BindingAdapter("cardBackgroundColorRes")
@@ -62,7 +67,17 @@ fun setCardViewBackgroundColor(view: Button, @ColorRes color: Int) {
 
 @BindingAdapter("imageRes")
 fun imageLoad(imageView: ImageView, @DrawableRes resId: Int) {
-    imageView.setImageResource(resId)
+    if (resId != 0) {
+        imageView.setImageResource(resId)
+    }
+}
+
+@BindingAdapter("strokeColorRes")
+fun setStrokeColor(view: MaterialCardView, @ColorRes colorRes: Int) {
+    if (colorRes != 0) {
+        val color = ContextCompat.getColor(view.context, colorRes)
+        view.strokeColor = color
+    }
 }
 
 @BindingAdapter("validationStatus")
@@ -83,4 +98,9 @@ fun setChattingRoomSelector(
     }.onFailure {
         view.isVisible = false
     }
+}
+
+@BindingAdapter("ticketItem")
+fun setTicketItem(ticketView: CustomTicketView, item: TicketItem) {
+    ticketView.setItemInfo(item)
 }

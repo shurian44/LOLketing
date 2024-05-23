@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.ezen.lolketing.view.main.ticket.list.TicketListActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.ticket.list.TicketListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:context=".view.main.ticket.list.TicketListActivity">
+
+        <View
+            android:id="@+id/viewBackground"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:background="#D690A5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/ic_back"
+            android:onClick="@{() -> activity.finish()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="56dp"
+            android:text="@string/ticket_reserve"
+            android:textColor="@color/white"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="290dp"
+            android:layout_height="250dp"
+            android:contentDescription="@string/imageContentDescription"
+            android:src="@drawable/img_ticketing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewPossible"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="20dp"
+            android:background="@color/main_color"
+            app:layout_constraintBottom_toBottomOf="@id/txtPossible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txtPossible" />
+
+        <TextView
+            android:id="@+id/txtPossible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/ticketing_possible"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/viewPossible"
+            app:layout_constraintTop_toBottomOf="@id/viewBackground" />
+
+        <View
+            android:id="@+id/viewFinish"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="20dp"
+            android:background="@color/yellow"
+            app:layout_constraintBottom_toBottomOf="@id/txtPossible"
+            app:layout_constraintStart_toEndOf="@id/txtPossible"
+            app:layout_constraintTop_toTopOf="@id/txtPossible" />
+
+        <TextView
+            android:id="@+id/txtFinish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/ticketing_finish"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/viewFinish"
+            app:layout_constraintTop_toBottomOf="@id/viewBackground" />
+
+        <View
+            android:id="@+id/viewSoldOut"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="20dp"
+            android:background="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@id/txtPossible"
+            app:layout_constraintStart_toEndOf="@id/txtFinish"
+            app:layout_constraintTop_toTopOf="@id/txtPossible" />
+
+        <TextView
+            android:id="@+id/txtSoldOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/ticketing_sold_out"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/viewSoldOut"
+            app:layout_constraintTop_toBottomOf="@id/viewBackground" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reserveRecycler"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:clipToPadding="false"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="30dp"
+            app:adapter="@{activity.adapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtPossible"
+            app:submitList="@{vm.list}"
+            tools:listitem="@layout/item_reserve_ticket" />
+
+        <ImageView
+            android:id="@+id/imgEmpty"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="15dp"
+            android:contentDescription="@string/imageContentDescription"
+            android:src="@drawable/img_empty"
+            app:isVisible="@{vm.list.empty}"
+            app:layout_constraintBottom_toTopOf="@id/txtNotTicket"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtPossible"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/txtNotTicket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_game"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:isVisible="@{vm.list.empty}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgEmpty"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

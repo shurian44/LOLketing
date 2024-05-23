@@ -11,6 +11,8 @@ data class Game(
     val rightTeam: String,
     val isSoldOut: Boolean
 ) {
+    fun getDateFormat() = gameDate.replace(" ", "\n")
+
     fun isDateExpired() = runCatching {
         val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
         val date = format.parse(gameDate) ?: return@runCatching false

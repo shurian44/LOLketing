@@ -16,7 +16,7 @@ import com.ezen.lolketing.view.main.league_info.LeagueInfoActivity
 import com.ezen.lolketing.view.main.my_page.MyPageActivity
 import com.ezen.lolketing.view.main.news.NewsActivity
 import com.ezen.lolketing.view.main.shop.ShopActivity
-import com.ezen.lolketing.view.main.ticket.list.ReserveListActivity
+import com.ezen.lolketing.view.main.ticket.list.TicketListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -50,7 +50,7 @@ class MainActivity : StatusViewModelActivity<ActivityMainBinding, MainViewModel>
             txtEvent.id -> startActivity(EventActivity::class.java)
             txtMyPage.id -> startActivity(MyPageActivity::class.java)
             txtInfo.id -> startActivity(LeagueInfoActivity::class.java)
-            txtReserve.id -> startActivity(ReserveListActivity::class.java)
+            txtReserve.id -> startActivity(TicketListActivity::class.java)
             txtShop.id -> startActivity(ShopActivity::class.java)
             txtGuid.id -> startActivity(GuideActivity::class.java)
             txtNews.id -> startActivity(NewsActivity::class.java)

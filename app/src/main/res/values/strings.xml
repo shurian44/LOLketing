@@ -103,10 +103,10 @@
     <string name="go_to_roulette">룰렛 페이지 이동</string>
 
     <!-- 티켓 예매 -->
-    <string name="ticketing_on">예매</string>
+    <string name="ticketing_possible">예매 가능</string>
     <string name="ticketing_schedule_open">오픈 예정</string>
     <string name="ticketing_sold_out">매진</string>
-    <string name="ticketing_finish">종료</string>
+    <string name="ticketing_finish">예매 종료</string>
     <string name="ticketing_time">%s\n%s</string>
     <string name="not_ticket">예매 가능한 티켓이 없습니다</string>
     <string name="guide_sold_out">매진되었습니다</string>
