@@ -1,5 +1,6 @@
 package com.ezen.network.model
 
+import com.ezen.network.util.priceFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -80,6 +81,16 @@ data class ReservationInfo(
         }
         return resultList
     }
+
+    fun getSelectedSeatsInfo() = runCatching {
+        "A홀 ".plus(selectedSeats.reduce { acc, s -> "$acc, $s" })
+    }.getOrDefault("-")
+
+    fun getTicketPrice() = (11_000 * selectedSeats.size)
+
+    fun getTicketPriceFormat() = getTicketPrice().priceFormat()
+
+    fun getCashFormat() = cash.priceFormat()
 
     companion object {
         fun init() = ReservationInfo(

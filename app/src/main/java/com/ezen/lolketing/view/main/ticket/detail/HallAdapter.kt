@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ezen.lolketing.databinding.ItemHallBinding
-import com.ezen.lolketing.model.SeatItem
+import com.ezen.network.model.Seat
 
 class HallAdapter(
-    private val onClick: (SeatItem) -> Unit
-) : ListAdapter<SeatItem, HallViewHolder>(diffUtil) {
+    private val onClick: (String) -> Unit
+) : ListAdapter<Seat, HallViewHolder>(diffUtil) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HallViewHolder =
@@ -21,11 +21,11 @@ class HallAdapter(
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<SeatItem>() {
-            override fun areItemsTheSame(oldItem: SeatItem, newItem: SeatItem) =
-                oldItem.documentId == newItem.documentId
+        val diffUtil = object : DiffUtil.ItemCallback<Seat>() {
+            override fun areItemsTheSame(oldItem: Seat, newItem: Seat) =
+                oldItem.number == newItem.number
 
-            override fun areContentsTheSame(oldItem: SeatItem, newItem: SeatItem) =
+            override fun areContentsTheSame(oldItem: Seat, newItem: Seat) =
                 oldItem == newItem
         }
     }
@@ -35,10 +35,10 @@ class HallViewHolder(
     private val binding: ItemHallBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(
-        seat: SeatItem,
-        onClick: (SeatItem) -> Unit
+        seat: Seat,
+        onClick: (String) -> Unit
     ) = with(binding) {
         data = seat
-        checkBox.setOnClick { onClick(seat) }
+        checkBox.setOnClick { onClick(seat.number) }
     }
 }

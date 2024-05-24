@@ -31,13 +31,13 @@ class CustomSeatCheckBox : MaterialTextView, Checkable {
         setOnClickListener { onClick() }
 
         if (isEnabled.not()) {
-            setBackgroundResource(R.drawable.bg_round_fill_3_light_black)
+            setBackgroundResource(R.drawable.bg_round_fill_3_light_gray)
             return
         }
 
         setBackgroundResource(
             if (status) {
-                R.drawable.bg_round_fill_3_sub_color
+                R.drawable.bg_round_white_outline_fill_main_color
             } else {
                 R.drawable.bg_round_outline_3_white
             }

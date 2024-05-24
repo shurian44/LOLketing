@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.ezen.lolketing.model.SeatItem" />
+            type="com.ezen.network.model.Seat" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,10 +21,10 @@
             android:layout_height="30dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginBottom="15dp"
-            android:checked="@{data.checked}"
-            android:enabled="@{data.enabled}"
+            android:checked="@{data.selected}"
+            android:enabled="@{!data.reserved}"
             android:gravity="center"
-            android:text="@{data.seatNum}"
+            android:text="@{data.number}"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="16sp"

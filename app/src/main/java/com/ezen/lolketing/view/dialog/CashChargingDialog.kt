@@ -37,7 +37,6 @@ class CashChargingDialog(
 
         // 다이얼로그 배경 투명화
         dialog?.backgroundTransparent()
-        binding
         binding.dialog = this
 
     }

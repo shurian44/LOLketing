@@ -1,20 +1,20 @@
 package com.ezen.lolketing.view.main.ticket.detail
 
-import android.app.Activity
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityReserveDetailBinding
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.createIntent
-import com.ezen.lolketing.util.showErrorMessageAndFinish
+import com.ezen.lolketing.util.repeatOnCreated
 import com.ezen.lolketing.util.startActivity
 import com.ezen.lolketing.util.toast
+import com.ezen.lolketing.view.dialog.CashChargingDialog
 import com.ezen.lolketing.view.main.ticket.ReserveActivity
-import com.ezen.lolketing.view.main.ticket.payment.PaymentActivity
+import com.ezen.lolketing.view.main.ticket.info.MyTicketInfoActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ReserveDetailActivity :
@@ -28,6 +28,21 @@ class ReserveDetailActivity :
         super.onCreate(savedInstanceState)
 
         initViews()
+        repeatOnCreated {
+            viewModel.uiStatus.collectLatest {
+                when (it) {
+                    is Reservation.Init -> {}
+                    is Reservation.CashCharging -> {
+                        showCashChargingDialog(it.myCash)
+                        viewModel.updateInit()
+                    }
+
+                    is Reservation.Success -> {
+                        goToTicketInfo(it.ids)
+                    }
+                }
+            }
+        }
 
     }
 
@@ -36,32 +51,10 @@ class ReserveDetailActivity :
         activity = this@ReserveDetailActivity
         vm = viewModel
 
-        intent
-            ?.getStringExtra(Constants.TIME)
-            ?.let { viewModel.setReserveTime(it) }
-            ?: { showErrorMessageAndFinish() }
-
-        intent
-            ?.getStringExtra(Constants.TEAM)
-            ?.let { team = it }
-
         txtSelectHall.text = "A홀"
         layoutTop.btnBack.setOnClickListener { finish() }
-        chPersonnelOne.setOnClick { viewModel.chanePerson(true) }
-        chPersonnelTwo.setOnClick { viewModel.chanePerson(false) }
-    }
-
-    /** 예매하기 버튼 클릭 **/
-    fun goTaPayment() = with(binding) {
-        val info = viewModel.getTicketInfo(txtGameTitle.text.toString())
-            .onFailure { toast(it.message ?: getString(R.string.error_unexpected)) }
-            .getOrNull() ?: return@with
-
-        launcher.launch(
-            createIntent(PaymentActivity::class.java).also {
-                it.putExtra(PaymentActivity.INFO, info)
-            }
-        )
+        chPersonnelOne.setOnClick { viewModel.changePerson(1) }
+        chPersonnelTwo.setOnClick { viewModel.changePerson(2) }
     }
 
     /** 티켓 안내 클릭 **/
@@ -69,17 +62,32 @@ class ReserveDetailActivity :
         startActivity(ReserveActivity::class.java)
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchReservedSeat()
+    private fun goToTicketInfo(ids: String) {
+        startActivity(
+            createIntent(MyTicketInfoActivity::class.java).also {
+                it.putExtra(Constants.ID, ids)
+            }
+        )
+        finish()
     }
 
-    private val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                setResult(Activity.RESULT_OK)
+    private fun showCashChargingDialog(myCash: String) {
+        CashChargingDialog(
+            myCash = myCash,
+            onOkClick = viewModel::cashCharging
+        ).show(supportFragmentManager, "")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        intent
+            ?.getIntExtra(Constants.ID, 0)
+            ?.let(viewModel::fetchReservedSeat)
+            ?: run {
+                toast(R.string.error_unexpected)
                 finish()
             }
-        }
+    }
 
 }
