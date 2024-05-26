@@ -43,10 +43,6 @@ class NewsViewHolder(
     ) = with(binding) {
         newsContents = news
 
-        root.setBackgroundResource(
-            if (absoluteAdapterPosition % 2 == 0) R.color.black else R.color.light_black
-        )
-
         root.setOnClickListener {
             onClick(news.url)
         }
