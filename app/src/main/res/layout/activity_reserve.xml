@@ -4,9 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="activity"
             type="com.ezen.lolketing.view.main.ticket.ReserveActivity" />
+
+        <variable
+            name="vm"
+            type="com.ezen.lolketing.view.main.ticket.ReserveViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,209 +38,379 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true">
 
                 <TextView
-                    android:id="@+id/txtReserveInfo"
+                    android:id="@+id/txtReservationInformation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/light_black"
-                    android:paddingVertical="8dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="0dp"
+                    android:onClick="@{activity::onCategoryClick}"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
                     android:text="@string/reserve_info"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/labelReserveOpen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/reserve_open_label"
-                    android:textAlignment="center"
-                    android:textColor="@color/sub_color"
-                    android:textStyle="bold"
+                <View
+                    android:id="@+id/viewReservationInformation"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_up"
+                    android:rotation="180"
+                    app:layout_constraintBottom_toBottomOf="@id/txtReservationInformation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txtReservationInformation" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtReserveInfo" />
+                    app:layout_constraintTop_toBottomOf="@id/txtReservationInformation" />
+
+                <LinearLayout
+                    android:id="@+id/labelReservationInformation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@color/light_black"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    app:isVisible="@{vm.uiStatus.reservationInformation}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtReservationInformation">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reserve_open_label"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reserve_open"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/amount"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ticket_price"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/reservation_seats"
+                        android:textColor="@color/gray"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:text="@string/guide_reservation_seats"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtReserveOpen"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtRefundInformation"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/reserve_open"
+                    android:onClick="@{activity::onCategoryClick}"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:text="@string/guide_refund"
                     android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="@id/labelReserveOpen"
-                    app:layout_constraintStart_toEndOf="@id/labelReserveOpen"
-                    app:layout_constraintTop_toTopOf="@id/labelReserveOpen" />
-
-                <TextView
-                    android:id="@+id/labelReserveCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/purchases_count_label"
-                    android:textAlignment="center"
-                    android:textColor="@color/sub_color"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@id/labelReserveOpen"
-                    app:layout_constraintTop_toBottomOf="@id/labelReserveOpen" />
-
-                <TextView
-                    android:id="@+id/txtReserveCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/purchases_count"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="@id/txtReserveOpen"
-                    app:layout_constraintTop_toTopOf="@id/labelReserveCount" />
-
-                <TextView
-                    android:id="@+id/labelReserveCancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/reserve_cancel"
-                    android:textAlignment="center"
-                    android:textColor="@color/sub_color"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@id/labelReserveOpen"
-                    app:layout_constraintTop_toBottomOf="@id/labelReserveCount" />
-
-                <TextView
-                    android:id="@+id/txtReserveCancel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="2dp"
-                    android:text="@string/guide_reserve_cancel"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="@id/txtReserveOpen"
-                    app:layout_constraintTop_toTopOf="@id/labelReserveCancel" />
-
-                <TextView
-                    android:id="@+id/labelDisabledTicketInfo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/sub_color"
-                    android:paddingVertical="8dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="0dp"
-                    android:text="@string/disabled_ticket_info"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtReserveCancel" />
+                    app:layout_constraintTop_toBottomOf="@id/labelReservationInformation" />
 
-                <TextView
-                    android:id="@+id/txtDisabledTicketInfo"
+                <View
+                    android:id="@+id/viewRefundInformation"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_up"
+                    android:rotation="180"
+                    app:layout_constraintBottom_toBottomOf="@id/txtRefundInformation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txtRefundInformation" />
+
+                <View
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:paddingHorizontal="20dp"
-                    android:lineSpacingExtra="2dp"
-                    android:text="@string/guide_disabled_ticket_info"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@id/labelDisabledTicketInfo"
-                    app:layout_constraintStart_toStartOf="@id/labelDisabledTicketInfo"
-                    app:layout_constraintTop_toBottomOf="@id/labelDisabledTicketInfo" />
+                    android:layout_height="1dp"
+                    android:background="@color/gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtRefundInformation" />
 
-                <TextView
-                    android:id="@+id/labelPickupTicket"
+                <LinearLayout
+                    android:id="@+id/labelRefundInformation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="1dp"
+                    android:animateLayoutChanges="true"
                     android:background="@color/light_black"
+                    android:orientation="vertical"
                     android:paddingHorizontal="20dp"
-                    android:paddingVertical="8dp"
+                    android:paddingVertical="10dp"
+                    app:isVisible="@{vm.uiStatus.refundInformation}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtRefundInformation">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/start_more_than_24hour"
+                        android:textColor="@color/yellow"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/all_refund"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/start_less_than_24hour"
+                        android:textColor="@color/yellow"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fee_10_refund"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/start_less_than_1hour"
+                        android:textColor="@color/yellow"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/refund_impossible"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtPickUpTicket"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{activity::onCategoryClick}"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
                     android:text="@string/pick_up_ticket"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtDisabledTicketInfo" />
+                    app:layout_constraintTop_toBottomOf="@id/labelRefundInformation" />
 
-                <TextView
-                    android:id="@+id/txtPickupTicket"
+                <View
+                    android:id="@+id/viewPickUpTicket"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_up"
+                    android:rotation="180"
+                    app:layout_constraintBottom_toBottomOf="@id/txtPickUpTicket"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txtPickUpTicket" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtPickUpTicket" />
+
+                <LinearLayout
+                    android:id="@+id/labelPickUpTicket"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:lineSpacingExtra="2dp"
-                    android:paddingHorizontal="20dp"
-                    android:text="@string/guide_pick_up_ticket"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@id/labelPickupTicket"
-                    app:layout_constraintStart_toStartOf="@id/labelPickupTicket"
-                    app:layout_constraintTop_toBottomOf="@id/labelPickupTicket" />
-
-                <TextView
-                    android:id="@+id/labelNotice"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="1dp"
+                    android:animateLayoutChanges="true"
                     android:background="@color/light_black"
+                    android:orientation="vertical"
                     android:paddingHorizontal="20dp"
-                    android:paddingVertical="8dp"
-                    android:text="@string/notice"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:paddingVertical="10dp"
+                    app:isVisible="@{vm.uiStatus.pickUpTicket}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtPickupTicket" />
+                    app:layout_constraintTop_toBottomOf="@id/txtPickUpTicket">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/guide_pick_up_ticket"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/txtNotice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:onClick="@{activity::onCategoryClick}"
                     android:paddingHorizontal="20dp"
-                    android:lineSpacingExtra="2dp"
-                    android:text="@string/guide_notice"
+                    android:paddingVertical="10dp"
+                    android:text="@string/notice"
                     android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@id/labelNotice"
-                    app:layout_constraintStart_toStartOf="@id/labelNotice"
-                    app:layout_constraintTop_toBottomOf="@id/labelNotice" />
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelPickUpTicket" />
 
-                <TextView
-                    android:id="@+id/labelRestrictions"
+                <View
+                    android:id="@+id/viewNotice"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_up"
+                    android:rotation="180"
+                    app:layout_constraintBottom_toBottomOf="@id/txtNotice"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txtNotice" />
+
+                <View
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/light_black"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="8dp"
-                    android:text="@string/restrictions"
-                    android:lineSpacingExtra="2dp"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtNotice" />
+
+                <LinearLayout
+                    android:id="@+id/labelNotice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@color/light_black"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    app:isVisible="@{vm.uiStatus.notice}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtNotice">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/guide_notice"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/txtRestrictions"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="20dp"
-                    android:lineSpacingExtra="2dp"
+                    android:onClick="@{activity::onCategoryClick}"
                     android:paddingHorizontal="20dp"
-                    android:text="@string/guide_restrictions"
+                    android:paddingVertical="10dp"
+                    android:text="@string/restrictions"
                     android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/labelRestrictions"
-                    app:layout_constraintStart_toStartOf="@id/labelRestrictions"
-                    app:layout_constraintTop_toBottomOf="@id/labelRestrictions" />
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/labelNotice" />
+
+                <View
+                    android:id="@+id/viewRestrictions"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_up"
+                    android:rotation="180"
+                    app:layout_constraintBottom_toBottomOf="@id/txtRestrictions"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txtRestrictions" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtRestrictions" />
+
+                <LinearLayout
+                    android:id="@+id/labelRestrictions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@color/light_black"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    app:isVisible="@{vm.uiStatus.restrictions}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtRestrictions">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/guide_restrictions"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
