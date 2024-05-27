@@ -313,7 +313,7 @@
                     android:layout_marginTop="15dp"
                     app:cardBackgroundColor="@android:color/transparent"
                     app:cardCornerRadius="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/cardCoupon"
                     app:layout_constraintStart_toStartOf="@id/cardCash"
                     app:layout_constraintTop_toBottomOf="@id/cardCash"
                     app:strokeColor="@color/white"

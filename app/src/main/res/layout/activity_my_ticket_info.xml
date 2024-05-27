@@ -24,13 +24,22 @@
             android:id="@+id/layoutTop"
             layout="@layout/layout_top"
             app:isBackVisible="@{true}"
-            app:isMenuVisible="@{false}"
-            app:title="@{@string/purchase_history}" />
+            app:title="@{@string/ticket_info}" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/ic_info"
+            android:onClick="@{() -> activity.goToReservation()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/btnHome"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layoutTop">
@@ -40,184 +49,149 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="20dp">
 
+                <ImageView
+                    android:id="@+id/imgLogo"
+                    android:layout_width="170dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="15dp"
+                    android:contentDescription="@string/imageContentDescription"
+                    android:src="@drawable/img_lck_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
-                    android:id="@+id/txtGameTitle"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtTitle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="15dp"
                     android:text="@{vm.ticketInfo.gameTitle}"
-                    android:textColor="@color/sub_color"
+                    android:textAlignment="center"
+                    android:textColor="@color/main_color"
                     android:textSize="22sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgLogo"
                     tools:text="T1 VS T1" />
 
-                <ImageView
-                    android:id="@+id/imgQrCode"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="24dp"
-                    android:contentDescription="@string/imageContentDescription"
-                    app:imageAddress="@{vm.ticketInfo.image}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtGameTitle"
-                    tools:scaleType="fitXY"
-                    tools:src="@drawable/logo_t1" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRefund"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="@color/black"
-                    android:onClick="@{() -> vm.updateRefundTicket()}"
-                    android:text="@string/refund"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="4dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imgQrCode"
-                    app:strokeColor="@color/sub_color"
-                    app:strokeWidth="2dp" />
-
-                <TextView
-                    android:id="@+id/txtTicketInfo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:background="@color/light_black"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="8dp"
-                    android:text="@string/ticket_info"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btnRefund" />
-
-                <TextView
-                    android:id="@+id/labelTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/game_time"
-                    android:textAlignment="center"
-                    android:textColor="@color/sub_color"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txtTicketInfo" />
-
-                <TextView
-                    android:id="@+id/txtTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="@{vm.ticketInfo.time}"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/labelTime"
-                    tools:text="2020.02.05 17:00" />
-
-                <TextView
-                    android:id="@+id/labelArea"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/area"
-                    android:textAlignment="center"
-                    android:textColor="@color/sub_color"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@id/labelTime"
-                    app:layout_constraintTop_toBottomOf="@id/labelTime" />
-
-                <TextView
-                    android:id="@+id/txtArea"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/game_area"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@id/txtTime"
-                    app:layout_constraintTop_toTopOf="@id/labelArea" />
-
-                <TextView
-                    android:id="@+id/labelSeat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/seat"
-                    android:textAlignment="center"
-                    android:textColor="@color/sub_color"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@id/labelArea"
-                    app:layout_constraintTop_toBottomOf="@id/labelArea" />
-
-                <TextView
-                    android:id="@+id/txtSeat"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.ticketInfo.seats}"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@id/txtTime"
-                    app:layout_constraintTop_toTopOf="@id/labelSeat"
-                    tools:text="A홀 A1, A홀 A2" />
-
-                <TextView
-                    android:id="@+id/labelRefund"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/guide_refund"
-                    android:textAlignment="center"
-                    android:textColor="@color/sub_color"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@id/labelSeat"
-                    app:layout_constraintTop_toBottomOf="@id/labelSeat" />
-
-                <TextView
-                    android:id="@+id/txtRefund"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/guide_refund_info"
-                    android:textColor="@color/white"
+                    android:layout_marginTop="15dp"
+                    android:backgroundTint="@color/light_black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/labelRefund" />
+                    app:layout_constraintTop_toBottomOf="@id/txtTitle"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="1dp">
 
-                <TextView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="15dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="37dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/time"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.ticketInfo.time}"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="2024.05.27 17:00" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/seat"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.ticketInfo.seatsInfo}"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="A홀 A1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/area"
+                            android:textColor="@color/gray"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/game_area"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="@color/white"
+                            app:cardCornerRadius="10dp"
+                            app:strokeColor="@color/white">
+
+                            <com.naver.maps.map.MapView
+                                android:id="@+id/mapView"
+                                android:layout_width="match_parent"
+                                android:layout_height="270dp" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/ticket_guide_button"
-                    android:textColor="@color/sub_color"
-                    app:layout_constraintStart_toStartOf="@id/txtRefund"
-                    app:layout_constraintTop_toBottomOf="@id/txtRefund" />
+                    android:backgroundTint="@color/main_color"
+                    app:cardCornerRadius="30dp"
+                    app:layout_constraintBottom_toBottomOf="@id/cardView"
+                    app:layout_constraintEnd_toEndOf="@id/cardView"
+                    app:layout_constraintStart_toStartOf="@id/cardView"
+                    app:layout_constraintTop_toBottomOf="@id/cardView"
+                    app:strokeWidth="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="10dp"
+                        android:onClick="@{() -> vm.updateRefundTicket()}"
+                        android:text="@string/refund"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnHome"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:insetBottom="0dp"
-            android:onClick="@{() -> activity.finish()}"
-            android:text="@string/move_home"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:cornerRadius="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -157,6 +157,9 @@ dependencies {
     implementation ("com.airbnb.android:lottie:6.1.0")
     implementation ("com.airbnb.android:lottie-compose:6.1.0")
 
+    // Naver Map ("https://navermaps.github.io/android-map-sdk/guide-ko/1.html")
+    implementation("com.naver.maps:map-sdk:3.18.0")
+
     implementation(project(path = ":network"))
     implementation(project(path = ":auth"))
     implementation(project(path = ":database"))

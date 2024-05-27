@@ -2,7 +2,9 @@ package com.ezen.lolketing.view.main.ticket.info
 
 import androidx.lifecycle.viewModelScope
 import com.ezen.lolketing.StatusViewModel
-import com.ezen.lolketing.model.TicketInfo
+import com.ezen.network.model.TicketIdParam
+import com.ezen.network.model.TicketInfo
+import com.ezen.network.repository.PurchaseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,47 +15,44 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyTicketInfoViewModel @Inject constructor(
-//    private val repository: PurchaseRepository
+    private val repository: PurchaseRepository
 ) : StatusViewModel() {
 
-    private val _ticketInfo = MutableStateFlow(TicketInfo.create())
+    private val _ticketInfo = MutableStateFlow(TicketInfo.init())
     val ticketInfo : StateFlow<TicketInfo> = _ticketInfo
 
-    private var documentId = ""
+    private val idList = mutableListOf<Int>()
 
-    fun setDocumentId(documentId: String) {
-        this.documentId = documentId
-        fetchTicketInfo()
-    }
+    fun fetchTicketInfo(ids: String)  {
+        val idList = runCatching {
+            ids.split(",").map { it.toInt() }
+        }.getOrDefault(listOf())
 
-    fun fetchTicketInfo()  {
-//        repository
-//            .fetchTicketInfo(documentId)
-//            .setLoadingState()
-//            .onEach { _ticketInfo.value = it }
-//            .catch { updateMessage(it.message ?: "오류 발생") }
-//            .launchIn(viewModelScope)
+        repository
+            .fetchTicketInfo(TicketIdParam(idList))
+            .setLoadingState()
+            .onEach {
+                _ticketInfo.value = it
+                this.idList.addAll(idList)
+            }
+            .catch {
+                updateMessage(it.message ?: "티켓 정보 오류 발생")
+                updateFinish()
+            }
+            .launchIn(viewModelScope)
     }
 
     /** 티켓 환불 **/
     fun updateRefundTicket() {
-        if (_ticketInfo.value.isNoRefund()) {
-            updateMessage("경기 시작 4시간 전 부터는 환불이 불가능합니다.")
-            return
-        }
-
-//        repository
-//            .updateRefundTicket(
-//                ticketInfo = _ticketInfo.value,
-//                purchaseDocumentId = documentId
-//            )
-//            .setLoadingState()
-//            .onEach {
-//                updateMessage(it)
-//                updateFinish(true)
-//            }
-//            .catch { updateMessage(it.message ?: "오류 발생") }
-//            .launchIn(viewModelScope)
+        repository
+            .refundTicket(idList)
+            .setLoadingState()
+            .onEach {
+                updateMessage("환불 완료")
+                updateFinish()
+            }
+            .catch { updateMessage(it.message ?: "환불 오류 발생") }
+            .launchIn(viewModelScope)
     }
 
 }

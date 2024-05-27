@@ -10,6 +10,7 @@ import com.ezen.network.model.UpdateCouponItem
 import com.ezen.network.model.IntIdParam
 import com.ezen.network.model.RouletteCount
 import com.ezen.database.repository.DatabaseRepository
+import com.ezen.network.model.PurchaseHistoryItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -130,32 +131,26 @@ class MainRepositoryImpl @Inject constructor(
             .onFailure { throw it }
     }
 
-    override fun fetchTicketHistory() = flow {
+    override fun fetchPurchaseHistoryInfo() = flow {
         val userId = databaseRepository.getUserId()
         if (userId == 0) {
             throw Exception("유저 정보가 없습니다.")
         }
 
-        client
+        val ticketList = client
             .fetchTicketHistory(IntIdParam(userId))
-            .onSuccess {
-                emit(PurchaseHistoryInfo.ticketHistoryListMapper(it))
-            }
-            .onFailure { throw it }
-    }
+            .getOrThrow()
 
-    override fun fetchGoodsHistory() = flow {
-        val userId = databaseRepository.getUserId()
-        if (userId == 0) {
-            throw Exception("유저 정보가 없습니다.")
-        }
-
-        client
+        val goodsList = client
             .fetchGoodsHistory(IntIdParam(userId))
-            .onSuccess {
-                emit(PurchaseHistoryInfo.goodsHistoryListMapper(it))
-            }
-            .onFailure { throw it }
+            .getOrThrow()
+
+        emit(
+            PurchaseHistoryItem(
+                ticketList = PurchaseHistoryInfo.ticketHistoryListMapper(ticketList),
+                goodsList = PurchaseHistoryInfo.goodsHistoryListMapper(goodsList)
+            )
+        )
     }
 
 }

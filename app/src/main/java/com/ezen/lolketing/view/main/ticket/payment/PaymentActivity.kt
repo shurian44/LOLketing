@@ -16,6 +16,7 @@ import com.ezen.lolketing.view.main.ticket.ReserveActivity
 import com.ezen.lolketing.view.main.ticket.info.MyTicketInfoActivity
 import dagger.hilt.android.AndroidEntryPoint
 
+// 제거 예정
 @AndroidEntryPoint
 class PaymentActivity :
     StatusViewModelActivity<ActivityPaymentBinding, PaymentViewModel>(R.layout.activity_payment) {
@@ -52,11 +53,11 @@ class PaymentActivity :
     }
 
     override fun statusFinish() {
-        startActivity(
-            createIntent(MyTicketInfoActivity::class.java).also {
-                it.putExtra(MyTicketInfoActivity.DOCUMENT_ID, viewModel.purchaseId.value)
-            }
-        )
+//        startActivity(
+//            createIntent(MyTicketInfoActivity::class.java).also {
+//                it.putExtra(MyTicketInfoActivity.DOCUMENT_ID, viewModel.purchaseId.value)
+//            }
+//        )
         setResult(Activity.RESULT_OK)
         finish()
     }

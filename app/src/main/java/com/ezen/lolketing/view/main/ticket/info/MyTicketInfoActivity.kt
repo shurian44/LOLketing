@@ -5,7 +5,13 @@ import androidx.activity.viewModels
 import com.ezen.lolketing.R
 import com.ezen.lolketing.StatusViewModelActivity
 import com.ezen.lolketing.databinding.ActivityMyTicketInfoBinding
+import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.showErrorMessageAndFinish
+import com.ezen.lolketing.util.startActivity
+import com.ezen.lolketing.view.main.ticket.ReserveActivity
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.overlay.Marker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,10 +23,6 @@ class MyTicketInfoActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        intent?.getStringExtra(DOCUMENT_ID)?.let {
-            viewModel.setDocumentId(it)
-        } ?: showErrorMessageAndFinish()
-
         initViews()
     } // onCreate()
 
@@ -29,15 +31,33 @@ class MyTicketInfoActivity :
         activity = this@MyTicketInfoActivity
         vm = viewModel
         layoutTop.btnBack.setOnClickListener { finish() }
+        mapView.getMapAsync {
+            val marker = Marker()
+            marker.position = LatLng(37.5711096, 126.9813897)
+            marker.captionText = "LoL PARK"
+            marker.map = it
+
+            it.moveCamera(
+                CameraUpdate.scrollTo(LatLng(37.5711096, 126.9813897))
+            )
+        }
+    }
+
+    fun goToReservation() {
+        startActivity(ReserveActivity::class.java)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.fetchTicketInfo()
+
+        intent?.getStringExtra(Constants.ID)?.let {
+            viewModel.fetchTicketInfo(it)
+        } ?: showErrorMessageAndFinish()
+
     }
 
-    companion object {
-        const val DOCUMENT_ID = "document_id"
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.mapView.onDestroy()
     }
-
 }

@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
-
+// 제거 예정
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
     private val repository: PaymentRepository

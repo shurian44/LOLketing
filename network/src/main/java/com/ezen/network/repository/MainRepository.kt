@@ -4,7 +4,7 @@ import com.ezen.network.model.Coupon
 import com.ezen.network.model.ModifyInfo
 import com.ezen.network.model.MyCash
 import com.ezen.network.model.MyInfo
-import com.ezen.network.model.PurchaseHistoryInfo
+import com.ezen.network.model.PurchaseHistoryItem
 import com.ezen.network.model.RouletteCount
 import kotlinx.coroutines.flow.Flow
 
@@ -32,8 +32,6 @@ interface MainRepository {
 
     fun fetchRouletteCount(): Flow<RouletteCount>
 
-    fun fetchTicketHistory(): Flow<List<PurchaseHistoryInfo>>
-
-    fun fetchGoodsHistory(): Flow<List<PurchaseHistoryInfo>>
+    fun fetchPurchaseHistoryInfo(): Flow<PurchaseHistoryItem>
 
 }
