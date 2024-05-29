@@ -5,20 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ezen.lolketing.databinding.ItemGoodsHistoryBinding
 import com.ezen.lolketing.databinding.ItemPurchaseDateBinding
-import com.ezen.lolketing.databinding.ItemPurchaseHistoryBinding
-import com.ezen.lolketing.model.PurchaseHistory
+import com.ezen.network.model.PurchaseHistoryInfo
 
-class PurchaseHistoryAdapter(
-    private val onClick: (String) -> Unit
-): ListAdapter<PurchaseHistory, RecyclerView.ViewHolder>(diffUtil) {
+class PurchaseGoodsHistoryAdapter: ListAdapter<PurchaseHistoryInfo, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun getItemViewType(position: Int): Int {
         return currentList[position].type
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when(viewType) {
-        PurchaseHistory.DATE -> {
+        PurchaseHistoryInfo.DATE -> {
             PurchaseHistoryDateViewHolder(
                 ItemPurchaseDateBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
@@ -26,8 +24,8 @@ class PurchaseHistoryAdapter(
             )
         }
         else -> {
-            PurchaseHistoryViewHolder(
-                ItemPurchaseHistoryBinding.inflate(
+            GoodsHistoryViewHolder(
+                ItemGoodsHistoryBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
@@ -36,50 +34,40 @@ class PurchaseHistoryAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder) {
-            is PurchaseHistoryViewHolder -> {
-                (currentList[position] as? PurchaseHistory.History)?.let {
-                    holder.bind(it, onClick)
+            is GoodsHistoryViewHolder -> {
+                (currentList[position] as? PurchaseHistoryInfo.PurchaseGoodsHistory)?.let {
+                    holder.bind(it)
                 }
             }
             is PurchaseHistoryDateViewHolder -> {
-                (currentList[position] as? PurchaseHistory.PurchaseDate)?.let {
-                    holder.bind(it)
+                (currentList[position] as? PurchaseHistoryInfo.PurchaseHistoryDate)?.let {
+                    holder.bind(it, true)
                 }
             }
         }
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<PurchaseHistory>() {
+        val diffUtil = object : DiffUtil.ItemCallback<PurchaseHistoryInfo>() {
             override fun areItemsTheSame(
-                oldItem: PurchaseHistory,
-                newItem: PurchaseHistory
+                oldItem: PurchaseHistoryInfo,
+                newItem: PurchaseHistoryInfo
             ) = oldItem == newItem
 
             override fun areContentsTheSame(
-                oldItem: PurchaseHistory,
-                newItem: PurchaseHistory
+                oldItem: PurchaseHistoryInfo,
+                newItem: PurchaseHistoryInfo
             ) = oldItem == newItem
         }
     }
 }
 
-class PurchaseHistoryViewHolder(
-    private val binding: ItemPurchaseHistoryBinding
+class GoodsHistoryViewHolder(
+    private val binding: ItemGoodsHistoryBinding
 ): RecyclerView.ViewHolder(binding.root) {
     fun bind(
-        item: PurchaseHistory.History,
-        onClick: (String) -> Unit
+        item: PurchaseHistoryInfo.PurchaseGoodsHistory
     ) {
         binding.item = item
-        binding.root.setOnClickListener { onClick(item.documentId) }
-    }
-}
-
-class PurchaseHistoryDateViewHolder(
-    private val binding: ItemPurchaseDateBinding
-): RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: PurchaseHistory.PurchaseDate) {
-        binding.date = item.date
     }
 }

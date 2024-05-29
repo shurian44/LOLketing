@@ -26,17 +26,90 @@
             app:isBackVisible="@{true}"
             app:title="@{@string/purchase_history}" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSelector"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@android:color/transparent"
+            app:cardCornerRadius="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutTop"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTicket"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@{vm.item.ticket ? @color/main_color : @color/gray, default=@color/main_color}"
+                    android:onClick="@{activity::updateIsTicket}"
+                    android:paddingVertical="5dp"
+                    android:text="@string/ticket"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtGoods"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@{vm.item.ticket ? @color/gray : @color/main_color, default=@color/gray}"
+                    android:onClick="@{activity::updateIsTicket}"
+                    android:paddingVertical="5dp"
+                    android:text="@string/goods"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ticketRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:adapter="@{activity.adapter}"
+            android:layout_marginTop="15dp"
+            android:clipToPadding="false"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="30dp"
+            app:adapter="@{activity.ticketAdapter}"
+            app:isVisible="@{vm.item.ticket}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutTop"
-            app:submitList="@{vm.list}"
-            tools:listitem="@layout/item_product" />
+            app:layout_constraintTop_toBottomOf="@id/cardSelector"
+            app:submitList="@{vm.item.ticketList}"
+            tools:listitem="@layout/item_reserve_ticket" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/goodsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:clipToPadding="false"
+            android:paddingBottom="30dp"
+            app:adapter="@{activity.goodsAdapter}"
+            app:isVisible="@{!vm.item.ticket}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardSelector"
+            app:submitList="@{vm.item.goodsList}"
+            tools:listitem="@layout/item_goods_history" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

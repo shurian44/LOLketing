@@ -38,7 +38,7 @@ class TicketListViewModel @Inject constructor(
     }
 
     private fun Game.toTicketItem() = TicketItem(
-        id = gameId,
+        id = gameId.toString(),
         leftTeam = leftTeam,
         rightTeam = rightTeam,
         message = getDateFormat(),

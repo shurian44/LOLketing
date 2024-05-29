@@ -15,9 +15,10 @@
         android:background="@color/black">
 
         <TextView
+            android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
+            android:layout_marginBottom="15dp"
             android:text="@{date}"
             android:textColor="@color/white"
             android:textSize="16sp"

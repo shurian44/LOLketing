@@ -44,7 +44,7 @@ class CustomTicketView : ConstraintLayout {
 }
 
 data class TicketItem(
-    val id: Int,
+    val id: String,
     val leftTeam: String,
     val rightTeam: String,
     val message: String,

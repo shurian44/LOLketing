@@ -9,6 +9,8 @@ import com.ezen.lolketing.databinding.ActivityTicketListBinding
 import com.ezen.lolketing.util.Constants
 import com.ezen.lolketing.util.createIntent
 import com.ezen.lolketing.view.custom.TicketItem
+import com.ezen.lolketing.view.dialog.CommonDialogItem
+import com.ezen.lolketing.view.dialog.ConfirmDialog
 import com.ezen.lolketing.view.main.ticket.detail.ReserveDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,12 +22,12 @@ class TicketListActivity :
 
     val adapter = TicketListAdapter { item ->
         when(item.status) {
-            TicketItem.FINISH -> {}
-            TicketItem.SOLD_OUT -> {}
+            TicketItem.FINISH -> { showFinishDialog() }
+            TicketItem.SOLD_OUT -> { showSoldOutDialog() }
             else -> {
                 startActivity(
                     createIntent(ReserveDetailActivity::class.java).also {
-                        it.putExtra(Constants.ID, item.id)
+                        it.putExtra(Constants.ID, item.id.toInt())
                     }
                 )
             }
@@ -48,6 +50,24 @@ class TicketListActivity :
     private fun initViews() = with(binding) {
         activity = this@TicketListActivity
         vm = viewModel
+    }
+
+    private fun showSoldOutDialog() {
+        ConfirmDialog(
+            CommonDialogItem(
+                message = "선택하신 경기는 매진되었습니다.\n다른 경기를 선택해주세요.",
+                isSingleButton = true
+            )
+        ).show(supportFragmentManager, "")
+    }
+
+    private fun showFinishDialog() {
+        ConfirmDialog(
+            CommonDialogItem(
+                message = "티켓 예매가 종료된 경기입니다.\n다른 경기를 선택해주세요.",
+                isSingleButton = true
+            )
+        ).show(supportFragmentManager, "")
     }
 
 }

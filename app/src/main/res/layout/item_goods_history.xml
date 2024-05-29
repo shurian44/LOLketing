@@ -2,10 +2,9 @@
 <layout>
 
     <data>
-
         <variable
             name="item"
-            type="com.ezen.lolketing.model.PurchaseHistory.History" />
+            type="com.ezen.network.model.PurchaseHistoryInfo.PurchaseGoodsHistory" />
 
     </data>
 
@@ -25,7 +24,8 @@
             app:cardCornerRadius="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/sub_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:strokeColor="@color/main_color"
             app:strokeWidth="2dp">
 
             <ImageView
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="@{item.category}"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/gray"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/txtName"
             app:layout_constraintStart_toEndOf="@id/cardView"
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/quantity"
-            android:textColor="@color/white"
+            android:textColor="@color/gray"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@id/labelPrice"
             app:layout_constraintStart_toStartOf="@id/txtCategory"
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/price"
-            android:textColor="@color/white"
+            android:textColor="@color/gray"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/cardView"
             app:layout_constraintStart_toStartOf="@id/txtCategory"
@@ -108,24 +108,21 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:text="@{item.priceFormat}"
-            android:textColor="@color/sub_color"
+            android:textColor="@color/main_color"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/labelPrice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/labelPrice"
-            tools:text="10원" />
+            tools:text="1,000원" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="10dp"
             android:background="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardView" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

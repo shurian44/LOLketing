@@ -5,10 +5,10 @@ import com.ezen.database.entity.GoodsEntity
 import com.ezen.network.util.priceFormat
 import java.text.DecimalFormat
 
-sealed class PurchaseHistoryInfo {
+sealed class PurchaseHistoryInfo(val type: Int) {
     data class PurchaseHistoryDate(
         val date: String
-    ): PurchaseHistoryInfo()
+    ): PurchaseHistoryInfo(DATE)
 
     data class PurchaseTicketHistory(
         val reservationIds: String,
@@ -17,7 +17,7 @@ sealed class PurchaseHistoryInfo {
         val time: String,
         val leftTeam: String,
         val rightTeam: String
-    ): PurchaseHistoryInfo()
+    ): PurchaseHistoryInfo(HISTORY)
 
     data class PurchaseGoodsHistory(
         val amount: Int,
@@ -26,7 +26,11 @@ sealed class PurchaseHistoryInfo {
         val price: Int,
         val image: String,
         val date: String
-    ): PurchaseHistoryInfo()
+    ): PurchaseHistoryInfo(HISTORY) {
+        fun getPriceFormat() = price.priceFormat()
+
+        fun getAmountFormat() = "$amount 개"
+    }
 
     companion object {
         fun ticketHistoryListMapper(list: List<PurchaseTicketHistory>): List<PurchaseHistoryInfo> {
@@ -50,8 +54,17 @@ sealed class PurchaseHistoryInfo {
                 }
             return newList
         }
+
+        const val DATE = 1
+        const val HISTORY = 2
     }
 }
+
+data class PurchaseHistoryItem(
+    val isTicket: Boolean = true,
+    val ticketList: List<PurchaseHistoryInfo> = listOf(),
+    val goodsList: List<PurchaseHistoryInfo> = listOf(),
+)
 
 data class Goods(
     val goodsId: Int,
