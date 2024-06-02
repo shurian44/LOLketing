@@ -27,7 +27,8 @@ class LoginActivity :
     } // onCreate()
 
     fun goToFindPassword() {
-        startActivity(FindPasswordActivity::class.java)
+        // 3.0.1 버전에서는 개발에서 제외
+//        startActivity(FindPasswordActivity::class.java)
     }
 
     fun goToJoin() {
