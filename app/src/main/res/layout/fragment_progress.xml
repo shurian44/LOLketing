@@ -157,8 +157,9 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/imageContentDescription"
                 android:layout_marginTop="15dp"
-                android:scaleType="fitStart"
+                android:scaleType="fitXY"
                 android:src="@drawable/season1" />
 
         </LinearLayout>
