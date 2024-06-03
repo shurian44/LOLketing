@@ -24,15 +24,17 @@ import kotlinx.coroutines.flow.collectLatest
 class MainActivity : StatusViewModelActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main) {
 
     override val viewModel: MainViewModel by viewModels()
+    private val imageList = listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding.activity = this
         binding.vm = viewModel
-        binding.imageSlider.setImageList(
-            listOf(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
-        )
+        binding.imageSlider.also {
+            it.setImageList(imageList)
+            it.setAutoSlider()
+        }
 
         repeatOnStarted {
             viewModel.isLogin.collectLatest {
