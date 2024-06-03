@@ -61,7 +61,10 @@ class MyPageViewModel @Inject constructor(
             .setLoadingState()
             .onEach { result ->
                 _info.update {
-                    it.copy(cash = result.cash)
+                    it.copy(
+                        cash = result.cash,
+                        point = result.point
+                    )
                 }
             }
             .catch { updateMessage(it.message ?: "캐시 충전 실패") }
