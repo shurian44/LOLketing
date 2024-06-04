@@ -121,9 +121,9 @@ dependencies {
     kapt ("androidx.hilt:hilt-compiler:1.1.0")
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
 
-    val lifecycle_version = "2.6.2"
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    val lifecycleVersion = "2.6.2"
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 
     val retrofitVersion = "2.9.0"
     val okhttp3Version = "4.11.0"
@@ -159,6 +159,9 @@ dependencies {
 
     // Naver Map ("https://navermaps.github.io/android-map-sdk/guide-ko/1.html")
     implementation("com.naver.maps:map-sdk:3.18.0")
+
+    // Balloon https://github.com/skydoves/Balloon
+    implementation("com.github.skydoves:balloon:1.6.4")
 
     implementation(project(path = ":network"))
     implementation(project(path = ":auth"))

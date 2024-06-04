@@ -90,4 +90,21 @@ class BoardDetailViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    fun deleteBoard() {
+        if (boardId == null) {
+            updateMessage("게시글 정보가 없습니다.")
+            return
+        }
+
+        repository
+            .deleteBoard(boardId)
+            .setLoadingState()
+            .onEach {
+                updateMessage(it)
+                updateFinish()
+            }
+            .catch { updateMessage(it.message ?: "삭제 실패") }
+            .launchIn(viewModelScope)
+    }
+
 }
